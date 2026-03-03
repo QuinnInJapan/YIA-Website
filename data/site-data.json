@@ -1,0 +1,2264 @@
+{
+  "site": {
+    "org": {
+      "designation": "認定・横須賀市指定 NPO法人",
+      "nameJa": "横須賀国際交流協会",
+      "nameEn": "YOKOSUKA INTERNATIONAL ASSOCIATION",
+      "abbreviation": "YIA",
+      "founded": "1995",
+      "npoEstablished": "2003-04",
+      "lastUpdated": "2026-03-02",
+      "descriptionJa": "横須賀の多文化共生を支える国際交流の拠点。生活相談、日本語教室、文化交流、防災支援など幅広い活動を行っています。",
+      "descriptionEn": "Your hub for multicultural exchange in Yokosuka. We offer counseling, Japanese classes, cultural programs, disaster preparedness support, and more."
+    },
+    "contact": {
+      "postalCode": "238-0006",
+      "addressJa": "横須賀市日の出町1-5 ヴェルクよこすか2階",
+      "addressEn": "Verque Yokosuka 2F, 1-5 Hinodecho, Yokosuka 238-0006",
+      "tel": "046-827-2166",
+      "fax": "046-827-2167",
+      "email": "npo-yia@kb3.so-net.ne.jp",
+      "website": "http://www.yia.jp",
+      "youtube": "http://www.youtube.com/channel/UCWzQs3kKFYSIXhbXw0uI9jg"
+    },
+    "businessHours": {
+      "ja": "業務時間：月曜日から金曜日（祝日は除く）9:00－17:00",
+      "en": "Business Hours: Monday to Friday (excluding holidays) 9:00 AM - 5:00 PM"
+    },
+    "copyright": "Copyright(c)2009 Yokosuka International Association All Rights Reserved.",
+    "googleMapsEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3260.0!2d139.6742636!3d35.2805339!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60183ff591b94e63%3A0xc5f688e7c2b7ccea!2z44O044Kn44Or44Kv44KI44GT44GZ44GL44O75qiq6aCI6LOA5biC5Yun5YqX56aP56We5Lya6aSo!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp",
+    "_type": "siteSettings"
+  },
+  "categories": [
+    {
+      "id": "shien",
+      "labelJa": "支援事業",
+      "labelEn": "Support Services",
+      "heroImage": "2024.11 (3).jpg",
+      "_type": "category"
+    },
+    {
+      "id": "kehatsu",
+      "labelJa": "啓発事業",
+      "labelEn": "Educational Programs",
+      "heroImage": "InternationalYouthForum1 (3).jpg",
+      "_type": "category"
+    },
+    {
+      "id": "kouryu",
+      "labelJa": "交流事業",
+      "labelEn": "Cultural Exchange",
+      "heroImage": "Kids2024 (1).JPG",
+      "_type": "category"
+    },
+    {
+      "id": "kokusaikoken",
+      "labelJa": "国際貢献",
+      "labelEn": "International Contribution",
+      "heroImage": "2024 jfy(4).JPG",
+      "_type": "category"
+    }
+  ],
+  "navigation": {
+    "categories": [
+      {
+        "categoryId": "shien",
+        "items": [
+          {
+            "id": "seikatsusodan",
+            "titleJa": "多言語による生活相談",
+            "titleEasy": "たげんご の せいかつそうだん",
+            "titleEn": "Counseling",
+            "pageRef": "seikatsusodan"
+          },
+          {
+            "id": "kaiwasalon",
+            "titleJa": "日本語会話サロン",
+            "titleEasy": "にほんご くらす",
+            "titleEn": "Japanese Salon",
+            "pageRef": "kaiwasalon"
+          },
+          {
+            "id": "honyaku",
+            "titleJa": "翻訳・通訳サービス",
+            "titleEasy": "ほんやく・つうやく",
+            "titleEn": "Translation / Interpreting",
+            "pageRef": "honyaku"
+          },
+          {
+            "id": "bosai",
+            "titleJa": "外国人防災",
+            "titleEasy": "がいこくじん ぼうさい",
+            "titleEn": "Disaster Preparedness",
+            "pageRef": "bosai"
+          }
+        ]
+      },
+      {
+        "categoryId": "kehatsu",
+        "items": [
+          {
+            "id": "gaikokugo",
+            "titleJa": "外国語講座",
+            "titleEasy": "がいこくご こうざ",
+            "titleEn": "Language Courses",
+            "pageRef": "gaikokugo"
+          },
+          {
+            "id": "kokusairikai",
+            "titleJa": "国際理解講座",
+            "titleEasy": "こくさいりかい こうざ",
+            "titleEn": "International Understanding",
+            "pageRef": "kokusairikai"
+          },
+          {
+            "id": "youthfo",
+            "titleJa": "国際ユースフォーラム",
+            "titleEasy": "こくさい ゆーすふぉーらむ",
+            "titleEn": "Youth Forum",
+            "pageRef": "youthfo"
+          }
+        ]
+      },
+      {
+        "categoryId": "kouryu",
+        "items": [
+          {
+            "id": "nihonbunka",
+            "titleJa": "日本文化体験 & JFY",
+            "titleEasy": "にほんの ぶんか たいけん",
+            "titleEn": "Japanese Culture",
+            "pageRef": "nihonbunka"
+          },
+          {
+            "id": "kids",
+            "titleJa": "キッズフェスティバル",
+            "titleEasy": "きっず ふぇすてぃばる",
+            "titleEn": "Kids Festival",
+            "pageRef": "kids"
+          },
+          {
+            "id": "englishguide",
+            "titleJa": "英語ガイドツアー",
+            "titleEasy": "えいご がいど つあー",
+            "titleEn": "English Guide Tour",
+            "pageRef": "englishguide"
+          },
+          {
+            "id": "homestay",
+            "titleJa": "ホームステイ・ビジット",
+            "titleEasy": "ほーむすてい・びじっと",
+            "titleEn": "Homestay & Visit",
+            "pageRef": "homestay"
+          },
+          {
+            "id": "cooking",
+            "titleJa": "世界の料理教室",
+            "titleEasy": "せかいの りょうり くらす",
+            "titleEn": "World Cooking Class",
+            "pageRef": "cooking"
+          }
+        ]
+      },
+      {
+        "categoryId": "kokusaikoken",
+        "items": [
+          {
+            "id": "kokusaikoken",
+            "titleJa": "国際貢献事業",
+            "titleEasy": "こくさいこうけん",
+            "titleEn": "International Contribution",
+            "pageRef": "kokusaikoken"
+          },
+          {
+            "id": "sistercity",
+            "titleJa": "姉妹都市交換学生",
+            "titleEasy": "しまいとし こうかん がくせい",
+            "titleEn": "Sister City Exchange",
+            "pageRef": "sistercity"
+          }
+        ]
+      }
+    ],
+    "orgLinks": [
+      {
+        "id": "aboutyia",
+        "titleJa": "団体概要",
+        "titleEn": "About YIA",
+        "pageRef": "aboutyia"
+      },
+      {
+        "id": "kaiinn",
+        "titleJa": "会員募集",
+        "titleEn": "Membership",
+        "pageRef": "kaiinn"
+      },
+      {
+        "id": "sanjyokaiin",
+        "titleJa": "賛助会員",
+        "titleEn": "Supporting Members",
+        "pageRef": "sanjyokaiin"
+      }
+    ],
+    "_type": "navigation"
+  },
+  "announcements": [
+    {
+      "id": "counseling-schedule-change",
+      "date": "2026-02-28",
+      "urgent": true,
+      "titleJa": "多言語相談 時間変更",
+      "titleEn": "Counseling Schedule Change",
+      "contentJa": "3月5日の多言語相談（やさしいにほんご）は時間が変更になりました。\n午前9時～12時→（変更後）午後13時～16時",
+      "contentEn": "The March 5 Multilingual Counseling (Easy Japanese) time has changed.\n9:00 AM–12:00 PM → (Changed to) 1:00 PM–4:00 PM",
+      "_type": "announcement"
+    },
+    {
+      "id": "sistercity-info-session",
+      "date": "2026-02-23",
+      "urgent": false,
+      "titleJa": "姉妹都市交換学生 募集説明会",
+      "titleEn": "Sister City Exchange Student Info Session",
+      "contentJa": "夏に実施している高校生を対象とした海外姉妹都市との交換学生募集について説明します。お申し込み不要です。\n\n日時：3月26日（木）16:00～17:30\n場所：ヴェルクよこすか 6Fホール",
+      "contentEn": "Information session on the summer exchange student program for high school students. No registration required.\n\nDate: March 26 (Thu) 4:00–5:30 PM\nLocation: Verque Yokosuka 6F Hall",
+      "documents": [
+        {
+          "label": "詳細",
+          "labelEn": "Details",
+          "url": "http://yia.jp/sistercitylink.pdf",
+          "type": "PDF"
+        },
+        {
+          "label": "募集要項",
+          "labelEn": "Recruitment Guidelines",
+          "url": "http://yia.jp/boshuyoukou.pdf",
+          "type": "PDF"
+        },
+        {
+          "label": "申込書",
+          "labelEn": "Application Form",
+          "url": "http://yia.jp/moushikomisho.pdf",
+          "type": "PDF"
+        },
+        {
+          "label": "作文用紙",
+          "labelEn": "Essay Paper",
+          "url": "http://yia.jp/sakubunyoshi.pdf",
+          "type": "PDF"
+        }
+      ],
+      "_type": "announcement"
+    },
+    {
+      "id": "patchwork-sale",
+      "date": "2026-02-15",
+      "urgent": false,
+      "titleJa": "和雑貨・キルト作品 販売中",
+      "titleEn": "Handmade Quilts & Goods on Sale",
+      "contentJa": "パッチワークキルト協会の作品や和雑貨を事務局にて購入できます。",
+      "contentEn": "Patchwork Quilt Association works and Japanese miscellaneous goods available at the YIA office.",
+      "image": "pachiwaku.png",
+      "_type": "announcement"
+    },
+    {
+      "id": "disaster-volunteer-recruitment",
+      "date": "2026-02-01",
+      "urgent": false,
+      "titleJa": "災害時支援ボランティア募集",
+      "titleEn": "Disaster Support Volunteers Wanted",
+      "contentJa": "横須賀市では、災害時に日本語が通じない外国人を支援する通訳・翻訳ボランティアを募集しています。登録された方には定期的な研修を行います。交通費は実費支給。",
+      "contentEn": "Yokosuka City is recruiting interpretation/translation volunteers to support non-Japanese-speaking residents during disasters. Regular training provided. Transportation costs reimbursed.",
+      "_type": "announcement"
+    }
+  ],
+  "globalResources": {
+    "accessMap": {
+      "image": "20160613map.JPG",
+      "labelJa": "アクセス",
+      "labelEn": "Access"
+    },
+    "youtubeLink": {
+      "url": "http://www.youtube.com/channel/UCWzQs3kKFYSIXhbXw0uI9jg",
+      "labelJa": "協会への行き方を動画で紹介",
+      "labelEn": "It shows how to get here!!"
+    },
+    "counselingImage": "Seikatsusoudan.png",
+    "memberRecruitment": {
+      "labelJa": "会員募集中！",
+      "labelEasy": "かいいん ぼしゅう ちゅう",
+      "labelEn": "Now Recruiting Members!",
+      "url": "kaiinn.html"
+    },
+    "activityRequestForm": {
+      "labelJa": "活動依頼書はこちら",
+      "url": "http://yia.jp/katsudoiraisho2.xls",
+      "type": "XLS"
+    },
+    "fairTrade": {
+      "labelJa": "コーヒーでフェアトレードを応援！今すぐできる国際協力！",
+      "labelEn": "Support Fair Trade with Coffee! International Cooperation You Can Do Now!"
+    },
+    "resourceBoxes": [
+      {
+        "id": "living-guide",
+        "titleJa": "生活ガイド",
+        "titleEasy": "せいかつ がいど",
+        "titleEn": "Living Guide",
+        "url": "http://www.clair.or.jp/tagengo/index.html",
+        "attribution": "（財）地域国際化協会作成",
+        "links": [
+          {
+            "lang": "en",
+            "label": "Living Guide (English)"
+          },
+          {
+            "lang": "ko",
+            "label": "생활가이드 (한국어)"
+          },
+          {
+            "lang": "zh",
+            "label": "生活指南 (中文)"
+          },
+          {
+            "lang": "es",
+            "label": "Guía sobre la Vida Cotidiana (Español)"
+          },
+          {
+            "lang": "pt",
+            "label": "Guia de Informação do Cotidiano (Português)"
+          },
+          {
+            "lang": "tl",
+            "label": "Patnubay sa Pamumuhay (Filipino)"
+          }
+        ]
+      },
+      {
+        "id": "nihongo-handbook",
+        "titleJa": "日本語学習・生活",
+        "titleEasy": "にほんご がくしゅう・せいかつ",
+        "attribution": "文化庁",
+        "links": [
+          {
+            "lang": "ko",
+            "label": "韓国・朝鮮語版",
+            "subtitle": "한국어판",
+            "labelEasy": "かんこくご・ちょうせんご",
+            "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/ko_zensho.pdf"
+          },
+          {
+            "lang": "zh",
+            "label": "中国語版",
+            "subtitle": "中文版",
+            "labelEasy": "ちゅうごくご",
+            "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/ch_zensho.pdf"
+          },
+          {
+            "lang": "pt",
+            "label": "ポルトガル語版",
+            "subtitle": "Edição em Português",
+            "labelEasy": "ぽるとがるご",
+            "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/po_zensho.pdf"
+          },
+          {
+            "lang": "es",
+            "label": "スペイン語版",
+            "subtitle": "Edición en Español",
+            "labelEasy": "すぺいんご",
+            "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/sp_zensho.pdf"
+          },
+          {
+            "lang": "en",
+            "label": "英語版",
+            "subtitle": "English Edition",
+            "labelEasy": "えいご",
+            "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/en_zensho.pdf"
+          }
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "label": "定款",
+        "url": "http://yia.jp/teikan.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和7年度役員紹介",
+        "url": "http://yia.jp/2025yakuin.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和6年度事業報告",
+        "url": "http://yia.jp/20251go.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和6年度決算報告",
+        "url": "http://yia.jp/20252go.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和6年度貸借対照表",
+        "url": "http://yia.jp/2025taishakutaisho.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和7年度事業計画案",
+        "url": "http://yia.jp/20253go.pdf",
+        "type": "PDF"
+      },
+      {
+        "label": "令和7年度活動予算案",
+        "url": "http://yia.jp/20254go.pdf",
+        "type": "PDF"
+      }
+    ],
+    "_type": "globalResources"
+  },
+  "homepage": {
+    "template": "homepage",
+    "hero": {
+      "image": "InternationalYouthForum1 (2).jpg",
+      "taglineJa": "横須賀の多文化共生を支える国際交流の拠点",
+      "taglineEn": "Your Hub for Multicultural Exchange in Yokosuka"
+    },
+    "activityGrid": {
+      "images": [
+        "Kids2024 (2).jpg",
+        "Kids2024 (5).JPG",
+        "2024 jfy(2).JPG",
+        "2024 jfy(1).JPG",
+        "hemitour01.jpg",
+        "InternationalYouthForum1 (4).jpg"
+      ],
+      "stat": {
+        "value": 30,
+        "labelJa": "年の歴史",
+        "labelEn": "Years of Service"
+      }
+    },
+    "announcementIds": [
+      "counseling-schedule-change",
+      "sistercity-info-session",
+      "patchwork-sale",
+      "disaster-volunteer-recruitment"
+    ],
+    "eventFlyers": [
+      {
+        "imageJa": "s-2025JFY03022_page-0001.jpg",
+        "imageEn": "s-2025JFY20260302eng_page-0001.jpg",
+        "altJa": "Japan Festival in Yokosuka — 2026年3月8日（日本語版）",
+        "altEn": "Japan Festival in Yokosuka — March 8, 2026 (English)"
+      }
+    ],
+    "_type": "homepage",
+    "slug": "index"
+  },
+  "aboutPage": {
+    "template": "organization-overview",
+    "titleJa": "横須賀国際交流協会（YIA）とは",
+    "titleEn": "About Yokosuka International Association (YIA)",
+    "fullName": "認定・横須賀市指定特定非営利活動法人 横須賀国際交流協会",
+    "missionJa": "横須賀市の都市像「国際海の手文化都市」の実現を支え、市民レベルでの多文化共生を目指した国際交流活動を推進しています。多様な文化の理解、人権の尊重、活力あるボランティア活動の創出を柱としています。",
+    "missionEn": "Supporting the realization of Yokosuka's urban vision as an 'International Seaside Culture City,' promoting international exchange activities aimed at multicultural coexistence at the citizen level.",
+    "orgDetails": {
+      "founded": "1997年",
+      "npoEstablished": "2003年",
+      "members": "個人会員320名、団体会員15、賛助会員17（2024年4月1日現在）",
+      "membersEn": "320 individual members, 15 organization members, 17 supporting members (as of April 1, 2024)",
+      "staff": "事務員（外国人生活相談員）：全6名（令和6年4月1日現在）",
+      "staffEn": "Office staff (foreign resident counselors): 6 (as of April 1, 2024)"
+    },
+    "history": [
+      {
+        "year": "1994",
+        "eventJa": "国際交流団体連絡会議が発足。国際交流ボランティア登録開始"
+      },
+      {
+        "year": "1995",
+        "eventJa": "第1回「日本まつりinよこすか」開催。日本語教室スタート"
+      },
+      {
+        "year": "1996",
+        "eventJa": "日本語会話サロン開始。第1回スポーツ交流"
+      },
+      {
+        "year": "1997",
+        "eventJa": "ボランティア組織YIA発足（会長：西原鈴子）。外国語講座、会話交流、国際理解講座、文化交流事業等開始。会報「NEWSPOT」毎月発行開始"
+      },
+      {
+        "year": "1998",
+        "eventJa": "ハロウィン、日本文化体験、English pubなど新事業開始"
+      },
+      {
+        "year": "2001",
+        "eventJa": "会長交代（庄司信行）"
+      },
+      {
+        "year": "2003",
+        "eventJa": "NPO法人化（会長：多賀和枝）。翻訳・通訳、外国語講座が独立事業に。姉妹都市交換学生・基地ツアー受入開始"
+      },
+      {
+        "year": "2007",
+        "eventJa": "外国人に対する災害対応事業を統合、毎年内容を発展"
+      },
+      {
+        "year": "2008",
+        "eventJa": "創立10周年記念（会長：藤井長生）。世界の料理教室スタート"
+      },
+      {
+        "year": "2012",
+        "eventJa": "横須賀商工会議所パートナー事業開始"
+      },
+      {
+        "year": "2013",
+        "eventJa": "会長交代（安東崇夫）。高校生向け外国語講座スタート（〜2017年度）。夜間英語クラス開始。横須賀市指定NPO認定"
+      },
+      {
+        "year": "2014",
+        "eventJa": "神奈川県認定NPO法人認定"
+      },
+      {
+        "year": "2015",
+        "eventJa": "上町パルス外国語・英会話クラススタート（〜2019年3月）。英語ガイドツアー独立事業化"
+      },
+      {
+        "year": "2018",
+        "eventJa": "社会人対象英語クラススタート（〜2019年3月）"
+      },
+      {
+        "year": "2022",
+        "eventJa": "JFY・日本文化体験・キッズフェスティバル等を自主運営化"
+      }
+    ],
+    "businessActivities": {
+      "support": [
+        "多言語相談",
+        "日本語会話サロン",
+        "翻訳・通訳"
+      ],
+      "educational": [
+        "外国語講座",
+        "国際理解講座",
+        "国際ユースフォーラム"
+      ],
+      "exchange": [
+        "日本文化体験",
+        "Japan Festival in Yokosuka",
+        "キッズフェスティバル",
+        "英語ガイドツアー",
+        "ホームステイ・ビジット",
+        "世界の料理教室"
+      ],
+      "contribution": [
+        "フェアトレードコーヒー販売",
+        "姉妹都市交換学生"
+      ],
+      "other": [
+        "情報誌発行",
+        "メールマガジン",
+        "ホームページ運営",
+        "ボランティア交流会",
+        "横須賀商工会議所パートナー事業"
+      ]
+    },
+    "boardMembers": {
+      "asOf": "2024年4月1日現在",
+      "members": [
+        {
+          "name": "安東崇夫",
+          "roleJa": "理事長",
+          "roleEn": "Chair"
+        },
+        {
+          "name": "大谷英世",
+          "roleJa": "副理事長",
+          "roleEn": "Vice Chair"
+        },
+        {
+          "name": "友森和子",
+          "roleJa": "副理事長",
+          "roleEn": "Vice Chair"
+        },
+        {
+          "name": "伊藤健吾（事務局長）",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "藤井長生",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "竹淵郁世",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "川名わた子",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "安本宗弘",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "陶山赤爪",
+          "roleJa": "理事",
+          "roleEn": "Director"
+        },
+        {
+          "name": "工藤幸久",
+          "roleJa": "監事",
+          "roleEn": "Auditor"
+        },
+        {
+          "name": "本田和彦",
+          "roleJa": "監事",
+          "roleEn": "Auditor"
+        }
+      ]
+    },
+    "governance": {
+      "ja": "総会：最高議決機関。年1回開催し、事業計画・予算・決算等を審議。\n理事会：法人の業務執行に関する事項を決定。\n運営委員会：理事・各事業委員長で構成し、事業全体の調整・運営を行う。\n事業実行委員会：各事業の企画・運営を担当するボランティア委員会。\n ボランティア交流会：年1回、ボランティア同士の親睦・情報共有の場。\n事務局：日常業務の運営、会員管理、外国人生活相談等を担当。",
+      "en": "General Assembly: Supreme decision-making body, held annually to review business plans, budgets, and financial reports.\nBoard of Directors: Determines matters relating to corporate operations.\nManagement Committee: Composed of directors and committee chairs, coordinating overall operations.\nBusiness Execution Committees: Volunteer committees responsible for planning and running each program.\nVolunteer Exchange Meeting: Annual gathering for volunteer networking and information sharing.\nAdministration Office: Handles daily operations, member management, and foreign resident counseling."
+    },
+    "_type": "aboutPage",
+    "slug": "aboutyia"
+  },
+  "membershipPage": {
+    "template": "membership",
+    "titleJa": "会員募集",
+    "titleEn": "Membership",
+    "descriptionJa": "横須賀国際交流協会では、一緒に活動してくださる方、協会の活動に賛同し、資金面で応援してくださる会員を募集しています。",
+    "registrationProcess": "個人会員入会ご希望の方は「登録申込書」に必要事項を記載の上、当協会事務所まで直接ご提出いただくか、郵送、メールまたはＦＡＸでお送りください。年会費納入の確認後、会員登録完了となります。",
+    "feeTable": [
+      {
+        "typeJa": "正会員（個人会員）",
+        "typeEn": "Regular Member (Individual)",
+        "fee": "2,000円/年"
+      },
+      {
+        "typeJa": "家族会員",
+        "typeEn": "Family Member",
+        "fee": "1,000円/年"
+      },
+      {
+        "typeJa": "準会員（学生・外国籍の方）",
+        "typeEn": "Associate Member (Students / Foreign Nationals)",
+        "fee": "無料"
+      },
+      {
+        "typeJa": "賛助会員",
+        "typeEn": "Supporting Member",
+        "fee": "1口10,000円〜"
+      },
+      {
+        "typeJa": "団体会員",
+        "typeEn": "Organization Member",
+        "fee": "10,000円/年"
+      }
+    ],
+    "memberTypes": [
+      {
+        "typeJa": "正会員",
+        "descriptionJa": "この法人の目的である「主に横須賀市に在住・在勤の個人または団体に対して、国際交流活動を通しての市民生活の向上と国際理解の推進に寄与する」活動に賛同し、入会された個人を表します。"
+      },
+      {
+        "typeJa": "家族会員",
+        "descriptionJa": "この法人の目的に賛同し、入会した正会員と同居している家族を表します。"
+      },
+      {
+        "typeJa": "準会員",
+        "descriptionJa": "学生（中学、高校、大学、大学院、専門学生）と外国人（外国籍）の方で協会の活動に興味を持ち、積極的に参加をする方。"
+      },
+      {
+        "typeJa": "賛助会員",
+        "descriptionJa": "この法人の目的に賛同し、協会が行う活動を賛助していただくために入会した個人、団体を表します。"
+      }
+    ],
+    "benefits": {
+      "ja": "正会員（家族会員を含む）の方々には会費納入後、その年度の「会員証」が発行されます。全会員には当協会の事業のご案内などの情報提供をいたします。活動参加時、登録されている全会員は、ボランティア保険適応対象となります。",
+      "en": "Regular members (including family members) receive a membership card after paying dues. All members receive information about association activities. All registered members are covered by volunteer insurance during activities."
+    },
+    "registrationForms": [
+      {
+        "label": "正会員登録申込書",
+        "labelEn": "Regular member application",
+        "url": "http://yia.jp/kaiin.xls",
+        "type": "XLS"
+      },
+      {
+        "label": "団体会員登録申込書",
+        "labelEn": "Organization application",
+        "url": "http://yia.jp/danntai201610.xls",
+        "type": "XLS"
+      },
+      {
+        "label": "賛助会員登録申込書",
+        "labelEn": "Supporting member application",
+        "url": "http://yia.jp/2024sanjo.xls",
+        "type": "XLS"
+      },
+      {
+        "label": "準会員学生申込書",
+        "labelEn": "Student application",
+        "url": "http://yia.jp/gakusei201610.xls",
+        "type": "XLS"
+      },
+      {
+        "label": "準会員日本語申込書",
+        "labelEn": "Foreign national application (Japanese)",
+        "url": "http://yia.jp/gaikokujinn201610nihonngo.xls",
+        "type": "XLS"
+      },
+      {
+        "label": "英語版申込書",
+        "labelEn": "Application form (English)",
+        "url": "http://yia.jp/jyunkaiineigo.xls",
+        "type": "XLS"
+      }
+    ],
+    "bankTransfer": {
+      "bank": "ゆうちょ銀行",
+      "bankEn": "Japan Post Bank (Yucho)",
+      "accountNumber": "００２００−９−７５１５２",
+      "accountHolder": "特定非営利活動法人横須賀国際交流協会"
+    },
+    "privacyNotice": {
+      "ja": "個人情報の扱い：「個人情報保護方針」に従った厳重な管理のもと、プライバシーを守ります。",
+      "en": "Handling of personal information: Privacy is protected under strict management in accordance with our 'Personal Information Protection Policy.'"
+    },
+    "images": [
+      {
+        "file": "werk11.jpg"
+      }
+    ],
+    "_type": "membershipPage",
+    "slug": "kaiinn"
+  },
+  "directoryPage": {
+    "template": "directory",
+    "titleJa": "賛助会員一覧",
+    "titleEn": "Supporting Members Directory",
+    "subtitle": "横須賀国際交流協会を支援している賛助会員（2024年3月末 現在　五十音順）",
+    "descriptionJa": "横須賀国際交流協会は、たくさんの賛助会員からご指導・ご理解をいただいております。ご協力誠にありがとうございます。",
+    "entries": [
+      {
+        "nameJa": "エリアマネジメント横須賀共同体",
+        "tel": "046-857-2500"
+      },
+      {
+        "nameJa": "（学）神奈川歯科大学",
+        "tel": "046-822-8751",
+        "url": "http://www.kdu.ac.jp/"
+      },
+      {
+        "nameJa": "（株）サンシャイン",
+        "tel": "046-838-5677"
+      },
+      {
+        "nameJa": "（学）湘南学院高等学校",
+        "tel": "046-828-3433",
+        "url": "https://shonangakuin.ed.jp/"
+      },
+      {
+        "nameJa": "湘南信用金庫",
+        "tel": "046-825-1212",
+        "url": "https://www.shinkin.co.jp/shonan/"
+      },
+      {
+        "nameJa": "（株）トライアングル",
+        "tel": "046-825-7144",
+        "url": "https://www.tryangle-web.com/"
+      },
+      {
+        "nameJa": "ホテルニューヨコスカ",
+        "tel": "046-820-1111",
+        "url": "https://hotelnewyokosuka.co.jp/hotel_newyokosuka/"
+      },
+      {
+        "nameJa": "(学)三浦学苑高等学校",
+        "tel": "046-852-0284",
+        "url": "https://miura.ed.jp/"
+      },
+      {
+        "nameJa": "(学)緑ヶ丘学院",
+        "tel": "046-822-1651",
+        "url": "https://www.midorigaoka.ed.jp/"
+      },
+      {
+        "nameJa": "（福）ユーアイ21　太陽の家",
+        "tel": "046-846-5133",
+        "url": "http://www.ui21.or.jp/"
+      },
+      {
+        "nameJa": "（学）横須賀学院",
+        "tel": "046-822-3218",
+        "url": "https://www.yokosukagakuin.ac.jp/"
+      },
+      {
+        "nameJa": "横須賀北ロータリークラブ",
+        "tel": "046-866-1801",
+        "url": "http://www.yokosukakita-rc.jp/"
+      },
+      {
+        "nameJa": "（福）横須賀基督教社会館",
+        "tel": "046-861-9773",
+        "url": "http://www.yokosuka-ccc.jp/"
+      },
+      {
+        "nameJa": "（一社）ヨコスカ・ジャズ協会",
+        "tel": "046-824-8366",
+        "url": "https://tomodachi-jazz.org/"
+      },
+      {
+        "nameJa": "（公社）横須賀青年会議所",
+        "tel": "046-824-1061",
+        "url": "https://yokosukajc.com/"
+      },
+      {
+        "nameJa": "横須賀中央診療所",
+        "tel": "046-823-8691",
+        "url": "https://sites.google.com/site/ycchp2014/"
+      },
+      {
+        "nameJa": "（株）横須賀リサーチパーク",
+        "tel": "046-847-5000",
+        "url": "https://www.yrp.co.jp"
+      },
+      {
+        "nameJa": "（福）隆徳会　サニーヒル横須賀",
+        "tel": "046-855-3032",
+        "url": "http://sunnyhill.or.jp/"
+      }
+    ],
+    "_type": "directoryPage",
+    "slug": "sanjyokaiin"
+  },
+  "programPages": [
+    {
+      "id": "seikatsusodan",
+      "template": "program-detail",
+      "category": "shien",
+      "titleJa": "多言語による生活相談",
+      "titleEasy": "たげんご の せいかつそうだん",
+      "titleEn": "Multilingual Counseling",
+      "descriptionJa": "横須賀国際交流協会では、ヴェルクよこすかの事務局に相談窓口を設け、外国籍市民等の様々な問題に対応しています。無料で相談できますが、一部有料の場合があります。秘密は厳守されます。",
+      "descriptionEn": "Yokosuka International Association runs a counseling corner for foreigners in its office at Verque Yokosuka. Foreign residents with various problems can use this service. Free service, though some consultations may have fees. Strict confidentiality guaranteed.",
+      "descriptionEasy": "よこすかこくさいこうりゅうきょうかいは がいこくじんの せいかつそうだんを しています。こまったこと わからないことが あったら そうだんに きてください。そうだんに おかねは いりません。ひみつは まもります。そうだんしたいひとは でんわで やくそくしてください。",
+      "images": [
+        {
+          "file": "seikatsusodan2.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "事業内容",
+              "labelEn": "Service",
+              "valueJa": "外国人の方が生活する中で、文化・習慣・言語の違いからさまざまな困難にあった際、人道的立場にたった生活相談を多言語で行います。",
+              "valueEn": "Multilingual counseling for foreign residents facing difficulties due to cultural, customs, and language differences."
+            },
+            {
+              "labelJa": "対応言語",
+              "labelEn": "Languages",
+              "valueJa": "日本語、英語、スペイン語、ポルトガル語、韓国語、中国語、タガログ語、ベトナム語",
+              "valueEn": "Japanese, English, Spanish, Portuguese, Korean, Chinese, Tagalog, Vietnamese"
+            },
+            {
+              "labelJa": "場所",
+              "labelEn": "Location",
+              "valueJa": "ヴェルクよこすか2階 横須賀国際交流協会",
+              "valueEn": "Verque Yokosuka 2F, YIA Office"
+            },
+            {
+              "labelJa": "料金",
+              "labelEn": "Fee",
+              "valueJa": "無料",
+              "valueEn": "Free"
+            },
+            {
+              "labelJa": "予約",
+              "labelEn": "Reservation",
+              "valueJa": "1年中受付ております。（但し、土曜日・日曜日・祭日・年末年始は除く）月曜日〜金曜日 9:00〜17:00",
+              "valueEn": "Appointments accepted year-round. (Except Saturdays, Sundays, holidays, and year-end/new-year period) Monday-Friday 9:00-17:00"
+            }
+          ],
+          "appointmentNote": {
+            "ja": "相談は電話で約束して来てください。",
+            "en": "Please make an appointment before you come."
+          },
+          "additionalLanguageNote": {
+            "ja": "※その他の言語については、翻訳機を使って、月曜日−金曜日(土日祝日休み)、9:00−17:00で対応します。",
+            "en": "For other languages, translation machines are used. Available Monday-Friday (closed weekends/holidays), 9:00-17:00."
+          }
+        },
+        {
+          "_type": "schedule",
+          "titleJa": "スケジュール",
+          "titleEn": "Schedule",
+          "type": "weekly",
+          "columns": [
+            "曜日",
+            "時間",
+            "対応言語"
+          ],
+          "columnsEn": [
+            "Day",
+            "Time",
+            "Languages"
+          ],
+          "rows": [
+            [
+              "月曜日 Mon",
+              "9:00〜12:00",
+              "英語・タガログ語、※ベトナム語（完全予約）"
+            ],
+            [
+              "火曜日 Tue",
+              "",
+              "（相談なし）"
+            ],
+            [
+              "水曜日 Wed",
+              "9:00〜12:00",
+              "スペイン語・中国語"
+            ],
+            [
+              "木曜日 Thu",
+              "9:00〜12:00",
+              "英語・韓国語"
+            ],
+            [
+              "金曜日 Fri",
+              "9:00〜12:00",
+              "ポルトガル語 ※第２金曜日"
+            ]
+          ]
+        },
+        {
+          "_type": "documents",
+          "titleJa": "ダウンロード",
+          "titleEn": "Downloads",
+          "items": [
+            {
+              "label": "チラシ",
+              "labelEn": "Flyer",
+              "url": "http://yia.jp/Chirashi2025.pdf",
+              "type": "PDF"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "seikatsusodan"
+    },
+    {
+      "id": "kaiwasalon",
+      "template": "program-detail",
+      "category": "shien",
+      "titleJa": "日本語会話サロン",
+      "titleEasy": "にほんご くらす",
+      "titleEn": "Japanese Conversation Classes",
+      "descriptionJa": "日常生活に必要な日本語能力の習得を目指します。日本語会話サロンは地域に住んでいる外国市民を対象に、日本語会話、読み、書きなどを楽しく明るく教えるボランティア・グループです。日本語会話や文化交流、日本の生活での相談など、各グループの特色を生かした活動を行っています。",
+      "descriptionEn": "Aims to acquire Japanese language skills necessary for daily life. The Japanese Conversation Salon is a volunteer group that teaches conversation, reading, writing, etc. in a fun way to foreign citizens. Activities include conversation, cultural exchange, and life consultations.",
+      "sections": [
+        {
+          "_type": "warnings",
+          "items": [
+            {
+              "ja": "スケジュール表に授業とあっても、施設が休館の場合は授業は中止になります。",
+              "en": "Even if there are classes on the schedule, classes will be canceled when the facilities are closed."
+            },
+            {
+              "ja": "定員を超えた場合は参加をお断りすることがあります。",
+              "en": "Participation may be denied if the number of people has reached maximum capacity."
+            }
+          ]
+        },
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "事業内容",
+              "labelEn": "Service",
+              "valueJa": "外国籍市民のための日本語会話教室",
+              "valueEn": "Japanese conversation classes for foreign residents"
+            },
+            {
+              "labelJa": "申し込み方法",
+              "labelEn": "Application",
+              "valueJa": "「日本語会話サロン申込書」に記入して、希望のグループに直接お出しください。",
+              "valueEn": "Fill out the application form and submit directly to your desired group."
+            }
+          ]
+        },
+        {
+          "_type": "schedule",
+          "titleJa": "スケジュール",
+          "titleEn": "Schedule",
+          "type": "group",
+          "columns": [
+            "グループ名",
+            "曜日",
+            "時間",
+            "場所"
+          ],
+          "columnsEn": [
+            "Group",
+            "Day",
+            "Time",
+            "Location"
+          ],
+          "rows": [
+            {
+              "name": "いろは会",
+              "nameEn": "Iroha-kai",
+              "day": "月 Mon",
+              "time": "10:15〜11:45",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "morning",
+              "schedule_pdf": "http://yia.jp/2025irohakai.pdf"
+            },
+            {
+              "name": "ポットラック・インターナショナル（プリンセス）",
+              "nameEn": "Potluck International",
+              "day": "月 Mon",
+              "time": "10:00〜12:00",
+              "location": "市ノ瀬",
+              "timeSlot": "morning",
+              "website": "https://yoshiefoot215mm.wixsite.com/potluckinternational"
+            },
+            {
+              "name": "Y-ブリッジ",
+              "nameEn": "Y-Bridge",
+              "day": "月 Mon",
+              "time": "10:20〜11:50",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "morning",
+              "schedule_pdf": "http://yia.jp/2026ybridge.pdf"
+            },
+            {
+              "name": "わかば",
+              "nameEn": "Wakaba",
+              "day": "月 Mon",
+              "time": "10:15〜11:45",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "morning",
+              "schedule_pdf": "http://yia.jp/wakaba2025.pdf"
+            },
+            {
+              "name": "クロスロード",
+              "nameEn": "Crossroads",
+              "day": "月 Mon",
+              "time": "10:30〜12:00",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "morning",
+              "schedule_pdf": "http://yia.jp/2023crossroads.pdf"
+            },
+            {
+              "name": "てらこや（子どもクラス）",
+              "nameEn": "Terakoya (Children's class)",
+              "day": "月 Mon",
+              "time": "16:15〜17:45",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "afternoon",
+              "schedule_pdf": "http://yia.jp/2025terakoyasan.pdf"
+            },
+            {
+              "name": "日本語クラブ2",
+              "nameEn": "Nihongo Club 2",
+              "day": "月 Mon",
+              "time": "18:00〜19:30",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "evening",
+              "schedule_pdf": "http://yia.jp/2025nihongoclub2.pdf"
+            },
+            {
+              "name": "たのしいにほんご",
+              "nameEn": "Tanoshii Nihongo",
+              "day": "月 Mon",
+              "time": "18:00〜19:30",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "evening",
+              "schedule_pdf": "http://yia.jp/tanoshii2024.pdf",
+              "photos_pdf": "http://yia.jp/photos.pdf"
+            },
+            {
+              "name": "桜会",
+              "nameEn": "Sakura-kai",
+              "day": "月 Mon",
+              "time": "18:15〜19:45",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "evening",
+              "schedule_pdf": "http://yia.jp/2025sakurakai.pdf"
+            },
+            {
+              "name": "にほんご広場",
+              "nameEn": "Nihongo Plaza",
+              "day": "土 Sat",
+              "time": "10:00〜11:30",
+              "location": "ヴェルクよこすか",
+              "timeSlot": "weekend",
+              "schedule_pdf": "http://yia.jp/2024nihongoplaza.pdf"
+            }
+          ]
+        },
+        {
+          "_type": "documents",
+          "titleJa": "ダウンロード",
+          "titleEn": "Downloads",
+          "items": [
+            {
+              "label": "申込書",
+              "labelEn": "Application Form",
+              "url": "http://yia.jp/2014application.doc",
+              "type": "DOC"
+            },
+            {
+              "label": "スケジュール（2025年度）",
+              "labelEn": "Schedule (FY2025)",
+              "url": "http://yia.jp/new2025japanese.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "地図",
+              "labelEn": "Map",
+              "url": "http://yia.jp/2022map.pdf",
+              "type": "PDF"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "kaiwasalon"
+    },
+    {
+      "id": "honyaku",
+      "template": "program-detail",
+      "category": "shien",
+      "titleJa": "翻訳・通訳",
+      "titleEasy": "ほんやく・つうやく",
+      "titleEn": "Translation & Interpreting",
+      "sections": [
+        {
+          "_type": "content",
+          "id": "counter-translation",
+          "titleJa": "窓口翻訳",
+          "titleEn": "Translation (Counter Reception)",
+          "descriptionJa": "窓口にて戸籍謄本、結婚証明書、出生証明書などの行政書類の翻訳を行ないます。",
+          "descriptionEn": "We translate administrative documents such as family registers, marriage certificates, and birth certificates at the counter.",
+          "infoTable": [
+            {
+              "labelJa": "翻訳文書",
+              "labelEn": "Documents",
+              "valueJa": "婚姻用件具備証明書、受理証明書、出生届、出生証明書、戸籍謄本、住民票など",
+              "valueEn": "Affidavit of Competency to Marry, Certificate of Acceptance, Notification of Birth, Certificate of Birth, Family Register, Residence Card, etc."
+            },
+            {
+              "labelJa": "期間",
+              "labelEn": "Processing Time",
+              "valueJa": "各書類は受付から約1週間かかります。出来上がり次第ご連絡いたします。",
+              "valueEn": "Each document takes about 1 week from receipt. We will contact you when finished."
+            },
+            {
+              "labelJa": "料金",
+              "labelEn": "Fee",
+              "valueJa": "事務局スタッフへ直接お尋ねください。",
+              "valueEn": "Please inquire directly with office staff."
+            },
+            {
+              "labelJa": "受付方法",
+              "labelEn": "Reception Method",
+              "valueJa": "必ず翻訳を依頼する文書の本人が、原本を持って事務所にお越しください。（代理の方の場合は、委任状が必要となります。）FAXや郵送での受付はいたしません。原本は写しをとりその場で返却いたします。",
+              "valueEn": "The person requesting translation must visit the office in person with the original document. (Proxy requires power of attorney.) FAX and mail submissions are not accepted. Originals will be copied and returned on the spot."
+            },
+            {
+              "labelJa": "対応言語",
+              "labelEn": "Languages",
+              "valueJa": "日本語、英語、スペイン語、ポルトガル語、ハングル、中国語、タガログ語、ベトナム語など",
+              "valueEn": "Japanese, English, Spanish, Portuguese, Korean, Chinese, Tagalog, Vietnamese, etc."
+            }
+          ],
+          "noteJa": "各種契約書、医療関係書類、裁判関係に関わる書類の翻訳は受付られません。",
+          "noteEn": "Cannot translate contracts, medical records, or court-related documents.",
+          "images": [
+            {
+              "file": "honyaku.jpg"
+            }
+          ]
+        },
+        {
+          "_type": "content",
+          "id": "interpretation-dispatch",
+          "titleJa": "通訳・翻訳派遣",
+          "titleEn": "Interpretation & Translation Dispatch",
+          "descriptionJa": "横須賀市、企業、外国人、市民などからの依頼により、通訳、翻訳業務を行ないます。",
+          "descriptionEn": "We provide interpretation and translation services upon request from Yokosuka City, businesses, foreign residents, and citizens.",
+          "infoTable": [
+            {
+              "labelJa": "通訳の依頼内容（例）",
+              "labelEn": "Interpretation Examples",
+              "valueJa": "各種催し、会議、健診など",
+              "valueEn": "Events, meetings, health checkups, etc."
+            },
+            {
+              "labelJa": "翻訳の依頼内容（例）",
+              "labelEn": "Translation Examples",
+              "valueJa": "一般文書、広報文書、企業文書など",
+              "valueEn": "General documents, PR documents, corporate documents, etc."
+            },
+            {
+              "labelJa": "受付方法",
+              "labelEn": "Application",
+              "valueJa": "活動依頼書に必要事項を記入し、最低2週間前までに横須賀国際交流協会まで提出してください。※時期や依頼内容によっては、承ることが難しい場合もあります。",
+              "valueEn": "Fill in the activity request form and submit to YIA at least 2 weeks in advance. Some requests may be declined depending on timing and content."
+            },
+            {
+              "labelJa": "対応言語",
+              "labelEn": "Languages",
+              "valueJa": "日本語、英語、スペイン語、ポルトガル語、ハングル、中国語、タガログ語、ベトナム語など",
+              "valueEn": "Japanese, English, Spanish, Portuguese, Korean, Chinese, Tagalog, Vietnamese, etc."
+            }
+          ],
+          "documents": [
+            {
+              "label": "活動依頼書",
+              "labelEn": "Activity Request Form",
+              "url": "http://yia.jp/katsudoiraisho.pdf",
+              "type": "PDF"
+            }
+          ],
+          "noteJa": "契約、医療、裁判に関わる通訳は受付られません。各種契約書、医療関係書類、裁判関係に関わる書類の翻訳は受付られません。",
+          "noteEn": "Cannot provide interpretation for contracts, medical, or judicial matters. Cannot translate contracts, medical records, or court-related documents."
+        }
+      ],
+      "_type": "programPage",
+      "slug": "honyaku"
+    },
+    {
+      "id": "bosai",
+      "template": "program-detail",
+      "category": "shien",
+      "titleJa": "外国人防災生活訓練",
+      "titleEasy": "がいこくじん ぼうさい",
+      "titleEn": "Disaster Prevention Training for Foreign Residents",
+      "descriptionJa": "平成20年度から横須賀市の委託を受け、「外国人防災生活訓練」を実施しています。外国籍市民への防災教育を行っています。令和2年度には説明書を作成しました。",
+      "descriptionEn": "Since FY2008, YIA has conducted 'Disaster Prevention Training for Foreign Residents' under authorization from Yokosuka City. This training provides disaster prevention education for foreign residents.",
+      "images": [
+        {
+          "file": "ABC.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "ABC1.jpg"
+            }
+          ]
+        },
+        {
+          "_type": "resources",
+          "titleJa": "もっと知る",
+          "titleEn": "Learn More",
+          "items": [
+            {
+              "type": "youtube",
+              "url": "https://www.youtube.com/watch?v=4MV2FPXhJaY",
+              "titleJa": "外国人（やさしい日本語）地震での身の守り方・避難のしかた",
+              "titleEn": "Earthquake Safety & Evacuation Guide for Foreign Residents (Easy Japanese)"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "bosai"
+    },
+    {
+      "id": "gaikokugo",
+      "template": "program-detail",
+      "category": "kehatsu",
+      "titleJa": "外国語講座",
+      "titleEasy": "がいこくご こうざ",
+      "titleEn": "Foreign Language Conversation Classes",
+      "descriptionJa": "横須賀国際交流協会では、外国人と日本人の交流活動の一環として「外国語会話教室」を開催しています。実践的な会話スキルに焦点を当てています。",
+      "descriptionEn": "Yokosuka International Association offers Foreign Language Conversation Classes as a communication activity between foreigners and Japanese residents, focusing on practical conversation skills.",
+      "images": [
+        {
+          "file": "DSCF0193.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "content",
+          "id": "class-overview",
+          "titleJa": "講座概要",
+          "titleEn": "Class Overview",
+          "infoTable": [
+            {
+              "labelJa": "講座内容",
+              "labelEn": "Classes",
+              "valueJa": "旅行英語、中国語、英会話",
+              "valueEn": "Travel English, Chinese, English Conversation"
+            },
+            {
+              "labelJa": "スケジュール",
+              "labelEn": "Schedule",
+              "valueJa": "月3回",
+              "valueEn": "3 times per month"
+            },
+            {
+              "labelJa": "テキスト",
+              "labelEn": "Textbooks",
+              "valueJa": "American Headway Second Edition, Passport plus, Side by Side",
+              "valueEn": "American Headway Second Edition, Passport plus, Side by Side"
+            },
+            {
+              "labelJa": "授業時間",
+              "labelEn": "Duration",
+              "valueJa": "1回90分",
+              "valueEn": "90 minutes per class"
+            },
+            {
+              "labelJa": "定員",
+              "labelEn": "Capacity",
+              "valueJa": "15名（最少催行7名）",
+              "valueEn": "15 students max, 7 minimum"
+            },
+            {
+              "labelJa": "場所",
+              "labelEn": "Location",
+              "valueJa": "横須賀市コミュニティセンター（スケジュールにより変動あり）",
+              "valueEn": "Yokosuka City Community Center (may vary)"
+            }
+          ]
+        },
+        {
+          "_type": "content",
+          "id": "fees-payment",
+          "titleJa": "料金・お支払い",
+          "titleEn": "Fees & Payment",
+          "infoTable": [
+            {
+              "labelJa": "午前クラス",
+              "labelEn": "Morning Class",
+              "valueJa": "20,000円/12ヶ月",
+              "valueEn": "¥20,000/12 months"
+            },
+            {
+              "labelJa": "午後クラス（初年度）",
+              "labelEn": "Afternoon Class (1st year)",
+              "valueJa": "19,500円/12ヶ月",
+              "valueEn": "¥19,500/12 months"
+            },
+            {
+              "labelJa": "午後クラス（2年目以降）",
+              "labelEn": "Afternoon Class (2nd year+)",
+              "valueJa": "17,500円/12ヶ月",
+              "valueEn": "¥17,500/12 months"
+            },
+            {
+              "labelJa": "登録料",
+              "labelEn": "Registration Fee",
+              "valueJa": "2,000円/年",
+              "valueEn": "¥2,000/year"
+            },
+            {
+              "labelJa": "単発受講",
+              "labelEn": "Single Lesson",
+              "valueJa": "1,600円×レッスン回数 + 登録年会2,000円",
+              "valueEn": "¥1,600 × lessons + ¥2,000 annual registration"
+            },
+            {
+              "labelJa": "午後単発",
+              "labelEn": "Afternoon Single",
+              "valueJa": "1,800円/回",
+              "valueEn": "¥1,800/session"
+            },
+            {
+              "labelJa": "テキスト代",
+              "labelEn": "Textbooks",
+              "valueJa": "別途",
+              "valueEn": "Separate"
+            },
+            {
+              "labelJa": "キャンセル",
+              "labelEn": "Cancellation",
+              "valueJa": "開催1週間前までのキャンセルは受け付けますが、それ以降のキャンセル・返金はいたしません。",
+              "valueEn": "Cancellations accepted up to 1 week before class; no cancellations or refunds after that."
+            },
+            {
+              "labelJa": "振込先",
+              "labelEn": "Bank Transfer",
+              "valueJa": "湘南信用金庫 本店営業部 普通預金 0290642 特定非営利活動法人 横須賀国際交流協会",
+              "valueEn": "Shonan Shinkin Bank, Head Office, Savings 0290642, NPO Yokosuka International Association"
+            }
+          ],
+          "noteJa": "英語会話講座は人気があるため、少しお時間をいただく場合があります。講座料の支払いはお振込みでお願いいたします。各講座は1年を通しての講座です。",
+          "noteEn": "English classes are popular so there may be a wait. Payment must be by bank transfer. Each course runs for 1 year."
+        },
+        {
+          "_type": "content",
+          "id": "how-to-register",
+          "titleJa": "申込方法",
+          "titleEn": "How to Register",
+          "descriptionJa": "メールか電話で下記をお知らせください。空席確認後、申込みが完了となります。",
+          "descriptionEn": "Contact by email or phone with the following information. Registration confirmed after availability check.",
+          "checklist": [
+            {
+              "labelJa": "住所",
+              "labelEn": "Address",
+              "noteJa": "〒番号含む",
+              "noteEn": "Including postal code"
+            },
+            {
+              "labelJa": "氏名",
+              "labelEn": "Name",
+              "noteJa": "ふりがな",
+              "noteEn": "With furigana reading"
+            },
+            {
+              "labelJa": "電話番号",
+              "labelEn": "Phone",
+              "noteJa": "FAXの有無",
+              "noteEn": "Note if FAX available"
+            },
+            {
+              "labelJa": "E-mail",
+              "labelEn": "Email",
+              "noteJa": "あれば",
+              "noteEn": "If available"
+            },
+            {
+              "labelJa": "希望クラス",
+              "labelEn": "Preferred Class",
+              "noteJa": "クラス名と曜日・講師名",
+              "noteEn": "Class name, day, and instructor"
+            },
+            {
+              "labelJa": "継続/新規",
+              "labelEn": "Status",
+              "noteJa": "継続の方は「継続」、新規の方は「希望」とご記載ください",
+              "noteEn": "Write 'Continuing' or 'New'"
+            }
+          ]
+        },
+        {
+          "_type": "otherNotes",
+          "ja": "※駐車場はご用意しておりません。公共交通機関をご利用ください。\n※途中入学も可能です。空き状況をお問い合わせください。\n※クラス変更についてはご相談ください。\n※各講座は1年間を通しての講座です。ぜひ継続をお勧めいたします。",
+          "en": "No parking available; please use public transportation.\nMid-term enrollment is possible — please inquire about availability.\nPlease consult us regarding class changes.\nEach course runs for one year; we strongly recommend continuing."
+        },
+        {
+          "_type": "documents",
+          "titleJa": "ダウンロード",
+          "titleEn": "Downloads",
+          "items": [
+            {
+              "label": "英語・中国語・アラビア語",
+              "url": "http://yia.jp/2025language3.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "中国語講座",
+              "url": "http://yia.jp/2025chinese3.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "旅行英語",
+              "url": "http://yia.jp/2025travel3.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "英会話",
+              "url": "http://yia.jp/2025talk3.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "夜間クラス",
+              "url": "http://yia.jp/2025night3.pdf",
+              "type": "PDF"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "gaikokugo"
+    },
+    {
+      "id": "kokusairikai",
+      "template": "program-detail",
+      "category": "kehatsu",
+      "titleJa": "国際理解講座",
+      "titleEasy": "こくさいりかい こうざ",
+      "titleEn": "International Understanding Course",
+      "descriptionJa": "「総合的な学習」の一環として市内・市外で行われている国際理解講座へ外国人講師を派遣しています。各国の文化・習慣の理解を深め、国際理解の意識を高めることを目的としています。近年、自治会学習センター、市内大学にも講師を派遣しております。",
+      "descriptionEn": "As part of 'comprehensive learning,' we dispatch foreign instructors to international understanding courses held within and outside the city. The aim is to deepen understanding of each country's culture and customs, and raise awareness of international understanding. In recent years, we have also been dispatching instructors to community learning centers and universities.",
+      "images": [
+        {
+          "file": "IMG_2273.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "事業内容",
+              "labelEn": "Service",
+              "valueJa": "市内・市外の学校等へ外国人講師を派遣し、国際理解講座を実施",
+              "valueEn": "Dispatch foreign instructors to schools and institutions for international understanding courses"
+            },
+            {
+              "labelJa": "講師出身国",
+              "labelEn": "Instructor Countries",
+              "valueJa": "アメリカ、イギリス、インド、インドネシア、カナダ、韓国、タイ、スペイン、ネパール、バングラデシュ、フィリピン、ブラジル、ロシア等",
+              "valueEn": "America, UK, India, Indonesia, Canada, Korea, Thailand, Spain, Nepal, Bangladesh, Philippines, Brazil, Russia, etc."
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "kokusairikai"
+    },
+    {
+      "id": "youthfo",
+      "template": "program-detail",
+      "category": "kehatsu",
+      "titleJa": "国際ユースフォーラム",
+      "titleEasy": "こくさい ゆーすふぉーらむ",
+      "titleEn": "International Youth Forum",
+      "subtitleJa": "～友となかろう～",
+      "subtitleEn": "~Let's Be Friends~",
+      "descriptionJa": "青年の国際理解を深め、相互理解を促進するため、年1回横須賀市に在住・在学する日本人及び外国人の高校生など、青年を対象にスピーチとスキットを中心とした発表を行い、交流会を開催します。",
+      "descriptionEn": "To deepen international understanding and promote mutual understanding among youth, we hold an annual event for Japanese and foreign high school students living or studying in Yokosuka, featuring speeches and skits, followed by an exchange meeting.",
+      "images": [
+        {
+          "file": "InternationalYouthForum1 (1).jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "事業内容",
+              "labelEn": "Service",
+              "valueJa": "横須賀市在住・在学の高校生等を対象としたスピーチ・スキット発表と交流会",
+              "valueEn": "Speech/skit presentations and exchange meeting for high school students in Yokosuka"
+            },
+            {
+              "labelJa": "基本目的",
+              "labelEn": "Purpose",
+              "valueJa": "様々な国の青年が集まり、テーマに沿って発表をすることで、自己理解、相互理解を深め横須賀市の国際化を推進します。スピーチの事前インタビューを行い、プレゼンテーションの質の向上を図ります。",
+              "valueEn": "Youth from various countries gather for themed presentations to promote self-understanding, mutual understanding, and Yokosuka's internationalization. Pre-speech interviews improve presentation quality."
+            }
+          ]
+        },
+        {
+          "_type": "schedule",
+          "subtype": "dated",
+          "titleJa": "2025年度スケジュール",
+          "titleEn": "2025 Schedule",
+          "entry": {
+            "date": "2025年7月6日（日）",
+            "dateEn": "July 6, 2025 (Sunday)",
+            "time": "15:00〜17:00"
+          }
+        },
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "InternationalYouthForum1 (2).jpg"
+            },
+            {
+              "file": "InternationalYouthForum1 (3).jpg"
+            },
+            {
+              "file": "InternationalYouthForum1 (4).jpg"
+            },
+            {
+              "file": "InternationalYouthForum1 (5).jpg"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "youthfo"
+    },
+    {
+      "id": "nihonbunka",
+      "template": "program-detail",
+      "category": "kouryu",
+      "titleJa": "日本文化体験 & JFY",
+      "titleEasy": "にほんの ぶんか たいけん",
+      "titleEn": "Japanese Culture Experience & Japan Festival in Yokosuka",
+      "descriptionJa": "日本の伝統文化である生け花、折り紙、書道、着物、浴衣、大正琴、三味線、日本舞踊など、主に外国籍市民を対象に紹介、体験・学習する機会を積極的に提供しています。日本文化に触れることで、日本での生活を安心豊かにおくれるお手伝いをしています。",
+      "descriptionEn": "We actively provide opportunities to introduce, experience, and learn traditional Japanese culture such as ikebana, origami, calligraphy, kimono, yukata, Taisho-koto, shamisen, and Japanese dance, primarily for foreign residents. By touching Japanese culture, we help them live more comfortably in Japan.",
+      "images": [
+        {
+          "file": "2024.11 (1).jpg",
+          "captionJa": "書道"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "schedule",
+          "subtype": "dated",
+          "titleJa": "2025年度スケジュール",
+          "titleEn": "2025 Schedule",
+          "entries": [
+            {
+              "date": "2025年6月7日（土）",
+              "dateEn": "June 7, 2025 (Sat)",
+              "time": "12:30〜15:30",
+              "locationJa": "横須賀市コミュニティセンター",
+              "locationEn": "Yokosuka Community Center"
+            },
+            {
+              "date": "2025年11月1日（土）",
+              "dateEn": "November 1, 2025 (Sat)",
+              "time": "13:00〜16:00",
+              "locationJa": "横須賀市コミュニティセンター",
+              "locationEn": "Yokosuka Community Center"
+            }
+          ]
+        },
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "2024.11 (2).jpg",
+              "captionJa": "着付け"
+            },
+            {
+              "file": "2024.11 (3).jpg",
+              "captionJa": "日本舞踊"
+            },
+            {
+              "file": "2024.11 (4).jpg",
+              "captionJa": "折り紙"
+            },
+            {
+              "file": "2024 jfy(1).JPG",
+              "captionJa": "茶道"
+            },
+            {
+              "file": "2024 jfy(2).JPG",
+              "captionJa": "琴"
+            },
+            {
+              "file": "2024 jfy(4).JPG",
+              "captionJa": "展示場"
+            },
+            {
+              "file": "2024 jfy(6).JPG",
+              "captionJa": "ステージ ソーラン"
+            }
+          ]
+        },
+        {
+          "_type": "schedule",
+          "subtype": "dated",
+          "titleJa": "Japan Festival",
+          "titleEn": "",
+          "entry": {
+            "date": "2026年3月8日（日）",
+            "dateEn": "March 8, 2026 (Sunday)",
+            "time": "10:00〜16:00"
+          },
+          "venue": {
+            "locationJa": "ヴェルクよこすか 5F・6F",
+            "locationEn": "Verque Yokosuka 5F & 6F"
+          }
+        },
+        {
+          "_type": "flyers",
+          "items": [
+            {
+              "image": "s-2025JFY20260212_page-0001.jpg",
+              "alt": "Japan Festival flyer (Japanese)"
+            },
+            {
+              "image": "s-2025JFY202602122_page-0001.jpg",
+              "alt": "Japan Festival flyer (English)"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "nihonbunka"
+    },
+    {
+      "id": "kids",
+      "template": "program-detail",
+      "category": "kouryu",
+      "titleJa": "キッズフェスティバル",
+      "titleEasy": "きっず ふぇすてぃばる",
+      "titleEn": "Kids Festival",
+      "descriptionJa": "日本と外国の親子が参加し、集いで国際交流と国際貢献を図ります。毎年、「ヴェルクよこすか」でゲーム、歌コンテスト、ビンゴなど楽しさを盛り込んだイベントを実施しています。",
+      "descriptionEn": "Japanese and foreign parents and children participate together, promoting international exchange through gatherings. Every year at 'Verque Yokosuka,' we hold events packed with games, song contests, bingo, and more.",
+      "images": [
+        {
+          "file": "Kids2024 (1).JPG"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "schedule",
+          "subtype": "dated",
+          "titleJa": "2025年度スケジュール",
+          "titleEn": "2025 Schedule",
+          "entry": {
+            "date": "2025年10月19日（日）",
+            "dateEn": "October 19, 2025 (Sunday)"
+          }
+        },
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "Kids2024 (2).jpg"
+            },
+            {
+              "file": "Kids2024 (3).jpg"
+            },
+            {
+              "file": "Kids2024 (4).jpg"
+            },
+            {
+              "file": "Kids2024 (5).JPG"
+            },
+            {
+              "file": "Kids2024 (6).JPG"
+            },
+            {
+              "file": "Kids2024 (7).JPG"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "kids"
+    },
+    {
+      "id": "englishguide",
+      "template": "program-detail",
+      "category": "kouryu",
+      "titleJa": "英語ガイドツアー",
+      "titleEasy": "えいご がいど つあー",
+      "titleEn": "Yokosuka Sightseeing Tour with English Guide",
+      "descriptionJa": "横須賀市及びその周辺の観光地を英語でガイドするツアーを、年2回実施しています。外国人との交流を図るとともに、各地の魅力を深めてもらいます。また、英語でガイドできる人材育成を行っています。",
+      "descriptionEn": "We conduct tours with English guides of sightseeing spots in and around Yokosuka City twice a year. We promote exchange with foreign residents while helping them appreciate local attractions. We also cultivate people who can serve as English guides.",
+      "images": [
+        {
+          "file": "hemitour01.jpg",
+          "captionJa": "猿島ツアーの様子"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "料金",
+              "labelEn": "Fee",
+              "valueJa": "1,000円（交通・保険料として）ただし、15歳以下の子供は無料",
+              "valueEn": "¥1,000 (for transportation and insurance); children 15 and under are free"
+            },
+            {
+              "labelJa": "定員",
+              "labelEn": "Capacity",
+              "valueJa": "30名",
+              "valueEn": "30 people"
+            },
+            {
+              "labelJa": "申し込み方法",
+              "labelEn": "Application",
+              "valueJa": "電話・メールまたはFAXにて、参加者全員のお名前、メールアドレス、お電話番号、お子様のお名前と年齢を明記の上お申し込みください。",
+              "valueEn": "Apply by phone, email, or FAX with all participants' names, email, phone number, and children's names and ages."
+            },
+            {
+              "labelJa": "備考",
+              "labelEn": "Note",
+              "valueJa": "動きやすい服装・靴でご参加ください。",
+              "valueEn": "Please wear comfortable clothing and shoes."
+            }
+          ]
+        },
+        {
+          "_type": "schedule",
+          "subtype": "dated",
+          "titleJa": "2025年度スケジュール",
+          "titleEn": "2025 Schedule",
+          "entries": [
+            {
+              "date": "2025年9月13日（土）",
+              "dateEn": "September 13, 2025 (Sat)",
+              "descriptionJa": "猿島ドック・国立公園跡巡り",
+              "descriptionEn": "Sarushima Dock / National Park Ruins Tour"
+            },
+            {
+              "date": "2026年2月14日（土）",
+              "dateEn": "February 14, 2026 (Sat)",
+              "descriptionJa": "鎌倉・来宝寺と三浦",
+              "descriptionEn": "Kamakura / Raihouji Temple and Miura"
+            }
+          ]
+        },
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "hemitour02.jpg",
+              "captionJa": "鎌倉ツアーの様子"
+            },
+            {
+              "file": "2024.11 (1).jpg",
+              "captionJa": "2024年11月 猿島ツアー"
+            },
+            {
+              "file": "2024.11 (2).jpg",
+              "captionJa": "2024年11月 猿島ツアー"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "englishguide"
+    },
+    {
+      "id": "homestay",
+      "template": "program-detail",
+      "category": "kouryu",
+      "titleJa": "ホームステイ・ホームビジット",
+      "titleEasy": "ほーむすてい・びじっと",
+      "titleEn": "Homestay & Home Visit",
+      "descriptionJa": "横須賀国際交流協会では、さまざまな法人および団体からのホームステイ・ホームビジットの紹介をしています。ホームステイやホームビジットは海外から来た方にとって貴重な経験となることは間違いありません。さらに受入側にとっても素晴らしい交流ができる貴重な体験となっています。",
+      "descriptionEn": "YIA introduces homestay and home visit opportunities from various organizations. These are valuable experiences for both visitors from abroad and host families, providing wonderful cultural exchange.",
+      "images": [
+        {
+          "file": "jyougashima.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "hostdog.jpg"
+            },
+            {
+              "file": "temaki.jpg"
+            },
+            {
+              "file": "game.jpg"
+            },
+            {
+              "file": "369028266_1660410821129953_1480844403728008705_n.jpg"
+            },
+            {
+              "file": "HORIZON_0001_BURST20230809180904430_COVER (003)1.jpg"
+            }
+          ]
+        },
+        {
+          "_type": "definitions",
+          "titleJa": "ホームステイとホームビジットの違い",
+          "titleEn": "Homestay vs. Home Visit",
+          "items": [
+            {
+              "termJa": "ホームステイ",
+              "termEn": "Homestay",
+              "definitionJa": "海外の方と互いの家族として、数日間や数週間、家族のように一緒に過ごします。食事や日常など、短期滞在の旅行では伝わりにくいものです。ホームステイでは日本の伝統や文化、生活を直接伝えることができます。",
+              "definitionEn": "Living together as family for days or weeks, sharing meals and daily life that short-term travel cannot convey. Homestay allows direct sharing of Japanese traditions, culture, and lifestyle."
+            },
+            {
+              "termJa": "ホームビジット",
+              "termEn": "Home Visit",
+              "definitionJa": "数日や数時間というように短い時間で受け入れをします。長期滞在のホームステイほどではないですが、旅行では体験できない貴重な経験ができます。",
+              "definitionEn": "Short visits of hours or days. While not as immersive as homestay, visitors gain experiences unavailable through regular tourism."
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "homestay"
+    },
+    {
+      "id": "cooking",
+      "template": "program-detail",
+      "category": "kouryu",
+      "titleJa": "世界の料理教室",
+      "titleEasy": "せかいの りょうり くらす",
+      "titleEn": "World Cooking Class / Fair Trade Coffee",
+      "descriptionJa": "外国人の講師による、各国の家庭料理の紹介と試食を行います。講師と参加者および地域の人々との親睦、相互理解を深めます。",
+      "descriptionEn": "Foreign instructors introduce home cooking from various countries with tasting. Deepens friendship and mutual understanding between instructors, participants, and local residents.",
+      "images": [
+        {
+          "file": "nepal IMG_8834.jpg",
+          "captionJa": "2025年6月 ネパール料理"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "infoTable",
+          "titleJa": "ご利用案内",
+          "titleEn": "How It Works",
+          "rows": [
+            {
+              "labelJa": "料金",
+              "labelEn": "Fee",
+              "valueJa": "会員 2,300円 / 非会員 2,500円（材料費含む）（多少変動あり）",
+              "valueEn": "Members ¥2,300 / Non-members ¥2,500 (includes ingredients, may vary)"
+            },
+            {
+              "labelJa": "場所",
+              "labelEn": "Location",
+              "valueJa": "市内コミュニティセンター調理室（各回場所変動）",
+              "valueEn": "Community center cooking rooms (location varies each session)"
+            },
+            {
+              "labelJa": "持ち物",
+              "labelEn": "What to Bring",
+              "valueJa": "マスク、エプロン、三角巾、ふきん2枚、食器類・皿など（各自持参）、筆記用具",
+              "valueEn": "Mask, apron, bandana, 2 dish towels, plates/utensils (bring your own), writing supplies"
+            },
+            {
+              "labelJa": "申込方法",
+              "labelEn": "Application",
+              "valueJa": "住所・氏名・「参加希望」・人数・電話番号・会員/非会員・どこでこのイベントを知りましたか記入の上ご連絡ください。",
+              "valueEn": "Contact with: address, name, 'wish to participate', number of people, phone, member/non-member, how you learned about this event."
+            }
+          ],
+          "otherNotes": {
+            "ja": "※会員登録にあたっては当日の対応は出来かねるため、事前にお済ませくださいますようお願いいたします。\n※お問い合わせ電話受付時間：10時～16時",
+            "en": "Please complete membership registration in advance as same-day processing is not possible.\nPhone inquiries: 10:00 AM - 4:00 PM"
+          }
+        },
+        {
+          "_type": "schedule",
+          "titleJa": "スケジュール",
+          "titleEn": "Schedule",
+          "type": "event",
+          "columns": [
+            "日にち",
+            "料理",
+            "場所"
+          ],
+          "columnsEn": [
+            "Date",
+            "Cuisine",
+            "Location"
+          ],
+          "rows": [
+            [
+              "4月13日（土）",
+              "ネパールの家庭料理",
+              "追浜コミュニティセンター"
+            ]
+          ]
+        },
+        {
+          "_type": "gallery",
+          "images": [
+            {
+              "file": "DSC02966.jpg",
+              "captionJa": "2025年7月 高知料理"
+            },
+            {
+              "file": "DSC03414.jpg",
+              "captionJa": "2025年 アメリカ料理"
+            },
+            {
+              "file": "coffeenew1.jpg"
+            }
+          ]
+        },
+        {
+          "_type": "history",
+          "titleJa": "世界の味を楽しむ",
+          "titleEn": "A Taste of the World",
+          "introJa": "2008年から始まり、すでに30以上の国の料理を紹介しています！",
+          "introEn": "Started in 2008, we have introduced cuisines from over 30 countries!",
+          "years": [
+            {
+              "year": "2017",
+              "cuisines": "アメリカ、イギリス、バングラデシュ、ロシア"
+            },
+            {
+              "year": "2018",
+              "cuisines": "イタリア、フィリピン、ペルー、韓国"
+            },
+            {
+              "year": "2019",
+              "cuisines": "ボリビア、フランス、タイ、カナダ"
+            },
+            {
+              "year": "2022",
+              "cuisines": "ネパール、韓国、台湾、アメリカ"
+            },
+            {
+              "year": "2023",
+              "cuisines": "韓国、フランス、ハワイ"
+            },
+            {
+              "year": "2024",
+              "cuisines": "ベトナム、バングラデシュ"
+            },
+            {
+              "year": "2025",
+              "cuisines": "ネパール、高知、アメリカ、フランス"
+            }
+          ]
+        },
+        {
+          "_type": "fairTrade",
+          "titleJa": "フェアトレードコーヒー",
+          "titleEn": "Fair Trade Coffee",
+          "descriptionJa": "大自然の恵みから生み出されたネパールコーヒーを発展途上国への国際貢献に寄与するため、販売しています。",
+          "descriptionEn": "We sell Nepal coffee to contribute to international aid for developing countries.",
+          "priceList": [
+            {
+              "type": "Aタイプ（粉）",
+              "weight": "150g",
+              "price": "1,000円（税込）"
+            },
+            {
+              "type": "Bタイプ（豆）",
+              "weight": "150g",
+              "price": "1,000円（税込）"
+            }
+          ],
+          "deliveryJa": "横須賀国際交流協会事務局にて購入もしくは配送にてお届けいたします。",
+          "deliveryEn": "Available for purchase at the YIA office or delivery."
+        }
+      ],
+      "_type": "programPage",
+      "slug": "cooking"
+    },
+    {
+      "id": "sistercity",
+      "template": "program-detail",
+      "category": "kokusaikoken",
+      "titleJa": "姉妹都市交換学生",
+      "titleEasy": "しまいとし こうかん がくせい",
+      "titleEn": "Sister City Exchange Students",
+      "descriptionJa": "横須賀市の姉妹都市との交換学生プログラムです。毎年夏に高校生・大学生を派遣し、ホームステイをしながら現地の文化を体験します。また、姉妹都市からの学生をホストファミリーとして受け入れます。",
+      "descriptionEn": "Sister city exchange student program with Yokosuka's partner cities. Each summer, high school and university students are dispatched for homestay cultural experiences. Host families also welcome students from sister cities.",
+      "contact": "グッド",
+      "sections": [
+        {
+          "_type": "content",
+          "titleJa": "派遣事業",
+          "titleEn": "Dispatch Program",
+          "descriptionJa": "毎年夏に姉妹都市へ学生を派遣します。",
+          "schedule": [
+            {
+              "city": "コーパスクリスティ",
+              "period": "8月6日〜8月21日"
+            },
+            {
+              "city": "ブレスト",
+              "period": "8月12日〜8月26日"
+            },
+            {
+              "city": "メッドウェイ",
+              "period": "8月12日〜8月26日"
+            }
+          ],
+          "images": [
+            {
+              "file": "haken gakusei.jpg",
+              "captionJa": "2026年度派遣学生"
+            },
+            {
+              "file": "brest macaron1.jpg",
+              "captionJa": "ブレストでバディとマカロン作り"
+            },
+            {
+              "file": "fremantle (2).jpg",
+              "captionJa": "フリマントルでの活動"
+            },
+            {
+              "file": "corpus cristi.jpg",
+              "captionJa": "市長表敬訪問"
+            },
+            {
+              "file": "medway teatime1.jpg",
+              "captionJa": "ミッドケントカレッジでティータイム"
+            }
+          ]
+        },
+        {
+          "_type": "content",
+          "titleJa": "受入事業（ホストファミリー）",
+          "titleEn": "Host Family Program",
+          "descriptionJa": "姉妹都市からの交換学生を横須賀のホストファミリーが受け入れます。",
+          "images": [
+            {
+              "file": "hostfamily takoyaki1.jpg",
+              "captionJa": "ホストファミリーとたこ焼き体験"
+            },
+            {
+              "file": "hostfamily shibuya1.jpg",
+              "captionJa": "渋谷スクランブル交差点"
+            },
+            {
+              "file": "hostfamily nagano1.jpg",
+              "captionJa": "長野県八島湿原への旅行"
+            }
+          ]
+        },
+        {
+          "_type": "infoTable",
+          "titleJa": "参加するには",
+          "titleEn": "How to Join",
+          "rows": [
+            {
+              "labelJa": "日時",
+              "labelEn": "Date",
+              "valueJa": "3月26日（木）16:00〜17:30"
+            },
+            {
+              "labelJa": "会場",
+              "labelEn": "Venue",
+              "valueJa": "ヴェルクよこすか6Fホール"
+            }
+          ]
+        },
+        {
+          "_type": "sisterCities",
+          "titleJa": "姉妹都市",
+          "titleEn": "Sister Cities",
+          "cities": [
+            {
+              "nameJa": "コーパスクリスティ市",
+              "nameEn": "Corpus Christi",
+              "country": "USA",
+              "countryJa": "アメリカ",
+              "image": "sister-cities/corpus-christi.jpg"
+            },
+            {
+              "nameJa": "ブレスト市",
+              "nameEn": "Brest",
+              "country": "France",
+              "countryJa": "フランス",
+              "image": "sister-cities/brest.jpg"
+            },
+            {
+              "nameJa": "メッドウェイ市",
+              "nameEn": "Medway",
+              "country": "UK",
+              "countryJa": "イギリス",
+              "image": "sister-cities/rochester-castle.jpg"
+            },
+            {
+              "nameJa": "フリマントル市",
+              "nameEn": "Fremantle",
+              "country": "Australia",
+              "countryJa": "オーストラリア",
+              "image": "sister-cities/fremantle.jpg",
+              "note": "2026年度派遣中止"
+            }
+          ]
+        },
+        {
+          "_type": "documents",
+          "titleJa": "ダウンロード",
+          "titleEn": "Downloads",
+          "items": [
+            {
+              "label": "説明会詳細",
+              "labelEn": "Info Session Details",
+              "url": "http://yia.jp/2026setsumeikai.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "募集要項",
+              "labelEn": "Recruitment Guidelines",
+              "url": "http://yia.jp/boshuyoukou.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "申込書",
+              "labelEn": "Application Form",
+              "url": "http://yia.jp/moushikomisho.pdf",
+              "type": "PDF"
+            },
+            {
+              "label": "作文用紙",
+              "labelEn": "Essay Paper",
+              "url": "http://yia.jp/sakubunyoshi.pdf",
+              "type": "PDF"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "sistercity"
+    },
+    {
+      "id": "kokusaikoken",
+      "template": "program-detail",
+      "category": "kokusaikoken",
+      "titleJa": "国際貢献事業",
+      "titleEasy": "こくさいこうけん",
+      "titleEn": "International Contribution Programs",
+      "descriptionJa": "発展途上国への国際貢献に寄与するため、フェアトレード（公正貿易）方式によりネパールコーヒーの販売を行っています。",
+      "descriptionEn": "Contributing to international aid for developing countries through fair trade sales of Nepali coffee.",
+      "images": [
+        {
+          "file": "coffeenew1.jpg"
+        }
+      ],
+      "sections": [
+        {
+          "_type": "content",
+          "titleJa": "国際貢献　フェアトレード（ネパール）コーヒー",
+          "titleEn": "Fair Trade Nepal Coffee",
+          "descriptionJa": "大自然の恵みが生み出したネパールコーヒーは、ヒマラヤ山麓、ネパールのグルツパルパで10年前から栽培が開始されました。酸味、苦味が少なく、マイルドなコーヒーとして飲み心地がよく、近年脚光を浴びています。栽培木は若く、フルーティで豊穣な香りを漂わせ、飲む人の心を癒してくれます。このコーヒーは発展途上国の産品を労働に見合う価格で仕入れ、生産者への支援にもつながるフェアトレード（公正貿易）方式により取り扱っています。これらの製品はネパリバザーロ日本代理店が取り扱っています。",
+          "infoTable": [
+            {
+              "labelJa": "取り扱い商品",
+              "valueJa": "ネパールコーヒー"
+            },
+            {
+              "labelJa": "商品価格",
+              "valueJa": "A（粉）150g 1,000円（税込）／ B（豆）150g 1,000円（税込）"
+            },
+            {
+              "labelJa": "注文方法",
+              "valueJa": "横須賀国際交流協会事務局窓口、又はTEL、FAX、E-mailでお申し込みください。"
+            },
+            {
+              "labelJa": "商品引渡し",
+              "valueJa": "横須賀国際交流協会事務局窓口で現金とお引き換えにお渡しします。"
+            }
+          ]
+        }
+      ],
+      "_type": "programPage",
+      "slug": "kokusaikoken"
+    }
+  ]
+}
