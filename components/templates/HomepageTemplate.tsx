@@ -4,6 +4,7 @@ import {
   getAnnouncementsByIds,
 } from "@/lib/data";
 import { resolveImage } from "@/lib/images";
+import { withBasePath } from "@/lib/basePath";
 import SiteFooter from "@/components/SiteFooter";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
@@ -50,7 +51,7 @@ export default function HomepageTemplate() {
                 const dateDisplay = d ? d.replace(/-/g, ".") : "";
                 return (
                   <a
-                    href={`/announcements#${a.id}`}
+                    href={withBasePath(`/announcements#${a.id}`)}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a.id}
@@ -74,7 +75,7 @@ export default function HomepageTemplate() {
                 } as React.CSSProperties
               }
             >
-              <a href="/announcements" className="oshirase-viewall">
+              <a href={withBasePath("/announcements")} className="oshirase-viewall">
                 すべてのお知らせを見る / View All →
               </a>
             </div>
@@ -191,7 +192,7 @@ export default function HomepageTemplate() {
               />
             </figure>
             <a
-              href={sidebar.memberRecruitment.url}
+              href={withBasePath("/kaiinn")}
               className="activity-grid__tile activity-grid__tile--gold reveal"
               style={
                 { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
@@ -215,7 +216,7 @@ export default function HomepageTemplate() {
               />
             </figure>
             <a
-              href="/aboutyia"
+              href={withBasePath("/aboutyia")}
               className="activity-grid__tile activity-grid__tile--dark reveal"
               style={
                 { gridArea: "g", "--reveal-i": 6 } as React.CSSProperties

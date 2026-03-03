@@ -17,7 +17,7 @@ import type {
   ImageFile,
 } from "@/lib/types";
 import { tocId } from "@/lib/helpers";
-import { resolveImage, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
+import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
 import path from "path";
 
 import SectionHeader from "@/components/SectionHeader";
@@ -47,11 +47,11 @@ interface SectionBuilderResult {
 // Helper to build gallery images with width filtering
 function buildGalleryImages(images: ImageFile[]) {
   const filtered = images.filter((img) => {
-    const resolved = resolveImage(img.file);
+    const local = resolveImageLocal(img.file);
     const filePath = path.join(
       process.cwd(),
       "public",
-      decodeURIComponent(resolved)
+      decodeURIComponent(local)
     );
     return getImageWidth(filePath) >= HERO_MIN_WIDTH;
   });

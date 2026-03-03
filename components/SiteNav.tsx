@@ -1,4 +1,5 @@
 import { getSiteData, getEnrichedNavigation } from "@/lib/data";
+import { withBasePath } from "@/lib/basePath";
 
 export default function SiteNav() {
   const { globalResources } = getSiteData();
@@ -15,7 +16,7 @@ export default function SiteNav() {
   return (
     <nav className="site-nav">
       <div className="site-nav__inner">
-        <a href="/" className="site-nav__home">
+        <a href={withBasePath("/")} className="site-nav__home">
           HOME
         </a>
         {nav.categories.map((cat) => (

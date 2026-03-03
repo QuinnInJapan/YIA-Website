@@ -4,6 +4,7 @@ import type {
   Announcement,
   Category,
 } from "./types";
+import { withBasePath } from "./basePath";
 import siteDataJson from "@/data/site-data.json";
 
 // Cast the imported JSON to our typed interface
@@ -68,7 +69,7 @@ export function getEnrichedNavigation(): EnrichedNavigation {
         heroImage: cat?.heroImage ?? "",
         items: navCat.items.map((item) => ({
           ...item,
-          url: item.pageRef ? `/${item.pageRef}` : "",
+          url: item.pageRef ? withBasePath(`/${item.pageRef}`) : "",
         })),
       };
     }
@@ -77,7 +78,7 @@ export function getEnrichedNavigation(): EnrichedNavigation {
   const orgLinks: EnrichedNavItem[] = siteData.navigation.orgLinks.map(
     (link) => ({
       ...link,
-      url: link.pageRef ? `/${link.pageRef}` : "",
+      url: link.pageRef ? withBasePath(`/${link.pageRef}`) : "",
     })
   );
 

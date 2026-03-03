@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { withBasePath } from "./basePath";
 
 // ── Image index ─────────────────────────────────────────────────
 // Build a map from basename (case-insensitive) to relative path under original/
@@ -29,22 +30,40 @@ export function encodePath(p: string): string {
     .join("/");
 }
 
-/** Resolve an image filename to its path under /original/ */
+/** Resolve an image filename to its path under /original/ (with basePath prefix) */
 export function resolveImage(filename: string): string {
   if (!filename) return "";
   // Already has a path prefix
-  if (filename.includes("/")) return encodePath("/original/" + filename);
+  if (filename.includes("/"))
+    return withBasePath(encodePath("/original/" + filename));
   // Exact match
   const key = filename.toLowerCase();
-  if (imageIndex[key]) return encodePath("/original/" + imageIndex[key]);
+  if (imageIndex[key])
+    return withBasePath(encodePath("/original/" + imageIndex[key]));
   // Try fuzzy match: Kids2024-1.jpg -> Kids2024 (1).JPG
   const fuzzy = key.replace(/-(\d+)\./i, " ($1).");
-  if (imageIndex[fuzzy]) return encodePath("/original/" + imageIndex[fuzzy]);
+  if (imageIndex[fuzzy])
+    return withBasePath(encodePath("/original/" + imageIndex[fuzzy]));
   // Try with different extension case
+  for (const [k, v] of Object.entries(imageIndex)) {
+    if (k === key || k === fuzzy)
+      return withBasePath(encodePath("/original/" + v));
+  }
+  // Fallback
+  return withBasePath(encodePath("/original/" + filename));
+}
+
+/** Resolve an image filename to its local filesystem path (no basePath, for width detection) */
+export function resolveImageLocal(filename: string): string {
+  if (!filename) return "";
+  if (filename.includes("/")) return encodePath("/original/" + filename);
+  const key = filename.toLowerCase();
+  if (imageIndex[key]) return encodePath("/original/" + imageIndex[key]);
+  const fuzzy = key.replace(/-(\d+)\./i, " ($1).");
+  if (imageIndex[fuzzy]) return encodePath("/original/" + imageIndex[fuzzy]);
   for (const [k, v] of Object.entries(imageIndex)) {
     if (k === key || k === fuzzy) return encodePath("/original/" + v);
   }
-  // Fallback
   return encodePath("/original/" + filename);
 }
 

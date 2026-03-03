@@ -1,5 +1,5 @@
 import { Nl2br } from "@/lib/helpers";
-import { resolveImage, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
+import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
 import path from "path";
 import type { ImageFile } from "@/lib/types";
 
@@ -35,10 +35,11 @@ export default function PageHero({
   const allImages = (images || []).map((img) => img.file);
   if (allImages.length > 0) {
     const heroImg = resolveImage(allImages[0]);
+    const heroLocal = resolveImageLocal(allImages[0]);
     const heroFilePath = path.join(
       process.cwd(),
       "public",
-      decodeURIComponent(heroImg)
+      decodeURIComponent(heroLocal)
     );
     const heroWidth = getImageWidth(heroFilePath);
     if (heroWidth >= HERO_MIN_WIDTH) {
