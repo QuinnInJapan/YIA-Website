@@ -1020,10 +1020,9 @@ h3.section-header {
   background: var(--color-tint);
 }
 
-/* Smooth scroll for anchor navigation (TOC links, etc.)
-   Scoped to :has() so it only applies when anchor targets exist on the page */
-html:has([id].page-section),
-html:has([id].announcement) {
+/* Smooth scroll only when a :target is active (anchor click).
+   Avoids interfering with Next.js page transition scroll-to-top. */
+html:has(:target) {
   scroll-behavior: smooth;
 }
 
