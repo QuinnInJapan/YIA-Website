@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { stegaClean } from "next-sanity";
 import type {
   SiteData,
   Page,
@@ -9,6 +10,7 @@ import type { I18nString } from "@/lib/i18n";
 import {
   fetchSiteData,
   fetchAnnouncements,
+  fetchAllPageSlugsStatic,
 } from "./sanity/queries";
 
 // Empty defaults for when Sanity has no data yet
@@ -45,7 +47,7 @@ export async function getCategoryIndex(): Promise<Record<string, Category>> {
   const data = await getSiteData();
   const index: Record<string, Category> = {};
   for (const cat of data.categories) {
-    index[cat.id] = cat;
+    index[stegaClean(cat.id)] = cat;
   }
   return index;
 }
@@ -76,36 +78,37 @@ export const getEnrichedNavigation = cache(
     const data = await getSiteData();
     const categoryIndex: Record<string, Category> = {};
     for (const cat of data.categories) {
-      categoryIndex[cat.id] = cat;
+      categoryIndex[stegaClean(cat.id)] = cat;
     }
 
     // Build page slug index for resolving page references
     const pageIndex: Record<string, Page> = {};
     for (const pg of data.pages) {
-      pageIndex[`page-${pg.id}`] = pg;
-      pageIndex[pg.id] = pg;
+      const cleanId = stegaClean(pg.id);
+      pageIndex[`page-${cleanId}`] = pg;
+      pageIndex[cleanId] = pg;
     }
 
     function resolvePageSlug(ref?: { _ref?: string } | string): string {
       if (!ref) return "";
       // Support both reference objects and plain string slugs (backwards compat)
-      const refStr = typeof ref === "string" ? ref : ref._ref;
+      const refStr = stegaClean(typeof ref === "string" ? ref : ref._ref ?? "");
       if (!refStr) return "";
       const pg = pageIndex[refStr] || pageIndex[refStr.replace("page-", "")];
-      return pg ? `/${pg.slug}` : "";
+      return pg ? `/${stegaClean(pg.slug)}` : "";
     }
 
     const categories: EnrichedNavCategory[] =
       data.navigation.categories.map((navCat) => {
-        const catId = navCat.categoryRef?._ref?.replace("category-", "") ?? "";
+        const catId = stegaClean(navCat.categoryRef?._ref?.replace("category-", "") ?? "");
         const cat = categoryIndex[catId];
         return {
           categoryId: catId,
-          id: cat?.id ?? catId,
+          id: stegaClean(cat?.id ?? catId),
           label: cat?.label ?? [],
           heroImage: cat?.heroImage ?? "",
           items: navCat.items.map((item) => ({
-            id: item.id,
+            id: stegaClean(item.id),
             title: item.title,
             url: resolvePageSlug(item.pageRef),
           })),
@@ -114,7 +117,7 @@ export const getEnrichedNavigation = cache(
 
     const orgLinks: EnrichedNavItem[] = data.navigation.orgLinks.map(
       (link) => ({
-        id: link.id,
+        id: stegaClean(link.id),
         title: link.title,
         url: resolvePageSlug(link.pageRef),
       })
@@ -130,12 +133,13 @@ export async function getPage(
   slug: string
 ): Promise<Page | undefined> {
   const data = await getSiteData();
-  return data.pages.find((pg) => pg.id === slug || pg.slug === slug);
+  return data.pages.find((pg) => stegaClean(pg.id) === slug || stegaClean(pg.slug) === slug);
 }
 
 export async function getAllPageSlugs(): Promise<string[]> {
-  const data = await getSiteData();
-  return data.pages.map((pg) => pg.slug);
+  // Uses raw client to avoid draftMode() dependency in generateStaticParams
+  const pages = await fetchAllPageSlugsStatic();
+  return pages.map((pg) => pg.slug);
 }
 
 export async function getAllPages(): Promise<Page[]> {
@@ -153,12 +157,13 @@ export async function getAnnouncementsByRefs(
   const index: Record<string, Announcement> = {};
   for (const a of data.announcements) {
     // Documents have _id like "announcement-<id>" in Sanity
-    index[`announcement-${a.id}`] = a;
-    index[a.id] = a;
+    const cleanId = stegaClean(a.id);
+    index[`announcement-${cleanId}`] = a;
+    index[cleanId] = a;
   }
   return refs
     .map((ref) => {
-      const id = typeof ref === "string" ? ref : ref._ref;
+      const id = stegaClean(typeof ref === "string" ? ref : ref._ref);
       return index[id];
     })
     .filter(Boolean);

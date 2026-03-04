@@ -1,4 +1,5 @@
 import React from "react";
+import { stegaClean } from "next-sanity";
 import { ja, en } from "@/lib/i18n";
 import type { GroupScheduleRow } from "@/lib/types";
 
@@ -19,10 +20,10 @@ const slotLabels: Record<string, string> = {
 function GroupRow({ r }: { r: GroupScheduleRow }) {
   let nameContent: React.ReactNode;
   if (r.schedule_pdf) {
-    nameContent = <a href={r.schedule_pdf}>{ja(r.name)}</a>;
+    nameContent = <a href={stegaClean(r.schedule_pdf)}>{ja(r.name)}</a>;
   } else if (r.website) {
     nameContent = (
-      <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
+      <a href={stegaClean(r.website)} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
         {ja(r.name)}
       </a>
     );
@@ -37,7 +38,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
         {r.photos_pdf && (
           <>
             {" "}
-            <a href={r.photos_pdf} className="schedule-table__photo-link">
+            <a href={stegaClean(r.photos_pdf)} className="schedule-table__photo-link">
               📷
             </a>
           </>
@@ -46,7 +47,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
           <>
             {" "}
             <a
-              href={r.website}
+              href={stegaClean(r.website)}
               target="_blank"
               rel="noopener noreferrer"
               className="schedule-table__web-link"

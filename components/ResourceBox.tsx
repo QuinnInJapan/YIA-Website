@@ -1,3 +1,5 @@
+import { stegaClean } from "next-sanity";
+
 interface ResourceBoxLink {
   lang: string;
   label: string;
@@ -27,7 +29,7 @@ export default function ResourceBox({
       <ul className="resource-box__links">
         {links.map((l, i) => (
           <li lang={l.lang} key={i}>
-            <a href={l.url || "#"}>
+            <a href={stegaClean(l.url) || "#"}>
               {l.label}
               {l.subtitle && (
                 <span className="resource-box__subtitle"> {l.subtitle}</span>

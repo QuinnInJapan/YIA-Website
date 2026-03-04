@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { stegaClean } from "next-sanity";
 import {
   getSiteData,
   getEnrichedNavigation,
@@ -59,7 +60,7 @@ export default async function HomepageTemplate() {
                 const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
-                    href={`/announcements#${a.id}`}
+                    href={`/announcements#${stegaClean(a.id)}`}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a.id}
@@ -93,7 +94,7 @@ export default async function HomepageTemplate() {
 
         {/* Program card grid */}
         <section className="program-grid reveal-stagger">
-          {nav.categories.filter((cat) => cat.heroImage).map((cat, i) => {
+          {nav.categories.filter((cat) => stegaClean(cat.heroImage)).map((cat, i) => {
             const img = cat.heroImage ? resolveImage(cat.heroImage) : "";
             return (
               <div
@@ -285,7 +286,7 @@ export default async function HomepageTemplate() {
           <div className="access-block reveal">
             <div className="access-block__map">
               <iframe
-                src={data.site.googleMapsEmbedUrl}
+                src={stegaClean(data.site.googleMapsEmbedUrl)}
                 width="100%"
                 height="100%"
                 style={{ border: 0, borderRadius: "6px" }}

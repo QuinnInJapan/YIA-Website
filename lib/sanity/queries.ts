@@ -1,58 +1,66 @@
 import { client } from "./client";
-
-// Revalidate every 60 seconds for ISR
-const REVALIDATE = 60;
-
-function fetchQuery<T>(query: string, params?: Record<string, unknown>): Promise<T> {
-  return client.fetch<T>(query, params ?? {}, { next: { revalidate: REVALIDATE } });
-}
+import { sanityFetch } from "./live";
 
 // ── Site Settings ────────────────────────────────────────────────
-export function fetchSiteSettings() {
-  return fetchQuery(`*[_type == "siteSettings"][0]`);
+export async function fetchSiteSettings() {
+  const { data } = await sanityFetch({ query: `*[_type == "siteSettings"][0]` });
+  return data;
 }
 
 // ── Categories ───────────────────────────────────────────────────
-export function fetchCategories() {
-  return fetchQuery(`*[_type == "category"] | order(id asc)`);
+export async function fetchCategories() {
+  const { data } = await sanityFetch({ query: `*[_type == "category"] | order(id asc)` });
+  return data;
 }
 
 // ── Navigation ───────────────────────────────────────────────────
-export function fetchNavigation() {
-  return fetchQuery(`*[_type == "navigation"][0]`);
+export async function fetchNavigation() {
+  const { data } = await sanityFetch({ query: `*[_type == "navigation"][0]` });
+  return data;
 }
 
 // ── Announcements ────────────────────────────────────────────────
-export function fetchAnnouncements() {
-  return fetchQuery(`*[_type == "announcement"] | order(date desc)`);
+export async function fetchAnnouncements() {
+  const { data } = await sanityFetch({ query: `*[_type == "announcement"] | order(date desc)` });
+  return data;
 }
 
 // ── Sidebar ─────────────────────────────────────────────────────
-export function fetchSidebar() {
-  return fetchQuery(`*[_type == "sidebar"][0]`);
+export async function fetchSidebar() {
+  const { data } = await sanityFetch({ query: `*[_type == "sidebar"][0]` });
+  return data;
 }
 
 // ── Homepage ─────────────────────────────────────────────────────
-export function fetchHomepage() {
-  return fetchQuery(`*[_type == "homepage"][0]`);
+export async function fetchHomepage() {
+  const { data } = await sanityFetch({ query: `*[_type == "homepage"][0]` });
+  return data;
 }
 
 // ── Pages ────────────────────────────────────────────────────────
-export function fetchAllPages() {
-  return fetchQuery(`*[_type == "page"] | order(id asc)`);
+export async function fetchAllPages() {
+  const { data } = await sanityFetch({ query: `*[_type == "page"] | order(id asc)` });
+  return data;
 }
 
-export function fetchPageBySlug(slug: string) {
-  return fetchQuery(
-    `*[_type == "page" && slug == $slug][0]`,
-    { slug }
-  );
+export async function fetchPageBySlug(slug: string) {
+  const { data } = await sanityFetch({
+    query: `*[_type == "page" && slug == $slug][0]`,
+    params: { slug },
+  });
+  return data;
 }
 
-export function fetchAllPageSlugs() {
-  return fetchQuery<{ slug: string }[]>(
-    `*[_type == "page"]{ slug }`
-  );
+export async function fetchAllPageSlugs() {
+  const { data } = await sanityFetch({
+    query: `*[_type == "page"]{ slug }`,
+  });
+  return data;
+}
+
+// Static version for generateStaticParams (no draftMode dependency)
+export function fetchAllPageSlugsStatic() {
+  return client.fetch<{ slug: string }[]>(`*[_type == "page"]{ slug }`);
 }
 
 // ── Full site data (composite fetch) ─────────────────────────────

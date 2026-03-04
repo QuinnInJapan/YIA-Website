@@ -1,3 +1,4 @@
+import { stegaClean } from "next-sanity";
 import { getSiteData, getAnnouncementsByRefs } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { Nl2br } from "@/lib/helpers";
@@ -15,7 +16,7 @@ export default async function AnnouncementsPageTemplate() {
   const allAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
 
   const tocEntries = allAnnouncements.map((a, i) => ({
-    id: a.id || `ann-${i}`,
+    id: stegaClean(a.id) || `ann-${i}`,
     textJa: ja(a.title),
     textEn: en(a.title),
   }));
@@ -23,7 +24,7 @@ export default async function AnnouncementsPageTemplate() {
   const tocHtml = <SidebarToc entries={tocEntries} />;
 
   const articles = allAnnouncements.map((a, i) => {
-    const id = a.id || `ann-${i}`;
+    const id = stegaClean(a.id) || `ann-${i}`;
     return (
       <article className="announcement" id={id} key={id}>
         {a.date && (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { stegaClean } from "next-sanity";
 import type { Document } from "@/lib/types";
 import { ja, en } from "@/lib/i18n";
 import PdfViewer from "./PdfViewer";
@@ -28,11 +29,11 @@ export default function DocList({ docs, sidebar }: DocListProps) {
 
     // Mobile fallback — iOS Safari can't render PDFs in iframes
     if (window.innerWidth <= 768) {
-      window.open(doc.url, "_blank");
+      window.open(stegaClean(doc.url), "_blank");
       return;
     }
 
-    setViewerUrl(doc.url);
+    setViewerUrl(stegaClean(doc.url));
     setViewerTitle(ja(doc.label) + (en(doc.label) ? ` / ${en(doc.label)}` : ""));
   }
 
@@ -41,7 +42,7 @@ export default function DocList({ docs, sidebar }: DocListProps) {
       <ul className={`doc-list${sidebar ? " doc-list--sidebar" : ""}`}>
         {docs.map((d, i) => (
           <li className="doc-list__item" key={i}>
-            <a href={d.url} onClick={(e) => handleClick(e, d)}>
+            <a href={stegaClean(d.url)} onClick={(e) => handleClick(e, d)}>
               <span className="doc-list__label">
                 {ja(d.label)}
                 {en(d.label) ? ` / ${en(d.label)}` : ""}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { stegaClean } from "next-sanity";
 import { getSiteData } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 
@@ -16,10 +17,10 @@ export default async function SiteHeader() {
         </Link>
         <div className="site-header__contact">
           <div>
-            TEL: <a href={`tel:${contact.tel}`}>{contact.tel}</a> / FAX: {contact.fax}
+            TEL: <a href={`tel:${stegaClean(contact.tel)}`}>{contact.tel}</a> / FAX: {contact.fax}
           </div>
           <div>
-            E-mail: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            E-mail: <a href={`mailto:${stegaClean(contact.email)}`}>{contact.email}</a>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { stegaClean } from "next-sanity";
 import { getSiteData } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 
@@ -17,10 +18,10 @@ export default async function ContactBlock() {
         TEL: {contact.tel} / FAX: {contact.fax}
       </div>
       <div className="contact-block__email">
-        E-mail: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        E-mail: <a href={`mailto:${stegaClean(contact.email)}`}>{contact.email}</a>
       </div>
       <div className="contact-block__url">
-        <a href={contact.website}>{contact.website}</a>
+        <a href={stegaClean(contact.website)}>{contact.website}</a>
       </div>
     </section>
   );

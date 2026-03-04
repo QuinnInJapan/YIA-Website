@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { stegaClean } from "next-sanity";
 
 // ── Image index ─────────────────────────────────────────────────
 // Build a map from basename (case-insensitive) to relative path under original/
@@ -23,6 +24,7 @@ scanImages(originalDir, "");
 
 /** Resolve an image filename to its path under /original/ */
 export function resolveImage(filename: string): string {
+  filename = stegaClean(filename);
   if (!filename) return "";
   // Already has a path prefix
   if (filename.includes("/"))
@@ -46,6 +48,7 @@ export function resolveImage(filename: string): string {
 
 /** Resolve an image filename to its local filesystem path (for width detection) */
 export function resolveImageLocal(filename: string): string {
+  filename = stegaClean(filename);
   if (!filename) return "";
   if (filename.includes("/")) return "/original/" + filename;
   const key = filename.toLowerCase();
