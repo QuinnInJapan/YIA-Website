@@ -101,12 +101,14 @@ export default async function HomepageTemplate() {
                 style={{ "--reveal-i": i } as React.CSSProperties}
                 key={cat.id}
               >
-                <LazyImage
-                  src={img}
-                  alt=""
-                  className="program-card__img"
-                  fill
-                />
+                {img && (
+                  <LazyImage
+                    src={img}
+                    alt=""
+                    className="program-card__img"
+                    fill
+                  />
+                )}
                 <div className="program-card__overlay">
                   <h3 className="program-card__title">{ja(cat.label)}</h3>
                   <span className="program-card__title-en" lang="en">
