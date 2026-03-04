@@ -36,36 +36,26 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
     if (entries.length < 2) return;
 
     const ids = entries.map((e) => e.id);
-    // Track which sections are currently visible
-    const visibleIds = new Set<string>();
+    const OFFSET = 100; // px below viewport top to consider "current"
 
-    const observer = new IntersectionObserver(
-      (observerEntries) => {
-        // Skip observer updates while a click scroll is in progress
-        if (clickLockRef.current) return;
+    function updateActive() {
+      if (clickLockRef.current) return;
 
-        for (const oe of observerEntries) {
-          if (oe.isIntersecting) {
-            visibleIds.add(oe.target.id);
-          } else {
-            visibleIds.delete(oe.target.id);
-          }
+      // Find the last section whose top has scrolled past the offset line
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= OFFSET) {
+          current = id;
         }
-        // Highlight the first visible section in DOM order
-        const firstVisible = ids.find((id) => visibleIds.has(id));
-        if (firstVisible) {
-          setActiveId(firstVisible);
-        }
-      },
-      { rootMargin: "-80px 0px -60% 0px", threshold: 0 }
-    );
-
-    for (const id of ids) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
+      }
+      setActiveId(current);
     }
 
-    return () => observer.disconnect();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    updateActive();
+
+    return () => window.removeEventListener("scroll", updateActive);
   }, [entries]);
 
   if (entries.length < 2) return null;
