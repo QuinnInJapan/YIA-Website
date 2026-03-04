@@ -98,6 +98,7 @@ export default async function HandbookPageTemplate() {
           </div>
         </div>
       }
+      mainClass="layout-program"
     />
   );
 }
