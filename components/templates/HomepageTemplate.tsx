@@ -93,7 +93,7 @@ export default async function HomepageTemplate() {
 
         {/* Program card grid */}
         <section className="program-grid reveal-stagger">
-          {nav.categories.map((cat, i) => {
+          {nav.categories.filter((cat) => cat.heroImage).map((cat, i) => {
             const img = cat.heroImage ? resolveImage(cat.heroImage) : "";
             return (
               <div
