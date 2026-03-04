@@ -5,27 +5,20 @@ import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
 import LazyImage from "@/components/LazyImage";
+import SidebarToc from "@/components/SidebarToc";
 
 export default async function AnnouncementsPageTemplate() {
   const data = await getSiteData();
   const hp = data.homepage;
   const allAnnouncements = await getAnnouncementsByIds(hp.announcementIds);
 
-  const tocHtml = (
-    <nav className="ann-toc" aria-label="目次">
-      <div className="ann-toc__label">
-        目次 <span>Contents</span>
-      </div>
-      {allAnnouncements.map((a, i) => {
-        const id = a.id || `ann-${i}`;
-        return (
-          <a href={`#${id}`} className="ann-toc__link" key={id}>
-            {a.titleJa}
-          </a>
-        );
-      })}
-    </nav>
-  );
+  const tocEntries = allAnnouncements.map((a, i) => ({
+    id: a.id || `ann-${i}`,
+    textJa: a.titleJa,
+    textEn: a.titleEn || "",
+  }));
+
+  const tocHtml = <SidebarToc entries={tocEntries} />;
 
   const articles = allAnnouncements.map((a, i) => {
     const id = a.id || `ann-${i}`;

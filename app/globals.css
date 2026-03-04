@@ -895,6 +895,19 @@ h3.section-header {
   text-align: left;
 }
 
+.ann-toc__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: default;
+  font-family: inherit;
+  text-align: left;
+}
+
 .ann-toc__label {
   font-size: var(--font-size-xs);
   font-weight: 700;
@@ -907,6 +920,19 @@ h3.section-header {
 .ann-toc__label span {
   margin-left: 4px;
   font-weight: 400;
+}
+
+.ann-toc__chevron {
+  display: none;
+}
+
+.ann-toc__body {
+  display: block;
+}
+
+.ann-toc__body-inner {
+  display: flex;
+  flex-direction: column;
 }
 
 .ann-toc__link {
@@ -2458,25 +2484,67 @@ h3.section-header {
 
   .ann-toc {
     position: static;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .ann-toc__toggle {
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 44px;
+    background: var(--color-tint);
+  }
+
+  .ann-toc__toggle:hover {
+    background: var(--color-gray-light);
   }
 
   .ann-toc__label {
-    width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 0;
+  }
+
+  .ann-toc__chevron {
+    display: block;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .ann-toc--open .ann-toc__chevron {
+    transform: rotate(90deg);
+  }
+
+  .ann-toc__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+
+  .ann-toc--open .ann-toc__body {
+    grid-template-rows: 1fr;
+  }
+
+  .ann-toc__body-inner {
+    overflow: hidden;
   }
 
   .ann-toc__link {
-    border: none;
-    padding: 5px 12px;
-    background: var(--color-tint);
-    font-size: var(--font-size-xs);
+    border-left: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-height: 44px;
+    align-items: center;
   }
 
   .ann-toc__link:first-of-type {
-    border-top: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ann-toc__link--active {
+    border-left: none;
+    background: var(--color-gray-light);
+    font-weight: 600;
   }
 
   .ann-articles .announcement {
@@ -2745,7 +2813,9 @@ h3.section-header {
   .site-nav__mobile,
   .site-nav__backdrop,
   .site-nav__mobile-chevron,
-  .site-nav__mobile-accordion {
+  .site-nav__mobile-accordion,
+  .ann-toc__chevron,
+  .ann-toc__body {
     transition: none;
   }
   .program-card__img,

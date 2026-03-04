@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { TocEntry } from "@/lib/section-renderer";
 
 interface SidebarTocProps {
@@ -9,6 +9,13 @@ interface SidebarTocProps {
 
 export default function SidebarToc({ entries }: SidebarTocProps) {
   const [activeId, setActiveId] = useState<string>(entries.length > 0 ? entries[0].id : "");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
+
+  const handleLinkClick = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   useEffect(() => {
     if (entries.length < 2) return;
@@ -38,22 +45,35 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
   if (entries.length < 2) return null;
 
   return (
-    <nav className="ann-toc" aria-label="目次">
-      <div className="ann-toc__label">
-        目次 <span lang="en">Contents</span>
+    <nav className={`ann-toc${isOpen ? " ann-toc--open" : ""}`} aria-label="目次">
+      <button
+        className="ann-toc__toggle"
+        type="button"
+        aria-expanded={isOpen}
+        onClick={toggle}
+      >
+        <span className="ann-toc__label">
+          目次 <span lang="en">Contents</span>
+        </span>
+        <span className="ann-toc__chevron" aria-hidden="true">▸</span>
+      </button>
+      <div className="ann-toc__body">
+        <div className="ann-toc__body-inner">
+          {entries.map((e) => (
+            <a
+              href={`#${e.id}`}
+              className={`ann-toc__link${activeId === e.id ? " ann-toc__link--active" : ""}`}
+              key={e.id}
+              onClick={handleLinkClick}
+            >
+              {e.textJa}
+              {e.textEn && (
+                <span className="ann-toc__link-en" lang="en">{e.textEn}</span>
+              )}
+            </a>
+          ))}
+        </div>
       </div>
-      {entries.map((e) => (
-        <a
-          href={`#${e.id}`}
-          className={`ann-toc__link${activeId === e.id ? " ann-toc__link--active" : ""}`}
-          key={e.id}
-        >
-          {e.textJa}
-          {e.textEn && (
-            <span className="ann-toc__link-en" lang="en">{e.textEn}</span>
-          )}
-        </a>
-      ))}
     </nav>
   );
 }
