@@ -29,14 +29,22 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
     if (entries.length < 2) return;
 
     const ids = entries.map((e) => e.id);
+    // Track which sections are currently visible
+    const visibleIds = new Set<string>();
+
     const observer = new IntersectionObserver(
       (observerEntries) => {
-        // Find the first entry that is intersecting
         for (const oe of observerEntries) {
           if (oe.isIntersecting) {
-            setActiveId(oe.target.id);
-            break;
+            visibleIds.add(oe.target.id);
+          } else {
+            visibleIds.delete(oe.target.id);
           }
+        }
+        // Highlight the first visible section in DOM order
+        const firstVisible = ids.find((id) => visibleIds.has(id));
+        if (firstVisible) {
+          setActiveId(firstVisible);
         }
       },
       { rootMargin: "-80px 0px -60% 0px", threshold: 0 }

@@ -721,6 +721,15 @@ h3.section-header {
   font-weight: 500;
 }
 
+.section-header:target {
+  animation: section-flash 1.5s ease;
+}
+
+@keyframes section-flash {
+  0% { background: var(--color-tint); }
+  100% { background: transparent; }
+}
+
 .section-header--plain .section-header__en {
   display: block;
   margin-left: 0;
