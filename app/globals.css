@@ -263,7 +263,7 @@ ruby rt {
 /* -- Page Section System -- */
 
 .page-section {
-  padding: var(--spacing-xl) var(--site-gutter);
+  padding: 0 var(--site-gutter) var(--spacing-xl);
   border-bottom: none;
 }
 
