@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { TocEntry } from "@/lib/section-renderer";
 
 interface SidebarTocProps {
@@ -18,12 +18,18 @@ function ChevronIcon({ className }: { className?: string }) {
 export default function SidebarToc({ entries }: SidebarTocProps) {
   const [activeId, setActiveId] = useState<string>(entries.length > 0 ? entries[0].id : "");
   const [isOpen, setIsOpen] = useState(false);
+  const clickLockRef = useRef<number | null>(null);
 
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   const handleLinkClick = useCallback((id: string) => {
     setActiveId(id);
     setIsOpen(false);
+    // Suppress observer updates while smooth scroll is in progress
+    if (clickLockRef.current) clearTimeout(clickLockRef.current);
+    clickLockRef.current = window.setTimeout(() => {
+      clickLockRef.current = null;
+    }, 800);
   }, []);
 
   useEffect(() => {
@@ -35,6 +41,9 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
 
     const observer = new IntersectionObserver(
       (observerEntries) => {
+        // Skip observer updates while a click scroll is in progress
+        if (clickLockRef.current) return;
+
         for (const oe of observerEntries) {
           if (oe.isIntersecting) {
             visibleIds.add(oe.target.id);
