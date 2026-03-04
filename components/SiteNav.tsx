@@ -272,6 +272,7 @@ export default function SiteNav({ categories }: SiteNavProps) {
           );
         })}
 
+
       </div>
     </nav>
   );

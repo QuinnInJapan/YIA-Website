@@ -119,6 +119,21 @@
           "value": "International Contribution"
         }
       ]
+    },
+    {
+      "_type": "category",
+      "id": "about",
+      "label": [
+        {
+          "_key": "ja",
+          "value": "YIAについて"
+        },
+        {
+          "_key": "en",
+          "value": "About YIA"
+        }
+      ],
+      "heroImage": ""
     }
   ],
   "navigation": {
@@ -465,6 +480,65 @@
               {
                 "_key": "easy",
                 "value": "しまいとし こうかん がくせい"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "categoryRef": {
+          "_type": "reference",
+          "_ref": "category-about"
+        },
+        "items": [
+          {
+            "id": "aboutyia",
+            "pageRef": {
+              "_type": "reference",
+              "_ref": "page-aboutyia"
+            },
+            "title": [
+              {
+                "_key": "ja",
+                "value": "団体概要"
+              },
+              {
+                "_key": "en",
+                "value": "About YIA"
+              }
+            ]
+          },
+          {
+            "id": "kaiinn",
+            "pageRef": {
+              "_type": "reference",
+              "_ref": "page-kaiinn"
+            },
+            "title": [
+              {
+                "_key": "ja",
+                "value": "会員募集"
+              },
+              {
+                "_key": "en",
+                "value": "Membership"
+              }
+            ]
+          },
+          {
+            "id": "sanjyokaiin",
+            "pageRef": {
+              "_type": "reference",
+              "_ref": "page-sanjyokaiin"
+            },
+            "title": [
+              {
+                "_key": "ja",
+                "value": "賛助会員"
+              },
+              {
+                "_key": "en",
+                "value": "Supporting Members"
               }
             ]
           }
