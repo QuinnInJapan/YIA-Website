@@ -21,7 +21,8 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
 
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  const handleLinkClick = useCallback(() => {
+  const handleLinkClick = useCallback((id: string) => {
+    setActiveId(id);
     setIsOpen(false);
   }, []);
 
@@ -80,7 +81,7 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
               href={`#${e.id}`}
               className={`ann-toc__link${activeId === e.id ? " ann-toc__link--active" : ""}`}
               key={e.id}
-              onClick={handleLinkClick}
+              onClick={() => handleLinkClick(e.id)}
             >
               {e.textJa}
               {e.textEn && (
