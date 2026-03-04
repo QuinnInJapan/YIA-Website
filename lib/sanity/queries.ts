@@ -27,9 +27,9 @@ export function fetchAnnouncements() {
   return fetchQuery(`*[_type == "announcement"] | order(date desc)`);
 }
 
-// ── Global Resources ─────────────────────────────────────────────
-export function fetchGlobalResources() {
-  return fetchQuery(`*[_type == "globalResources"][0]`);
+// ── Sidebar ─────────────────────────────────────────────────────
+export function fetchSidebar() {
+  return fetchQuery(`*[_type == "sidebar"][0]`);
 }
 
 // ── Homepage ─────────────────────────────────────────────────────
@@ -62,7 +62,7 @@ export async function fetchSiteData() {
     categories,
     navigation,
     announcements,
-    globalResources,
+    sidebar,
     homepage,
     pages,
   ] = await Promise.all([
@@ -70,7 +70,7 @@ export async function fetchSiteData() {
     fetchCategories(),
     fetchNavigation(),
     fetchAnnouncements(),
-    fetchGlobalResources(),
+    fetchSidebar(),
     fetchHomepage(),
     fetchAllPages(),
   ]);
@@ -80,7 +80,7 @@ export async function fetchSiteData() {
     categories,
     navigation,
     announcements,
-    globalResources,
+    sidebar,
     homepage,
     pages,
   };

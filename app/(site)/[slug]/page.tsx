@@ -5,6 +5,7 @@ import {
   getPage,
   getAllPageSlugs,
 } from "@/lib/data";
+import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import HandbookPageTemplate from "@/components/templates/HandbookPageTemplate";
@@ -44,8 +45,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   } else {
     const pg = await getPage(slug);
     if (pg) {
-      title = pg.titleJa;
-      description = pg.descriptionJa || "";
+      title = ja(pg.title);
+      description = ja(pg.description);
     }
   }
 
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     openGraph: {
-      title: `${title} — ${data.site.org.nameJa}`,
+      title: `${title} — ${ja(data.site.org.name)}`,
       description,
     },
   };

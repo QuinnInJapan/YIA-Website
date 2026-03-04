@@ -5,9 +5,7 @@ export default defineType({
   title: "情報行",
   type: "object",
   fields: [
-    defineField({ name: "labelJa", title: "ラベル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "labelEn", title: "ラベル（英語）", type: "string" }),
-    defineField({ name: "valueJa", title: "値（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "valueEn", title: "値（英語）", type: "string" }),
+    defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({ name: "value", title: "値", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
   ],
 });

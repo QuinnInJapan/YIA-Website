@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSiteData } from "@/lib/data";
+import { ja, en } from "@/lib/i18n";
 
 export default async function SiteHeader() {
   const { site } = await getSiteData();
@@ -10,8 +11,8 @@ export default async function SiteHeader() {
       <div className="site-header__inner">
         <Link href="/" className="site-header__identity">
           <div className="site-header__designation">{org.designation}</div>
-          <div className="site-header__name-jp">{org.nameJa}</div>
-          <div className="site-header__name-en" lang="en">{org.nameEn}</div>
+          <div className="site-header__name-jp">{ja(org.name)}</div>
+          <div className="site-header__name-en" lang="en">{en(org.name)}</div>
         </Link>
         <div className="site-header__contact">
           <div>

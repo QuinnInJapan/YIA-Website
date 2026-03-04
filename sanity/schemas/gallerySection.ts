@@ -5,6 +5,7 @@ export default defineType({
   name: "gallery",
   title: "ギャラリーセクション",
   type: "object",
+  description: "写真ギャラリー（ヒーロー幅以上の画像のみ表示）",
   preview: {
     prepare: () => ({ title: "ギャラリーセクション", subtitle: "Gallery", media: ImagesIcon }),
   },

@@ -1,4 +1,5 @@
 import { getSiteData } from "@/lib/data";
+import { ja } from "@/lib/i18n";
 
 export default async function ContactBlock() {
   const { site } = await getSiteData();
@@ -7,10 +8,10 @@ export default async function ContactBlock() {
   return (
     <section className="contact-block">
       <div className="contact-block__org">
-        {org.designation} {org.nameJa}
+        {org.designation} {ja(org.name)}
       </div>
       <div className="contact-block__address">
-        〒{contact.postalCode} {contact.addressJa}
+        〒{contact.postalCode} {ja(contact.address)}
       </div>
       <div className="contact-block__tel">
         TEL: {contact.tel} / FAX: {contact.fax}

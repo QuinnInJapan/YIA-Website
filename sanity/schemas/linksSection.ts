@@ -1,17 +1,17 @@
 import { defineType, defineField } from "sanity";
-import { BookIcon } from "@sanity/icons";
+import { LinkIcon } from "@sanity/icons";
 
 export default defineType({
-  name: "definitions",
-  title: "用語定義セクション",
+  name: "links",
+  title: "リンクセクション",
   type: "object",
-  description: "用語と定義のカード形式一覧",
+  description: "資料ダウンロード・YouTube・外部サイトなどのリンク一覧",
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
-      title: title?.find((t) => t._key === "ja")?.value || "用語定義セクション",
-      subtitle: title?.find((t) => t._key === "en")?.value || "Definitions",
-      media: BookIcon,
+      title: title?.find((t) => t._key === "ja")?.value || "リンクセクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Links",
+      media: LinkIcon,
     }),
   },
   fields: [
@@ -20,7 +20,7 @@ export default defineType({
       name: "items",
       title: "項目",
       type: "array",
-      of: [{ type: "definition" }],
+      of: [{ type: "linkItem" }],
       validation: (Rule) => Rule.required(),
     }),
   ],

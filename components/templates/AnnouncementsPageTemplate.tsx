@@ -1,4 +1,5 @@
-import { getSiteData, getAnnouncementsByIds } from "@/lib/data";
+import { getSiteData, getAnnouncementsByRefs } from "@/lib/data";
+import { ja, en } from "@/lib/i18n";
 import { Nl2br } from "@/lib/helpers";
 import { resolveImage } from "@/lib/images";
 import { formatDateDot } from "@/lib/date-format";
@@ -11,12 +12,12 @@ import SidebarToc from "@/components/SidebarToc";
 export default async function AnnouncementsPageTemplate() {
   const data = await getSiteData();
   const hp = data.homepage;
-  const allAnnouncements = await getAnnouncementsByIds(hp.announcementIds);
+  const allAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
 
   const tocEntries = allAnnouncements.map((a, i) => ({
     id: a.id || `ann-${i}`,
-    textJa: a.titleJa,
-    textEn: a.titleEn || "",
+    textJa: ja(a.title),
+    textEn: en(a.title),
   }));
 
   const tocHtml = <SidebarToc entries={tocEntries} />;
@@ -31,20 +32,20 @@ export default async function AnnouncementsPageTemplate() {
           </time>
         )}
         <h2 className="announcement__title">
-          {a.titleJa}
-          {a.titleEn && (
-            <span className="announcement__title-en" lang="en"> {a.titleEn}</span>
+          {ja(a.title)}
+          {en(a.title) && (
+            <span className="announcement__title-en" lang="en"> {en(a.title)}</span>
           )}
         </h2>
         <div className="announcement__content" lang="ja">
-          <Nl2br text={a.contentJa} />
+          <Nl2br text={ja(a.content)} />
         </div>
         <div className="announcement__content" lang="en">
-          <Nl2br text={a.contentEn} />
+          <Nl2br text={en(a.content)} />
         </div>
         {a.image && (
           <div className="announcement__image">
-            <LazyImage src={resolveImage(a.image)} alt={a.titleJa} />
+            <LazyImage src={resolveImage(a.image)} alt={ja(a.title)} />
           </div>
         )}
         {a.documents && a.documents.length > 0 && (

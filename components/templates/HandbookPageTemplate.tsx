@@ -1,12 +1,13 @@
 import { getSiteData } from "@/lib/data";
+import { ja } from "@/lib/i18n";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import SectionHeader from "@/components/SectionHeader";
 
 export default async function HandbookPageTemplate() {
-  const { globalResources } = await getSiteData();
+  const { sidebar } = await getSiteData();
 
-  const handbook = (globalResources.resourceBoxes || []).find(
+  const handbook = (sidebar.resourceBoxes || []).find(
     (rb) => rb.id === "nihongo-handbook"
   );
 
@@ -16,7 +17,7 @@ export default async function HandbookPageTemplate() {
     <PageLayout
       heroHtml={
         <SolidHero
-          titleJa={handbook?.titleJa ?? "日本語学習・生活"}
+          titleJa={ja(handbook?.title) || "日本語学習・生活"}
           titleEn="Japanese Study & Living Handbook"
         />
       }

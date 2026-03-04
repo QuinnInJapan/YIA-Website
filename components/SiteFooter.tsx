@@ -1,4 +1,5 @@
 import { getSiteData } from "@/lib/data";
+import { ja, en } from "@/lib/i18n";
 import { formatDateDot } from "@/lib/date-format";
 import type { Document } from "@/lib/types";
 
@@ -16,8 +17,8 @@ export default async function SiteFooter({
     <footer className="site-footer">
       <div className="site-footer__identity">
         <div className="site-footer__designation">{org.designation}</div>
-        <div className="site-footer__name">{org.nameJa}</div>
-        <div className="site-footer__name-en" lang="en">{org.nameEn}</div>
+        <div className="site-footer__name">{ja(org.name)}</div>
+        <div className="site-footer__name-en" lang="en">{en(org.name)}</div>
       </div>
       {documents && documents.length > 0 && (
         <div className="site-footer__docs">
@@ -29,8 +30,8 @@ export default async function SiteFooter({
                   <span className="site-footer__docs-sep">&middot;</span>
                 )}{" "}
                 <a href={d.url}>
-                  {d.label}
-                  {d.labelEn ? ` / ${d.labelEn}` : ""}
+                  {ja(d.label)}
+                  {en(d.label) ? ` / ${en(d.label)}` : ""}
                 </a>
               </span>
             ))}
@@ -41,7 +42,7 @@ export default async function SiteFooter({
         最終更新日 Last Updated: {formatDateDot(org.lastUpdated)}
       </div>
       <div className="site-footer__copyright">
-        &copy; {org.nameEn} ({org.abbreviation})
+        &copy; {en(org.name)} ({org.abbreviation})
       </div>
     </footer>
   );

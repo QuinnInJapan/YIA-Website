@@ -5,12 +5,22 @@ export default defineType({
   title: "カテゴリー",
   type: "document",
   preview: {
-    select: { title: "labelJa", subtitle: "labelEn" },
+    select: { title: "label" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "Untitled",
+      subtitle: title?.find((t) => t._key === "en")?.value,
+    }),
   },
   fields: [
-    defineField({ name: "id", title: "ID", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "labelJa", title: "ラベル（日本語）", type: "string" }),
-    defineField({ name: "labelEn", title: "ラベル（英語）", type: "string" }),
+    defineField({
+      name: "id",
+      title: "ID",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      readOnly: ({ document }) => !!document?._createdAt,
+      description: "作成後は変更できません",
+    }),
+    defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "heroImage", title: "ヒーロー画像", type: "string" }),
   ],
 });

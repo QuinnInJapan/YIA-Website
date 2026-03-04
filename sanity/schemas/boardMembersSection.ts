@@ -5,17 +5,17 @@ export default defineType({
   name: "boardMembers",
   title: "役員一覧セクション",
   type: "object",
+  description: "役員名簿（名前・役職のグリッド表示）",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "役員一覧セクション",
-      subtitle: subtitle || "Board Members",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "役員一覧セクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Board Members",
       media: UsersIcon,
     }),
   },
   fields: [
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "asOf", title: "時点", type: "date" }),
     defineField({
       name: "members",

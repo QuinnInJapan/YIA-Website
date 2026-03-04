@@ -3,18 +3,18 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import type { I18nString } from "@/lib/i18n";
+import { ja, en } from "@/lib/i18n";
 
 interface NavItem {
   id: string;
-  titleJa: string;
-  titleEn?: string;
+  title: I18nString;
   url: string;
 }
 
 interface NavCategory {
   id: string;
-  labelJa: string;
-  labelEn: string;
+  label: I18nString;
   items: NavItem[];
 }
 
@@ -172,16 +172,16 @@ export default function SiteNav({ categories }: SiteNavProps) {
                 aria-controls={`nav-dropdown-${cat.id}`}
                 onClick={() => toggle(cat.id)}
               >
-                {cat.labelJa}{" "}
-                <span className="site-nav__group-en" lang="en">{cat.labelEn}</span>
+                {ja(cat.label)}{" "}
+                <span className="site-nav__group-en" lang="en">{en(cat.label)}</span>
               </button>
-              <div className="site-nav__dropdown" id={`nav-dropdown-${cat.id}`} role="region" aria-label={`${cat.labelJa} ${cat.labelEn}`}>
+              <div className="site-nav__dropdown" id={`nav-dropdown-${cat.id}`} role="region" aria-label={`${ja(cat.label)} ${en(cat.label)}`}>
                 {cat.items.map((it) => {
                   const isActive = pathname === it.url;
                   return (
                   <Link className={`nav-item${isActive ? " nav-item--active" : ""}`} href={it.url} key={it.id} aria-current={isActive ? "page" : undefined}>
-                    <span className="nav-item__title">{it.titleJa}</span>
-                    <span className="nav-item__en" lang="en">{it.titleEn}</span>
+                    <span className="nav-item__title">{ja(it.title)}</span>
+                    <span className="nav-item__en" lang="en">{en(it.title)}</span>
                   </Link>
                   );
                 })}
@@ -239,8 +239,8 @@ export default function SiteNav({ categories }: SiteNavProps) {
                 onClick={() => toggle(cat.id)}
               >
                 <span>
-                  {cat.labelJa}{" "}
-                  <span className="site-nav__mobile-group-en" lang="en">{cat.labelEn}</span>
+                  {ja(cat.label)}{" "}
+                  <span className="site-nav__mobile-group-en" lang="en">{en(cat.label)}</span>
                 </span>
                 <ChevronIcon className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} />
               </button>
@@ -248,7 +248,7 @@ export default function SiteNav({ categories }: SiteNavProps) {
                 className={`site-nav__mobile-accordion${isOpen ? " site-nav__mobile-accordion--open" : ""}`}
                 id={`mobile-nav-${cat.id}`}
                 role="region"
-                aria-label={`${cat.labelJa} ${cat.labelEn}`}
+                aria-label={`${ja(cat.label)} ${en(cat.label)}`}
               >
                 <div className="site-nav__mobile-accordion-inner">
                   {cat.items.map((it) => {
@@ -261,8 +261,8 @@ export default function SiteNav({ categories }: SiteNavProps) {
                         aria-current={isActive ? "page" : undefined}
                         onClick={closeMobileMenu}
                       >
-                        <span className="nav-item__title">{it.titleJa}</span>
-                        <span className="nav-item__en" lang="en">{it.titleEn}</span>
+                        <span className="nav-item__title">{ja(it.title)}</span>
+                        <span className="nav-item__en" lang="en">{en(it.title)}</span>
                       </Link>
                     );
                   })}

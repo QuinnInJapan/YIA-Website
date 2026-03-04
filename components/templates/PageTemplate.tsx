@@ -1,4 +1,5 @@
 import type { Page } from "@/lib/types";
+import { ja, en } from "@/lib/i18n";
 import { renderSections } from "@/lib/section-renderer";
 import PageHero from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
@@ -15,9 +16,9 @@ export default function PageTemplate({
   const { groups, tocEntries } = renderSections(page.sections);
 
   // Add subtitle before sections if present
-  const subtitleNode = page.subtitleJa ? (
+  const subtitleNode = ja(page.subtitle) ? (
     <div className="page-section">
-      <PageSubtitle ja={page.subtitleJa} en={page.subtitleEn || ""} />
+      <PageSubtitle ja={ja(page.subtitle)} en={en(page.subtitle)} />
     </div>
   ) : null;
 
@@ -30,10 +31,10 @@ export default function PageTemplate({
 
   const heroHtml = (
     <PageHero
-      titleJa={page.titleJa}
-      titleEn={page.titleEn}
-      descriptionJa={page.descriptionJa}
-      descriptionEn={page.descriptionEn}
+      titleJa={ja(page.title)}
+      titleEn={en(page.title)}
+      descriptionJa={ja(page.description)}
+      descriptionEn={en(page.description)}
       images={page.images}
     />
   );

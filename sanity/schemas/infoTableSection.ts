@@ -5,17 +5,17 @@ export default defineType({
   name: "infoTable",
   title: "情報テーブルセクション",
   type: "object",
+  description: "ラベル・値の定義リスト形式で情報を表示（開催日時、対象者、費用など）",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "情報テーブルセクション",
-      subtitle: subtitle || "Info Table",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "情報テーブルセクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Info Table",
       media: ThListIcon,
     }),
   },
   fields: [
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({
       name: "rows",
       title: "行",
@@ -23,8 +23,8 @@ export default defineType({
       of: [{ type: "infoRow" }],
       validation: (Rule) => Rule.required(),
     }),
-    defineField({ name: "appointmentNote", title: "予約についての注意", type: "bilingualText" }),
-    defineField({ name: "additionalLanguageNote", title: "追加言語の注意", type: "bilingualText" }),
-    defineField({ name: "otherNotes", title: "その他の注意", type: "bilingualText" }),
+    defineField({ name: "appointmentNote", title: "予約についての注意", type: "internationalizedArrayString" }),
+    defineField({ name: "additionalLanguageNote", title: "追加言語の注意", type: "internationalizedArrayString" }),
+    defineField({ name: "otherNotes", title: "その他の注意", type: "internationalizedArrayString" }),
   ],
 });

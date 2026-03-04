@@ -5,6 +5,7 @@ import type {
   Announcement,
   Category,
 } from "./types";
+import type { I18nString } from "@/lib/i18n";
 import {
   fetchSiteData,
   fetchAnnouncements,
@@ -12,12 +13,12 @@ import {
 
 // Empty defaults for when Sanity has no data yet
 const emptySiteData: SiteData = {
-  site: { _type: "siteSettings", org: { designation: "", nameJa: "", nameEn: "", abbreviation: "", founded: "", npoEstablished: "", lastUpdated: "", descriptionJa: "", descriptionEn: "" }, contact: { postalCode: "", addressJa: "", addressEn: "", tel: "", fax: "", email: "", website: "" }, businessHours: { ja: "", en: "" }, copyright: "", googleMapsEmbedUrl: "" },
+  site: { _type: "siteSettings", org: { designation: "", name: [{_key: "ja", value: ""}, {_key: "en", value: ""}], abbreviation: "", founded: "", npoEstablished: "", lastUpdated: "", description: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, contact: { postalCode: "", address: [{_key: "ja", value: ""}, {_key: "en", value: ""}], tel: "", fax: "", email: "", website: "" }, businessHours: [{_key: "ja", value: ""}, {_key: "en", value: ""}], copyright: "", googleMapsEmbedUrl: "" },
   categories: [],
   navigation: { _type: "navigation", categories: [], orgLinks: [] },
   announcements: [],
-  globalResources: { _type: "globalResources", accessMap: { image: "", labelJa: "", labelEn: "" }, youtubeLink: { url: "", labelJa: "", labelEn: "" }, memberRecruitment: { labelJa: "", url: "" }, resourceBoxes: [], documents: [] },
-  homepage: { _type: "homepage", slug: "", hero: { image: "", taglineJa: "", taglineEn: "" }, activityGrid: { images: [], stat: { value: 0, labelJa: "", labelEn: "" } }, announcementIds: [] },
+  sidebar: { _type: "sidebar", accessMap: { image: "", label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, youtubeLink: { url: "", label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], url: "" }, resourceBoxes: [], documents: [] },
+  homepage: { _type: "homepage", slug: "", hero: { image: "", tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
   pages: [],
 };
 
@@ -33,7 +34,7 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
     announcements: raw.announcements || [],
     pages: raw.pages || [],
     navigation: raw.navigation || emptySiteData.navigation,
-    globalResources: raw.globalResources || emptySiteData.globalResources,
+    sidebar: raw.sidebar || emptySiteData.sidebar,
     homepage: raw.homepage || emptySiteData.homepage,
   } as SiteData;
 });
@@ -53,18 +54,14 @@ export async function getCategoryIndex(): Promise<Record<string, Category>> {
 
 interface EnrichedNavItem {
   id: string;
-  pageRef?: string;
-  titleJa: string;
-  titleEasy?: string;
-  titleEn: string;
+  title: I18nString;
   url: string;
 }
 
 interface EnrichedNavCategory {
   categoryId: string;
   id: string;
-  labelJa: string;
-  labelEn: string;
+  label: I18nString;
   heroImage: string;
   items: EnrichedNavItem[];
 }
@@ -82,26 +79,44 @@ export const getEnrichedNavigation = cache(
       categoryIndex[cat.id] = cat;
     }
 
+    // Build page slug index for resolving page references
+    const pageIndex: Record<string, Page> = {};
+    for (const pg of data.pages) {
+      pageIndex[`page-${pg.id}`] = pg;
+      pageIndex[pg.id] = pg;
+    }
+
+    function resolvePageSlug(ref?: { _ref?: string } | string): string {
+      if (!ref) return "";
+      // Support both reference objects and plain string slugs (backwards compat)
+      const refStr = typeof ref === "string" ? ref : ref._ref;
+      if (!refStr) return "";
+      const pg = pageIndex[refStr] || pageIndex[refStr.replace("page-", "")];
+      return pg ? `/${pg.slug}` : "";
+    }
+
     const categories: EnrichedNavCategory[] =
       data.navigation.categories.map((navCat) => {
-        const cat = categoryIndex[navCat.categoryId];
+        const catId = navCat.categoryRef?._ref?.replace("category-", "") ?? "";
+        const cat = categoryIndex[catId];
         return {
-          categoryId: navCat.categoryId,
-          id: cat?.id ?? navCat.categoryId,
-          labelJa: cat?.labelJa ?? "",
-          labelEn: cat?.labelEn ?? "",
+          categoryId: catId,
+          id: cat?.id ?? catId,
+          label: cat?.label ?? [],
           heroImage: cat?.heroImage ?? "",
           items: navCat.items.map((item) => ({
-            ...item,
-            url: item.pageRef ? `/${item.pageRef}` : "",
+            id: item.id,
+            title: item.title,
+            url: resolvePageSlug(item.pageRef),
           })),
         };
       });
 
     const orgLinks: EnrichedNavItem[] = data.navigation.orgLinks.map(
       (link) => ({
-        ...link,
-        url: link.pageRef ? `/${link.pageRef}` : "",
+        id: link.id,
+        title: link.title,
+        url: resolvePageSlug(link.pageRef),
       })
     );
 
@@ -130,13 +145,21 @@ export async function getAllPages(): Promise<Page[]> {
 
 // ── Announcements ───────────────────────────────────────────────
 
-export async function getAnnouncementsByIds(
-  ids: string[]
+export async function getAnnouncementsByRefs(
+  refs: ({ _type: "reference"; _ref: string } | string)[]
 ): Promise<Announcement[]> {
+  if (!refs?.length) return [];
   const data = await getSiteData();
   const index: Record<string, Announcement> = {};
   for (const a of data.announcements) {
+    // Documents have _id like "announcement-<id>" in Sanity
+    index[`announcement-${a.id}`] = a;
     index[a.id] = a;
   }
-  return ids.map((id) => index[id]).filter(Boolean);
+  return refs
+    .map((ref) => {
+      const id = typeof ref === "string" ? ref : ref._ref;
+      return index[id];
+    })
+    .filter(Boolean);
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { ja, en } from "@/lib/i18n";
 import type { GroupScheduleRow } from "@/lib/types";
 
 interface ScheduleTableProps {
@@ -18,15 +19,15 @@ const slotLabels: Record<string, string> = {
 function GroupRow({ r }: { r: GroupScheduleRow }) {
   let nameContent: React.ReactNode;
   if (r.schedule_pdf) {
-    nameContent = <a href={r.schedule_pdf}>{r.name}</a>;
+    nameContent = <a href={r.schedule_pdf}>{ja(r.name)}</a>;
   } else if (r.website) {
     nameContent = (
-      <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} (opens in new tab)`} className="external-link">
-        {r.name}
+      <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
+        {ja(r.name)}
       </a>
     );
   } else {
-    nameContent = r.name;
+    nameContent = ja(r.name);
   }
 
   return (
@@ -49,16 +50,16 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
               target="_blank"
               rel="noopener noreferrer"
               className="schedule-table__web-link"
-              aria-label={`${r.name} website (opens in new tab)`}
+              aria-label={`${ja(r.name)} website (opens in new tab)`}
             >
               🌐
             </a>
           </>
         )}
-        {r.nameEn && (
+        {en(r.name) && (
           <>
             <br />
-            <span className="schedule-table__en" lang="en">{r.nameEn}</span>
+            <span className="schedule-table__en" lang="en">{en(r.name)}</span>
           </>
         )}
       </td>

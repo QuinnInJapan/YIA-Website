@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { resolveImage } from "@/lib/images";
+import { ja, en } from "@/lib/i18n";
 import type { SisterCity } from "@/lib/types";
 
 interface SisterCityCardsProps {
@@ -18,7 +19,7 @@ export default function SisterCityCards({ cities }: SisterCityCardsProps) {
               {img && (
                 <Image
                   src={img}
-                  alt={c.nameEn || c.nameJa}
+                  alt={en(c.name) || ja(c.name)}
                   fill
                   sizes="(max-width: 768px) 100vw, 60vw"
                   className="sister-city-row__img"
@@ -27,8 +28,8 @@ export default function SisterCityCards({ cities }: SisterCityCardsProps) {
             </div>
             <div className="sister-city-row__info">
               <div className="sister-city-row__country">{c.country}</div>
-              <div className="sister-city-row__name">{c.nameEn}</div>
-              <div className="sister-city-row__name-ja">{c.nameJa}</div>
+              <div className="sister-city-row__name">{en(c.name)}</div>
+              <div className="sister-city-row__name-ja">{ja(c.name)}</div>
               {c.note && (
                 <div className="sister-city-row__note">{c.note}</div>
               )}

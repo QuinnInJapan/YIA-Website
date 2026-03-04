@@ -1,10 +1,10 @@
 // Object types
-import bilingualText from "./bilingualText";
 import infoRow from "./infoRow";
 import imageFile from "./imageFile";
 import documentLink from "./documentLink";
 import eventFlyer from "./eventFlyer";
 import resourceLink from "./resourceLink";
+import linkItem from "./linkItem";
 import definition from "./definition";
 import sisterCity from "./sisterCity";
 import groupScheduleRow from "./groupScheduleRow";
@@ -16,16 +16,16 @@ import resourceBox from "./resourceBox";
 import warningsSection from "./warningsSection";
 import contentSection from "./contentSection";
 import infoTableSection from "./infoTableSection";
-import otherNotesSection from "./otherNotesSection";
-import scheduleSection from "./scheduleSection";
+import tableScheduleSection from "./tableScheduleSection";
+import groupScheduleSection from "./groupScheduleSection";
+import eventScheduleSection from "./eventScheduleSection";
 import gallerySection from "./gallerySection";
 import sisterCitiesSection from "./sisterCitiesSection";
 import definitionsSection from "./definitionsSection";
-import resourcesSection from "./resourcesSection";
+import linksSection from "./linksSection";
 import historySection from "./historySection";
 import fairTradeSection from "./fairTradeSection";
 import flyersSection from "./flyersSection";
-import documentsSection from "./documentsSection";
 import boardMembersSection from "./boardMembersSection";
 import feeTableSection from "./feeTableSection";
 import directoryListSection from "./directoryListSection";
@@ -41,12 +41,12 @@ import page from "./page";
 
 export const schemaTypes = [
   // Object types (must be registered before document types that reference them)
-  bilingualText,
   infoRow,
   imageFile,
   documentLink,
   eventFlyer,
   resourceLink,
+  linkItem,
   definition,
   sisterCity,
   groupScheduleRow,
@@ -57,16 +57,16 @@ export const schemaTypes = [
   warningsSection,
   contentSection,
   infoTableSection,
-  otherNotesSection,
-  scheduleSection,
+  tableScheduleSection,
+  groupScheduleSection,
+  eventScheduleSection,
   gallerySection,
   sisterCitiesSection,
   definitionsSection,
-  resourcesSection,
+  linksSection,
   historySection,
   fairTradeSection,
   flyersSection,
-  documentsSection,
   boardMembersSection,
   feeTableSection,
   directoryListSection,

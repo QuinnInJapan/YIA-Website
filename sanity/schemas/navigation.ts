@@ -16,7 +16,12 @@ export default defineType({
         {
           type: "object",
           fields: [
-            defineField({ name: "categoryId", title: "カテゴリーID", type: "string" }),
+            defineField({
+              name: "categoryRef",
+              title: "カテゴリー",
+              type: "reference",
+              to: [{ type: "category" }],
+            }),
             defineField({
               name: "items",
               title: "項目",
@@ -26,10 +31,13 @@ export default defineType({
                   type: "object",
                   fields: [
                     defineField({ name: "id", title: "ID", type: "string" }),
-                    defineField({ name: "pageRef", title: "ページ参照", type: "string" }),
-                    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string" }),
-                    defineField({ name: "titleEasy", title: "タイトル（やさしい日本語）", type: "string" }),
-                    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
+                    defineField({
+                      name: "pageRef",
+                      title: "ページ",
+                      type: "reference",
+                      to: [{ type: "page" }],
+                    }),
+                    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString" }),
                   ],
                 },
               ],
@@ -47,9 +55,13 @@ export default defineType({
           type: "object",
           fields: [
             defineField({ name: "id", title: "ID", type: "string" }),
-            defineField({ name: "pageRef", title: "ページ参照", type: "string" }),
-            defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string" }),
-            defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
+            defineField({
+              name: "pageRef",
+              title: "ページ",
+              type: "reference",
+              to: [{ type: "page" }],
+            }),
+            defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString" }),
           ],
         },
       ],

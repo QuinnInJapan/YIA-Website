@@ -44,7 +44,7 @@ export function structure(S: StructureBuilder) {
               singleton(S, "siteSettings", "サイト設定"),
               singleton(S, "homepage", "ホームページ"),
               singleton(S, "navigation", "ナビゲーション"),
-              singleton(S, "globalResources", "グローバルリソース"),
+              singleton(S, "sidebar", "サイドバー・フッター"),
             ]),
         ),
 

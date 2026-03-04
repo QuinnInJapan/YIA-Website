@@ -5,20 +5,19 @@ export default defineType({
   name: "content",
   title: "コンテンツセクション",
   type: "object",
+  description: "汎用コンテンツブロック（説明文、情報テーブル、チェックリスト、資料リンクなど）",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "コンテンツセクション",
-      subtitle: subtitle || "Content",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "コンテンツセクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Content",
       media: DocumentTextIcon,
     }),
   },
   fields: [
     defineField({ name: "id", title: "ID", type: "string" }),
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
-    defineField({ name: "descriptionJa", title: "説明（日本語）", type: "text" }),
-    defineField({ name: "descriptionEn", title: "説明（英語）", type: "text" }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString" }),
+    defineField({ name: "description", title: "説明", type: "internationalizedArrayText" }),
     defineField({
       name: "infoTable",
       title: "情報テーブル",
@@ -33,10 +32,8 @@ export default defineType({
         {
           type: "object",
           fields: [
-            defineField({ name: "labelJa", title: "ラベル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "labelEn", title: "ラベル（英語）", type: "string" }),
-            defineField({ name: "noteJa", title: "備考（日本語）", type: "string" }),
-            defineField({ name: "noteEn", title: "備考（英語）", type: "string" }),
+            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+            defineField({ name: "note", title: "備考", type: "internationalizedArrayString" }),
           ],
         },
       ],
@@ -47,8 +44,7 @@ export default defineType({
       type: "array",
       of: [{ type: "documentLink" }],
     }),
-    defineField({ name: "noteJa", title: "備考（日本語）", type: "text" }),
-    defineField({ name: "noteEn", title: "備考（英語）", type: "text" }),
+    defineField({ name: "note", title: "備考", type: "internationalizedArrayText" }),
     defineField({
       name: "images",
       title: "画像",

@@ -1,8 +1,9 @@
+import { ja, en } from "@/lib/i18n";
+import type { I18nString } from "@/lib/i18n";
+
 interface ChecklistItem {
-  labelJa: string;
-  labelEn?: string;
-  noteJa?: string;
-  noteEn?: string;
+  label: I18nString;
+  note?: I18nString;
 }
 
 interface ChecklistProps {
@@ -14,16 +15,16 @@ export default function Checklist({ items }: ChecklistProps) {
     <ul className="checklist">
       {items.map((it, i) => (
         <li className="checklist__item" key={i}>
-          <strong>{it.labelJa}</strong>
-          {it.noteJa && (
-            <span className="checklist__note"> — {it.noteJa}</span>
+          <strong>{ja(it.label)}</strong>
+          {ja(it.note) && (
+            <span className="checklist__note"> — {ja(it.note)}</span>
           )}
-          {it.labelEn && (
+          {en(it.label) && (
             <>
               <br />
               <span className="checklist__label-en" lang="en">
-                {it.labelEn}
-                {it.noteEn ? ` — ${it.noteEn}` : ""}
+                {en(it.label)}
+                {en(it.note) ? ` — ${en(it.note)}` : ""}
               </span>
             </>
           )}

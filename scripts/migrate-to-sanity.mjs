@@ -67,8 +67,7 @@ function addKeys(value) {
 
 /**
  * Process schedule sections:
- *  - rename `type` → `scheduleType`
- *  - convert rows that are string[][] → JSON string
+ *  - convert rows that are string[][] → JSON string for tableSchedule
  */
 function processScheduleSections(obj) {
   if (Array.isArray(obj)) {
@@ -79,11 +78,7 @@ function processScheduleSections(obj) {
     for (const [k, v] of Object.entries(obj)) {
       out[k] = processScheduleSections(v);
     }
-    if (out._type === 'schedule') {
-      if ('type' in out) {
-        out.scheduleType = out.type;
-        delete out.type;
-      }
+    if (out._type === 'tableSchedule') {
       if (
         Array.isArray(out.rows) &&
         out.rows.length > 0 &&
@@ -128,7 +123,7 @@ const documents = [];
 const singletons = [
   { key: 'site', _id: 'siteSettings', _type: 'siteSettings' },
   { key: 'navigation', _id: 'navigation', _type: 'navigation' },
-  { key: 'globalResources', _id: 'globalResources', _type: 'globalResources' },
+  { key: 'sidebar', _id: 'sidebar', _type: 'sidebar' },
   { key: 'homepage', _id: 'homepage', _type: 'homepage' },
 ];
 

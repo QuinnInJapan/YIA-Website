@@ -5,9 +5,7 @@ export default defineType({
   title: "用語定義",
   type: "object",
   fields: [
-    defineField({ name: "termJa", title: "用語（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "termEn", title: "用語（英語）", type: "string" }),
-    defineField({ name: "definitionJa", title: "定義（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "definitionEn", title: "定義（英語）", type: "string" }),
+    defineField({ name: "term", title: "用語", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({ name: "definition", title: "定義", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
   ],
 });

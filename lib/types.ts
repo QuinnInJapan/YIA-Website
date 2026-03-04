@@ -9,31 +9,24 @@
  * and the renderers in build.js.
  */
 
+import type { I18nString } from "@/lib/i18n";
+
 // ─── Atomic / Reusable Types ────────────────────────────────────────
 
-export interface BilingualText {
-  ja: string;
-  en: string;
-}
-
 export interface InfoRow {
-  labelJa: string;
-  labelEn?: string;
-  valueJa: string;
-  valueEn?: string;
+  label: I18nString;
+  value: I18nString;
 }
 
 export interface Document {
-  label: string;
-  labelEn?: string;
+  label: I18nString;
   url: string;
   type?: string;
 }
 
 export interface ImageFile {
   file: string;
-  captionJa?: string;
-  captionEn?: string;
+  caption?: I18nString;
 }
 
 export interface EventFlyer {
@@ -45,23 +38,20 @@ export interface EventFlyer {
   altEn?: string;
 }
 
-export interface ResourceLink {
-  type: "youtube";
+export interface LinkItem {
+  title: I18nString;
   url: string;
-  titleJa: string;
-  titleEn?: string;
+  type?: "document" | "youtube" | "website";
+  fileType?: string;
 }
 
 export interface Definition {
-  termJa: string;
-  termEn?: string;
-  definitionJa: string;
-  definitionEn?: string;
+  term: I18nString;
+  definition: I18nString;
 }
 
 export interface SisterCity {
-  nameJa: string;
-  nameEn: string;
+  name: I18nString;
   country: string;
   countryJa?: string;
   image?: string;
@@ -69,8 +59,7 @@ export interface SisterCity {
 }
 
 export interface GroupScheduleRow {
-  name: string;
-  nameEn?: string;
+  name: I18nString;
   day: string;
   time: string;
   location: string;
@@ -83,71 +72,66 @@ export interface GroupScheduleRow {
 export interface ScheduleDateEntry {
   date: string;
   time?: string;
-  locationJa?: string;
-  locationEn?: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
+  location?: I18nString;
+  description?: I18nString;
 }
 
 export interface BoardMember {
   name: string;
-  roleJa: string;
-  roleEn: string;
+  role: I18nString;
 }
 
 // ─── Section Types (page.sections[]) ────────────────────────────────
 
 export interface WarningsSection {
   _type: "warnings";
-  items: BilingualText[];
+  items: I18nString[];
 }
 
 export interface ContentSection {
   _type: "content";
   id?: string;
-  titleJa: string;
-  titleEn?: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
+  title?: I18nString;
+  description?: I18nString;
   infoTable?: InfoRow[];
-  checklist?: { labelJa: string; labelEn?: string; noteJa?: string; noteEn?: string }[];
+  checklist?: { label: I18nString; note?: I18nString }[];
   documents?: Document[];
-  noteJa?: string;
-  noteEn?: string;
+  note?: I18nString;
   images?: ImageFile[];
   schedule?: { city: string; period: string }[];
 }
 
 export interface InfoTableSection {
   _type: "infoTable";
-  titleJa: string;
-  titleEn: string;
+  title: I18nString;
   rows: InfoRow[];
-  appointmentNote?: BilingualText;
-  additionalLanguageNote?: BilingualText;
-  otherNotes?: BilingualText;
+  appointmentNote?: I18nString;
+  additionalLanguageNote?: I18nString;
+  otherNotes?: I18nString;
 }
 
-export interface OtherNotesSection {
-  _type: "otherNotes";
-  ja: string;
-  en: string;
-}
-
-export interface ScheduleSection {
-  _type: "schedule";
-  titleJa: string;
-  titleEn: string;
-  subtype?: "dated";
-  // Regular schedule fields (weekly/group/event)
-  type?: "weekly" | "group" | "event";
+export interface TableScheduleSection {
+  _type: "tableSchedule";
+  title: I18nString;
   columns?: string[];
   columnsEn?: string[];
-  rows?: string[][] | GroupScheduleRow[];
-  // Dated schedule fields
+  rows?: string[][] | string;
+}
+
+export interface GroupScheduleSection {
+  _type: "groupSchedule";
+  title: I18nString;
+  columns?: string[];
+  columnsEn?: string[];
+  groups?: GroupScheduleRow[];
+}
+
+export interface EventScheduleSection {
+  _type: "eventSchedule";
+  title: I18nString;
   entries?: ScheduleDateEntry[];
   entry?: { date: string; time?: string };
-  venue?: { locationJa: string; locationEn?: string };
+  venue?: { location: I18nString };
 }
 
 export interface GallerySection {
@@ -157,31 +141,26 @@ export interface GallerySection {
 
 export interface SisterCitiesSection {
   _type: "sisterCities";
-  titleJa: string;
-  titleEn: string;
+  title: I18nString;
   cities: SisterCity[];
 }
 
 export interface DefinitionsSection {
   _type: "definitions";
-  titleJa: string;
-  titleEn: string;
+  title: I18nString;
   items: Definition[];
 }
 
-export interface ResourcesSection {
-  _type: "resources";
-  titleJa: string;
-  titleEn: string;
-  items: ResourceLink[];
+export interface LinksSection {
+  _type: "links";
+  title: I18nString;
+  items: LinkItem[];
 }
 
 export interface HistorySection {
   _type: "history";
-  titleJa: string;
-  titleEn: string;
-  introJa?: string;
-  introEn?: string;
+  title: I18nString;
+  intro?: I18nString;
   columns?: string[];
   columnsEn?: string[];
   years?: { year: string; cuisines: string }[];
@@ -189,13 +168,10 @@ export interface HistorySection {
 
 export interface FairTradeSection {
   _type: "fairTrade";
-  titleJa: string;
-  titleEn: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
+  title: I18nString;
+  description?: I18nString;
   priceList?: { type: string; weight: string; price: string }[];
-  deliveryJa?: string;
-  deliveryEn?: string;
+  delivery?: I18nString;
 }
 
 export interface FlyersSection {
@@ -203,32 +179,22 @@ export interface FlyersSection {
   items: EventFlyer[];
 }
 
-export interface DocumentsSection {
-  _type: "documents";
-  titleJa: string;
-  titleEn: string;
-  items: Document[];
-}
-
 export interface BoardMembersSection {
   _type: "boardMembers";
-  titleJa: string;
-  titleEn: string;
+  title: I18nString;
   asOf?: string;
   members: BoardMember[];
 }
 
 export interface FeeTableSection {
   _type: "feeTable";
-  titleJa: string;
-  titleEn: string;
-  rows: { typeJa: string; typeEn?: string; fee: string }[];
+  title: I18nString;
+  rows: { memberType: I18nString; fee: string }[];
 }
 
 export interface DirectoryListSection {
   _type: "directoryList";
-  titleJa: string;
-  titleEn: string;
+  title: I18nString;
   entries: { nameJa: string; tel: string; url?: string }[];
 }
 
@@ -236,16 +202,16 @@ export type PageSection =
   | WarningsSection
   | ContentSection
   | InfoTableSection
-  | OtherNotesSection
-  | ScheduleSection
+  | TableScheduleSection
+  | GroupScheduleSection
+  | EventScheduleSection
   | GallerySection
   | SisterCitiesSection
   | DefinitionsSection
-  | ResourcesSection
+  | LinksSection
   | HistorySection
   | FairTradeSection
   | FlyersSection
-  | DocumentsSection
   | BoardMembersSection
   | FeeTableSection
   | DirectoryListSection;
@@ -256,26 +222,23 @@ export interface SiteSettings {
   _type: "siteSettings";
   org: {
     designation: string;
-    nameJa: string;
-    nameEn: string;
+    name: I18nString;
     abbreviation: string;
     founded: string;
     npoEstablished: string;
     lastUpdated: string;
-    descriptionJa: string;
-    descriptionEn: string;
+    description: I18nString;
   };
   contact: {
     postalCode: string;
-    addressJa: string;
-    addressEn: string;
+    address: I18nString;
     tel: string;
     fax: string;
     email: string;
     website: string;
     youtube?: string;
   };
-  businessHours: BilingualText;
+  businessHours: I18nString;
   copyright: string;
   googleMapsEmbedUrl: string;
 }
@@ -283,28 +246,24 @@ export interface SiteSettings {
 export interface Category {
   _type: "category";
   id: string;
-  labelJa: string;
-  labelEn: string;
+  label: I18nString;
   heroImage: string;
 }
 
 export interface Navigation {
   _type: "navigation";
   categories: {
-    categoryId: string;
+    categoryRef: { _type: "reference"; _ref: string };
     items: {
       id: string;
-      pageRef: string;
-      titleJa: string;
-      titleEasy?: string;
-      titleEn: string;
+      pageRef: { _type: "reference"; _ref: string };
+      title: I18nString;
     }[];
   }[];
   orgLinks: {
     id: string;
-    pageRef: string;
-    titleJa: string;
-    titleEn: string;
+    pageRef: { _type: "reference"; _ref: string };
+    title: I18nString;
   }[];
 }
 
@@ -312,37 +271,31 @@ export interface Announcement {
   _type: "announcement";
   id: string;
   date?: string;
-  urgent?: boolean;
-  titleJa: string;
-  titleEn?: string;
-  contentJa: string;
-  contentEn: string;
+  pinned?: boolean;
+  title: I18nString;
+  content: I18nString;
   documents?: Document[];
   image?: string;
 }
 
-export interface GlobalResources {
-  _type: "globalResources";
-  accessMap: { image: string; labelJa: string; labelEn?: string };
-  youtubeLink: { url: string; labelJa: string; labelEn?: string };
+export interface Sidebar {
+  _type: "sidebar";
+  accessMap: { image: string; label: I18nString };
+  youtubeLink: { url: string; label: I18nString };
   counselingImage?: string;
   memberRecruitment: {
-    labelJa: string;
-    labelEasy?: string;
-    labelEn?: string;
+    label: I18nString;
     url: string;
   };
   activityRequestForm?: Document;
-  fairTrade?: { labelJa: string; labelEn?: string };
+  fairTrade?: { label: I18nString };
   resourceBoxes: ResourceBox[];
   documents: Document[];
 }
 
 export interface ResourceBox {
   id?: string;
-  titleJa: string;
-  titleEasy?: string;
-  titleEn?: string;
+  title: I18nString;
   url?: string;
   attribution?: string;
   links: {
@@ -360,18 +313,16 @@ export interface Homepage {
   template?: string;
   hero: {
     image: string;
-    taglineJa: string;
-    taglineEn: string;
+    tagline: I18nString;
   };
   activityGrid: {
     images: string[];
     stat: {
       value: number;
-      labelJa: string;
-      labelEn: string;
+      label: I18nString;
     };
   };
-  announcementIds: string[];
+  announcementRefs: { _type: "reference"; _ref: string }[];
   eventFlyers?: EventFlyer[];
 }
 
@@ -381,14 +332,9 @@ export interface Page {
   slug: string;
   template?: string;
   category?: "shien" | "kehatsu" | "kouryu" | "kokusaikoken";
-  titleJa: string;
-  titleEn?: string;
-  titleEasy?: string;
-  subtitleJa?: string;
-  subtitleEn?: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
-  descriptionEasy?: string;
+  title: I18nString;
+  subtitle?: I18nString;
+  description?: I18nString;
   images?: ImageFile[];
   sections: PageSection[];
 }
@@ -400,28 +346,7 @@ export interface SiteData {
   categories: Category[];
   navigation: Navigation;
   announcements: Announcement[];
-  globalResources: GlobalResources;
+  sidebar: Sidebar;
   homepage: Homepage;
   pages: Page[];
 }
-
-// ─── Renderer Coverage Map ──────────────────────────────────────────
-//
-// Section _type          → Renderer function          → CSS Component
-// ──────────────────────────────────────────────────────────────────
-// warnings               → sectionRenderers.warnings   → .callout--warning
-// content                → sectionRenderers.content     → .page-section
-// infoTable              → sectionRenderers.infoTable   → .info-dl
-// otherNotes             → sectionRenderers.otherNotes  → .bilingual-block
-// schedule               → sectionRenderers.schedule    → .schedule-table / .info-dl
-// gallery                → sectionRenderers.gallery     → .photo-gallery
-// sisterCities           → sectionRenderers.sisterCities → .sister-city-showcase
-// definitions            → sectionRenderers.definitions → .definition-card
-// resources              → sectionRenderers.resources   → .resource-link
-// history                → sectionRenderers.history     → .bilingual-block + .schedule-table
-// fairTrade              → sectionRenderers.fairTrade   → .bilingual-block + .schedule-table + .info-dl
-// flyers                 → sectionRenderers.flyers      → .event-flyer-pair
-// documents              → sectionRenderers.documents   → .doc-list
-// boardMembers           → sectionRenderers.boardMembers → .board-grid
-// feeTable               → sectionRenderers.feeTable   → .fee-table
-// directoryList          → sectionRenderers.directoryList → .directory-list

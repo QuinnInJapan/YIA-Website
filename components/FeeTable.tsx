@@ -1,6 +1,8 @@
+import { ja, en } from "@/lib/i18n";
+import type { I18nString } from "@/lib/i18n";
+
 interface FeeRow {
-  typeJa: string;
-  typeEn?: string;
+  memberType: I18nString;
   fee: string;
 }
 
@@ -21,7 +23,7 @@ export default function FeeTable({ rows }: FeeTableProps) {
         {rows.map((r, i) => (
           <tr key={i}>
             <td>
-              {r.typeJa} {r.typeEn}
+              {ja(r.memberType)} {en(r.memberType)}
             </td>
             <td>{r.fee}</td>
           </tr>

@@ -8,16 +8,15 @@ export default defineType({
     prepare: () => ({ title: "ホームページ" }),
   },
   fields: [
-    defineField({ name: "slug", title: "スラッグ", type: "string" }),
-    defineField({ name: "template", title: "テンプレート", type: "string" }),
+    defineField({ name: "slug", title: "スラッグ", type: "string", hidden: true }),
+    defineField({ name: "template", title: "テンプレート", type: "string", hidden: true }),
     defineField({
       name: "hero",
       title: "ヒーロー",
       type: "object",
       fields: [
         defineField({ name: "image", title: "画像", type: "string" }),
-        defineField({ name: "taglineJa", title: "キャッチコピー（日本語）", type: "string" }),
-        defineField({ name: "taglineEn", title: "キャッチコピー（英語）", type: "string" }),
+        defineField({ name: "tagline", title: "キャッチコピー", type: "internationalizedArrayString" }),
       ],
     }),
     defineField({
@@ -37,17 +36,16 @@ export default defineType({
           type: "object",
           fields: [
             defineField({ name: "value", title: "値", type: "number" }),
-            defineField({ name: "labelJa", title: "ラベル（日本語）", type: "string" }),
-            defineField({ name: "labelEn", title: "ラベル（英語）", type: "string" }),
+            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
           ],
         }),
       ],
     }),
     defineField({
-      name: "announcementIds",
-      title: "お知らせID",
+      name: "announcementRefs",
+      title: "お知らせ",
       type: "array",
-      of: [{ type: "string" }],
+      of: [{ type: "reference", to: [{ type: "announcement" }] }],
     }),
     defineField({
       name: "eventFlyers",

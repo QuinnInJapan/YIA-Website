@@ -5,19 +5,18 @@ export default defineType({
   name: "fairTrade",
   title: "フェアトレードセクション",
   type: "object",
+  description: "フェアトレード商品の説明・価格表・配送情報",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "フェアトレードセクション",
-      subtitle: subtitle || "Fair Trade",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "フェアトレードセクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Fair Trade",
       media: BasketIcon,
     }),
   },
   fields: [
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "descriptionJa", title: "説明（日本語）", type: "text" }),
-    defineField({ name: "descriptionEn", title: "説明（英語）", type: "text" }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({ name: "description", title: "説明", type: "internationalizedArrayText" }),
     defineField({
       name: "priceList",
       title: "価格表",
@@ -33,7 +32,6 @@ export default defineType({
         },
       ],
     }),
-    defineField({ name: "deliveryJa", title: "配送について（日本語）", type: "text" }),
-    defineField({ name: "deliveryEn", title: "配送について（英語）", type: "text" }),
+    defineField({ name: "delivery", title: "配送について", type: "internationalizedArrayText" }),
   ],
 });

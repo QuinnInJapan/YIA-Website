@@ -5,17 +5,17 @@ export default defineType({
   name: "directoryList",
   title: "一覧セクション",
   type: "object",
+  description: "連絡先一覧（名称・電話番号・URLのリスト）",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "一覧セクション",
-      subtitle: subtitle || "Directory List",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "一覧セクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Directory List",
       media: UlistIcon,
     }),
   },
   fields: [
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({
       name: "entries",
       title: "一覧",

@@ -4,22 +4,23 @@ import type {
   WarningsSection,
   ContentSection,
   InfoTableSection,
-  OtherNotesSection,
-  ScheduleSection,
+  TableScheduleSection,
+  GroupScheduleSection,
+  EventScheduleSection,
   GallerySection,
   SisterCitiesSection,
   DefinitionsSection,
-  ResourcesSection,
+  LinksSection,
   HistorySection,
   FairTradeSection,
   FlyersSection,
-  DocumentsSection,
   BoardMembersSection,
   FeeTableSection,
   DirectoryListSection,
   ImageFile,
 } from "@/lib/types";
 import { tocId } from "@/lib/helpers";
+import { ja, en } from "@/lib/i18n";
 import { formatDateJa, formatDateEn } from "@/lib/date-format";
 import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
 import path from "path";
@@ -64,9 +65,9 @@ function buildGalleryImages(images: ImageFile[]) {
   });
   return filtered.map((img) => ({
     src: resolveImage(img.file),
-    alt: img.captionJa || img.file,
-    captionJa: img.captionJa,
-    captionEn: img.captionEn,
+    alt: ja(img.caption) || img.file,
+    captionJa: ja(img.caption),
+    captionEn: en(img.caption),
   }));
 }
 
@@ -107,7 +108,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
       case "warnings": {
         const s = sec as WarningsSection;
         for (const w of s.items) {
-          current.push(<Callout ja={w.ja} en={w.en} variant="warning" />);
+          current.push(<Callout ja={ja(w)} en={en(w)} variant="warning" />);
         }
         flush();
         break;
@@ -115,10 +116,12 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "content": {
         const s = sec as ContentSection;
-        addTocHeader(s.titleJa, s.titleEn || "");
-        if (s.descriptionJa) {
+        if (ja(s.title)) {
+          addTocHeader(ja(s.title), en(s.title));
+        }
+        if (ja(s.description)) {
           current.push(
-            <BilingualBlock ja={s.descriptionJa} en={s.descriptionEn || ""} />
+            <BilingualBlock ja={ja(s.description)} en={en(s.description)} />
           );
         }
         if (s.infoTable) {
@@ -130,9 +133,9 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         if (s.documents?.length) {
           current.push(<DocList docs={s.documents} />);
         }
-        if (s.noteJa) {
+        if (ja(s.note)) {
           current.push(
-            <Callout ja={`※ ${s.noteJa}`} en={s.noteEn || ""} />
+            <Callout ja={`※ ${ja(s.note)}`} en={en(s.note)} />
           );
         }
         if (s.images?.length) {
@@ -147,20 +150,24 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "infoTable": {
         const s = sec as InfoTableSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         const infoRows = s.rows.map((row) => {
-          if (s.appointmentNote && row.labelJa === "予約") {
+          if (s.appointmentNote && ja(row.label) === "予約") {
             return {
               ...row,
-              valueJa: `${row.valueJa}\n${s.appointmentNote.ja}`,
-              valueEn: `${row.valueEn || ""}\n${s.appointmentNote.en}`,
+              value: [
+                { _key: "ja", value: `${ja(row.value)}\n${ja(s.appointmentNote)}` },
+                { _key: "en", value: `${en(row.value)}\n${en(s.appointmentNote)}` },
+              ],
             };
           }
-          if (s.additionalLanguageNote && row.labelJa === "対応言語") {
+          if (s.additionalLanguageNote && ja(row.label) === "対応言語") {
             return {
               ...row,
-              valueJa: `${row.valueJa}\n${s.additionalLanguageNote.ja}`,
-              valueEn: `${row.valueEn || ""}\n${s.additionalLanguageNote.en}`,
+              value: [
+                { _key: "ja", value: `${ja(row.value)}\n${ja(s.additionalLanguageNote)}` },
+                { _key: "en", value: `${en(row.value)}\n${en(s.additionalLanguageNote)}` },
+              ],
             };
           }
           return row;
@@ -168,101 +175,84 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         current.push(<InfoTable rows={infoRows} />);
         if (s.otherNotes) {
           current.push(
-            <BilingualBlock ja={s.otherNotes.ja} en={s.otherNotes.en} />
+            <BilingualBlock ja={ja(s.otherNotes)} en={en(s.otherNotes)} />
           );
         }
         flush();
         break;
       }
 
-      case "otherNotes": {
-        const s = sec as OtherNotesSection;
-        current.push(<BilingualBlock ja={s.ja} en={s.en} />);
+      case "tableSchedule": {
+        const s = sec as TableScheduleSection;
+        addTocHeader(ja(s.title), en(s.title));
+        let rows: string[][] = [];
+        if (typeof s.rows === "string") {
+          try { rows = JSON.parse(s.rows); } catch { rows = []; }
+        } else if (Array.isArray(s.rows)) {
+          rows = s.rows;
+        }
+        current.push(
+          <ScheduleTable
+            columns={s.columns || []}
+            columnsEn={s.columnsEn}
+            rows={rows}
+          />
+        );
         flush();
         break;
       }
 
-      case "schedule": {
-        const s = sec as ScheduleSection;
-        addTocHeader(s.titleJa, s.titleEn);
-        if (s.subtype === "dated") {
-          if (s.entries) {
-            const rows = s.entries.map((entry) => {
-              const cells: string[] = [formatDateJa(entry.date)];
-              if (entry.time) cells.push(entry.time);
-              if (entry.locationJa) cells.push(entry.locationJa);
-              if (entry.descriptionJa) cells.push(entry.descriptionJa);
-              return cells;
+      case "groupSchedule": {
+        const s = sec as GroupScheduleSection;
+        addTocHeader(ja(s.title), en(s.title));
+        current.push(
+          <ScheduleTable
+            columns={s.columns || []}
+            columnsEn={s.columnsEn}
+            rows={s.groups || []}
+            type="group"
+          />
+        );
+        flush();
+        break;
+      }
+
+      case "eventSchedule": {
+        const s = sec as EventScheduleSection;
+        addTocHeader(ja(s.title), en(s.title));
+        if (s.entries) {
+          const rows = s.entries.map((entry) => {
+            const cells: string[] = [formatDateJa(entry.date)];
+            if (entry.time) cells.push(entry.time);
+            if (ja(entry.location)) cells.push(ja(entry.location));
+            if (ja(entry.description)) cells.push(ja(entry.description));
+            return cells;
+          });
+          const cols = ["日付 Date"];
+          if (s.entries[0]?.time) cols.push("時間 Time");
+          if (ja(s.entries[0]?.location)) cols.push("場所 Location");
+          if (ja(s.entries[0]?.description)) cols.push("内容 Description");
+          current.push(<ScheduleTable columns={cols} rows={rows} />);
+        } else if (s.entry) {
+          const infoRows = [
+            {
+              label: [{ _key: "ja", value: "日時" }, { _key: "en", value: "Date" }],
+              value: [
+                { _key: "ja", value: s.entry.time ? `${formatDateJa(s.entry.date)} ${s.entry.time}` : formatDateJa(s.entry.date) },
+                { _key: "en", value: formatDateEn(s.entry.date) },
+              ],
+            },
+          ];
+          if (s.venue) {
+            infoRows.push({
+              label: [{ _key: "ja", value: "会場" }, { _key: "en", value: "Venue" }],
+              value: [
+                { _key: "ja", value: ja(s.venue.location) },
+                { _key: "en", value: en(s.venue.location) },
+              ],
             });
-            const cols = ["日付 Date"];
-            if (s.entries[0]?.time) cols.push("時間 Time");
-            if (s.entries[0]?.locationJa) cols.push("場所 Location");
-            if (s.entries[0]?.descriptionJa) cols.push("内容 Description");
-            current.push(<ScheduleTable columns={cols} rows={rows} />);
-          } else if (s.entry) {
-            const entry = s.entry;
-            if (s.venue) {
-              current.push(
-                <InfoTable
-                  rows={[
-                    {
-                      labelJa: "日時",
-                      labelEn: "Date",
-                      valueJa: entry.time
-                        ? `${formatDateJa(entry.date)} ${entry.time}`
-                        : formatDateJa(entry.date),
-                      valueEn: formatDateEn(entry.date),
-                    },
-                    {
-                      labelJa: "会場",
-                      labelEn: "Venue",
-                      valueJa: s.venue.locationJa,
-                      valueEn: s.venue.locationEn,
-                    },
-                  ]}
-                />
-              );
-            } else {
-              current.push(
-                <InfoTable
-                  rows={[
-                    {
-                      labelJa: "日時",
-                      labelEn: "Date",
-                      valueJa: entry.time
-                        ? `${formatDateJa(entry.date)} ${entry.time}`
-                        : formatDateJa(entry.date),
-                      valueEn: formatDateEn(entry.date),
-                    },
-                  ]}
-                />
-              );
-            }
           }
-        } else {
-          // Sanity stores `type` as `scheduleType` to avoid reserved field name
-          const sAny = s as unknown as Record<string, unknown>;
-          const scheduleType = s.type || sAny.scheduleType as string | undefined;
-
-          // Sanity may store group rows under `groupRows` instead of `rows`
-          const sanityGroupRows = sAny.groupRows as typeof s.rows | undefined;
-
-          // rows may be a JSON string (from Sanity) for string[][] schedules
-          let scheduleRows = (scheduleType === "group" && sanityGroupRows?.length)
-            ? sanityGroupRows
-            : s.rows || [];
-          if (typeof scheduleRows === "string") {
-            try { scheduleRows = JSON.parse(scheduleRows); } catch { scheduleRows = []; }
-          }
-
-          current.push(
-            <ScheduleTable
-              columns={s.columns || []}
-              columnsEn={s.columnsEn}
-              rows={scheduleRows}
-              type={scheduleType}
-            />
-          );
+          current.push(<InfoTable rows={infoRows} />);
         }
         flush();
         break;
@@ -280,7 +270,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "sisterCities": {
         const s = sec as SisterCitiesSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         current.push(<SisterCityCards cities={s.cities} />);
         flush();
         break;
@@ -288,19 +278,39 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "definitions": {
         const s = sec as DefinitionsSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         for (const def of s.items) {
-          current.push(<DefinitionCard {...def} />);
+          current.push(<DefinitionCard term={def.term} definition={def.definition} />);
         }
         flush();
         break;
       }
 
-      case "resources": {
-        const s = sec as ResourcesSection;
-        addTocHeader(s.titleJa, s.titleEn);
-        for (const res of s.items) {
-          current.push(<ResourceLink {...res} />);
+      case "links": {
+        const s = sec as LinksSection;
+        addTocHeader(ja(s.title), en(s.title));
+        const docItems = s.items.filter((it) => it.type !== "youtube");
+        const ytItems = s.items.filter((it) => it.type === "youtube");
+        if (docItems.length) {
+          current.push(
+            <DocList
+              docs={docItems.map((it) => ({
+                label: it.title,
+                url: it.url,
+                type: it.fileType,
+              }))}
+            />
+          );
+        }
+        for (const res of ytItems) {
+          current.push(
+            <ResourceLink
+              type="youtube"
+              url={res.url}
+              titleJa={ja(res.title)}
+              titleEn={en(res.title)}
+            />
+          );
         }
         flush();
         break;
@@ -308,10 +318,10 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "history": {
         const s = sec as HistorySection;
-        addTocHeader(s.titleJa, s.titleEn);
-        if (s.introJa) {
+        addTocHeader(ja(s.title), en(s.title));
+        if (ja(s.intro)) {
           current.push(
-            <BilingualBlock ja={s.introJa} en={s.introEn || ""} />
+            <BilingualBlock ja={ja(s.intro)} en={en(s.intro)} />
           );
         }
         if (s.years?.length) {
@@ -330,10 +340,10 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "fairTrade": {
         const s = sec as FairTradeSection;
-        addTocHeader(s.titleJa, s.titleEn);
-        if (s.descriptionJa) {
+        addTocHeader(ja(s.title), en(s.title));
+        if (ja(s.description)) {
           current.push(
-            <BilingualBlock ja={s.descriptionJa} en={s.descriptionEn || ""} />
+            <BilingualBlock ja={ja(s.description)} en={en(s.description)} />
           );
         }
         if (s.priceList) {
@@ -346,15 +356,16 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
             />
           );
         }
-        if (s.deliveryJa) {
+        if (ja(s.delivery)) {
           current.push(
             <InfoTable
               rows={[
                 {
-                  labelJa: "購入方法",
-                  labelEn: "How to Buy",
-                  valueJa: s.deliveryJa,
-                  valueEn: s.deliveryEn || "",
+                  label: [{ _key: "ja", value: "購入方法" }, { _key: "en", value: "How to Buy" }],
+                  value: [
+                    { _key: "ja", value: ja(s.delivery) },
+                    { _key: "en", value: en(s.delivery) },
+                  ],
                 },
               ]}
             />
@@ -371,17 +382,9 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         break;
       }
 
-      case "documents": {
-        const s = sec as DocumentsSection;
-        addTocHeader(s.titleJa, s.titleEn);
-        current.push(<DocList docs={s.items} />);
-        flush();
-        break;
-      }
-
       case "boardMembers": {
         const s = sec as BoardMembersSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         current.push(
           <BoardMembers board={{ asOf: s.asOf, members: s.members }} />
         );
@@ -391,7 +394,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "feeTable": {
         const s = sec as FeeTableSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         current.push(<FeeTable rows={s.rows} />);
         flush();
         break;
@@ -399,7 +402,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
       case "directoryList": {
         const s = sec as DirectoryListSection;
-        addTocHeader(s.titleJa, s.titleEn);
+        addTocHeader(ja(s.title), en(s.title));
         current.push(<DirectoryList entries={s.entries} />);
         flush();
         break;

@@ -1594,7 +1594,7 @@
         },
         "optional": true
       },
-      "urgent": {
+      "pinned": {
         "type": "objectAttribute",
         "value": {
           "type": "boolean"

@@ -13,7 +13,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({ name: "url", title: "URL", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
   ],
 });

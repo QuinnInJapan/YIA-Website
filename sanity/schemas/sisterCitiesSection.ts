@@ -5,17 +5,17 @@ export default defineType({
   name: "sisterCities",
   title: "姉妹都市セクション",
   type: "object",
+  description: "姉妹都市のカード一覧表示",
   preview: {
-    select: { title: "titleJa", subtitle: "titleEn" },
-    prepare: ({ title, subtitle }: { title?: string; subtitle?: string }) => ({
-      title: title || "姉妹都市セクション",
-      subtitle: subtitle || "Sister Cities",
+    select: { title: "title" },
+    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+      title: title?.find((t) => t._key === "ja")?.value || "姉妹都市セクション",
+      subtitle: title?.find((t) => t._key === "en")?.value || "Sister Cities",
       media: EarthGlobeIcon,
     }),
   },
   fields: [
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({
       name: "cities",
       title: "都市",

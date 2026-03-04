@@ -1,4 +1,5 @@
 import type { InfoRow } from "@/lib/types";
+import { ja, en } from "@/lib/i18n";
 import { Nl2br } from "@/lib/helpers";
 
 interface InfoTableProps {
@@ -10,22 +11,22 @@ export default function InfoTable({ rows }: InfoTableProps) {
     <dl className="info-dl">
       {rows.map((r, i) => {
         const wide =
-          (r.valueJa || "").length > 80 ? " info-dl__row--wide" : "";
+          (ja(r.value) || "").length > 80 ? " info-dl__row--wide" : "";
         return (
           <div className={`info-dl__row${wide}`} key={i}>
             <dt>
-              {r.labelJa}
-              {r.labelEn && (
-                <span className="info-dl__label-en" lang="en"> {r.labelEn}</span>
+              {ja(r.label)}
+              {en(r.label) && (
+                <span className="info-dl__label-en" lang="en"> {en(r.label)}</span>
               )}
             </dt>
             <dd>
-              <Nl2br text={r.valueJa} />
-              {r.valueEn && (
+              <Nl2br text={ja(r.value)} />
+              {en(r.value) && (
                 <>
                   <br />
                   <span className="info-dl__value-en" lang="en">
-                    <Nl2br text={r.valueEn} />
+                    <Nl2br text={en(r.value)} />
                   </span>
                 </>
               )}

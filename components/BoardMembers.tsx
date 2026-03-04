@@ -1,4 +1,5 @@
 import type { BoardMember } from "@/lib/types";
+import { ja, en } from "@/lib/i18n";
 import { formatDateJa } from "@/lib/date-format";
 
 interface BoardMembersProps {
@@ -22,7 +23,7 @@ export default function BoardMembers({ board }: BoardMembersProps) {
         {(board.members || []).map((m, i) => (
           <div className="board-member" key={i}>
             <div className="board-member__role">
-              {m.roleJa} {m.roleEn}
+              {ja(m.role)} {en(m.role)}
             </div>
             <div>{m.name}</div>
           </div>

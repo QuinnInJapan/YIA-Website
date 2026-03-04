@@ -6,9 +6,7 @@ export default defineType({
   type: "object",
   fields: [
     defineField({ name: "id", title: "ID", type: "string" }),
-    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "titleEasy", title: "タイトル（やさしい日本語）", type: "string" }),
-    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
+    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "url", title: "URL", type: "string" }),
     defineField({ name: "attribution", title: "出典", type: "string" }),
     defineField({

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Document } from "@/lib/types";
+import { ja, en } from "@/lib/i18n";
 import PdfViewer from "./PdfViewer";
 
 interface DocListProps {
@@ -32,7 +33,7 @@ export default function DocList({ docs, sidebar }: DocListProps) {
     }
 
     setViewerUrl(doc.url);
-    setViewerTitle(doc.label + (doc.labelEn ? ` / ${doc.labelEn}` : ""));
+    setViewerTitle(ja(doc.label) + (en(doc.label) ? ` / ${en(doc.label)}` : ""));
   }
 
   return (
@@ -42,8 +43,8 @@ export default function DocList({ docs, sidebar }: DocListProps) {
           <li className="doc-list__item" key={i}>
             <a href={d.url} onClick={(e) => handleClick(e, d)}>
               <span className="doc-list__label">
-                {d.label}
-                {d.labelEn ? ` / ${d.labelEn}` : ""}
+                {ja(d.label)}
+                {en(d.label) ? ` / ${en(d.label)}` : ""}
               </span>{" "}
               <span className="doc-list__type">({d.type || "PDF"})</span>
             </a>

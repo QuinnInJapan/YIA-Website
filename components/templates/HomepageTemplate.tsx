@@ -3,8 +3,9 @@ import Link from "next/link";
 import {
   getSiteData,
   getEnrichedNavigation,
-  getAnnouncementsByIds,
+  getAnnouncementsByRefs,
 } from "@/lib/data";
+import { ja, en } from "@/lib/i18n";
 import { resolveImage } from "@/lib/images";
 import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
@@ -16,11 +17,11 @@ export default async function HomepageTemplate() {
   const data = await getSiteData();
   const hp = data.homepage;
   const nav = await getEnrichedNavigation();
-  const sidebar = data.globalResources;
+  const sidebar = data.sidebar;
   const heroImage = resolveImage(hp.hero.image);
 
   // Inline announcements list
-  const hpAnnouncements = await getAnnouncementsByIds(hp.announcementIds);
+  const hpAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
 
   // Activity mosaic
   const galleryImages = hp.activityGrid.images;
@@ -38,10 +39,10 @@ export default async function HomepageTemplate() {
           className="hero-viewport__img"
         />
         <div className="hero__overlay">
-          <h1 className="hero__title">{data.site.org.nameJa}</h1>
-          <p className="hero__subtitle">{data.site.org.nameEn}</p>
-          <p className="hero__tagline">{hp.hero.taglineJa}</p>
-          <p className="hero__tagline-en" lang="en">{hp.hero.taglineEn}</p>
+          <h1 className="hero__title">{ja(data.site.org.name)}</h1>
+          <p className="hero__subtitle">{en(data.site.org.name)}</p>
+          <p className="hero__tagline">{ja(hp.hero.tagline)}</p>
+          <p className="hero__tagline-en" lang="en">{en(hp.hero.tagline)}</p>
         </div>
       </section>
 
@@ -67,8 +68,8 @@ export default async function HomepageTemplate() {
                       {dateDisplay}
                     </time>
                     <span className="oshirase-title">
-                      <span className="oshirase-title__ja">{a.titleJa}</span>
-                      <span className="oshirase-title__en" lang="en">{a.titleEn}</span>
+                      <span className="oshirase-title__ja">{ja(a.title)}</span>
+                      <span className="oshirase-title__en" lang="en">{en(a.title)}</span>
                     </span>
                   </Link>
                 );
@@ -107,9 +108,9 @@ export default async function HomepageTemplate() {
                   fill
                 />
                 <div className="program-card__overlay">
-                  <h3 className="program-card__title">{cat.labelJa}</h3>
+                  <h3 className="program-card__title">{ja(cat.label)}</h3>
                   <span className="program-card__title-en" lang="en">
-                    {cat.labelEn}
+                    {en(cat.label)}
                   </span>
                   <div className="program-card__links">
                     {cat.items.map((it) => (
@@ -118,9 +119,9 @@ export default async function HomepageTemplate() {
                         className="program-card__link"
                         key={it.id}
                       >
-                        <span className="program-card__link-ja">{it.titleJa}</span>
+                        <span className="program-card__link-ja">{ja(it.title)}</span>
                         <span className="program-card__link-en" lang="en">
-                          {it.titleEn}
+                          {en(it.title)}
                         </span>
                       </Link>
                     ))}
@@ -179,8 +180,8 @@ export default async function HomepageTemplate() {
                 {gridStat.value}+
               </div>
               <div className="activity-grid__tile-text">
-                {gridStat.labelJa}
-                <span>{gridStat.labelEn}</span>
+                {ja(gridStat.label)}
+                <span>{en(gridStat.label)}</span>
               </div>
             </div>
             <figure
@@ -217,8 +218,8 @@ export default async function HomepageTemplate() {
               }
             >
               <div className="activity-grid__tile-text">
-                {sidebar.memberRecruitment.labelJa}
-                <span>{sidebar.memberRecruitment.labelEn}</span>
+                {ja(sidebar.memberRecruitment.label)}
+                <span>{en(sidebar.memberRecruitment.label)}</span>
               </div>
             </Link>
             <figure
@@ -295,18 +296,18 @@ export default async function HomepageTemplate() {
             <div className="access-block__info">
               <p className="access-block__name">
                 <span className="access-block__designation">{data.site.org.designation}</span>
-                {data.site.org.nameJa}
+                {ja(data.site.org.name)}
               </p>
               <div className="access-block__address">
                 <p>
                   〒{data.site.contact.postalCode}{" "}
-                  {data.site.contact.addressJa}
+                  {ja(data.site.contact.address)}
                 </p>
-                <p className="access-block__address-en" lang="en">{data.site.contact.addressEn}</p>
+                <p className="access-block__address-en" lang="en">{en(data.site.contact.address)}</p>
               </div>
               <div className="access-block__hours">
-                <p>{data.site.businessHours.ja}</p>
-                <p className="access-block__hours-en" lang="en">{data.site.businessHours.en}</p>
+                <p>{ja(data.site.businessHours)}</p>
+                <p className="access-block__hours-en" lang="en">{en(data.site.businessHours)}</p>
               </div>
             </div>
           </div>

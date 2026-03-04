@@ -5,8 +5,7 @@ export default defineType({
   title: "グループスケジュール行",
   type: "object",
   fields: [
-    defineField({ name: "name", title: "名前", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({ name: "nameEn", title: "名前（英語）", type: "string" }),
+    defineField({ name: "name", title: "名前", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "day", title: "曜日", type: "string", validation: (Rule) => Rule.required() }),
     defineField({ name: "time", title: "時間", type: "string", validation: (Rule) => Rule.required() }),
     defineField({ name: "location", title: "場所", type: "string", validation: (Rule) => Rule.required() }),

@@ -5,6 +5,7 @@ export default defineType({
   name: "flyers",
   title: "チラシセクション",
   type: "object",
+  description: "イベントチラシ画像の日英ペア表示",
   preview: {
     prepare: () => ({ title: "チラシセクション", subtitle: "Flyers", media: ImageIcon }),
   },
