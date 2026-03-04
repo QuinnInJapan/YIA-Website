@@ -606,6 +606,12 @@ ruby rt {
   opacity: 0.8;
 }
 
+.site-footer__docs:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
 .site-footer__docs-title {
   text-transform: uppercase;
   letter-spacing: 0.1em;
