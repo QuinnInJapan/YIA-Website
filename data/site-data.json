@@ -5219,6 +5219,151 @@
           "value": "横須賀国際交流協会は、たくさんの賛助会員からご指導・ご理解をいただいております。ご協力誠にありがとうございます。"
         }
       ]
+    },
+    {
+      "_type": "page",
+      "id": "nihongo-handbook",
+      "slug": "nihongo-handbook",
+      "category": "shien",
+      "title": [
+        {
+          "_key": "ja",
+          "value": "日本語学習・生活ハンドブック"
+        },
+        {
+          "_key": "en",
+          "value": "Japanese Study & Living Handbook"
+        },
+        {
+          "_key": "easy",
+          "value": "にほんご がくしゅう・せいかつ はんどぶっく"
+        }
+      ],
+      "description": [
+        {
+          "_key": "ja",
+          "value": "文化庁が発行する「日本語学習・生活ハンドブック」は、日本で生活する外国人の方が必要とする基本的な情報をまとめた資料です。日本語の学習方法、日常生活のルール、行政手続き、緊急時の対応など、幅広い内容が含まれています。"
+        },
+        {
+          "_key": "en",
+          "value": "The \"Japanese Study & Living Handbook\" published by the Agency for Cultural Affairs provides essential information for foreign residents in Japan — covering Japanese language learning, daily life rules, administrative procedures, and emergency response."
+        }
+      ],
+      "sections": [
+        {
+          "_type": "links",
+          "title": [
+            {
+              "_key": "ja",
+              "value": "言語別ダウンロード"
+            },
+            {
+              "_key": "en",
+              "value": "Download by Language"
+            }
+          ],
+          "items": [
+            {
+              "title": [
+                {
+                  "_key": "ja",
+                  "value": "韓国・朝鮮語版"
+                },
+                {
+                  "_key": "en",
+                  "value": "한국어판"
+                }
+              ],
+              "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/ko_zensho.pdf",
+              "type": "document",
+              "fileType": "PDF"
+            },
+            {
+              "title": [
+                {
+                  "_key": "ja",
+                  "value": "中国語版"
+                },
+                {
+                  "_key": "en",
+                  "value": "中文版"
+                }
+              ],
+              "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/ch_zensho.pdf",
+              "type": "document",
+              "fileType": "PDF"
+            },
+            {
+              "title": [
+                {
+                  "_key": "ja",
+                  "value": "ポルトガル語版"
+                },
+                {
+                  "_key": "en",
+                  "value": "Edição em Português"
+                }
+              ],
+              "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/po_zensho.pdf",
+              "type": "document",
+              "fileType": "PDF"
+            },
+            {
+              "title": [
+                {
+                  "_key": "ja",
+                  "value": "スペイン語版"
+                },
+                {
+                  "_key": "en",
+                  "value": "Edición en Español"
+                }
+              ],
+              "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/sp_zensho.pdf",
+              "type": "document",
+              "fileType": "PDF"
+            },
+            {
+              "title": [
+                {
+                  "_key": "ja",
+                  "value": "英語版"
+                },
+                {
+                  "_key": "en",
+                  "value": "English Edition"
+                }
+              ],
+              "url": "https://www.bunka.go.jp/seisaku/kokugo_nihongo/kyoiku/handbook/pdf/en_zensho.pdf",
+              "type": "document",
+              "fileType": "PDF"
+            }
+          ]
+        },
+        {
+          "_type": "content",
+          "title": [
+            {
+              "_key": "ja",
+              "value": "出典"
+            },
+            {
+              "_key": "en",
+              "value": "Source"
+            }
+          ],
+          "description": [
+            {
+              "_key": "ja",
+              "value": "このハンドブックは文化庁が作成・公開しているものです。"
+            },
+            {
+              "_key": "en",
+              "value": "This handbook is produced and published by the 文化庁 (Agency for Cultural Affairs)."
+            }
+          ]
+        }
+      ]
     }
   ],
   "sidebar": {

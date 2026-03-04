@@ -8,7 +8,6 @@ import {
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
-import HandbookPageTemplate from "@/components/templates/HandbookPageTemplate";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -19,8 +18,6 @@ export async function generateStaticParams() {
 
   // Announcements
   slugs.push({ slug: "announcements" });
-  // Handbook
-  slugs.push({ slug: "nihongo-handbook" });
   // All pages
   for (const s of await getAllPageSlugs()) {
     slugs.push({ slug: s });
@@ -39,9 +36,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (slug === "announcements") {
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
-  } else if (slug === "nihongo-handbook") {
-    title = "日本語学習・生活";
-    description = "日本での生活や日本語学習に役立つハンドブック";
   } else {
     const pg = await getPage(slug);
     if (pg) {
@@ -65,9 +59,6 @@ export default async function SlugPage({ params }: PageProps) {
 
   if (slug === "announcements") {
     return <AnnouncementsPageTemplate />;
-  }
-  if (slug === "nihongo-handbook") {
-    return <HandbookPageTemplate />;
   }
 
   const pg = await getPage(slug);
