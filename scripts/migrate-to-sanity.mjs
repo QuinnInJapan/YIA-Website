@@ -39,21 +39,17 @@ function generateKey() {
 
 /**
  * Recursively add `_key` to every object that lives inside an array.
- * Also renames `type` → `scheduleType` on schedule sections and
- * converts schedule `rows` that are string[][] into a JSON string.
  */
 function addKeys(value) {
   if (Array.isArray(value)) {
     return value.map((item) => {
       if (item !== null && typeof item === 'object' && !Array.isArray(item)) {
         const keyed = { ...item, _key: item.id || item._key || generateKey() };
-        // Recurse into every property of the object
         for (const [k, v] of Object.entries(keyed)) {
           keyed[k] = addKeys(v);
         }
         return keyed;
       }
-      // Primitive array items stay as-is
       return item;
     });
   }
@@ -83,14 +79,11 @@ function processScheduleSections(obj) {
     for (const [k, v] of Object.entries(obj)) {
       out[k] = processScheduleSections(v);
     }
-    // If this object is a schedule section, apply transforms
     if (out._type === 'schedule') {
-      // Rename `type` → `scheduleType`
       if ('type' in out) {
         out.scheduleType = out.type;
         delete out.type;
       }
-      // Convert rows from string[][] to JSON string
       if (
         Array.isArray(out.rows) &&
         out.rows.length > 0 &&
@@ -105,15 +98,11 @@ function processScheduleSections(obj) {
 }
 
 /**
- * Prepare a Sanity document: add _id, _type, strip `id` if used as _id,
+ * Prepare a Sanity document: add _id, _type, strip conflicting fields,
  * apply _key to array items, and process schedule sections.
  */
 function prepareDoc({ _id, _type, raw }) {
   let doc = { _id, _type, ...raw };
-
-  // Remove the source `id` field if we used it for _id (avoid confusion)
-  // Keep it if it's a meaningful slug-like field
-  // Actually, keep `id` — it may be used for references elsewhere.
 
   // Process schedule sections (rename type, stringify rows)
   doc = processScheduleSections(doc);
@@ -141,9 +130,6 @@ const singletons = [
   { key: 'navigation', _id: 'navigation', _type: 'navigation' },
   { key: 'globalResources', _id: 'globalResources', _type: 'globalResources' },
   { key: 'homepage', _id: 'homepage', _type: 'homepage' },
-  { key: 'aboutPage', _id: 'aboutPage', _type: 'aboutPage' },
-  { key: 'membershipPage', _id: 'membershipPage', _type: 'membershipPage' },
-  { key: 'directoryPage', _id: 'directoryPage', _type: 'directoryPage' },
 ];
 
 for (const { key, _id, _type } of singletons) {
@@ -189,16 +175,44 @@ if (data.announcements) {
   }
 }
 
-// Program pages
-if (data.programPages) {
-  for (const page of data.programPages) {
+// Pages (unified — includes program pages and org pages)
+if (data.pages) {
+  for (const page of data.pages) {
     documents.push(
       prepareDoc({
-        _id: `programPage-${page.id}`,
-        _type: page._type || 'programPage',
+        _id: `page-${page.id}`,
+        _type: page._type || 'page',
         raw: page,
       })
     );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Delete old document types that no longer exist in the schema
+// ---------------------------------------------------------------------------
+
+const OLD_TYPES = ['programPage', 'aboutPage', 'membershipPage', 'directoryPage'];
+
+async function deleteOldDocuments() {
+  for (const oldType of OLD_TYPES) {
+    const oldDocs = await client.fetch(`*[_type == "${oldType}"]{ _id }`);
+    if (oldDocs.length === 0) continue;
+
+    console.log(`\n🗑  Deleting ${oldDocs.length} old "${oldType}" document(s)...`);
+    for (const doc of oldDocs) {
+      const label = `${oldType} (${doc._id})`;
+      try {
+        if (dryRun) {
+          console.log(`  [dry-run] Would delete: ${label}`);
+        } else {
+          await client.delete(doc._id);
+          console.log(`  ✓ deleted ${label}`);
+        }
+      } catch (err) {
+        console.error(`  ✗ ${label}: ${err.message}`);
+      }
+    }
   }
 }
 
@@ -207,6 +221,9 @@ if (data.programPages) {
 // ---------------------------------------------------------------------------
 
 async function migrate() {
+  // First, delete old documents
+  await deleteOldDocuments();
+
   console.log(`\nFound ${documents.length} documents to migrate.`);
   if (dryRun) {
     console.log('🏃 DRY RUN — no documents will be written.\n');
@@ -220,8 +237,6 @@ async function migrate() {
     try {
       if (dryRun) {
         console.log(`  [dry-run] Would createOrReplace: ${label}`);
-        // Uncomment the next line to inspect the full document during dry-run:
-        // console.log(JSON.stringify(doc, null, 2));
       } else {
         await client.createOrReplace(doc);
         console.log(`  ✓ ${label}`);
