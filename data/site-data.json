@@ -225,25 +225,25 @@
         {
           "label": "詳細",
           "labelEn": "Details",
-          "url": "http://yia.jp/sistercitylink.pdf",
+          "url": "/docs/sistercitylink.pdf",
           "type": "PDF"
         },
         {
           "label": "募集要項",
           "labelEn": "Recruitment Guidelines",
-          "url": "http://yia.jp/boshuyoukou.pdf",
+          "url": "/docs/boshuyoukou.pdf",
           "type": "PDF"
         },
         {
           "label": "申込書",
           "labelEn": "Application Form",
-          "url": "http://yia.jp/moushikomisho.pdf",
+          "url": "/docs/moushikomisho.pdf",
           "type": "PDF"
         },
         {
           "label": "作文用紙",
           "labelEn": "Essay Paper",
-          "url": "http://yia.jp/sakubunyoshi.pdf",
+          "url": "/docs/sakubunyoshi.pdf",
           "type": "PDF"
         }
       ],
@@ -291,7 +291,7 @@
     },
     "activityRequestForm": {
       "labelJa": "活動依頼書はこちら",
-      "url": "http://yia.jp/katsudoiraisho2.xls",
+      "url": "/docs/katsudoiraisho2.xls",
       "type": "XLS"
     },
     "fairTrade": {
@@ -380,37 +380,37 @@
     "documents": [
       {
         "label": "定款",
-        "url": "http://yia.jp/teikan.pdf",
+        "url": "/docs/teikan.pdf",
         "type": "PDF"
       },
       {
         "label": "令和7年度役員紹介",
-        "url": "http://yia.jp/2025yakuin.pdf",
+        "url": "/docs/2025yakuin.pdf",
         "type": "PDF"
       },
       {
         "label": "令和6年度事業報告",
-        "url": "http://yia.jp/20251go.pdf",
+        "url": "/docs/20251go.pdf",
         "type": "PDF"
       },
       {
         "label": "令和6年度決算報告",
-        "url": "http://yia.jp/20252go.pdf",
+        "url": "/docs/20252go.pdf",
         "type": "PDF"
       },
       {
         "label": "令和6年度貸借対照表",
-        "url": "http://yia.jp/2025taishakutaisho.pdf",
+        "url": "/docs/2025taishakutaisho.pdf",
         "type": "PDF"
       },
       {
         "label": "令和7年度事業計画案",
-        "url": "http://yia.jp/20253go.pdf",
+        "url": "/docs/20253go.pdf",
         "type": "PDF"
       },
       {
         "label": "令和7年度活動予算案",
-        "url": "http://yia.jp/20254go.pdf",
+        "url": "/docs/20254go.pdf",
         "type": "PDF"
       }
     ],
@@ -689,37 +689,37 @@
       {
         "label": "正会員登録申込書",
         "labelEn": "Regular member application",
-        "url": "http://yia.jp/kaiin.xls",
+        "url": "/docs/kaiin.xls",
         "type": "XLS"
       },
       {
         "label": "団体会員登録申込書",
         "labelEn": "Organization application",
-        "url": "http://yia.jp/danntai201610.xls",
+        "url": "/docs/danntai201610.xls",
         "type": "XLS"
       },
       {
         "label": "賛助会員登録申込書",
         "labelEn": "Supporting member application",
-        "url": "http://yia.jp/2024sanjo.xls",
+        "url": "/docs/2024sanjo.xls",
         "type": "XLS"
       },
       {
         "label": "準会員学生申込書",
         "labelEn": "Student application",
-        "url": "http://yia.jp/gakusei201610.xls",
+        "url": "/docs/gakusei201610.xls",
         "type": "XLS"
       },
       {
         "label": "準会員日本語申込書",
         "labelEn": "Foreign national application (Japanese)",
-        "url": "http://yia.jp/gaikokujinn201610nihonngo.xls",
+        "url": "/docs/gaikokujinn201610nihonngo.xls",
         "type": "XLS"
       },
       {
         "label": "英語版申込書",
         "labelEn": "Application form (English)",
-        "url": "http://yia.jp/jyunkaiineigo.xls",
+        "url": "/docs/jyunkaiineigo.xls",
         "type": "XLS"
       }
     ],
@@ -953,7 +953,7 @@
             {
               "label": "チラシ",
               "labelEn": "Flyer",
-              "url": "http://yia.jp/Chirashi2025.pdf",
+              "url": "/docs/Chirashi2025.pdf",
               "type": "PDF"
             }
           ]
@@ -1029,7 +1029,7 @@
               "time": "10:15〜11:45",
               "location": "ヴェルクよこすか",
               "timeSlot": "morning",
-              "schedule_pdf": "http://yia.jp/2025irohakai.pdf"
+              "schedule_pdf": "/docs/2025irohakai.pdf"
             },
             {
               "name": "ポットラック・インターナショナル（プリンセス）",
@@ -1047,7 +1047,7 @@
               "time": "10:20〜11:50",
               "location": "ヴェルクよこすか",
               "timeSlot": "morning",
-              "schedule_pdf": "http://yia.jp/2026ybridge.pdf"
+              "schedule_pdf": "/docs/2026ybridge.pdf"
             },
             {
               "name": "わかば",
@@ -1056,7 +1056,7 @@
               "time": "10:15〜11:45",
               "location": "ヴェルクよこすか",
               "timeSlot": "morning",
-              "schedule_pdf": "http://yia.jp/wakaba2025.pdf"
+              "schedule_pdf": "/docs/wakaba2025.pdf"
             },
             {
               "name": "クロスロード",
@@ -1065,7 +1065,7 @@
               "time": "10:30〜12:00",
               "location": "ヴェルクよこすか",
               "timeSlot": "morning",
-              "schedule_pdf": "http://yia.jp/2023crossroads.pdf"
+              "schedule_pdf": "/docs/2023crossroads.pdf"
             },
             {
               "name": "てらこや（子どもクラス）",
@@ -1074,7 +1074,7 @@
               "time": "16:15〜17:45",
               "location": "ヴェルクよこすか",
               "timeSlot": "afternoon",
-              "schedule_pdf": "http://yia.jp/2025terakoyasan.pdf"
+              "schedule_pdf": "/docs/2025terakoyasan.pdf"
             },
             {
               "name": "日本語クラブ2",
@@ -1083,7 +1083,7 @@
               "time": "18:00〜19:30",
               "location": "ヴェルクよこすか",
               "timeSlot": "evening",
-              "schedule_pdf": "http://yia.jp/2025nihongoclub2.pdf"
+              "schedule_pdf": "/docs/2025nihongoclub2.pdf"
             },
             {
               "name": "たのしいにほんご",
@@ -1092,8 +1092,8 @@
               "time": "18:00〜19:30",
               "location": "ヴェルクよこすか",
               "timeSlot": "evening",
-              "schedule_pdf": "http://yia.jp/tanoshii2024.pdf",
-              "photos_pdf": "http://yia.jp/photos.pdf"
+              "schedule_pdf": "/docs/tanoshii2024.pdf",
+              "photos_pdf": "/docs/photos.pdf"
             },
             {
               "name": "桜会",
@@ -1102,7 +1102,7 @@
               "time": "18:15〜19:45",
               "location": "ヴェルクよこすか",
               "timeSlot": "evening",
-              "schedule_pdf": "http://yia.jp/2025sakurakai.pdf"
+              "schedule_pdf": "/docs/2025sakurakai.pdf"
             },
             {
               "name": "にほんご広場",
@@ -1111,7 +1111,7 @@
               "time": "10:00〜11:30",
               "location": "ヴェルクよこすか",
               "timeSlot": "weekend",
-              "schedule_pdf": "http://yia.jp/2024nihongoplaza.pdf"
+              "schedule_pdf": "/docs/2024nihongoplaza.pdf"
             }
           ]
         },
@@ -1123,19 +1123,19 @@
             {
               "label": "申込書",
               "labelEn": "Application Form",
-              "url": "http://yia.jp/2014application.doc",
+              "url": "/docs/2014application.doc",
               "type": "DOC"
             },
             {
               "label": "スケジュール（2025年度）",
               "labelEn": "Schedule (FY2025)",
-              "url": "http://yia.jp/new2025japanese.pdf",
+              "url": "/docs/new2025japanese.pdf",
               "type": "PDF"
             },
             {
               "label": "地図",
               "labelEn": "Map",
-              "url": "http://yia.jp/2022map.pdf",
+              "url": "/docs/2022map.pdf",
               "type": "PDF"
             }
           ]
@@ -1236,7 +1236,7 @@
             {
               "label": "活動依頼書",
               "labelEn": "Activity Request Form",
-              "url": "http://yia.jp/katsudoiraisho.pdf",
+              "url": "/docs/katsudoiraisho.pdf",
               "type": "PDF"
             }
           ],
@@ -1468,27 +1468,27 @@
           "items": [
             {
               "label": "英語・中国語・アラビア語",
-              "url": "http://yia.jp/2025language3.pdf",
+              "url": "/docs/2025language3.pdf",
               "type": "PDF"
             },
             {
               "label": "中国語講座",
-              "url": "http://yia.jp/2025chinese3.pdf",
+              "url": "/docs/2025chinese3.pdf",
               "type": "PDF"
             },
             {
               "label": "旅行英語",
-              "url": "http://yia.jp/2025travel3.pdf",
+              "url": "/docs/2025travel3.pdf",
               "type": "PDF"
             },
             {
               "label": "英会話",
-              "url": "http://yia.jp/2025talk3.pdf",
+              "url": "/docs/2025talk3.pdf",
               "type": "PDF"
             },
             {
               "label": "夜間クラス",
-              "url": "http://yia.jp/2025night3.pdf",
+              "url": "/docs/2025night3.pdf",
               "type": "PDF"
             }
           ]
@@ -2190,25 +2190,25 @@
             {
               "label": "説明会詳細",
               "labelEn": "Info Session Details",
-              "url": "http://yia.jp/2026setsumeikai.pdf",
+              "url": "/docs/2026setsumeikai.pdf",
               "type": "PDF"
             },
             {
               "label": "募集要項",
               "labelEn": "Recruitment Guidelines",
-              "url": "http://yia.jp/boshuyoukou.pdf",
+              "url": "/docs/boshuyoukou.pdf",
               "type": "PDF"
             },
             {
               "label": "申込書",
               "labelEn": "Application Form",
-              "url": "http://yia.jp/moushikomisho.pdf",
+              "url": "/docs/moushikomisho.pdf",
               "type": "PDF"
             },
             {
               "label": "作文用紙",
               "labelEn": "Essay Paper",
-              "url": "http://yia.jp/sakubunyoshi.pdf",
+              "url": "/docs/sakubunyoshi.pdf",
               "type": "PDF"
             }
           ]
