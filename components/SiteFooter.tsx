@@ -6,11 +6,11 @@ interface SiteFooterProps {
   hideContact?: boolean;
 }
 
-export default function SiteFooter({
+export default async function SiteFooter({
   documents,
   hideContact,
 }: SiteFooterProps) {
-  const { site } = getSiteData();
+  const { site } = await getSiteData();
   const { org, contact } = site;
 
   return (
@@ -18,7 +18,7 @@ export default function SiteFooter({
       {!hideContact && (
         <>
           <div className="site-footer__name">{org.nameJa}</div>
-          <div className="site-footer__name-en">{org.nameEn}</div>
+          <div className="site-footer__name-en" lang="en">{org.nameEn}</div>
           <div>
             〒{contact.postalCode} {contact.addressJa}
           </div>

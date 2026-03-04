@@ -14,7 +14,7 @@ export default function ResourceLink({
   const icon = type === "youtube" ? "▶ " : "";
   return (
     <div className="resource-link">
-      <a href={url} target="_blank" rel="noopener noreferrer">
+      <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`${titleJa} (opens in new tab)`} className="external-link">
         {icon}
         {titleJa}
       </a>

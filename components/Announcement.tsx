@@ -27,7 +27,7 @@ export default function Announcement({
         <h3 className="announcement__title">
           {titleJa}
           {titleEn && (
-            <span className="announcement__title-en"> {titleEn}</span>
+            <span className="announcement__title-en" lang="en"> {titleEn}</span>
           )}
         </h3>
       )}
@@ -38,11 +38,10 @@ export default function Announcement({
         <Nl2br text={contentEn} />
       </div>
       {image && (
-        <div className="announcement__content">
+        <div className="announcement__content" style={{ maxWidth: "400px" }}>
           <LazyImage
             src={resolveImage(image)}
             alt=""
-            style={{ maxWidth: "400px" }}
           />
         </div>
       )}

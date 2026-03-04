@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { getSiteData } from "@/lib/data";
 import HomepageTemplate from "@/components/templates/HomepageTemplate";
 
-export function generateMetadata(): Metadata {
-  const data = getSiteData();
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getSiteData();
   return {
     title: "HOME",
     description: data.site.org.descriptionJa,

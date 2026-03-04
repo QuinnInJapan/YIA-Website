@@ -1,24 +1,25 @@
+import Image from "next/image";
+import Link from "next/link";
 import {
   getSiteData,
   getEnrichedNavigation,
   getAnnouncementsByIds,
 } from "@/lib/data";
 import { resolveImage } from "@/lib/images";
-import { withBasePath } from "@/lib/basePath";
 import SiteFooter from "@/components/SiteFooter";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
 
-export default function HomepageTemplate() {
-  const data = getSiteData();
+export default async function HomepageTemplate() {
+  const data = await getSiteData();
   const hp = data.homepage;
-  const nav = getEnrichedNavigation();
+  const nav = await getEnrichedNavigation();
   const sidebar = data.globalResources;
   const heroImage = resolveImage(hp.hero.image);
 
   // Inline announcements list
-  const hpAnnouncements = getAnnouncementsByIds(hp.announcementIds);
+  const hpAnnouncements = await getAnnouncementsByIds(hp.announcementIds);
 
   // Activity mosaic
   const galleryImages = hp.activityGrid.images;
@@ -26,15 +27,20 @@ export default function HomepageTemplate() {
 
   return (
     <HomepageEffects>
-      <section
-        className="hero-viewport"
-        style={{ backgroundImage: `url('${heroImage}')` }}
-      >
+      <section className="hero-viewport">
+        <Image
+          src={heroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-viewport__img"
+        />
         <div className="hero__overlay">
           <h1 className="hero__title">{data.site.org.nameJa}</h1>
           <p className="hero__subtitle">{data.site.org.nameEn}</p>
           <p className="hero__tagline">{hp.hero.taglineJa}</p>
-          <p className="hero__tagline-en">{hp.hero.taglineEn}</p>
+          <p className="hero__tagline-en" lang="en">{hp.hero.taglineEn}</p>
         </div>
       </section>
 
@@ -43,15 +49,15 @@ export default function HomepageTemplate() {
         <section className="oshirase-band reveal">
           <div className="oshirase-inner">
             <h2 className="home-section__heading reveal">
-              お知らせ<small>Announcements</small>
+              お知らせ<small lang="en">Announcements</small>
             </h2>
             <div className="oshirase-list reveal-stagger">
               {hpAnnouncements.map((a, i) => {
                 const d = a.date || "";
                 const dateDisplay = d ? d.replace(/-/g, ".") : "";
                 return (
-                  <a
-                    href={withBasePath(`/announcements#${a.id}`)}
+                  <Link
+                    href={`/announcements#${a.id}`}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a.id}
@@ -61,9 +67,9 @@ export default function HomepageTemplate() {
                     </time>
                     <span className="oshirase-title">
                       <span className="oshirase-title__ja">{a.titleJa}</span>
-                      <span className="oshirase-title__en">{a.titleEn}</span>
+                      <span className="oshirase-title__en" lang="en">{a.titleEn}</span>
                     </span>
-                  </a>
+                  </Link>
                 );
               })}
             </div>
@@ -75,9 +81,9 @@ export default function HomepageTemplate() {
                 } as React.CSSProperties
               }
             >
-              <a href={withBasePath("/announcements")} className="oshirase-viewall">
-                すべてのお知らせを見る / View All →
-              </a>
+              <Link href="/announcements" className="oshirase-viewall">
+                すべてのお知らせを見る / View All Announcements →
+              </Link>
             </div>
           </div>
         </section>
@@ -96,24 +102,25 @@ export default function HomepageTemplate() {
                   src={img}
                   alt=""
                   className="program-card__img"
+                  fill
                 />
                 <div className="program-card__overlay">
                   <h3 className="program-card__title">{cat.labelJa}</h3>
-                  <span className="program-card__title-en">
+                  <span className="program-card__title-en" lang="en">
                     {cat.labelEn}
                   </span>
                   <div className="program-card__links">
                     {cat.items.map((it) => (
-                      <a
+                      <Link
                         href={it.url}
                         className="program-card__link"
                         key={it.id}
                       >
                         {it.titleJa}
-                        <span className="program-card__link-en">
+                        <span className="program-card__link-en" lang="en">
                           {it.titleEn}
                         </span>
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -126,10 +133,16 @@ export default function HomepageTemplate() {
         {hp.eventFlyers && hp.eventFlyers.length > 0 && (
           <section
             className="home-section home-section--tinted home-section--events reveal"
-            style={{ backgroundImage: `url('${heroImage}')` }}
           >
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              sizes="100vw"
+              className="home-section--events__bg"
+            />
             <h2 className="home-section__heading reveal">
-              イベント<small>Upcoming Events</small>
+              イベント<small lang="en">Upcoming Events</small>
             </h2>
             <div className="flyer-showcase reveal">
               <EventFlyerPairWrapper flyers={hp.eventFlyers} />
@@ -150,6 +163,7 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[0])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
             <div
@@ -177,6 +191,7 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[1])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
             <figure
@@ -189,10 +204,11 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[2])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
-            <a
-              href={withBasePath("/kaiinn")}
+            <Link
+              href="/kaiinn"
               className="activity-grid__tile activity-grid__tile--gold reveal"
               style={
                 { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
@@ -202,7 +218,7 @@ export default function HomepageTemplate() {
                 {sidebar.memberRecruitment.labelJa}
                 <span>{sidebar.memberRecruitment.labelEn}</span>
               </div>
-            </a>
+            </Link>
             <figure
               className="activity-grid__item reveal"
               style={
@@ -213,10 +229,11 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[3])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
-            <a
-              href={withBasePath("/aboutyia")}
+            <Link
+              href="/aboutyia"
               className="activity-grid__tile activity-grid__tile--dark reveal"
               style={
                 { gridArea: "g", "--reveal-i": 6 } as React.CSSProperties
@@ -225,7 +242,7 @@ export default function HomepageTemplate() {
               <div className="activity-grid__tile-text">
                 YIAについて<span>About Us</span>
               </div>
-            </a>
+            </Link>
             <figure
               className="activity-grid__item reveal"
               style={
@@ -236,6 +253,7 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[4])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
             <figure
@@ -248,6 +266,7 @@ export default function HomepageTemplate() {
                 src={resolveImage(galleryImages[5])}
                 alt=""
                 loading="lazy"
+                fill
               />
             </figure>
           </div>
@@ -256,7 +275,7 @@ export default function HomepageTemplate() {
         {/* Access map */}
         <section className="home-section home-section--tinted reveal">
           <h2 className="home-section__heading reveal">
-            アクセス<small>Access</small>
+            アクセス<small lang="en">Access</small>
           </h2>
           <div className="access-block reveal">
             <div className="access-block__map">
@@ -291,6 +310,20 @@ export default function HomepageTemplate() {
               </p>
               <p>{data.site.businessHours.ja}</p>
               <p>{data.site.businessHours.en}</p>
+              {sidebar.youtubeLink && (
+                <p className="access-block__youtube">
+                  <a
+                    href={sidebar.youtubeLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${sidebar.youtubeLink.labelJa} (opens in new tab)`}
+                    className="external-link"
+                  >
+                    ▶ {sidebar.youtubeLink.labelJa}
+                    <span lang="en">{sidebar.youtubeLink.labelEn}</span>
+                  </a>
+                </p>
+              )}
             </div>
           </div>
         </section>

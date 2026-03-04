@@ -17,7 +17,7 @@ export default function DefinitionCard({
     <div className="definition-card">
       <div className="definition-card__term">
         {termJa}{" "}
-        <span className="definition-card__term-en">{termEn}</span>
+        <span className="definition-card__term-en" lang="en">{termEn}</span>
       </div>
       <div className="definition-card__body">
         <BilingualBlock ja={definitionJa} en={definitionEn || ""} />

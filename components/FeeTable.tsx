@@ -13,8 +13,8 @@ export default function FeeTable({ rows }: FeeTableProps) {
     <table className="fee-table">
       <thead>
         <tr>
-          <th>会員種別 Membership Type</th>
-          <th>年会費 Annual Fee</th>
+          <th scope="col">会員種別 Membership Type</th>
+          <th scope="col">年会費 Annual Fee</th>
         </tr>
       </thead>
       <tbody>

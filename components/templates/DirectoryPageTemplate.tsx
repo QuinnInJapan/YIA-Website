@@ -4,8 +4,8 @@ import PageLayout from "@/components/PageLayout";
 import PageSubtitle from "@/components/PageSubtitle";
 import DirectoryList from "@/components/DirectoryList";
 
-export default function DirectoryPageTemplate() {
-  const { directoryPage: pg } = getSiteData();
+export default async function DirectoryPageTemplate() {
+  const { directoryPage: pg } = await getSiteData();
 
   const sectionHtml = (
     <div className="page-section">

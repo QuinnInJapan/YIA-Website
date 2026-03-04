@@ -16,7 +16,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const data = getSiteData();
+  const data = await getSiteData();
   const slugs: { slug: string }[] = [];
 
   // About page
@@ -28,7 +28,7 @@ export async function generateStaticParams() {
   // Announcements
   slugs.push({ slug: "announcements" });
   // All program pages
-  for (const s of getAllProgramSlugs()) {
+  for (const s of await getAllProgramSlugs()) {
     slugs.push({ slug: s });
   }
 
@@ -37,7 +37,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const data = getSiteData();
+  const data = await getSiteData();
 
   let title = "";
   let description = "";
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
   } else {
-    const pg = getProgramPage(slug);
+    const pg = await getProgramPage(slug);
     if (pg) {
       title = pg.titleJa;
       description = pg.descriptionJa || "";
@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SlugPage({ params }: PageProps) {
   const { slug } = await params;
-  const data = getSiteData();
+  const data = await getSiteData();
 
   if (slug === data.aboutPage.slug) {
     return <AboutPageTemplate />;
@@ -89,7 +89,7 @@ export default async function SlugPage({ params }: PageProps) {
     return <AnnouncementsPageTemplate />;
   }
 
-  const pg = getProgramPage(slug);
+  const pg = await getProgramPage(slug);
   if (pg) {
     return <ProgramPageTemplate page={pg} />;
   }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Nl2br } from "@/lib/helpers";
 import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
 import path from "path";
@@ -24,7 +25,7 @@ export default function PageHero({
         <Nl2br text={descriptionJa} />
       </p>
       {descriptionEn && (
-        <p className="page-hero__description-en">
+        <p className="page-hero__description-en" lang="en">
           <Nl2br text={descriptionEn} />
         </p>
       )}
@@ -44,12 +45,16 @@ export default function PageHero({
     const heroWidth = getImageWidth(heroFilePath);
     if (heroWidth >= HERO_MIN_WIDTH) {
       return (
-        <div
-          className="page-hero"
-          style={{ backgroundImage: `url('${heroImg}')` }}
-        >
+        <div className="page-hero">
+          <Image
+            src={heroImg}
+            alt=""
+            fill
+            sizes="100vw"
+            className="page-hero__img"
+          />
           <h1 className="page-hero__title">{titleJa}</h1>
-          <p className="page-hero__subtitle">{titleEn || ""}</p>
+          <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
           {descHtml}
         </div>
       );
@@ -60,7 +65,7 @@ export default function PageHero({
   return (
     <div className="page-hero page-hero--solid">
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
       {descHtml}
     </div>
   );
@@ -76,7 +81,7 @@ export function SolidHero({
   return (
     <div className="page-hero page-hero--solid">
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
     </div>
   );
 }

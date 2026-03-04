@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { withBasePath } from "./basePath";
 
 // ── Image index ─────────────────────────────────────────────────
 // Build a map from basename (case-insensitive) to relative path under original/
@@ -22,49 +21,41 @@ function scanImages(dir: string, rel: string): void {
 const originalDir = path.join(process.cwd(), "public", "original");
 scanImages(originalDir, "");
 
-/** Encode path segments for use in src attributes (spaces → %20) */
-export function encodePath(p: string): string {
-  return p
-    .split("/")
-    .map((seg) => encodeURIComponent(seg))
-    .join("/");
-}
-
-/** Resolve an image filename to its path under /original/ (with basePath prefix) */
+/** Resolve an image filename to its path under /original/ */
 export function resolveImage(filename: string): string {
   if (!filename) return "";
   // Already has a path prefix
   if (filename.includes("/"))
-    return withBasePath(encodePath("/original/" + filename));
+    return "/original/" + filename;
   // Exact match
   const key = filename.toLowerCase();
   if (imageIndex[key])
-    return withBasePath(encodePath("/original/" + imageIndex[key]));
+    return "/original/" + imageIndex[key];
   // Try fuzzy match: Kids2024-1.jpg -> Kids2024 (1).JPG
   const fuzzy = key.replace(/-(\d+)\./i, " ($1).");
   if (imageIndex[fuzzy])
-    return withBasePath(encodePath("/original/" + imageIndex[fuzzy]));
+    return "/original/" + imageIndex[fuzzy];
   // Try with different extension case
   for (const [k, v] of Object.entries(imageIndex)) {
     if (k === key || k === fuzzy)
-      return withBasePath(encodePath("/original/" + v));
+      return "/original/" + v;
   }
   // Fallback
-  return withBasePath(encodePath("/original/" + filename));
+  return "/original/" + filename;
 }
 
-/** Resolve an image filename to its local filesystem path (no basePath, for width detection) */
+/** Resolve an image filename to its local filesystem path (for width detection) */
 export function resolveImageLocal(filename: string): string {
   if (!filename) return "";
-  if (filename.includes("/")) return encodePath("/original/" + filename);
+  if (filename.includes("/")) return "/original/" + filename;
   const key = filename.toLowerCase();
-  if (imageIndex[key]) return encodePath("/original/" + imageIndex[key]);
+  if (imageIndex[key]) return "/original/" + imageIndex[key];
   const fuzzy = key.replace(/-(\d+)\./i, " ($1).");
-  if (imageIndex[fuzzy]) return encodePath("/original/" + imageIndex[fuzzy]);
+  if (imageIndex[fuzzy]) return "/original/" + imageIndex[fuzzy];
   for (const [k, v] of Object.entries(imageIndex)) {
-    if (k === key || k === fuzzy) return encodePath("/original/" + v);
+    if (k === key || k === fuzzy) return "/original/" + v;
   }
-  return encodePath("/original/" + filename);
+  return "/original/" + filename;
 }
 
 /** Get image width from JPEG/PNG header. Returns 0 on failure. */

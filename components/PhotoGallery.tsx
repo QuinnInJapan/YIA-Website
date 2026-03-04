@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback } from "react";
 import Lightbox, { type LightboxItem } from "./Lightbox";
 
@@ -40,21 +41,17 @@ export default function PhotoGallery({ images }: PhotoGalleryProps) {
       key={idx}
     >
       <figure className="photo-gallery__item">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={img.src}
           alt={img.alt}
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.background =
-              "var(--color-gray-mid)";
-          }}
-          onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
+          fill
+          sizes={cls ? "100vw" : "(max-width: 768px) 50vw, 33vw"}
         />
         {img.captionJa && (
           <figcaption>
             {img.captionJa}
             {img.captionEn && (
-              <span className="photo-gallery__caption-en">
+              <span className="photo-gallery__caption-en" lang="en">
                 {" "}
                 {img.captionEn}
               </span>

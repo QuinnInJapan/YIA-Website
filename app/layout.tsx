@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import SiteHeader from "@/components/SiteHeader";
-import SiteNav from "@/components/SiteNav";
+import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-noto",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -27,33 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-        />
-      </head>
-      <body>
-        <a href="#main" className="skip-link">
-          本文へスキップ / Skip to content
-        </a>
-        <SiteHeader />
-        <SiteNav />
-        {children}
-        <Script
-          id="img-loaded"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `document.querySelectorAll('img').forEach(function(i){if(i.complete)i.classList.add('loaded')})`,
-          }}
-        />
-      </body>
+      <body className={notoSansJP.variable}>{children}</body>
     </html>
   );
 }

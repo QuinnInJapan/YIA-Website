@@ -21,7 +21,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
     nameContent = <a href={r.schedule_pdf}>{r.name}</a>;
   } else if (r.website) {
     nameContent = (
-      <a href={r.website} target="_blank" rel="noopener noreferrer">
+      <a href={r.website} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} (opens in new tab)`} className="external-link">
         {r.name}
       </a>
     );
@@ -49,6 +49,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
               target="_blank"
               rel="noopener noreferrer"
               className="schedule-table__web-link"
+              aria-label={`${r.name} website (opens in new tab)`}
             >
               🌐
             </a>
@@ -57,7 +58,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
         {r.nameEn && (
           <>
             <br />
-            <span className="schedule-table__en">{r.nameEn}</span>
+            <span className="schedule-table__en" lang="en">{r.nameEn}</span>
           </>
         )}
       </td>
@@ -75,7 +76,7 @@ export default function ScheduleTable({
   type,
 }: ScheduleTableProps) {
   const headers = columns.map((c, i) => (
-    <th key={i}>
+    <th key={i} scope="col">
       {c}
       {columnsEn?.[i] ? ` ${columnsEn[i]}` : ""}
     </th>
@@ -121,7 +122,11 @@ export default function ScheduleTable({
     }
   } else {
     bodyRows = (rows as string[][]).map((r, i) => {
-      const cells = Array.isArray(r) ? r : Object.values(r);
+      const cells = Array.isArray(r)
+        ? r
+        : Object.entries(r)
+            .filter(([k]) => !k.startsWith("_"))
+            .map(([, v]) => v);
       return (
         <tr key={i}>
           {cells.map((v, j) => (

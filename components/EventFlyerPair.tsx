@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback } from "react";
 import Lightbox, { type LightboxItem } from "./Lightbox";
 
@@ -28,11 +29,8 @@ export default function EventFlyerPair({ flyers }: EventFlyerPairProps) {
     setLightboxOpen(true);
   }, []);
 
-  // Build flyer buttons, pairing JA+EN flyers as needed
-  let idx = 0;
   const elements: React.ReactNode[] = [];
 
-  // Flyers come pre-processed with individual src/alt/caption
   flyers.forEach((f, i) => {
     elements.push(
       <button
@@ -42,16 +40,17 @@ export default function EventFlyerPair({ flyers }: EventFlyerPairProps) {
         onClick={() => openLightbox(i)}
         key={i}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={f.src}
           alt={f.alt}
-          onLoad={(e) => (e.target as HTMLImageElement).classList.add("loaded")}
+          width={600}
+          height={850}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          style={{ width: "100%", height: "auto" }}
         />
         {f.caption && <figcaption>{f.caption}</figcaption>}
       </button>
     );
-    idx++;
   });
 
   return (

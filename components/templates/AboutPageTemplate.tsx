@@ -10,8 +10,8 @@ import BoardMembers from "@/components/BoardMembers";
 import { tocId } from "@/lib/helpers";
 import type { TocEntry } from "@/lib/section-renderer";
 
-export default function AboutPageTemplate() {
-  const { aboutPage: pg } = getSiteData();
+export default async function AboutPageTemplate() {
+  const { aboutPage: pg } = await getSiteData();
   const tocEntries: TocEntry[] = [];
   const sections: React.ReactNode[] = [];
 
@@ -117,10 +117,36 @@ export default function AboutPageTemplate() {
 
   // Governance
   if (pg.governance) {
+    const jaLines = pg.governance.ja.split("\n").map((l: string) => l.trim()).filter(Boolean);
+    const enLines = pg.governance.en.split("\n").map((l: string) => l.trim()).filter(Boolean);
+    const govItems = jaLines.map((line: string, i: number) => {
+      const [termJa, ...descJaParts] = line.split("：");
+      const enLine = enLines[i] || "";
+      const [termEn, ...descEnParts] = enLine.split(": ");
+      return {
+        termJa: termJa.trim(),
+        termEn: termEn.trim(),
+        descJa: descJaParts.join("：").trim(),
+        descEn: descEnParts.join(": ").trim(),
+      };
+    });
     addSection(
       "運営",
       "Governance",
-      <BilingualBlock ja={pg.governance.ja} en={pg.governance.en} />
+      <dl className="governance-list">
+        {govItems.map((item: { termJa: string; termEn: string; descJa: string; descEn: string }, i: number) => (
+          <div className="governance-list__item" key={i}>
+            <dt>
+              {item.termJa}
+              <span className="governance-list__term-en" lang="en">{item.termEn}</span>
+            </dt>
+            <dd>
+              {item.descJa}
+              <span className="governance-list__desc-en" lang="en">{item.descEn}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
     );
   }
 

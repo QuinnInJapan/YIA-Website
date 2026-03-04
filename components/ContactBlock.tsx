@@ -1,7 +1,7 @@
 import { getSiteData } from "@/lib/data";
 
-export default function ContactBlock() {
-  const { site } = getSiteData();
+export default async function ContactBlock() {
+  const { site } = await getSiteData();
   const { org, contact } = site;
 
   return (

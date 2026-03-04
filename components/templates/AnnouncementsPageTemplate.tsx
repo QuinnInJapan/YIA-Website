@@ -6,10 +6,10 @@ import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
 import LazyImage from "@/components/LazyImage";
 
-export default function AnnouncementsPageTemplate() {
-  const data = getSiteData();
+export default async function AnnouncementsPageTemplate() {
+  const data = await getSiteData();
   const hp = data.homepage;
-  const allAnnouncements = getAnnouncementsByIds(hp.announcementIds);
+  const allAnnouncements = await getAnnouncementsByIds(hp.announcementIds);
 
   const tocHtml = (
     <nav className="ann-toc" aria-label="目次">
@@ -31,10 +31,15 @@ export default function AnnouncementsPageTemplate() {
     const id = a.id || `ann-${i}`;
     return (
       <article className="announcement" id={id} key={id}>
+        {a.date && (
+          <time className="announcement__date" dateTime={a.date}>
+            {a.date.replace(/-/g, ".")}
+          </time>
+        )}
         <h2 className="announcement__title">
           {a.titleJa}
           {a.titleEn && (
-            <span className="announcement__title-en"> {a.titleEn}</span>
+            <span className="announcement__title-en" lang="en"> {a.titleEn}</span>
           )}
         </h2>
         <div className="announcement__content" lang="ja">
@@ -45,7 +50,7 @@ export default function AnnouncementsPageTemplate() {
         </div>
         {a.image && (
           <div className="announcement__image">
-            <LazyImage src={resolveImage(a.image)} alt="" />
+            <LazyImage src={resolveImage(a.image)} alt={a.titleJa} />
           </div>
         )}
         {a.documents && a.documents.length > 0 && (

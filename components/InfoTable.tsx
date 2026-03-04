@@ -16,7 +16,7 @@ export default function InfoTable({ rows }: InfoTableProps) {
             <dt>
               {r.labelJa}
               {r.labelEn && (
-                <span className="info-dl__label-en"> {r.labelEn}</span>
+                <span className="info-dl__label-en" lang="en"> {r.labelEn}</span>
               )}
             </dt>
             <dd>
@@ -24,7 +24,7 @@ export default function InfoTable({ rows }: InfoTableProps) {
               {r.valueEn && (
                 <>
                   <br />
-                  <span className="info-dl__value-en">
+                  <span className="info-dl__value-en" lang="en">
                     <Nl2br text={r.valueEn} />
                   </span>
                 </>

@@ -233,12 +233,27 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
             }
           }
         } else {
+          // Sanity stores `type` as `scheduleType` to avoid reserved field name
+          const sAny = s as unknown as Record<string, unknown>;
+          const scheduleType = s.type || sAny.scheduleType as string | undefined;
+
+          // Sanity may store group rows under `groupRows` instead of `rows`
+          const sanityGroupRows = sAny.groupRows as typeof s.rows | undefined;
+
+          // rows may be a JSON string (from Sanity) for string[][] schedules
+          let scheduleRows = (scheduleType === "group" && sanityGroupRows?.length)
+            ? sanityGroupRows
+            : s.rows || [];
+          if (typeof scheduleRows === "string") {
+            try { scheduleRows = JSON.parse(scheduleRows); } catch { scheduleRows = []; }
+          }
+
           current.push(
             <ScheduleTable
               columns={s.columns || []}
               columnsEn={s.columnsEn}
-              rows={s.rows || []}
-              type={s.type}
+              rows={scheduleRows}
+              type={scheduleType}
             />
           );
         }

@@ -15,7 +15,7 @@ export default function DirectoryList({ entries }: DirectoryListProps) {
         <div className="directory-entry" key={i}>
           <div className="directory-entry__name">
             {e.url ? (
-              <a href={e.url} target="_blank" rel="noopener noreferrer">
+              <a href={e.url} target="_blank" rel="noopener noreferrer" aria-label={`${e.nameJa} (opens in new tab)`} className="external-link">
                 {e.nameJa}
               </a>
             ) : (

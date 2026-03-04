@@ -10,8 +10,8 @@ import DocList from "@/components/DocList";
 import { tocId } from "@/lib/helpers";
 import type { TocEntry } from "@/lib/section-renderer";
 
-export default function MembershipPageTemplate() {
-  const { membershipPage: pg } = getSiteData();
+export default async function MembershipPageTemplate() {
+  const { membershipPage: pg } = await getSiteData();
   const tocEntries: TocEntry[] = [];
   const sections: React.ReactNode[] = [];
 
