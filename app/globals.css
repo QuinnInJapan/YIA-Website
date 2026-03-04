@@ -874,6 +874,11 @@ h3.section-header {
   scroll-margin-top: 80px;
 }
 
+.announcement:target {
+  animation: section-flash 2s ease;
+  border-radius: 4px;
+}
+
 [id].page-section {
   scroll-margin-top: 80px;
 }
