@@ -721,13 +721,13 @@ h3.section-header {
   font-weight: 500;
 }
 
-.section-header:target {
-  animation: section-flash 1.5s ease;
+.section-header--plain:target {
+  animation: section-flash 2s ease;
 }
 
 @keyframes section-flash {
-  0% { background: var(--color-tint); }
-  100% { background: transparent; }
+  0%, 30% { background-color: var(--color-tint); border-radius: 4px; }
+  100% { background-color: transparent; }
 }
 
 .section-header--plain .section-header__en {
