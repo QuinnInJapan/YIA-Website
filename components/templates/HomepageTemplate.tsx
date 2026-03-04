@@ -117,7 +117,7 @@ export default async function HomepageTemplate() {
                         className="program-card__link"
                         key={it.id}
                       >
-                        {it.titleJa}
+                        <span className="program-card__link-ja">{it.titleJa}</span>
                         <span className="program-card__link-en" lang="en">
                           {it.titleEn}
                         </span>

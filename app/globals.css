@@ -2110,6 +2110,10 @@ html:has([id].announcement) {
   color: #fff;
 }
 
+.program-card__link-ja {
+  display: block;
+}
+
 .program-card__link-en {
   display: block;
   font-size: var(--font-size-xs);
