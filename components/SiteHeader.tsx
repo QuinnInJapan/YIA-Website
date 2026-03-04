@@ -3,7 +3,7 @@ import { getSiteData } from "@/lib/data";
 
 export default async function SiteHeader() {
   const { site } = await getSiteData();
-  const { org } = site;
+  const { org, contact } = site;
 
   return (
     <header className="site-header">
@@ -13,6 +13,14 @@ export default async function SiteHeader() {
           <div className="site-header__name-jp">{org.nameJa}</div>
           <div className="site-header__name-en" lang="en">{org.nameEn}</div>
         </Link>
+        <div className="site-header__contact">
+          <div>
+            TEL: <a href={`tel:${contact.tel}`}>{contact.tel}</a> / FAX: {contact.fax}
+          </div>
+          <div>
+            E-mail: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -18,18 +18,8 @@ interface NavCategory {
   items: NavItem[];
 }
 
-interface HandbookLink {
-  label: string;
-  subtitle?: string;
-  url?: string;
-}
-
 interface SiteNavProps {
   categories: NavCategory[];
-  handbook?: {
-    titleJa: string;
-    links: HandbookLink[];
-  };
 }
 
 function ChevronIcon({ className }: { className?: string }) {
@@ -48,7 +38,7 @@ function CloseIcon() {
   );
 }
 
-export default function SiteNav({ categories, handbook }: SiteNavProps) {
+export default function SiteNav({ categories }: SiteNavProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -168,9 +158,11 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
           <Link href="/" className={`site-nav__home${pathname === "/" ? " site-nav__home--active" : ""}`} aria-current={pathname === "/" ? "page" : undefined}>
             HOME
           </Link>
-          {categories.map((cat) => (
+          {categories.map((cat) => {
+            const hasActive = cat.items.some((it) => pathname === it.url);
+            return (
             <div
-              className={`site-nav__group${openId === cat.id ? " site-nav__group--open" : ""}`}
+              className={`site-nav__group${openId === cat.id ? " site-nav__group--open" : ""}${hasActive ? " site-nav__group--active" : ""}`}
               key={cat.id}
             >
               <button
@@ -195,42 +187,8 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
                 })}
               </div>
             </div>
-          ))}
-          {handbook && handbook.links.length > 0 && (
-            <div
-              className={`site-nav__group${openId === "handbook" ? " site-nav__group--open" : ""}`}
-            >
-              <button
-                className="site-nav__group-label"
-                type="button"
-                aria-expanded={openId === "handbook"}
-                aria-controls="nav-dropdown-handbook"
-                onClick={() => toggle("handbook")}
-              >
-                {handbook.titleJa}{" "}
-                <span className="site-nav__group-en" lang="en">
-                  Japanese Study &amp; Living Handbook
-                </span>
-              </button>
-              <div className="site-nav__dropdown" id="nav-dropdown-handbook" role="region" aria-label={`${handbook.titleJa} Japanese Study & Living Handbook`}>
-                {handbook.links.map((l, i) => (
-                  <a
-                    className="nav-item nav-item--external"
-                    href={l.url || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${l.label} (opens in new tab)`}
-                    key={i}
-                  >
-                    <span className="nav-item__title">{l.label}</span>
-                    {l.subtitle && (
-                      <span className="nav-item__en" lang="en">{l.subtitle}</span>
-                    )}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
+          );
+          })}
         </div>
       </div>
 
@@ -314,50 +272,6 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
           );
         })}
 
-        {handbook && handbook.links.length > 0 && (
-          <div className="site-nav__mobile-group">
-            <button
-              className="site-nav__mobile-group-label"
-              type="button"
-              aria-expanded={openId === "handbook"}
-              aria-controls="mobile-nav-handbook"
-              onClick={() => toggle("handbook")}
-            >
-              <span>
-                {handbook.titleJa}{" "}
-                <span className="site-nav__mobile-group-en" lang="en">
-                  Handbook
-                </span>
-              </span>
-              <ChevronIcon className={`site-nav__mobile-chevron${openId === "handbook" ? " site-nav__mobile-chevron--open" : ""}`} />
-            </button>
-            <div
-              className={`site-nav__mobile-accordion${openId === "handbook" ? " site-nav__mobile-accordion--open" : ""}`}
-              id="mobile-nav-handbook"
-              role="region"
-              aria-label={`${handbook.titleJa} Japanese Study & Living Handbook`}
-            >
-              <div className="site-nav__mobile-accordion-inner">
-                {handbook.links.map((l, i) => (
-                  <a
-                    className="site-nav__mobile-link"
-                    href={l.url || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${l.label} (opens in new tab)`}
-                    key={i}
-                    onClick={closeMobileMenu}
-                  >
-                    <span className="nav-item__title">{l.label}</span>
-                    {l.subtitle && (
-                      <span className="nav-item__en" lang="en">{l.subtitle}</span>
-                    )}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );

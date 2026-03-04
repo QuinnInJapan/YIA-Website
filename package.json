@@ -11,6 +11,7 @@
   "dependencies": {
     "@sanity/client": "^7.16.0",
     "@sanity/image-url": "^2.0.3",
+    "@sanity/locale-ja-jp": "^1.1.31",
     "next": "16.1.6",
     "next-sanity": "^12.1.0",
     "react": "19.2.3",

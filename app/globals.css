@@ -338,6 +338,22 @@ ruby rt {
   letter-spacing: 0.08em;
 }
 
+.site-header__contact {
+  text-align: right;
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+.site-header__contact a {
+  color: var(--color-white) !important;
+  text-decoration: none;
+}
+
+.site-header__contact a:hover {
+  text-decoration: underline;
+}
+
 /* -- Site Navigation -- */
 
 .site-nav {
@@ -463,6 +479,12 @@ ruby rt {
   background: var(--color-gray-light);
 }
 
+.site-nav__group--active > .site-nav__group-label {
+  background: var(--color-gray-light);
+  color: var(--color-navy);
+  font-weight: 600;
+}
+
 .site-nav__group-en {
   display: block;
   font-size: var(--font-size-xs);
@@ -570,10 +592,18 @@ ruby rt {
   line-height: 1.8;
 }
 
+.site-footer__identity {
+  margin-bottom: var(--spacing-md);
+}
+
+.site-footer__designation {
+  font-size: var(--font-size-xs);
+  opacity: 0.75;
+}
+
 .site-footer__name {
   font-size: var(--font-size-lg);
   font-weight: bold;
-  margin-bottom: var(--spacing-xs);
 }
 
 .site-footer__name-en {
@@ -600,8 +630,6 @@ ruby rt {
 
 .site-footer__docs {
   margin-top: var(--spacing-md);
-  padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(255,255,255,0.15);
   font-size: var(--font-size-xs);
   opacity: 0.8;
 }
@@ -2265,30 +2293,97 @@ html:has([id].announcement) {
   margin-top: 2px;
 }
 
-.access-block__contact {
+/* -- PDF Viewer Overlay -- */
+
+.pdf-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px var(--spacing-lg);
-}
-
-.access-block__youtube {
-  margin: 0;
-}
-
-.access-block__youtube a {
-  display: inline-flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.pdf-viewer__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.pdf-viewer__panel {
+  position: relative;
+  width: 90vw;
+  max-width: 900px;
+  height: 85vh;
+  background: var(--color-white);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-viewer__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-gray-light);
+}
+
+.pdf-viewer__title {
+  flex: 1;
   font-size: var(--font-size-sm);
   font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-viewer__download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  color: var(--color-navy);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.pdf-viewer__download:hover {
+  background: var(--color-gray-mid);
   color: var(--color-navy);
 }
 
-.access-block__youtube-en {
-  display: block;
-  font-size: var(--font-size-xs);
-  font-weight: 400;
-  color: var(--color-text-faint);
+.pdf-viewer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pdf-viewer__close:hover {
+  background: var(--color-gray-mid);
+  color: var(--color-text);
+}
+
+.pdf-viewer__iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
 }
 
 /* ===== COMPONENT LIBRARY ===== */
@@ -2550,6 +2645,7 @@ html:has([id].announcement) {
   .site-nav__mobile-link--active .nav-item__title {
     font-weight: 600;
   }
+
 }
 
 /* -- Tablet (768px) -- */
@@ -2699,16 +2795,6 @@ html:has([id].announcement) {
     line-height: 1.5;
   }
 
-  .access-block__contact {
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .access-block__contact a {
-    word-break: break-all;
-  }
-
   .sister-city-row,
   .sister-city-row--flip {
     grid-template-columns: 1fr;
@@ -2729,6 +2815,11 @@ html:has([id].announcement) {
   .site-header__inner {
     flex-direction: column;
     text-align: center;
+  }
+
+  .site-header__contact {
+    text-align: center;
+    margin-top: var(--spacing-xs);
   }
 
   .home-section {
@@ -2983,6 +3074,9 @@ html:has([id].announcement) {
   .hero__tagline-en {
     animation: none;
   }
+  .pdf-viewer {
+    transition: none;
+  }
   .hero__overlay {
     transition: none;
     will-change: auto;
@@ -2994,4 +3088,98 @@ html:has([id].announcement) {
 }
 
 /* ===== END HOMEPAGE ANIMATIONS ===== */
+
+/* ===== HANDBOOK PAGE ===== */
+
+.handbook-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.handbook-page__about p {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.9;
+}
+
+.handbook-page__about-en {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
+}
+
+.handbook-page__download-note {
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
+}
+
+.handbook-page__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+.handbook-page__link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--color-gray-mid);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.handbook-page__link:hover {
+  background: var(--color-gray-light);
+  border-color: var(--color-navy);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.handbook-page__label {
+  font-weight: 600;
+  font-size: 1.05em;
+}
+
+.handbook-page__subtitle {
+  color: var(--color-text-faint);
+}
+
+.handbook-page__icon {
+  margin-left: auto;
+  font-size: 1.2em;
+  color: var(--color-text-faint);
+  flex-shrink: 0;
+}
+
+.handbook-page__attribution {
+  line-height: 1.9;
+}
+
+.handbook-page__attribution span[lang="en"] {
+  display: block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
+}
+
+@media (min-width: 480px) {
+  .handbook-page__list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .handbook-page__link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-lg);
+  }
+
+  .handbook-page__icon {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+}
 

@@ -8,7 +8,6 @@ interface PageLayoutProps {
   mainClass?: string;
   footerOpts?: {
     documents?: Document[];
-    hideContact?: boolean;
   };
 }
 

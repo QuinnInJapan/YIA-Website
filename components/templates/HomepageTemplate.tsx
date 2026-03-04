@@ -6,6 +6,7 @@ import {
   getAnnouncementsByIds,
 } from "@/lib/data";
 import { resolveImage } from "@/lib/images";
+import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
@@ -54,7 +55,7 @@ export default async function HomepageTemplate() {
             <div className="oshirase-list reveal-stagger">
               {hpAnnouncements.map((a, i) => {
                 const d = a.date || "";
-                const dateDisplay = d ? d.replace(/-/g, ".") : "";
+                const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
                     href={`/announcements#${a.id}`}
@@ -303,43 +304,16 @@ export default async function HomepageTemplate() {
                 </p>
                 <p className="access-block__address-en" lang="en">{data.site.contact.addressEn}</p>
               </div>
-              <div className="access-block__contact">
-                <p>TEL: <a href={`tel:${data.site.contact.tel.replace(/-/g, "")}`}>{data.site.contact.tel}</a></p>
-                <p>FAX: {data.site.contact.fax}</p>
-                <p>
-                  E-mail:{" "}
-                  <a href={`mailto:${data.site.contact.email}`}>
-                    {data.site.contact.email}
-                  </a>
-                </p>
-              </div>
               <div className="access-block__hours">
                 <p>{data.site.businessHours.ja}</p>
                 <p className="access-block__hours-en" lang="en">{data.site.businessHours.en}</p>
               </div>
-              {sidebar.youtubeLink && (
-                <p className="access-block__youtube">
-                  <a
-                    href={sidebar.youtubeLink.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${sidebar.youtubeLink.labelJa} (opens in new tab)`}
-                    className="external-link"
-                  >
-                    <span className="access-block__youtube-ja">▶ {sidebar.youtubeLink.labelJa}</span>
-                    <span className="access-block__youtube-en" lang="en">{sidebar.youtubeLink.labelEn}</span>
-                  </a>
-                </p>
-              )}
             </div>
           </div>
         </section>
       </main>
 
-      <SiteFooter
-        documents={sidebar.documents}
-        hideContact={true}
-      />
+      <SiteFooter documents={sidebar.documents} />
     </HomepageEffects>
   );
 }

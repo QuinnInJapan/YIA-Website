@@ -1,6 +1,7 @@
 import { getSiteData, getAnnouncementsByIds } from "@/lib/data";
 import { Nl2br } from "@/lib/helpers";
 import { resolveImage } from "@/lib/images";
+import { formatDateDot } from "@/lib/date-format";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
@@ -26,7 +27,7 @@ export default async function AnnouncementsPageTemplate() {
       <article className="announcement" id={id} key={id}>
         {a.date && (
           <time className="announcement__date" dateTime={a.date}>
-            {a.date.replace(/-/g, ".")}
+            {formatDateDot(a.date)}
           </time>
         )}
         <h2 className="announcement__title">
