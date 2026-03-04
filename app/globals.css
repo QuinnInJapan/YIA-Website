@@ -709,6 +709,15 @@ h3.section-header {
   opacity: 0.8;
 }
 
+@media (max-width: 768px) {
+  .section-header__en {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+    font-size: var(--font-size-xs);
+  }
+}
+
 /* -- Secondary English text pattern -- */
 
 .nav-item__en {
