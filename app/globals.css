@@ -2216,21 +2216,36 @@ html:has([id].announcement) {
 .access-block__info {
   font-size: 15px;
   line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 .access-block__info p {
-  margin: 0 0 4px;
+  margin: 0;
 }
 
 .access-block__name {
   font-size: 17px;
   font-weight: 700;
   color: var(--color-navy);
-  margin-bottom: var(--spacing-sm) !important;
+}
+
+.access-block__address-en,
+.access-block__hours-en {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-faint);
+  margin-top: 2px;
+}
+
+.access-block__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--spacing-lg);
 }
 
 .access-block__youtube {
-  margin-top: var(--spacing-sm) !important;
+  margin: 0;
 }
 
 .access-block__youtube a {
@@ -2637,9 +2652,19 @@ html:has([id].announcement) {
     align-items: center;
   }
 
-  /* Access block map: reduce height on tablet */
+  /* Access block: reduce map, center info on mobile */
   .access-block__map {
     min-height: 240px;
+  }
+
+  .access-block__info {
+    text-align: center;
+  }
+
+  .access-block__contact {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
   }
 
   .sister-city-row,

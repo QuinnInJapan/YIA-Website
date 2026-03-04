@@ -295,22 +295,27 @@ export default async function HomepageTemplate() {
               <p className="access-block__name">
                 {data.site.org.designation} {data.site.org.nameJa}
               </p>
-              <p>
-                〒{data.site.contact.postalCode}{" "}
-                {data.site.contact.addressJa}
-              </p>
-              <p>{data.site.contact.addressEn}</p>
-              <p>
-                TEL: {data.site.contact.tel} / FAX: {data.site.contact.fax}
-              </p>
-              <p>
-                E-mail:{" "}
-                <a href={`mailto:${data.site.contact.email}`}>
-                  {data.site.contact.email}
-                </a>
-              </p>
-              <p>{data.site.businessHours.ja}</p>
-              <p>{data.site.businessHours.en}</p>
+              <div className="access-block__address">
+                <p>
+                  〒{data.site.contact.postalCode}{" "}
+                  {data.site.contact.addressJa}
+                </p>
+                <p className="access-block__address-en" lang="en">{data.site.contact.addressEn}</p>
+              </div>
+              <div className="access-block__contact">
+                <p>TEL: <a href={`tel:${data.site.contact.tel.replace(/-/g, "")}`}>{data.site.contact.tel}</a></p>
+                <p>FAX: {data.site.contact.fax}</p>
+                <p>
+                  E-mail:{" "}
+                  <a href={`mailto:${data.site.contact.email}`}>
+                    {data.site.contact.email}
+                  </a>
+                </p>
+              </div>
+              <div className="access-block__hours">
+                <p>{data.site.businessHours.ja}</p>
+                <p className="access-block__hours-en" lang="en">{data.site.businessHours.en}</p>
+              </div>
               {sidebar.youtubeLink && (
                 <p className="access-block__youtube">
                   <a
