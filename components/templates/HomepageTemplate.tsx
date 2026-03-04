@@ -326,8 +326,8 @@ export default async function HomepageTemplate() {
                     aria-label={`${sidebar.youtubeLink.labelJa} (opens in new tab)`}
                     className="external-link"
                   >
-                    ▶ {sidebar.youtubeLink.labelJa}
-                    <span lang="en">{sidebar.youtubeLink.labelEn}</span>
+                    <span className="access-block__youtube-ja">▶ {sidebar.youtubeLink.labelJa}</span>
+                    <span className="access-block__youtube-en" lang="en">{sidebar.youtubeLink.labelEn}</span>
                   </a>
                 </p>
               )}
