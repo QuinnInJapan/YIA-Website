@@ -5259,16 +5259,7 @@
               "url": "http://sunnyhill.or.jp/"
             }
           ],
-          "title": [
-            {
-              "_key": "ja",
-              "value": "賛助会員一覧"
-            },
-            {
-              "_key": "en",
-              "value": "Supporting Members Directory"
-            }
-          ]
+          "title": []
         }
       ],
       "title": [

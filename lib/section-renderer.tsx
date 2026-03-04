@@ -90,6 +90,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
   }
 
   function addTocHeader(textJa: string, textEn: string = "") {
+    if (!textJa) return;
     const id = tocId(textJa);
     tocEntries.push({ id, textJa, textEn });
     current.push(
