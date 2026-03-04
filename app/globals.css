@@ -2237,6 +2237,14 @@ html:has([id].announcement) {
   color: var(--color-navy);
 }
 
+.access-block__designation {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
 .access-block__address-en,
 .access-block__hours-en {
   font-size: var(--font-size-xs);
@@ -2658,19 +2666,33 @@ html:has([id].announcement) {
     align-items: center;
   }
 
-  /* Access block: reduce map, center info on mobile */
+  /* Access block: card layout on mobile */
   .access-block__map {
     min-height: 240px;
   }
 
   .access-block__info {
     text-align: center;
+    background: var(--color-gray-light);
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .access-block__name {
+    font-size: var(--font-size-base);
+    line-height: 1.5;
   }
 
   .access-block__contact {
     flex-direction: column;
     align-items: center;
     gap: 2px;
+  }
+
+  .access-block__contact a {
+    word-break: break-all;
   }
 
   .sister-city-row,

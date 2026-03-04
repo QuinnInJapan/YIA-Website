@@ -293,7 +293,8 @@ export default async function HomepageTemplate() {
             </div>
             <div className="access-block__info">
               <p className="access-block__name">
-                {data.site.org.designation} {data.site.org.nameJa}
+                <span className="access-block__designation">{data.site.org.designation}</span>
+                {data.site.org.nameJa}
               </p>
               <div className="access-block__address">
                 <p>
