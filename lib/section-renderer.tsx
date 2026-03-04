@@ -76,16 +76,19 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
   let current: React.ReactNode[] = [];
   const tocEntries: TocEntry[] = [];
 
+  let currentSectionId: string | undefined;
+
   function flush() {
     if (current.length) {
       groups.push(
-        <div className="page-section" key={`section-${groups.length}`}>
+        <div className="page-section" id={currentSectionId} key={`section-${groups.length}`}>
           {current.map((node, i) => (
             <React.Fragment key={i}>{node}</React.Fragment>
           ))}
         </div>
       );
       current = [];
+      currentSectionId = undefined;
     }
   }
 
@@ -93,13 +96,13 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
     if (!textJa) return;
     const id = tocId(textJa);
     tocEntries.push({ id, textJa, textEn });
+    currentSectionId = id;
     current.push(
       <SectionHeader
         text={textJa}
         textEn={textEn}
         variant="plain"
         level={2}
-        id={id}
       />
     );
   }
