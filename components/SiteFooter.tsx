@@ -15,11 +15,6 @@ export default async function SiteFooter({
 
   return (
     <footer className="site-footer">
-      <div className="site-footer__identity">
-        <div className="site-footer__designation">{org.designation}</div>
-        <div className="site-footer__name">{ja(org.name)}</div>
-        <div className="site-footer__name-en" lang="en">{en(org.name)}</div>
-      </div>
       {documents && documents.length > 0 && (
         <div className="site-footer__docs">
           <div className="site-footer__docs-title">公開資料 Documents</div>
