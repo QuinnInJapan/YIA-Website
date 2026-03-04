@@ -17,6 +17,26 @@ function encodeSrc(p: string): string {
     .join("/");
 }
 
+function LightboxCloseIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LightboxArrowIcon({ direction }: { direction: "prev" | "next" }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      {direction === "prev" ? (
+        <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      ) : (
+        <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      )}
+    </svg>
+  );
+}
+
 interface LightboxProps {
   items: LightboxItem[];
   currentIndex: number;
@@ -113,7 +133,7 @@ export default function Lightbox({
         aria-label="Close lightbox"
         onClick={onClose}
       >
-        &times;
+        <LightboxCloseIcon />
       </button>
       <div className="photo-lightbox__content">
         <button
@@ -122,7 +142,7 @@ export default function Lightbox({
           aria-label={`Previous image (${currentIndex + 1} of ${items.length})`}
           onClick={() => show(currentIndex - 1)}
         >
-          &#8249;
+          <LightboxArrowIcon direction="prev" />
         </button>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -136,7 +156,7 @@ export default function Lightbox({
           aria-label={`Next image (${currentIndex + 1} of ${items.length})`}
           onClick={() => show(currentIndex + 1)}
         >
-          &#8250;
+          <LightboxArrowIcon direction="next" />
         </button>
       </div>
       {item.caption && (

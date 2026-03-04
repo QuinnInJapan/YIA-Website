@@ -967,6 +967,13 @@ h3.section-header {
   background: var(--color-tint);
 }
 
+/* Smooth scroll for anchor navigation (TOC links, etc.)
+   Scoped to :has() so it only applies when anchor targets exist on the page */
+html:has([id].page-section),
+html:has([id].announcement) {
+  scroll-behavior: smooth;
+}
+
 .ann-toc__link--active {
   color: var(--color-navy);
   background: var(--color-tint);
@@ -1581,6 +1588,9 @@ h3.section-header {
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .photo-lightbox__close:hover {
@@ -1599,6 +1609,9 @@ h3.section-header {
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .photo-lightbox__nav:hover {
@@ -2424,14 +2437,21 @@ h3.section-header {
 
   .site-nav__mobile-chevron {
     flex-shrink: 0;
-    font-size: 14px;
     color: var(--color-text-muted);
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
     margin-left: var(--spacing-sm);
   }
 
   .site-nav__mobile-chevron--open {
     transform: rotate(90deg);
+  }
+
+  .site-nav__mobile-link--active {
+    border-left: 3px solid var(--color-navy);
+  }
+
+  .site-nav__mobile-home--active {
+    border-left: 3px solid var(--color-navy);
   }
 
   .site-nav__mobile-accordion {
@@ -2506,9 +2526,8 @@ h3.section-header {
 
   .ann-toc__chevron {
     display: block;
-    font-size: 14px;
     color: var(--color-text-muted);
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
     flex-shrink: 0;
   }
 
@@ -2849,6 +2868,9 @@ h3.section-header {
 /* -- Reduced motion -- */
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .site-nav__hamburger-line,
   .site-nav__mobile,
   .site-nav__backdrop,

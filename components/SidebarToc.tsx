@@ -7,6 +7,14 @@ interface SidebarTocProps {
   entries: TocEntry[];
 }
 
+function ChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function SidebarToc({ entries }: SidebarTocProps) {
   const [activeId, setActiveId] = useState<string>(entries.length > 0 ? entries[0].id : "");
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +63,7 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
         <span className="ann-toc__label">
           目次 <span lang="en">Contents</span>
         </span>
-        <span className="ann-toc__chevron" aria-hidden="true">▸</span>
+        <ChevronIcon className="ann-toc__chevron" />
       </button>
       <div className="ann-toc__body">
         <div className="ann-toc__body-inner">

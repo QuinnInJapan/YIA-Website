@@ -32,6 +32,22 @@ interface SiteNavProps {
   };
 }
 
+function ChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function SiteNav({ categories, handbook }: SiteNavProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -240,7 +256,7 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
           aria-label="メニューを閉じる Close menu"
           onClick={closeMobileMenu}
         >
-          ✕
+          <CloseIcon />
         </button>
 
         <Link
@@ -268,9 +284,7 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
                   {cat.labelJa}{" "}
                   <span className="site-nav__mobile-group-en" lang="en">{cat.labelEn}</span>
                 </span>
-                <span className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} aria-hidden="true">
-                  ▸
-                </span>
+                <ChevronIcon className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} />
               </button>
               <div
                 className={`site-nav__mobile-accordion${isOpen ? " site-nav__mobile-accordion--open" : ""}`}
@@ -315,9 +329,7 @@ export default function SiteNav({ categories, handbook }: SiteNavProps) {
                   Handbook
                 </span>
               </span>
-              <span className={`site-nav__mobile-chevron${openId === "handbook" ? " site-nav__mobile-chevron--open" : ""}`} aria-hidden="true">
-                ▸
-              </span>
+              <ChevronIcon className={`site-nav__mobile-chevron${openId === "handbook" ? " site-nav__mobile-chevron--open" : ""}`} />
             </button>
             <div
               className={`site-nav__mobile-accordion${openId === "handbook" ? " site-nav__mobile-accordion--open" : ""}`}
