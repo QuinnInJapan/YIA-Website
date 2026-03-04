@@ -1939,6 +1939,9 @@ html:has([id].announcement) {
 }
 
 .oshirase-viewall {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
   font-size: var(--font-size-sm);
   color: var(--color-navy);
   text-decoration: none;
@@ -1948,6 +1951,20 @@ html:has([id].announcement) {
 
 .oshirase-viewall:hover {
   text-decoration: underline;
+}
+
+.oshirase-viewall__en {
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 480px) {
+  .oshirase-viewall {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
 }
 
 /* -- Homepage Sections -- */

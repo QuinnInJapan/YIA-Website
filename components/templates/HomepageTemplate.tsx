@@ -82,7 +82,8 @@ export default async function HomepageTemplate() {
               }
             >
               <Link href="/announcements" className="oshirase-viewall">
-                すべてのお知らせを見る / View All Announcements →
+                <span className="oshirase-viewall__ja">すべてのお知らせを見る</span>
+                <span className="oshirase-viewall__en" lang="en">View All Announcements →</span>
               </Link>
             </div>
           </div>
