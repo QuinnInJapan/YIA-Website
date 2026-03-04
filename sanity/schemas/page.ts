@@ -1,0 +1,65 @@
+import { defineType, defineField } from "sanity";
+
+export default defineType({
+  name: "page",
+  title: "ページ",
+  type: "document",
+  preview: {
+    select: { title: "titleJa", subtitle: "titleEn" },
+  },
+  fields: [
+    defineField({ name: "id", title: "ID", type: "string" }),
+    defineField({ name: "slug", title: "スラッグ", type: "string" }),
+    defineField({ name: "template", title: "テンプレート", type: "string" }),
+    defineField({
+      name: "category",
+      title: "カテゴリー",
+      type: "string",
+      options: {
+        list: [
+          { title: "支援事業", value: "shien" },
+          { title: "啓発事業", value: "kehatsu" },
+          { title: "交流事業", value: "kouryu" },
+          { title: "国際貢献", value: "kokusaikoken" },
+        ],
+      },
+    }),
+    defineField({ name: "titleJa", title: "タイトル（日本語）", type: "string" }),
+    defineField({ name: "titleEn", title: "タイトル（英語）", type: "string" }),
+    defineField({ name: "titleEasy", title: "タイトル（やさしい日本語）", type: "string" }),
+    defineField({ name: "subtitleJa", title: "サブタイトル（日本語）", type: "string" }),
+    defineField({ name: "subtitleEn", title: "サブタイトル（英語）", type: "string" }),
+    defineField({ name: "descriptionJa", title: "説明（日本語）", type: "text" }),
+    defineField({ name: "descriptionEn", title: "説明（英語）", type: "text" }),
+    defineField({ name: "descriptionEasy", title: "説明（やさしい日本語）", type: "text" }),
+    defineField({
+      name: "images",
+      title: "画像",
+      type: "array",
+      of: [{ type: "imageFile" }],
+    }),
+    defineField({
+      name: "sections",
+      title: "セクション",
+      type: "array",
+      of: [
+        { type: "warnings" },
+        { type: "content" },
+        { type: "infoTable" },
+        { type: "otherNotes" },
+        { type: "schedule" },
+        { type: "gallery" },
+        { type: "sisterCities" },
+        { type: "definitions" },
+        { type: "resources" },
+        { type: "history" },
+        { type: "fairTrade" },
+        { type: "flyers" },
+        { type: "documents" },
+        { type: "boardMembers" },
+        { type: "feeTable" },
+        { type: "directoryList" },
+      ],
+    }),
+  ],
+});

@@ -82,7 +82,6 @@ export interface GroupScheduleRow {
 
 export interface ScheduleDateEntry {
   date: string;
-  dateEn?: string;
   time?: string;
   locationJa?: string;
   locationEn?: string;
@@ -96,8 +95,7 @@ export interface BoardMember {
   roleEn: string;
 }
 
-// ─── Section Types (programPage.sections[]) ────────────────────────
-// Each _type corresponds to a sectionRenderers[key] in build.js.
+// ─── Section Types (page.sections[]) ────────────────────────────────
 
 export interface WarningsSection {
   _type: "warnings";
@@ -148,7 +146,7 @@ export interface ScheduleSection {
   rows?: string[][] | GroupScheduleRow[];
   // Dated schedule fields
   entries?: ScheduleDateEntry[];
-  entry?: { date: string; dateEn?: string; time?: string };
+  entry?: { date: string; time?: string };
   venue?: { locationJa: string; locationEn?: string };
 }
 
@@ -184,6 +182,8 @@ export interface HistorySection {
   titleEn: string;
   introJa?: string;
   introEn?: string;
+  columns?: string[];
+  columnsEn?: string[];
   years?: { year: string; cuisines: string }[];
 }
 
@@ -210,7 +210,29 @@ export interface DocumentsSection {
   items: Document[];
 }
 
-export type ProgramSection =
+export interface BoardMembersSection {
+  _type: "boardMembers";
+  titleJa: string;
+  titleEn: string;
+  asOf?: string;
+  members: BoardMember[];
+}
+
+export interface FeeTableSection {
+  _type: "feeTable";
+  titleJa: string;
+  titleEn: string;
+  rows: { typeJa: string; typeEn?: string; fee: string }[];
+}
+
+export interface DirectoryListSection {
+  _type: "directoryList";
+  titleJa: string;
+  titleEn: string;
+  entries: { nameJa: string; tel: string; url?: string }[];
+}
+
+export type PageSection =
   | WarningsSection
   | ContentSection
   | InfoTableSection
@@ -223,7 +245,10 @@ export type ProgramSection =
   | HistorySection
   | FairTradeSection
   | FlyersSection
-  | DocumentsSection;
+  | DocumentsSection
+  | BoardMembersSection
+  | FeeTableSection
+  | DirectoryListSection;
 
 // ─── Document Types (top-level keys in site-data.json) ─────────────
 
@@ -350,12 +375,12 @@ export interface Homepage {
   eventFlyers?: EventFlyer[];
 }
 
-export interface ProgramPage {
-  _type: "programPage";
+export interface Page {
+  _type: "page";
   id: string;
   slug: string;
-  template: "program-detail";
-  category: "shien" | "kehatsu" | "kouryu" | "kokusaikoken";
+  template?: string;
+  category?: "shien" | "kehatsu" | "kouryu" | "kokusaikoken";
   titleJa: string;
   titleEn?: string;
   titleEasy?: string;
@@ -365,78 +390,7 @@ export interface ProgramPage {
   descriptionEn?: string;
   descriptionEasy?: string;
   images?: ImageFile[];
-  sections: ProgramSection[];
-}
-
-export interface AboutPage {
-  _type: "aboutPage";
-  slug: string;
-  template: "organization-overview";
-  titleJa: string;
-  titleEn?: string;
-  fullName?: string;
-  missionJa: string;
-  missionEn?: string;
-  orgDetails: {
-    founded: string;
-    npoEstablished: string;
-    members: string;
-    membersEn?: string;
-    staff?: string;
-    staffEn?: string;
-  };
-  businessActivities?: {
-    support?: string[];
-    educational?: string[];
-    exchange?: string[];
-    contribution?: string[];
-    other?: string[];
-  };
-  history?: { year: string; eventJa: string }[];
-  boardMembers?: {
-    asOf?: string;
-    members: BoardMember[];
-  };
-  governance?: BilingualText;
-}
-
-export interface MembershipPage {
-  _type: "membershipPage";
-  slug: string;
-  template: "membership";
-  titleJa: string;
-  titleEn?: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
-  feeTable: { typeJa: string; typeEn?: string; fee: string }[];
-  memberTypes?: { typeJa: string; descriptionJa: string }[];
-  benefits?: BilingualText;
-  registrationProcess?: string;
-  registrationForms?: Document[];
-  bankTransfer?: {
-    bank: string;
-    bankEn?: string;
-    accountNumber: string;
-    accountHolder: string;
-  };
-  privacyNotice?: BilingualText;
-  images?: ImageFile[];
-}
-
-export interface DirectoryPage {
-  _type: "directoryPage";
-  slug: string;
-  template: "directory";
-  titleJa: string;
-  titleEn?: string;
-  subtitle?: string;
-  descriptionJa?: string;
-  descriptionEn?: string;
-  entries: {
-    nameJa: string;
-    tel: string;
-    url?: string;
-  }[];
+  sections: PageSection[];
 }
 
 // ─── Top-Level Site Data ────────────────────────────────────────────
@@ -448,10 +402,7 @@ export interface SiteData {
   announcements: Announcement[];
   globalResources: GlobalResources;
   homepage: Homepage;
-  aboutPage: AboutPage;
-  membershipPage: MembershipPage;
-  directoryPage: DirectoryPage;
-  programPages: ProgramPage[];
+  pages: Page[];
 }
 
 // ─── Renderer Coverage Map ──────────────────────────────────────────
@@ -471,3 +422,6 @@ export interface SiteData {
 // fairTrade              → sectionRenderers.fairTrade   → .bilingual-block + .schedule-table + .info-dl
 // flyers                 → sectionRenderers.flyers      → .event-flyer-pair
 // documents              → sectionRenderers.documents   → .doc-list
+// boardMembers           → sectionRenderers.boardMembers → .board-grid
+// feeTable               → sectionRenderers.feeTable   → .fee-table
+// directoryList          → sectionRenderers.directoryList → .directory-list

@@ -37,37 +37,22 @@ export function fetchHomepage() {
   return fetchQuery(`*[_type == "homepage"][0]`);
 }
 
-// ── Program Pages ────────────────────────────────────────────────
-export function fetchAllProgramPages() {
-  return fetchQuery(`*[_type == "programPage"] | order(id asc)`);
+// ── Pages ────────────────────────────────────────────────────────
+export function fetchAllPages() {
+  return fetchQuery(`*[_type == "page"] | order(id asc)`);
 }
 
-export function fetchProgramPageBySlug(slug: string) {
+export function fetchPageBySlug(slug: string) {
   return fetchQuery(
-    `*[_type == "programPage" && slug == $slug][0]`,
+    `*[_type == "page" && slug == $slug][0]`,
     { slug }
   );
 }
 
-export function fetchAllProgramSlugs() {
+export function fetchAllPageSlugs() {
   return fetchQuery<{ slug: string }[]>(
-    `*[_type == "programPage"]{ slug }`
+    `*[_type == "page"]{ slug }`
   );
-}
-
-// ── About Page ───────────────────────────────────────────────────
-export function fetchAboutPage() {
-  return fetchQuery(`*[_type == "aboutPage"][0]`);
-}
-
-// ── Membership Page ──────────────────────────────────────────────
-export function fetchMembershipPage() {
-  return fetchQuery(`*[_type == "membershipPage"][0]`);
-}
-
-// ── Directory Page ───────────────────────────────────────────────
-export function fetchDirectoryPage() {
-  return fetchQuery(`*[_type == "directoryPage"][0]`);
 }
 
 // ── Full site data (composite fetch) ─────────────────────────────
@@ -79,10 +64,7 @@ export async function fetchSiteData() {
     announcements,
     globalResources,
     homepage,
-    aboutPage,
-    membershipPage,
-    directoryPage,
-    programPages,
+    pages,
   ] = await Promise.all([
     fetchSiteSettings(),
     fetchCategories(),
@@ -90,10 +72,7 @@ export async function fetchSiteData() {
     fetchAnnouncements(),
     fetchGlobalResources(),
     fetchHomepage(),
-    fetchAboutPage(),
-    fetchMembershipPage(),
-    fetchDirectoryPage(),
-    fetchAllProgramPages(),
+    fetchAllPages(),
   ]);
 
   return {
@@ -103,9 +82,6 @@ export async function fetchSiteData() {
     announcements,
     globalResources,
     homepage,
-    aboutPage,
-    membershipPage,
-    directoryPage,
-    programPages,
+    pages,
   };
 }

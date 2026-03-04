@@ -1,6 +1,6 @@
 import React from "react";
 import type {
-  ProgramSection,
+  PageSection,
   WarningsSection,
   ContentSection,
   InfoTableSection,
@@ -14,9 +14,13 @@ import type {
   FairTradeSection,
   FlyersSection,
   DocumentsSection,
+  BoardMembersSection,
+  FeeTableSection,
+  DirectoryListSection,
   ImageFile,
 } from "@/lib/types";
 import { tocId } from "@/lib/helpers";
+import { formatDateJa, formatDateEn } from "@/lib/date-format";
 import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
 import path from "path";
 
@@ -32,6 +36,9 @@ import DefinitionCard from "@/components/DefinitionCard";
 import ResourceLink from "@/components/ResourceLink";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
+import BoardMembers from "@/components/BoardMembers";
+import FeeTable from "@/components/FeeTable";
+import DirectoryList from "@/components/DirectoryList";
 
 export interface TocEntry {
   id: string;
@@ -63,7 +70,7 @@ function buildGalleryImages(images: ImageFile[]) {
   }));
 }
 
-export function renderSections(sections: ProgramSection[]): SectionBuilderResult {
+export function renderSections(sections: PageSection[]): SectionBuilderResult {
   const groups: React.ReactNode[] = [];
   let current: React.ReactNode[] = [];
   const tocEntries: TocEntry[] = [];
@@ -181,7 +188,7 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
         if (s.subtype === "dated") {
           if (s.entries) {
             const rows = s.entries.map((entry) => {
-              const cells: string[] = [entry.date];
+              const cells: string[] = [formatDateJa(entry.date)];
               if (entry.time) cells.push(entry.time);
               if (entry.locationJa) cells.push(entry.locationJa);
               if (entry.descriptionJa) cells.push(entry.descriptionJa);
@@ -202,9 +209,9 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
                       labelJa: "日時",
                       labelEn: "Date",
                       valueJa: entry.time
-                        ? `${entry.date} ${entry.time}`
-                        : entry.date,
-                      valueEn: entry.dateEn || "",
+                        ? `${formatDateJa(entry.date)} ${entry.time}`
+                        : formatDateJa(entry.date),
+                      valueEn: formatDateEn(entry.date),
                     },
                     {
                       labelJa: "会場",
@@ -223,9 +230,9 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
                       labelJa: "日時",
                       labelEn: "Date",
                       valueJa: entry.time
-                        ? `${entry.date} ${entry.time}`
-                        : entry.date,
-                      valueEn: entry.dateEn || "",
+                        ? `${formatDateJa(entry.date)} ${entry.time}`
+                        : formatDateJa(entry.date),
+                      valueEn: formatDateEn(entry.date),
                     },
                   ]}
                 />
@@ -311,8 +318,8 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
           const rows = s.years.map((y) => [y.year, y.cuisines]);
           current.push(
             <ScheduleTable
-              columns={["年度", "料理"]}
-              columnsEn={["Year", "Cuisines"]}
+              columns={s.columns || ["年度", "料理"]}
+              columnsEn={s.columnsEn || ["Year", "Cuisines"]}
               rows={rows}
             />
           );
@@ -368,6 +375,32 @@ export function renderSections(sections: ProgramSection[]): SectionBuilderResult
         const s = sec as DocumentsSection;
         addTocHeader(s.titleJa, s.titleEn);
         current.push(<DocList docs={s.items} />);
+        flush();
+        break;
+      }
+
+      case "boardMembers": {
+        const s = sec as BoardMembersSection;
+        addTocHeader(s.titleJa, s.titleEn);
+        current.push(
+          <BoardMembers board={{ asOf: s.asOf, members: s.members }} />
+        );
+        flush();
+        break;
+      }
+
+      case "feeTable": {
+        const s = sec as FeeTableSection;
+        addTocHeader(s.titleJa, s.titleEn);
+        current.push(<FeeTable rows={s.rows} />);
+        flush();
+        break;
+      }
+
+      case "directoryList": {
+        const s = sec as DirectoryListSection;
+        addTocHeader(s.titleJa, s.titleEn);
+        current.push(<DirectoryList entries={s.entries} />);
         flush();
         break;
       }

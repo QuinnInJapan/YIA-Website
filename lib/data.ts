@@ -1,14 +1,12 @@
 import { cache } from "react";
 import type {
   SiteData,
-  ProgramPage,
+  Page,
   Announcement,
   Category,
 } from "./types";
 import {
   fetchSiteData,
-  fetchProgramPageBySlug,
-  fetchAllProgramSlugs as _fetchAllProgramSlugs,
   fetchAnnouncements,
 } from "./sanity/queries";
 
@@ -20,10 +18,7 @@ const emptySiteData: SiteData = {
   announcements: [],
   globalResources: { _type: "globalResources", accessMap: { image: "", labelJa: "", labelEn: "" }, youtubeLink: { url: "", labelJa: "", labelEn: "" }, memberRecruitment: { labelJa: "", url: "" }, resourceBoxes: [], documents: [] },
   homepage: { _type: "homepage", slug: "", hero: { image: "", taglineJa: "", taglineEn: "" }, activityGrid: { images: [], stat: { value: 0, labelJa: "", labelEn: "" } }, announcementIds: [] },
-  aboutPage: { _type: "aboutPage", slug: "aboutyia", template: "organization-overview", titleJa: "", missionJa: "", orgDetails: { founded: "", npoEstablished: "", members: "" } },
-  membershipPage: { _type: "membershipPage", slug: "kaiinn", template: "membership", titleJa: "", feeTable: [] },
-  directoryPage: { _type: "directoryPage", slug: "directory", template: "directory", titleJa: "", entries: [] },
-  programPages: [],
+  pages: [],
 };
 
 // Cache the full site data fetch per request (React server-component dedup)
@@ -36,13 +31,10 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
     ...raw,
     categories: raw.categories || [],
     announcements: raw.announcements || [],
-    programPages: raw.programPages || [],
+    pages: raw.pages || [],
     navigation: raw.navigation || emptySiteData.navigation,
     globalResources: raw.globalResources || emptySiteData.globalResources,
     homepage: raw.homepage || emptySiteData.homepage,
-    aboutPage: raw.aboutPage || emptySiteData.aboutPage,
-    membershipPage: raw.membershipPage || emptySiteData.membershipPage,
-    directoryPage: raw.directoryPage || emptySiteData.directoryPage,
   } as SiteData;
 });
 
@@ -117,23 +109,23 @@ export const getEnrichedNavigation = cache(
   }
 );
 
-// ── Program pages ───────────────────────────────────────────────
+// ── Pages ────────────────────────────────────────────────────────
 
-export async function getProgramPage(
+export async function getPage(
   slug: string
-): Promise<ProgramPage | undefined> {
+): Promise<Page | undefined> {
   const data = await getSiteData();
-  return data.programPages.find((pg) => pg.id === slug || pg.slug === slug);
+  return data.pages.find((pg) => pg.id === slug || pg.slug === slug);
 }
 
-export async function getAllProgramSlugs(): Promise<string[]> {
+export async function getAllPageSlugs(): Promise<string[]> {
   const data = await getSiteData();
-  return data.programPages.map((pg) => pg.slug);
+  return data.pages.map((pg) => pg.slug);
 }
 
-export async function getAllProgramPages(): Promise<ProgramPage[]> {
+export async function getAllPages(): Promise<Page[]> {
   const data = await getSiteData();
-  return data.programPages;
+  return data.pages;
 }
 
 // ── Announcements ───────────────────────────────────────────────

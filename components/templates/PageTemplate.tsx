@@ -1,17 +1,17 @@
-import type { ProgramPage } from "@/lib/types";
+import type { Page } from "@/lib/types";
 import { renderSections } from "@/lib/section-renderer";
 import PageHero from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import SidebarToc from "@/components/SidebarToc";
 import PageSubtitle from "@/components/PageSubtitle";
 
-interface ProgramPageTemplateProps {
-  page: ProgramPage;
+interface PageTemplateProps {
+  page: Page;
 }
 
-export default function ProgramPageTemplate({
+export default function PageTemplate({
   page,
-}: ProgramPageTemplateProps) {
+}: PageTemplateProps) {
   const { groups, tocEntries } = renderSections(page.sections);
 
   // Add subtitle before sections if present

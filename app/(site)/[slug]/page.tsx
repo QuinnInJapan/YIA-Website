@@ -2,33 +2,26 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getSiteData,
-  getProgramPage,
-  getAllProgramSlugs,
+  getPage,
+  getAllPageSlugs,
 } from "@/lib/data";
-import ProgramPageTemplate from "@/components/templates/ProgramPageTemplate";
-import AboutPageTemplate from "@/components/templates/AboutPageTemplate";
-import MembershipPageTemplate from "@/components/templates/MembershipPageTemplate";
-import DirectoryPageTemplate from "@/components/templates/DirectoryPageTemplate";
+import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
+import HandbookPageTemplate from "@/components/templates/HandbookPageTemplate";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const data = await getSiteData();
   const slugs: { slug: string }[] = [];
 
-  // About page
-  slugs.push({ slug: data.aboutPage.slug });
-  // Membership page
-  slugs.push({ slug: data.membershipPage.slug });
-  // Directory page
-  slugs.push({ slug: data.directoryPage.slug });
   // Announcements
   slugs.push({ slug: "announcements" });
-  // All program pages
-  for (const s of await getAllProgramSlugs()) {
+  // Handbook
+  slugs.push({ slug: "nihongo-handbook" });
+  // All pages
+  for (const s of await getAllPageSlugs()) {
     slugs.push({ slug: s });
   }
 
@@ -42,20 +35,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   let title = "";
   let description = "";
 
-  if (slug === data.aboutPage.slug) {
-    title = data.aboutPage.titleJa;
-    description = data.aboutPage.missionJa || "";
-  } else if (slug === data.membershipPage.slug) {
-    title = data.membershipPage.titleJa;
-    description = data.membershipPage.descriptionJa || "";
-  } else if (slug === data.directoryPage.slug) {
-    title = data.directoryPage.titleJa;
-    description = data.directoryPage.descriptionJa || "";
-  } else if (slug === "announcements") {
+  if (slug === "announcements") {
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
+  } else if (slug === "nihongo-handbook") {
+    title = "日本語学習・生活";
+    description = "日本での生活や日本語学習に役立つハンドブック";
   } else {
-    const pg = await getProgramPage(slug);
+    const pg = await getPage(slug);
     if (pg) {
       title = pg.titleJa;
       description = pg.descriptionJa || "";
@@ -74,24 +61,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SlugPage({ params }: PageProps) {
   const { slug } = await params;
-  const data = await getSiteData();
 
-  if (slug === data.aboutPage.slug) {
-    return <AboutPageTemplate />;
-  }
-  if (slug === data.membershipPage.slug) {
-    return <MembershipPageTemplate />;
-  }
-  if (slug === data.directoryPage.slug) {
-    return <DirectoryPageTemplate />;
-  }
   if (slug === "announcements") {
     return <AnnouncementsPageTemplate />;
   }
+  if (slug === "nihongo-handbook") {
+    return <HandbookPageTemplate />;
+  }
 
-  const pg = await getProgramPage(slug);
+  const pg = await getPage(slug);
   if (pg) {
-    return <ProgramPageTemplate page={pg} />;
+    return <PageTemplate page={pg} />;
   }
 
   notFound();

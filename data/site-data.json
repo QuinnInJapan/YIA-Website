@@ -91,6 +91,13 @@
             "titleEasy": "がいこくじん ぼうさい",
             "titleEn": "Disaster Preparedness",
             "pageRef": "bosai"
+          },
+          {
+            "id": "nihongo-handbook",
+            "titleJa": "日本語学習・生活ハンドブック",
+            "titleEasy": "にほんご がくしゅう・せいかつ",
+            "titleEn": "Study & Living Handbook",
+            "pageRef": "nihongo-handbook"
           }
         ]
       },
@@ -455,392 +462,7 @@
     "_type": "homepage",
     "slug": "index"
   },
-  "aboutPage": {
-    "template": "organization-overview",
-    "titleJa": "横須賀国際交流協会（YIA）とは",
-    "titleEn": "About Yokosuka International Association (YIA)",
-    "fullName": "認定・横須賀市指定特定非営利活動法人 横須賀国際交流協会",
-    "missionJa": "横須賀市の都市像「国際海の手文化都市」の実現を支え、市民レベルでの多文化共生を目指した国際交流活動を推進しています。多様な文化の理解、人権の尊重、活力あるボランティア活動の創出を柱としています。",
-    "missionEn": "Supporting the realization of Yokosuka's urban vision as an 'International Seaside Culture City,' promoting international exchange activities aimed at multicultural coexistence at the citizen level.",
-    "orgDetails": {
-      "founded": "1997年",
-      "npoEstablished": "2003年",
-      "members": "個人会員320名、団体会員15、賛助会員17（2024年4月1日現在）",
-      "membersEn": "320 individual members, 15 organization members, 17 supporting members (as of April 1, 2024)",
-      "staff": "事務員（外国人生活相談員）：全6名（令和6年4月1日現在）",
-      "staffEn": "Office staff (foreign resident counselors): 6 (as of April 1, 2024)"
-    },
-    "history": [
-      {
-        "year": "1994",
-        "eventJa": "国際交流団体連絡会議が発足。国際交流ボランティア登録開始"
-      },
-      {
-        "year": "1995",
-        "eventJa": "第1回「日本まつりinよこすか」開催。日本語教室スタート"
-      },
-      {
-        "year": "1996",
-        "eventJa": "日本語会話サロン開始。第1回スポーツ交流"
-      },
-      {
-        "year": "1997",
-        "eventJa": "ボランティア組織YIA発足（会長：西原鈴子）。外国語講座、会話交流、国際理解講座、文化交流事業等開始。会報「NEWSPOT」毎月発行開始"
-      },
-      {
-        "year": "1998",
-        "eventJa": "ハロウィン、日本文化体験、English pubなど新事業開始"
-      },
-      {
-        "year": "2001",
-        "eventJa": "会長交代（庄司信行）"
-      },
-      {
-        "year": "2003",
-        "eventJa": "NPO法人化（会長：多賀和枝）。翻訳・通訳、外国語講座が独立事業に。姉妹都市交換学生・基地ツアー受入開始"
-      },
-      {
-        "year": "2007",
-        "eventJa": "外国人に対する災害対応事業を統合、毎年内容を発展"
-      },
-      {
-        "year": "2008",
-        "eventJa": "創立10周年記念（会長：藤井長生）。世界の料理教室スタート"
-      },
-      {
-        "year": "2012",
-        "eventJa": "横須賀商工会議所パートナー事業開始"
-      },
-      {
-        "year": "2013",
-        "eventJa": "会長交代（安東崇夫）。高校生向け外国語講座スタート（〜2017年度）。夜間英語クラス開始。横須賀市指定NPO認定"
-      },
-      {
-        "year": "2014",
-        "eventJa": "神奈川県認定NPO法人認定"
-      },
-      {
-        "year": "2015",
-        "eventJa": "上町パルス外国語・英会話クラススタート（〜2019年3月）。英語ガイドツアー独立事業化"
-      },
-      {
-        "year": "2018",
-        "eventJa": "社会人対象英語クラススタート（〜2019年3月）"
-      },
-      {
-        "year": "2022",
-        "eventJa": "JFY・日本文化体験・キッズフェスティバル等を自主運営化"
-      }
-    ],
-    "businessActivities": {
-      "support": [
-        "多言語相談",
-        "日本語会話サロン",
-        "翻訳・通訳"
-      ],
-      "educational": [
-        "外国語講座",
-        "国際理解講座",
-        "国際ユースフォーラム"
-      ],
-      "exchange": [
-        "日本文化体験",
-        "Japan Festival in Yokosuka",
-        "キッズフェスティバル",
-        "英語ガイドツアー",
-        "ホームステイ・ビジット",
-        "世界の料理教室"
-      ],
-      "contribution": [
-        "フェアトレードコーヒー販売",
-        "姉妹都市交換学生"
-      ],
-      "other": [
-        "情報誌発行",
-        "メールマガジン",
-        "ホームページ運営",
-        "ボランティア交流会",
-        "横須賀商工会議所パートナー事業"
-      ]
-    },
-    "boardMembers": {
-      "asOf": "2024年4月1日現在",
-      "members": [
-        {
-          "name": "安東崇夫",
-          "roleJa": "理事長",
-          "roleEn": "Chair"
-        },
-        {
-          "name": "大谷英世",
-          "roleJa": "副理事長",
-          "roleEn": "Vice Chair"
-        },
-        {
-          "name": "友森和子",
-          "roleJa": "副理事長",
-          "roleEn": "Vice Chair"
-        },
-        {
-          "name": "伊藤健吾（事務局長）",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "藤井長生",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "竹淵郁世",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "川名わた子",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "安本宗弘",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "陶山赤爪",
-          "roleJa": "理事",
-          "roleEn": "Director"
-        },
-        {
-          "name": "工藤幸久",
-          "roleJa": "監事",
-          "roleEn": "Auditor"
-        },
-        {
-          "name": "本田和彦",
-          "roleJa": "監事",
-          "roleEn": "Auditor"
-        }
-      ]
-    },
-    "governance": {
-      "ja": "総会：最高議決機関。年1回開催し、事業計画・予算・決算等を審議。\n理事会：法人の業務執行に関する事項を決定。\n運営委員会：理事・各事業委員長で構成し、事業全体の調整・運営を行う。\n事業実行委員会：各事業の企画・運営を担当するボランティア委員会。\n ボランティア交流会：年1回、ボランティア同士の親睦・情報共有の場。\n事務局：日常業務の運営、会員管理、外国人生活相談等を担当。",
-      "en": "General Assembly: Supreme decision-making body, held annually to review business plans, budgets, and financial reports.\nBoard of Directors: Determines matters relating to corporate operations.\nManagement Committee: Composed of directors and committee chairs, coordinating overall operations.\nBusiness Execution Committees: Volunteer committees responsible for planning and running each program.\nVolunteer Exchange Meeting: Annual gathering for volunteer networking and information sharing.\nAdministration Office: Handles daily operations, member management, and foreign resident counseling."
-    },
-    "_type": "aboutPage",
-    "slug": "aboutyia"
-  },
-  "membershipPage": {
-    "template": "membership",
-    "titleJa": "会員募集",
-    "titleEn": "Membership",
-    "descriptionJa": "横須賀国際交流協会では、一緒に活動してくださる方、協会の活動に賛同し、資金面で応援してくださる会員を募集しています。",
-    "registrationProcess": "個人会員入会ご希望の方は「登録申込書」に必要事項を記載の上、当協会事務所まで直接ご提出いただくか、郵送、メールまたはＦＡＸでお送りください。年会費納入の確認後、会員登録完了となります。",
-    "feeTable": [
-      {
-        "typeJa": "正会員（個人会員）",
-        "typeEn": "Regular Member (Individual)",
-        "fee": "2,000円/年"
-      },
-      {
-        "typeJa": "家族会員",
-        "typeEn": "Family Member",
-        "fee": "1,000円/年"
-      },
-      {
-        "typeJa": "準会員（学生・外国籍の方）",
-        "typeEn": "Associate Member (Students / Foreign Nationals)",
-        "fee": "無料"
-      },
-      {
-        "typeJa": "賛助会員",
-        "typeEn": "Supporting Member",
-        "fee": "1口10,000円〜"
-      },
-      {
-        "typeJa": "団体会員",
-        "typeEn": "Organization Member",
-        "fee": "10,000円/年"
-      }
-    ],
-    "memberTypes": [
-      {
-        "typeJa": "正会員",
-        "descriptionJa": "この法人の目的である「主に横須賀市に在住・在勤の個人または団体に対して、国際交流活動を通しての市民生活の向上と国際理解の推進に寄与する」活動に賛同し、入会された個人を表します。"
-      },
-      {
-        "typeJa": "家族会員",
-        "descriptionJa": "この法人の目的に賛同し、入会した正会員と同居している家族を表します。"
-      },
-      {
-        "typeJa": "準会員",
-        "descriptionJa": "学生（中学、高校、大学、大学院、専門学生）と外国人（外国籍）の方で協会の活動に興味を持ち、積極的に参加をする方。"
-      },
-      {
-        "typeJa": "賛助会員",
-        "descriptionJa": "この法人の目的に賛同し、協会が行う活動を賛助していただくために入会した個人、団体を表します。"
-      }
-    ],
-    "benefits": {
-      "ja": "正会員（家族会員を含む）の方々には会費納入後、その年度の「会員証」が発行されます。全会員には当協会の事業のご案内などの情報提供をいたします。活動参加時、登録されている全会員は、ボランティア保険適応対象となります。",
-      "en": "Regular members (including family members) receive a membership card after paying dues. All members receive information about association activities. All registered members are covered by volunteer insurance during activities."
-    },
-    "registrationForms": [
-      {
-        "label": "正会員登録申込書",
-        "labelEn": "Regular member application",
-        "url": "/docs/kaiin.xls",
-        "type": "XLS"
-      },
-      {
-        "label": "団体会員登録申込書",
-        "labelEn": "Organization application",
-        "url": "/docs/danntai201610.xls",
-        "type": "XLS"
-      },
-      {
-        "label": "賛助会員登録申込書",
-        "labelEn": "Supporting member application",
-        "url": "/docs/2024sanjo.xls",
-        "type": "XLS"
-      },
-      {
-        "label": "準会員学生申込書",
-        "labelEn": "Student application",
-        "url": "/docs/gakusei201610.xls",
-        "type": "XLS"
-      },
-      {
-        "label": "準会員日本語申込書",
-        "labelEn": "Foreign national application (Japanese)",
-        "url": "/docs/gaikokujinn201610nihonngo.xls",
-        "type": "XLS"
-      },
-      {
-        "label": "英語版申込書",
-        "labelEn": "Application form (English)",
-        "url": "/docs/jyunkaiineigo.xls",
-        "type": "XLS"
-      }
-    ],
-    "bankTransfer": {
-      "bank": "ゆうちょ銀行",
-      "bankEn": "Japan Post Bank (Yucho)",
-      "accountNumber": "００２００−９−７５１５２",
-      "accountHolder": "特定非営利活動法人横須賀国際交流協会"
-    },
-    "privacyNotice": {
-      "ja": "個人情報の扱い：「個人情報保護方針」に従った厳重な管理のもと、プライバシーを守ります。",
-      "en": "Handling of personal information: Privacy is protected under strict management in accordance with our 'Personal Information Protection Policy.'"
-    },
-    "images": [
-      {
-        "file": "werk11.jpg"
-      }
-    ],
-    "_type": "membershipPage",
-    "slug": "kaiinn"
-  },
-  "directoryPage": {
-    "template": "directory",
-    "titleJa": "賛助会員一覧",
-    "titleEn": "Supporting Members Directory",
-    "subtitle": "横須賀国際交流協会を支援している賛助会員（2024年3月末 現在　五十音順）",
-    "descriptionJa": "横須賀国際交流協会は、たくさんの賛助会員からご指導・ご理解をいただいております。ご協力誠にありがとうございます。",
-    "entries": [
-      {
-        "nameJa": "エリアマネジメント横須賀共同体",
-        "tel": "046-857-2500"
-      },
-      {
-        "nameJa": "（学）神奈川歯科大学",
-        "tel": "046-822-8751",
-        "url": "http://www.kdu.ac.jp/"
-      },
-      {
-        "nameJa": "（株）サンシャイン",
-        "tel": "046-838-5677"
-      },
-      {
-        "nameJa": "（学）湘南学院高等学校",
-        "tel": "046-828-3433",
-        "url": "https://shonangakuin.ed.jp/"
-      },
-      {
-        "nameJa": "湘南信用金庫",
-        "tel": "046-825-1212",
-        "url": "https://www.shinkin.co.jp/shonan/"
-      },
-      {
-        "nameJa": "（株）トライアングル",
-        "tel": "046-825-7144",
-        "url": "https://www.tryangle-web.com/"
-      },
-      {
-        "nameJa": "ホテルニューヨコスカ",
-        "tel": "046-820-1111",
-        "url": "https://hotelnewyokosuka.co.jp/hotel_newyokosuka/"
-      },
-      {
-        "nameJa": "(学)三浦学苑高等学校",
-        "tel": "046-852-0284",
-        "url": "https://miura.ed.jp/"
-      },
-      {
-        "nameJa": "(学)緑ヶ丘学院",
-        "tel": "046-822-1651",
-        "url": "https://www.midorigaoka.ed.jp/"
-      },
-      {
-        "nameJa": "（福）ユーアイ21　太陽の家",
-        "tel": "046-846-5133",
-        "url": "http://www.ui21.or.jp/"
-      },
-      {
-        "nameJa": "（学）横須賀学院",
-        "tel": "046-822-3218",
-        "url": "https://www.yokosukagakuin.ac.jp/"
-      },
-      {
-        "nameJa": "横須賀北ロータリークラブ",
-        "tel": "046-866-1801",
-        "url": "http://www.yokosukakita-rc.jp/"
-      },
-      {
-        "nameJa": "（福）横須賀基督教社会館",
-        "tel": "046-861-9773",
-        "url": "http://www.yokosuka-ccc.jp/"
-      },
-      {
-        "nameJa": "（一社）ヨコスカ・ジャズ協会",
-        "tel": "046-824-8366",
-        "url": "https://tomodachi-jazz.org/"
-      },
-      {
-        "nameJa": "（公社）横須賀青年会議所",
-        "tel": "046-824-1061",
-        "url": "https://yokosukajc.com/"
-      },
-      {
-        "nameJa": "横須賀中央診療所",
-        "tel": "046-823-8691",
-        "url": "https://sites.google.com/site/ycchp2014/"
-      },
-      {
-        "nameJa": "（株）横須賀リサーチパーク",
-        "tel": "046-847-5000",
-        "url": "https://www.yrp.co.jp"
-      },
-      {
-        "nameJa": "（福）隆徳会　サニーヒル横須賀",
-        "tel": "046-855-3032",
-        "url": "http://sunnyhill.or.jp/"
-      }
-    ],
-    "_type": "directoryPage",
-    "slug": "sanjyokaiin"
-  },
-  "programPages": [
+  "pages": [
     {
       "id": "seikatsusodan",
       "template": "program-detail",
@@ -959,7 +581,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "seikatsusodan"
     },
     {
@@ -1141,7 +763,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "kaiwasalon"
     },
     {
@@ -1244,7 +866,7 @@
           "noteEn": "Cannot provide interpretation for contracts, medical, or judicial matters. Cannot translate contracts, medical records, or court-related documents."
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "honyaku"
     },
     {
@@ -1284,7 +906,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "bosai"
     },
     {
@@ -1494,7 +1116,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "gaikokugo"
     },
     {
@@ -1532,7 +1154,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "kokusairikai"
     },
     {
@@ -1577,8 +1199,7 @@
           "titleJa": "2025年度スケジュール",
           "titleEn": "2025 Schedule",
           "entry": {
-            "date": "2025年7月6日（日）",
-            "dateEn": "July 6, 2025 (Sunday)",
+            "date": "2025-07-06",
             "time": "15:00〜17:00"
           }
         },
@@ -1600,7 +1221,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "youthfo"
     },
     {
@@ -1626,15 +1247,13 @@
           "titleEn": "2025 Schedule",
           "entries": [
             {
-              "date": "2025年6月7日（土）",
-              "dateEn": "June 7, 2025 (Sat)",
+              "date": "2025-06-07",
               "time": "12:30〜15:30",
               "locationJa": "横須賀市コミュニティセンター",
               "locationEn": "Yokosuka Community Center"
             },
             {
-              "date": "2025年11月1日（土）",
-              "dateEn": "November 1, 2025 (Sat)",
+              "date": "2025-11-01",
               "time": "13:00〜16:00",
               "locationJa": "横須賀市コミュニティセンター",
               "locationEn": "Yokosuka Community Center"
@@ -1680,8 +1299,7 @@
           "titleJa": "Japan Festival",
           "titleEn": "",
           "entry": {
-            "date": "2026年3月8日（日）",
-            "dateEn": "March 8, 2026 (Sunday)",
+            "date": "2026-03-08",
             "time": "10:00〜16:00"
           },
           "venue": {
@@ -1703,7 +1321,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "nihonbunka"
     },
     {
@@ -1727,8 +1345,7 @@
           "titleJa": "2025年度スケジュール",
           "titleEn": "2025 Schedule",
           "entry": {
-            "date": "2025年10月19日（日）",
-            "dateEn": "October 19, 2025 (Sunday)"
+            "date": "2025-10-19"
           }
         },
         {
@@ -1755,7 +1372,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "kids"
     },
     {
@@ -1812,14 +1429,12 @@
           "titleEn": "2025 Schedule",
           "entries": [
             {
-              "date": "2025年9月13日（土）",
-              "dateEn": "September 13, 2025 (Sat)",
+              "date": "2025-09-13",
               "descriptionJa": "猿島ドック・国立公園跡巡り",
               "descriptionEn": "Sarushima Dock / National Park Ruins Tour"
             },
             {
-              "date": "2026年2月14日（土）",
-              "dateEn": "February 14, 2026 (Sat)",
+              "date": "2026-02-14",
               "descriptionJa": "鎌倉・来宝寺と三浦",
               "descriptionEn": "Kamakura / Raihouji Temple and Miura"
             }
@@ -1843,7 +1458,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "englishguide"
     },
     {
@@ -1901,7 +1516,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "homestay"
     },
     {
@@ -2053,7 +1668,7 @@
           "deliveryEn": "Available for purchase at the YIA office or delivery."
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "cooking"
     },
     {
@@ -2214,7 +1829,7 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "sistercity"
     },
     {
@@ -2257,8 +1872,519 @@
           ]
         }
       ],
-      "_type": "programPage",
+      "_type": "page",
       "slug": "kokusaikoken"
+    },
+    {
+      "id": "aboutyia",
+      "slug": "aboutyia",
+      "template": "organization-overview",
+      "titleJa": "横須賀国際交流協会（YIA）とは",
+      "titleEn": "About Yokosuka International Association (YIA)",
+      "_type": "page",
+      "sections": [
+        {
+          "_type": "content",
+          "titleJa": "私たちの理念",
+          "titleEn": "Our Mission",
+          "descriptionJa": "横須賀市の都市像「国際海の手文化都市」の実現を支え、市民レベルでの多文化共生を目指した国際交流活動を推進しています。多様な文化の理解、人権の尊重、活力あるボランティア活動の創出を柱としています。",
+          "descriptionEn": "Supporting the realization of Yokosuka's urban vision as an 'International Seaside Culture City,' promoting international exchange activities aimed at multicultural coexistence at the citizen level."
+        },
+        {
+          "_type": "infoTable",
+          "titleJa": "団体概要",
+          "titleEn": "Organization Overview",
+          "rows": [
+            {
+              "labelJa": "設立",
+              "labelEn": "Founded",
+              "valueJa": "1997年"
+            },
+            {
+              "labelJa": "NPO認定",
+              "labelEn": "NPO Established",
+              "valueJa": "2003年"
+            },
+            {
+              "labelJa": "会員数",
+              "labelEn": "Members",
+              "valueJa": "個人会員320名、団体会員15、賛助会員17（2024年4月1日現在）",
+              "valueEn": "320 individual members, 15 organization members, 17 supporting members (as of April 1, 2024)"
+            },
+            {
+              "labelJa": "職員",
+              "labelEn": "Staff",
+              "valueJa": "事務員（外国人生活相談員）：全6名（令和6年4月1日現在）",
+              "valueEn": "Office staff (foreign resident counselors): 6 (as of April 1, 2024)"
+            }
+          ]
+        },
+        {
+          "_type": "infoTable",
+          "titleJa": "事業内容",
+          "titleEn": "Activities",
+          "rows": [
+            {
+              "labelJa": "支援事業",
+              "labelEn": "Support Services",
+              "valueJa": "多言語相談、日本語会話サロン、翻訳・通訳"
+            },
+            {
+              "labelJa": "啓発事業",
+              "labelEn": "Educational Programs",
+              "valueJa": "外国語講座、国際理解講座、国際ユースフォーラム"
+            },
+            {
+              "labelJa": "交流事業",
+              "labelEn": "Cultural Exchange",
+              "valueJa": "日本文化体験、Japan Festival in Yokosuka、キッズフェスティバル、英語ガイドツアー、ホームステイ・ビジット、世界の料理教室"
+            },
+            {
+              "labelJa": "国際貢献",
+              "labelEn": "International Contribution",
+              "valueJa": "フェアトレードコーヒー販売、姉妹都市交換学生"
+            },
+            {
+              "labelJa": "その他",
+              "labelEn": "Other",
+              "valueJa": "情報誌発行、メールマガジン、ホームページ運営、ボランティア交流会、横須賀商工会議所パートナー事業"
+            }
+          ]
+        },
+        {
+          "_type": "history",
+          "titleJa": "あゆみ",
+          "titleEn": "Our History",
+          "columns": [
+            "年",
+            "出来事"
+          ],
+          "columnsEn": [
+            "Year",
+            "Event"
+          ],
+          "years": [
+            {
+              "year": "1994",
+              "cuisines": "国際交流団体連絡会議が発足。国際交流ボランティア登録開始"
+            },
+            {
+              "year": "1995",
+              "cuisines": "第1回「日本まつりinよこすか」開催。日本語教室スタート"
+            },
+            {
+              "year": "1996",
+              "cuisines": "日本語会話サロン開始。第1回スポーツ交流"
+            },
+            {
+              "year": "1997",
+              "cuisines": "ボランティア組織YIA発足（会長：西原鈴子）。外国語講座、会話交流、国際理解講座、文化交流事業等開始。会報「NEWSPOT」毎月発行開始"
+            },
+            {
+              "year": "1998",
+              "cuisines": "ハロウィン、日本文化体験、English pubなど新事業開始"
+            },
+            {
+              "year": "2001",
+              "cuisines": "会長交代（庄司信行）"
+            },
+            {
+              "year": "2003",
+              "cuisines": "NPO法人化（会長：多賀和枝）。翻訳・通訳、外国語講座が独立事業に。姉妹都市交換学生・基地ツアー受入開始"
+            },
+            {
+              "year": "2007",
+              "cuisines": "外国人に対する災害対応事業を統合、毎年内容を発展"
+            },
+            {
+              "year": "2008",
+              "cuisines": "創立10周年記念（会長：藤井長生）。世界の料理教室スタート"
+            },
+            {
+              "year": "2012",
+              "cuisines": "横須賀商工会議所パートナー事業開始"
+            },
+            {
+              "year": "2013",
+              "cuisines": "会長交代（安東崇夫）。高校生向け外国語講座スタート（〜2017年度）。夜間英語クラス開始。横須賀市指定NPO認定"
+            },
+            {
+              "year": "2014",
+              "cuisines": "神奈川県認定NPO法人認定"
+            },
+            {
+              "year": "2015",
+              "cuisines": "上町パルス外国語・英会話クラススタート（〜2019年3月）。英語ガイドツアー独立事業化"
+            },
+            {
+              "year": "2018",
+              "cuisines": "社会人対象英語クラススタート（〜2019年3月）"
+            },
+            {
+              "year": "2022",
+              "cuisines": "JFY・日本文化体験・キッズフェスティバル等を自主運営化"
+            }
+          ]
+        },
+        {
+          "_type": "boardMembers",
+          "titleJa": "役員一覧",
+          "titleEn": "Board Members",
+          "asOf": "2024-04-01",
+          "members": [
+            {
+              "name": "安東崇夫",
+              "roleJa": "理事長",
+              "roleEn": "Chair"
+            },
+            {
+              "name": "大谷英世",
+              "roleJa": "副理事長",
+              "roleEn": "Vice Chair"
+            },
+            {
+              "name": "友森和子",
+              "roleJa": "副理事長",
+              "roleEn": "Vice Chair"
+            },
+            {
+              "name": "伊藤健吾（事務局長）",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "藤井長生",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "竹淵郁世",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "川名わた子",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "安本宗弘",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "陶山赤爪",
+              "roleJa": "理事",
+              "roleEn": "Director"
+            },
+            {
+              "name": "工藤幸久",
+              "roleJa": "監事",
+              "roleEn": "Auditor"
+            },
+            {
+              "name": "本田和彦",
+              "roleJa": "監事",
+              "roleEn": "Auditor"
+            }
+          ]
+        },
+        {
+          "_type": "definitions",
+          "titleJa": "運営",
+          "titleEn": "Governance",
+          "items": [
+            {
+              "termJa": "総会",
+              "definitionJa": "最高議決機関。年1回開催し、事業計画・予算・決算等を審議。",
+              "termEn": "General Assembly",
+              "definitionEn": "Supreme decision-making body, held annually to review business plans, budgets, and financial reports."
+            },
+            {
+              "termJa": "理事会",
+              "definitionJa": "法人の業務執行に関する事項を決定。",
+              "termEn": "Board of Directors",
+              "definitionEn": "Determines matters relating to corporate operations."
+            },
+            {
+              "termJa": "運営委員会",
+              "definitionJa": "理事・各事業委員長で構成し、事業全体の調整・運営を行う。",
+              "termEn": "Management Committee",
+              "definitionEn": "Composed of directors and committee chairs, coordinating overall operations."
+            },
+            {
+              "termJa": "事業実行委員会",
+              "definitionJa": "各事業の企画・運営を担当するボランティア委員会。",
+              "termEn": "Business Execution Committees",
+              "definitionEn": "Volunteer committees responsible for planning and running each program."
+            },
+            {
+              "termJa": "ボランティア交流会",
+              "definitionJa": "年1回、ボランティア同士の親睦・情報共有の場。",
+              "termEn": "Volunteer Exchange Meeting",
+              "definitionEn": "Annual gathering for volunteer networking and information sharing."
+            },
+            {
+              "termJa": "事務局",
+              "definitionJa": "日常業務の運営、会員管理、外国人生活相談等を担当。",
+              "termEn": "Administration Office",
+              "definitionEn": "Handles daily operations, member management, and foreign resident counseling."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kaiinn",
+      "slug": "kaiinn",
+      "template": "membership",
+      "titleJa": "会員募集",
+      "titleEn": "Membership",
+      "descriptionJa": "横須賀国際交流協会では、一緒に活動してくださる方、協会の活動に賛同し、資金面で応援してくださる会員を募集しています。",
+      "images": [
+        {
+          "file": "werk11.jpg"
+        }
+      ],
+      "_type": "page",
+      "sections": [
+        {
+          "_type": "feeTable",
+          "titleJa": "年会費のご案内",
+          "titleEn": "Membership Fees",
+          "rows": [
+            {
+              "typeJa": "正会員（個人会員）",
+              "typeEn": "Regular Member (Individual)",
+              "fee": "2,000円/年"
+            },
+            {
+              "typeJa": "家族会員",
+              "typeEn": "Family Member",
+              "fee": "1,000円/年"
+            },
+            {
+              "typeJa": "準会員（学生・外国籍の方）",
+              "typeEn": "Associate Member (Students / Foreign Nationals)",
+              "fee": "無料"
+            },
+            {
+              "typeJa": "賛助会員",
+              "typeEn": "Supporting Member",
+              "fee": "1口10,000円〜"
+            },
+            {
+              "typeJa": "団体会員",
+              "typeEn": "Organization Member",
+              "fee": "10,000円/年"
+            }
+          ]
+        },
+        {
+          "_type": "infoTable",
+          "titleJa": "会員種別",
+          "titleEn": "Member Types",
+          "rows": [
+            {
+              "labelJa": "正会員",
+              "valueJa": "この法人の目的である「主に横須賀市に在住・在勤の個人または団体に対して、国際交流活動を通しての市民生活の向上と国際理解の推進に寄与する」活動に賛同し、入会された個人を表します。"
+            },
+            {
+              "labelJa": "家族会員",
+              "valueJa": "この法人の目的に賛同し、入会した正会員と同居している家族を表します。"
+            },
+            {
+              "labelJa": "準会員",
+              "valueJa": "学生（中学、高校、大学、大学院、専門学生）と外国人（外国籍）の方で協会の活動に興味を持ち、積極的に参加をする方。"
+            },
+            {
+              "labelJa": "賛助会員",
+              "valueJa": "この法人の目的に賛同し、協会が行う活動を賛助していただくために入会した個人、団体を表します。"
+            }
+          ]
+        },
+        {
+          "_type": "content",
+          "titleJa": "会員になると",
+          "titleEn": "Member Benefits",
+          "descriptionJa": "正会員（家族会員を含む）の方々には会費納入後、その年度の「会員証」が発行されます。全会員には当協会の事業のご案内などの情報提供をいたします。活動参加時、登録されている全会員は、ボランティア保険適応対象となります。",
+          "descriptionEn": "Regular members (including family members) receive a membership card after paying dues. All members receive information about association activities. All registered members are covered by volunteer insurance during activities."
+        },
+        {
+          "_type": "content",
+          "titleJa": "入会のお申込み",
+          "titleEn": "How to Join",
+          "descriptionJa": "個人会員入会ご希望の方は「登録申込書」に必要事項を記載の上、当協会事務所まで直接ご提出いただくか、郵送、メールまたはＦＡＸでお送りください。年会費納入の確認後、会員登録完了となります。",
+          "documents": [
+            {
+              "label": "正会員登録申込書",
+              "labelEn": "Regular member application",
+              "url": "/docs/kaiin.xls",
+              "type": "XLS"
+            },
+            {
+              "label": "団体会員登録申込書",
+              "labelEn": "Organization application",
+              "url": "/docs/danntai201610.xls",
+              "type": "XLS"
+            },
+            {
+              "label": "賛助会員登録申込書",
+              "labelEn": "Supporting member application",
+              "url": "/docs/2024sanjo.xls",
+              "type": "XLS"
+            },
+            {
+              "label": "準会員学生申込書",
+              "labelEn": "Student application",
+              "url": "/docs/gakusei201610.xls",
+              "type": "XLS"
+            },
+            {
+              "label": "準会員日本語申込書",
+              "labelEn": "Foreign national application (Japanese)",
+              "url": "/docs/gaikokujinn201610nihonngo.xls",
+              "type": "XLS"
+            },
+            {
+              "label": "英語版申込書",
+              "labelEn": "Application form (English)",
+              "url": "/docs/jyunkaiineigo.xls",
+              "type": "XLS"
+            }
+          ],
+          "infoTable": [
+            {
+              "labelJa": "銀行",
+              "labelEn": "Bank",
+              "valueJa": "ゆうちょ銀行",
+              "valueEn": "Japan Post Bank (Yucho)"
+            },
+            {
+              "labelJa": "口座番号",
+              "labelEn": "Account",
+              "valueJa": "００２００−９−７５１５２"
+            },
+            {
+              "labelJa": "口座名義",
+              "labelEn": "Holder",
+              "valueJa": "特定非営利活動法人横須賀国際交流協会"
+            }
+          ]
+        },
+        {
+          "_type": "otherNotes",
+          "ja": "個人情報の扱い：「個人情報保護方針」に従った厳重な管理のもと、プライバシーを守ります。",
+          "en": "Handling of personal information: Privacy is protected under strict management in accordance with our 'Personal Information Protection Policy.'"
+        }
+      ]
+    },
+    {
+      "id": "sanjyokaiin",
+      "slug": "sanjyokaiin",
+      "template": "directory",
+      "titleJa": "賛助会員一覧",
+      "titleEn": "Supporting Members Directory",
+      "subtitleJa": "横須賀国際交流協会を支援している賛助会員（2024年3月末 現在　五十音順）",
+      "descriptionJa": "横須賀国際交流協会は、たくさんの賛助会員からご指導・ご理解をいただいております。ご協力誠にありがとうございます。",
+      "_type": "page",
+      "sections": [
+        {
+          "_type": "directoryList",
+          "titleJa": "賛助会員一覧",
+          "titleEn": "Supporting Members Directory",
+          "entries": [
+            {
+              "nameJa": "エリアマネジメント横須賀共同体",
+              "tel": "046-857-2500"
+            },
+            {
+              "nameJa": "（学）神奈川歯科大学",
+              "tel": "046-822-8751",
+              "url": "http://www.kdu.ac.jp/"
+            },
+            {
+              "nameJa": "（株）サンシャイン",
+              "tel": "046-838-5677"
+            },
+            {
+              "nameJa": "（学）湘南学院高等学校",
+              "tel": "046-828-3433",
+              "url": "https://shonangakuin.ed.jp/"
+            },
+            {
+              "nameJa": "湘南信用金庫",
+              "tel": "046-825-1212",
+              "url": "https://www.shinkin.co.jp/shonan/"
+            },
+            {
+              "nameJa": "（株）トライアングル",
+              "tel": "046-825-7144",
+              "url": "https://www.tryangle-web.com/"
+            },
+            {
+              "nameJa": "ホテルニューヨコスカ",
+              "tel": "046-820-1111",
+              "url": "https://hotelnewyokosuka.co.jp/hotel_newyokosuka/"
+            },
+            {
+              "nameJa": "(学)三浦学苑高等学校",
+              "tel": "046-852-0284",
+              "url": "https://miura.ed.jp/"
+            },
+            {
+              "nameJa": "(学)緑ヶ丘学院",
+              "tel": "046-822-1651",
+              "url": "https://www.midorigaoka.ed.jp/"
+            },
+            {
+              "nameJa": "（福）ユーアイ21　太陽の家",
+              "tel": "046-846-5133",
+              "url": "http://www.ui21.or.jp/"
+            },
+            {
+              "nameJa": "（学）横須賀学院",
+              "tel": "046-822-3218",
+              "url": "https://www.yokosukagakuin.ac.jp/"
+            },
+            {
+              "nameJa": "横須賀北ロータリークラブ",
+              "tel": "046-866-1801",
+              "url": "http://www.yokosukakita-rc.jp/"
+            },
+            {
+              "nameJa": "（福）横須賀基督教社会館",
+              "tel": "046-861-9773",
+              "url": "http://www.yokosuka-ccc.jp/"
+            },
+            {
+              "nameJa": "（一社）ヨコスカ・ジャズ協会",
+              "tel": "046-824-8366",
+              "url": "https://tomodachi-jazz.org/"
+            },
+            {
+              "nameJa": "（公社）横須賀青年会議所",
+              "tel": "046-824-1061",
+              "url": "https://yokosukajc.com/"
+            },
+            {
+              "nameJa": "横須賀中央診療所",
+              "tel": "046-823-8691",
+              "url": "https://sites.google.com/site/ycchp2014/"
+            },
+            {
+              "nameJa": "（株）横須賀リサーチパーク",
+              "tel": "046-847-5000",
+              "url": "https://www.yrp.co.jp"
+            },
+            {
+              "nameJa": "（福）隆徳会　サニーヒル横須賀",
+              "tel": "046-855-3032",
+              "url": "http://sunnyhill.or.jp/"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
