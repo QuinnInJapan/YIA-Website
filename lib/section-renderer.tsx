@@ -1,4 +1,5 @@
 import React from "react";
+import { stegaClean } from "next-sanity";
 import type {
   PageSection,
   WarningsSection,
@@ -180,7 +181,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         addTocHeader(ja(s.title), en(s.title));
         let rows: string[][] = [];
         if (typeof s.rows === "string") {
-          try { rows = JSON.parse(s.rows); } catch { rows = []; }
+          try { rows = JSON.parse(stegaClean(s.rows)); } catch { rows = []; }
         } else if (Array.isArray(s.rows)) {
           rows = s.rows;
         }
