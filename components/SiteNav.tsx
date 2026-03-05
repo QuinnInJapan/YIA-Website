@@ -238,8 +238,8 @@ export default function SiteNav({ categories }: SiteNavProps) {
                 aria-controls={`mobile-nav-${cat.id}`}
                 onClick={() => toggle(cat.id)}
               >
-                <span>
-                  {ja(cat.label)}{" "}
+                <span className="site-nav__mobile-group-text">
+                  <span>{ja(cat.label)}</span>
                   <span className="site-nav__mobile-group-en" lang="en">{en(cat.label)}</span>
                 </span>
                 <ChevronIcon className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} />

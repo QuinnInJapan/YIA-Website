@@ -4,6 +4,7 @@ import { ja, en } from "@/lib/i18n";
 import { formatDateDot } from "@/lib/date-format";
 import { fileUrl } from "@/lib/sanity/image";
 import type { Document } from "@/lib/types";
+import PdfLink from "./PdfLink";
 
 interface SiteFooterProps {
   documents?: Document[];
@@ -26,10 +27,13 @@ export default async function SiteFooter({
                 {i > 0 && (
                   <span className="site-footer__docs-sep">&middot;</span>
                 )}{" "}
-                <a href={fileUrl(d.file) || stegaClean(d.url) || ""}>
+                <PdfLink
+                  href={fileUrl(d.file) || stegaClean(d.url) || ""}
+                  title={ja(d.label) + (en(d.label) ? ` / ${en(d.label)}` : "")}
+                >
                   {ja(d.label)}
                   {en(d.label) ? ` / ${en(d.label)}` : ""}
-                </a>
+                </PdfLink>
               </span>
             ))}
           </div>

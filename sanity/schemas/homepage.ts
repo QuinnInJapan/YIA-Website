@@ -26,6 +26,7 @@ export default defineType({
           name: "image",
           title: "画像",
           type: "image",
+          options: { hotspot: true },
         }),
         defineField({ name: "tagline", title: "キャッチコピー", type: "internationalizedArrayString" }),
       ],

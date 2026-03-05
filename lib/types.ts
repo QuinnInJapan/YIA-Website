@@ -15,6 +15,8 @@ import type { I18nString, I18nBlocks } from "@/lib/i18n";
 
 export interface SanityImage {
   asset: { _ref: string };
+  hotspot?: { x: number; y: number; width: number; height: number };
+  crop?: { top: number; bottom: number; left: number; right: number };
 }
 
 export interface SanityFile {

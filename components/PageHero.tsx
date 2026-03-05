@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { Nl2br } from "@/lib/helpers";
-import { imageUrl } from "@/lib/sanity/image";
+import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import type { ImageFile } from "@/lib/types";
 import type { I18nString, I18nBlocks } from "@/lib/i18n";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
@@ -69,7 +69,9 @@ export default function PageHero({
   }
 
   // Use first image as hero background if available
-  const heroImg = images?.[0]?.file ? imageUrl(images[0].file) : "";
+  const heroFile = images?.[0]?.file;
+  const heroImg = heroFile ? imageUrl(heroFile) : "";
+  const heroPosition = heroFile ? hotspotPosition(heroFile) : undefined;
   if (heroImg) {
     return (
       <div className="page-hero">
@@ -79,6 +81,7 @@ export default function PageHero({
           fill
           sizes="100vw"
           className="page-hero__img"
+          style={heroPosition ? { objectPosition: heroPosition } : undefined}
         />
         <h1 className="page-hero__title">{titleJa}</h1>
         <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>

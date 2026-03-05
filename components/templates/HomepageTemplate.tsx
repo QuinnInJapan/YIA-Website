@@ -7,7 +7,7 @@ import {
   getAnnouncementsByRefs,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
-import { imageUrl } from "@/lib/sanity/image";
+import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
@@ -20,6 +20,7 @@ export default async function HomepageTemplate() {
   const nav = await getEnrichedNavigation();
   const sidebar = data.sidebar;
   const heroImage = imageUrl(hp.hero.image);
+  const heroPosition = hotspotPosition(hp.hero.image);
 
   // Inline announcements list
   const hpAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
@@ -39,6 +40,7 @@ export default async function HomepageTemplate() {
             priority
             sizes="100vw"
             className="hero-viewport__img"
+            style={heroPosition ? { objectPosition: heroPosition } : undefined}
           />
         )}
         <div className="hero__overlay">
@@ -98,6 +100,7 @@ export default async function HomepageTemplate() {
         <section className="program-grid reveal-stagger">
           {nav.categories.filter((cat) => cat.heroImage?.asset?._ref).map((cat, i) => {
             const img = imageUrl(cat.heroImage);
+            const pos = hotspotPosition(cat.heroImage);
             return (
               <div
                 className="program-card reveal"
@@ -110,6 +113,7 @@ export default async function HomepageTemplate() {
                     alt=""
                     className="program-card__img"
                     fill
+                    style={pos ? { objectPosition: pos } : undefined}
                   />
                 )}
                 <div className="program-card__overlay">
@@ -149,6 +153,7 @@ export default async function HomepageTemplate() {
                 fill
                 sizes="100vw"
                 className="home-section--events__bg"
+                style={heroPosition ? { objectPosition: heroPosition } : undefined}
               />
             )}
             <h2 className="home-section__heading reveal">

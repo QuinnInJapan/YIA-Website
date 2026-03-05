@@ -9,8 +9,9 @@ export interface LightboxItem {
   caption: string;
 }
 
-/** Encode path segments for browser src attributes (spaces → %20) */
+/** Encode src for browser: leave full URLs intact, encode local path segments */
 function encodeSrc(p: string): string {
+  if (p.startsWith("http://") || p.startsWith("https://")) return p;
   return p
     .split("/")
     .map((seg) => encodeURIComponent(seg))

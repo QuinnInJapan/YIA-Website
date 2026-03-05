@@ -23,6 +23,6 @@ export default defineType({
       description: "作成後は変更できません",
     }),
     defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "heroImage", title: "ヒーロー画像", type: "image" }),
+    defineField({ name: "heroImage", title: "ヒーロー画像", type: "image", options: { hotspot: true } }),
   ],
 });

@@ -10,6 +10,7 @@ interface LazyImageProps {
   loading?: "lazy" | "eager";
   priority?: boolean;
   fill?: boolean;
+  style?: React.CSSProperties;
 }
 
 export default function LazyImage({
@@ -19,6 +20,7 @@ export default function LazyImage({
   loading,
   priority,
   fill,
+  style,
 }: LazyImageProps) {
   const [loaded, setLoaded] = useState(false);
 
@@ -39,6 +41,7 @@ export default function LazyImage({
         loading={priority ? undefined : loading || "lazy"}
         priority={priority}
         onLoad={handleLoad}
+        style={style}
       />
     );
   }

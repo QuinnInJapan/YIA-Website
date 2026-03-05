@@ -2592,8 +2592,12 @@ html:has(:target) {
     background: var(--color-gray-light);
   }
 
+  .site-nav__mobile-group-text {
+    display: flex;
+    flex-direction: column;
+  }
+
   .site-nav__mobile-group-en {
-    display: block;
     font-size: var(--font-size-xs);
     font-weight: 400;
     color: var(--color-text-faint);
@@ -2639,6 +2643,15 @@ html:has(:target) {
     color: var(--color-text);
     border-top: 1px solid var(--color-gray-light);
     min-height: 44px;
+  }
+
+  .site-nav__mobile-link .nav-item__title {
+    line-height: 1.4;
+  }
+
+  .site-nav__mobile-link .nav-item__en {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-faint);
   }
 
   .site-nav__mobile-link:hover {
@@ -2782,7 +2795,8 @@ html:has(:target) {
     padding: var(--spacing-sm) var(--spacing-sm);
     min-height: 44px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 
   /* Access block: card layout on mobile */

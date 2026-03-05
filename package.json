@@ -28,6 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "sharp": "^0.34.5",
+    "svgpath": "^2.6.0",
     "typescript": "^5"
   }
 }

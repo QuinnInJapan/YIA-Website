@@ -5,7 +5,7 @@ export default defineType({
   title: "画像ファイル",
   type: "object",
   fields: [
-    defineField({ name: "file", title: "ファイル", type: "image", validation: (Rule) => Rule.required() }),
+    defineField({ name: "file", title: "ファイル", type: "image", options: { hotspot: true }, validation: (Rule) => Rule.required() }),
     defineField({ name: "caption", title: "キャプション", type: "internationalizedArrayString" }),
   ],
 });

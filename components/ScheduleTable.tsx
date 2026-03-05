@@ -3,6 +3,7 @@ import { stegaClean } from "next-sanity";
 import { ja, en } from "@/lib/i18n";
 import { fileUrl } from "@/lib/sanity/image";
 import type { GroupScheduleRow } from "@/lib/types";
+import PdfLink from "./PdfLink";
 
 interface ScheduleTableProps {
   columns: string[];
@@ -25,7 +26,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
 
   let nameContent: React.ReactNode;
   if (scheduleUrl) {
-    nameContent = <a href={scheduleUrl}>{ja(r.name)}</a>;
+    nameContent = <PdfLink href={scheduleUrl} title={ja(r.name)}>{ja(r.name)}</PdfLink>;
   } else if (websiteUrl) {
     nameContent = (
       <a href={websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
@@ -43,9 +44,9 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
         {photosUrl && (
           <>
             {" "}
-            <a href={photosUrl} className="schedule-table__photo-link">
+            <PdfLink href={photosUrl} title={`${ja(r.name)} 写真`} className="schedule-table__photo-link">
               📷
-            </a>
+            </PdfLink>
           </>
         )}
         {websiteUrl && scheduleUrl && (
