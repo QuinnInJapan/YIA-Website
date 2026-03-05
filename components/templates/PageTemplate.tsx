@@ -33,8 +33,7 @@ export default function PageTemplate({
     <PageHero
       titleJa={ja(page.title)}
       titleEn={en(page.title)}
-      descriptionJa={ja(page.description)}
-      descriptionEn={en(page.description)}
+      description={page.description}
       images={page.images}
     />
   );

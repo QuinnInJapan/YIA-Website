@@ -22,8 +22,7 @@ import type {
 import { tocId } from "@/lib/helpers";
 import { ja, en } from "@/lib/i18n";
 import { formatDateJa, formatDateEn } from "@/lib/date-format";
-import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
-import path from "path";
+import { imageUrl, resolveDocs, fileUrl } from "@/lib/sanity/image";
 
 import SectionHeader from "@/components/SectionHeader";
 import InfoTable from "@/components/InfoTable";
@@ -31,6 +30,7 @@ import Checklist from "@/components/Checklist";
 import ScheduleTable from "@/components/ScheduleTable";
 import DocList from "@/components/DocList";
 import BilingualBlock from "@/components/BilingualBlock";
+import BilingualPortableText from "@/components/BilingualPortableText";
 import Callout from "@/components/Callout";
 import SisterCityCards from "@/components/SisterCityCards";
 import DefinitionCard from "@/components/DefinitionCard";
@@ -52,23 +52,16 @@ interface SectionBuilderResult {
   tocEntries: TocEntry[];
 }
 
-// Helper to build gallery images with width filtering
+// Helper to build gallery images from Sanity image objects
 function buildGalleryImages(images: ImageFile[]) {
-  const filtered = images.filter((img) => {
-    const local = resolveImageLocal(img.file);
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      decodeURIComponent(local)
-    );
-    return getImageWidth(filePath) >= HERO_MIN_WIDTH;
-  });
-  return filtered.map((img) => ({
-    src: resolveImage(img.file),
-    alt: ja(img.caption) || img.file,
-    captionJa: ja(img.caption),
-    captionEn: en(img.caption),
-  }));
+  return images
+    .filter((img) => img.file?.asset?._ref)
+    .map((img) => ({
+      src: imageUrl(img.file),
+      alt: ja(img.caption) || "",
+      captionJa: ja(img.caption),
+      captionEn: en(img.caption),
+    }));
 }
 
 export function renderSections(sections: PageSection[]): SectionBuilderResult {
@@ -112,7 +105,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
       case "warnings": {
         const s = sec as WarningsSection;
         for (const w of s.items) {
-          current.push(<Callout ja={ja(w)} en={en(w)} variant="warning" />);
+          current.push(<Callout field={w} variant="warning" />);
         }
         flush();
         break;
@@ -123,10 +116,8 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         if (ja(s.title)) {
           addTocHeader(ja(s.title), en(s.title));
         }
-        if (ja(s.description)) {
-          current.push(
-            <BilingualBlock ja={ja(s.description)} en={en(s.description)} />
-          );
+        if (s.description) {
+          current.push(<BilingualPortableText field={s.description} />);
         }
         if (s.infoTable) {
           current.push(<InfoTable rows={s.infoTable} />);
@@ -135,12 +126,10 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
           current.push(<Checklist items={s.checklist} />);
         }
         if (s.documents?.length) {
-          current.push(<DocList docs={s.documents} />);
+          current.push(<DocList docs={resolveDocs(s.documents)} />);
         }
-        if (ja(s.note)) {
-          current.push(
-            <Callout ja={`※ ${ja(s.note)}`} en={en(s.note)} />
-          );
+        if (s.note) {
+          current.push(<Callout field={s.note} notePrefix="※ " />);
         }
         if (s.images?.length) {
           const galleryImages = buildGalleryImages(s.images);
@@ -300,7 +289,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
             <DocList
               docs={docItems.map((it) => ({
                 label: it.title,
-                url: it.url,
+                url: fileUrl(it.file) || it.url,
                 type: it.fileType,
               }))}
             />
@@ -310,7 +299,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
           current.push(
             <ResourceLink
               type="youtube"
-              url={res.url}
+              url={res.url || ""}
               titleJa={ja(res.title)}
               titleEn={en(res.title)}
             />
@@ -323,10 +312,8 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
       case "history": {
         const s = sec as HistorySection;
         addTocHeader(ja(s.title), en(s.title));
-        if (ja(s.intro)) {
-          current.push(
-            <BilingualBlock ja={ja(s.intro)} en={en(s.intro)} />
-          );
+        if (s.intro) {
+          current.push(<BilingualPortableText field={s.intro} />);
         }
         if (s.years?.length) {
           const rows = s.years.map((y) => [y.year, y.cuisines]);
@@ -345,10 +332,8 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
       case "fairTrade": {
         const s = sec as FairTradeSection;
         addTocHeader(ja(s.title), en(s.title));
-        if (ja(s.description)) {
-          current.push(
-            <BilingualBlock ja={ja(s.description)} en={en(s.description)} />
-          );
+        if (s.description) {
+          current.push(<BilingualPortableText field={s.description} />);
         }
         if (s.priceList) {
           const rows = s.priceList.map((p) => [p.type, p.weight, p.price]);
@@ -360,20 +345,8 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
             />
           );
         }
-        if (ja(s.delivery)) {
-          current.push(
-            <InfoTable
-              rows={[
-                {
-                  label: [{ _key: "ja", value: "購入方法" }, { _key: "en", value: "How to Buy" }],
-                  value: [
-                    { _key: "ja", value: ja(s.delivery) },
-                    { _key: "en", value: en(s.delivery) },
-                  ],
-                },
-              ]}
-            />
-          );
+        if (s.delivery) {
+          current.push(<BilingualPortableText field={s.delivery} />);
         }
         flush();
         break;

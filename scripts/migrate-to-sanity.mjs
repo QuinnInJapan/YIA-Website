@@ -4,10 +4,13 @@
  * Migration script: site-data.json → Sanity
  *
  * Usage:
- *   SANITY_TOKEN=<token> node scripts/migrate-to-sanity.mjs
- *   SANITY_TOKEN=<token> node scripts/migrate-to-sanity.mjs --dry-run
+ *   node scripts/migrate-to-sanity.mjs
+ *   node scripts/migrate-to-sanity.mjs --dry-run
+ *
+ * Reads SANITY_TOKEN from .env.local automatically.
  */
 
+import './load-env.mjs';
 import { createClient } from '@sanity/client';
 import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';

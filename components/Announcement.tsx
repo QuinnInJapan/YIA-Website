@@ -1,8 +1,8 @@
 import { Nl2br } from "@/lib/helpers";
-import { resolveImage } from "@/lib/images";
+import { imageUrl, resolveDocs } from "@/lib/sanity/image";
 import DocList from "./DocList";
 import LazyImage from "./LazyImage";
-import type { Document } from "@/lib/types";
+import type { Document, SanityImage } from "@/lib/types";
 
 interface AnnouncementProps {
   titleJa?: string;
@@ -10,7 +10,7 @@ interface AnnouncementProps {
   contentJa: string;
   contentEn: string;
   documents?: Document[];
-  image?: string;
+  image?: SanityImage;
 }
 
 export default function Announcement({
@@ -21,6 +21,7 @@ export default function Announcement({
   documents,
   image,
 }: AnnouncementProps) {
+  const imgSrc = imageUrl(image);
   return (
     <article className="announcement">
       {titleJa && (
@@ -37,17 +38,17 @@ export default function Announcement({
       <div className="announcement__content" lang="en">
         <Nl2br text={contentEn} />
       </div>
-      {image && (
+      {imgSrc && (
         <div className="announcement__content" style={{ maxWidth: "400px" }}>
           <LazyImage
-            src={resolveImage(image)}
+            src={imgSrc}
             alt=""
           />
         </div>
       )}
       {documents && documents.length > 0 && (
         <div className="announcement__content">
-          <DocList docs={documents} />
+          <DocList docs={resolveDocs(documents)} />
         </div>
       )}
     </article>

@@ -1,4 +1,4 @@
-import { resolveImage } from "@/lib/images";
+import { imageUrl } from "@/lib/sanity/image";
 import EventFlyerPair from "./EventFlyerPair";
 import type { EventFlyer } from "@/lib/types";
 
@@ -16,39 +16,22 @@ export default function EventFlyerPairWrapper({
   for (const f of flyers) {
     if (f.imageJa && f.imageEn) {
       items.push({
-        src: resolveImage(f.imageJa),
+        src: imageUrl(f.imageJa),
         alt: f.altJa || "",
         caption: "日本語版",
       });
       items.push({
-        src: resolveImage(f.imageEn),
+        src: imageUrl(f.imageEn),
         alt: f.altEn || "",
         caption: "English",
       });
     } else {
-      const img = f.image || f.imageJa || "";
+      const img = f.image || f.imageJa;
       items.push({
-        src: resolveImage(img),
+        src: imageUrl(img),
         alt: f.alt || f.altJa || "",
         caption: f.alt || "",
       });
-    }
-  }
-
-  // Render paired layout for pairs, using event-flyer-pair wrapper
-  const elements: React.ReactNode[] = [];
-  let i = 0;
-  for (const f of flyers) {
-    if (f.imageJa && f.imageEn) {
-      // This pair gets wrapped in event-flyer-pair div
-      elements.push(
-        <div className="event-flyer-pair" key={i}>
-          {/* Individual flyer buttons rendered by client EventFlyerPair */}
-        </div>
-      );
-      i += 2;
-    } else {
-      i += 1;
     }
   }
 

@@ -2,6 +2,7 @@ import { stegaClean } from "next-sanity";
 import { getSiteData } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { formatDateDot } from "@/lib/date-format";
+import { fileUrl } from "@/lib/sanity/image";
 import type { Document } from "@/lib/types";
 
 interface SiteFooterProps {
@@ -25,7 +26,7 @@ export default async function SiteFooter({
                 {i > 0 && (
                   <span className="site-footer__docs-sep">&middot;</span>
                 )}{" "}
-                <a href={stegaClean(d.url)}>
+                <a href={fileUrl(d.file) || stegaClean(d.url) || ""}>
                   {ja(d.label)}
                   {en(d.label) ? ` / ${en(d.label)}` : ""}
                 </a>

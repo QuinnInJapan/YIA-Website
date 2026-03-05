@@ -12,7 +12,7 @@ export default defineType({
       options: { list: [{ title: "YouTube", value: "youtube" }] },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({ name: "url", title: "URL", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "url", title: "URL", type: "url", validation: (Rule) => Rule.required() }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
   ],
 });

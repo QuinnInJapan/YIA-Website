@@ -1,9 +1,11 @@
 import { defineType, defineField } from "sanity";
+import { ComponentIcon } from "@sanity/icons";
 
 export default defineType({
   name: "sidebar",
   title: "サイドバー・フッター",
   type: "document",
+  icon: ComponentIcon,
   groups: [
     { name: "sidebar", title: "サイドバー", default: true },
     { name: "footer", title: "フッター" },
@@ -18,7 +20,7 @@ export default defineType({
       type: "object",
       group: "sidebar",
       fields: [
-        defineField({ name: "image", title: "画像", type: "string" }),
+        defineField({ name: "image", title: "画像", type: "image" }),
         defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
       ],
     }),
@@ -28,11 +30,11 @@ export default defineType({
       type: "object",
       group: "sidebar",
       fields: [
-        defineField({ name: "url", title: "URL", type: "string" }),
+        defineField({ name: "url", title: "URL", type: "url" }),
         defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
       ],
     }),
-    defineField({ name: "counselingImage", title: "相談窓口画像", type: "string", group: "sidebar" }),
+    defineField({ name: "counselingImage", title: "相談窓口画像", type: "image", group: "sidebar" }),
     defineField({
       name: "memberRecruitment",
       title: "会員募集",
@@ -40,7 +42,7 @@ export default defineType({
       group: "sidebar",
       fields: [
         defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
-        defineField({ name: "url", title: "URL", type: "string" }),
+        defineField({ name: "url", title: "URL", type: "url" }),
       ],
     }),
     defineField({

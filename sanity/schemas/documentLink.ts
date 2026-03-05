@@ -6,7 +6,8 @@ export default defineType({
   type: "object",
   fields: [
     defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "url", title: "URL", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({ name: "file", title: "ファイル", type: "file", description: "アップロードファイル（PDF等）/ Upload file (PDF, etc.)" }),
+    defineField({ name: "url", title: "外部URL", type: "url", description: "外部リンク（ファイルがない場合）/ External link (if no file uploaded)" }),
     defineField({ name: "type", title: "種類", type: "string" }),
   ],
 });

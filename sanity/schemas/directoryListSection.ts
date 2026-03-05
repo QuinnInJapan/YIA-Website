@@ -26,7 +26,7 @@ export default defineType({
           fields: [
             defineField({ name: "nameJa", title: "名前（日本語）", type: "string" }),
             defineField({ name: "tel", title: "電話番号", type: "string" }),
-            defineField({ name: "url", title: "URL", type: "string" }),
+            defineField({ name: "url", title: "URL", type: "url" }),
           ],
         },
       ],

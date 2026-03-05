@@ -16,7 +16,7 @@ export default defineType({
   },
   fields: [
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "intro", title: "紹介文", type: "internationalizedArrayText" }),
+    defineField({ name: "intro", title: "紹介文", type: "internationalizedArrayBlockContent" }),
     defineField({ name: "columns", title: "列見出し（日本語）", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "columnsEn", title: "列見出し（英語）", type: "array", of: [{ type: "string" }] }),
     defineField({

@@ -22,8 +22,8 @@ export default defineType({
         ],
       },
     }),
-    defineField({ name: "schedule_pdf", title: "スケジュールPDF", type: "string" }),
-    defineField({ name: "photos_pdf", title: "写真PDF", type: "string" }),
-    defineField({ name: "website", title: "ウェブサイト", type: "string" }),
+    defineField({ name: "schedulePdf", title: "スケジュールPDF", type: "file" }),
+    defineField({ name: "photosPdf", title: "写真PDF", type: "file" }),
+    defineField({ name: "website", title: "ウェブサイト", type: "url" }),
   ],
 });

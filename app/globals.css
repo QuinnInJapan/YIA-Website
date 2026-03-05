@@ -64,27 +64,27 @@ ul, ol {
 /* ===== DESIGN TOKENS ===== */
 
 :root {
-  /* Core palette — Earth theme */
-  --color-bg: #faf8f5;
-  --color-surface: #fdfcfa;
-  --color-navy: #5a4030;
-  --color-navy-dark: #3e2a1e;
-  --color-navy-light: #7a5a45;
+  /* Core palette — Navy theme */
+  --color-bg: #f7f9fb;
+  --color-surface: #fcfdfe;
+  --color-navy: #1e3a5f;
+  --color-navy-dark: #132845;
+  --color-navy-light: #2d5a8a;
   --color-white: #ffffff;
-  --color-silver: #b0a898;
-  --color-gray-light: #f2efe8;
-  --color-gray-mid: #ddd5c8;
-  --color-border: #ddd5c8;
-  --color-text: #302820;
-  --color-text-muted: #706050;
-  --color-text-secondary: #605040;
-  --color-text-faint: #6f604f;
-  --color-tint: #f0ece5;
-  --color-tint-blue: #f2f0ea;
-  --color-hero-overlay: rgba(40, 30, 15, 0.55);
-  --color-link: #7a5020;
-  --color-link-hover: #5a3818;
-  --color-easy-jp: #7a6040;
+  --color-silver: #9aa8b8;
+  --color-gray-light: #eef1f5;
+  --color-gray-mid: #d0d8e0;
+  --color-border: #d0d8e0;
+  --color-text: #1a2030;
+  --color-text-muted: #506070;
+  --color-text-secondary: #405060;
+  --color-text-faint: #5a6575;
+  --color-tint: #edf1f5;
+  --color-tint-blue: #eef2f7;
+  --color-hero-overlay: rgba(15, 25, 50, 0.55);
+  --color-link: #1e4a7a;
+  --color-link-hover: #153660;
+  --color-easy-jp: #3a5a7a;
   --color-accent: #cc5533;
   --color-accent-pink: #cc5533;
 
@@ -93,8 +93,8 @@ ul, ol {
   --color-secondary-light: #fdf6e3;
 
   /* Functional colors */
-  --color-info-bg: #f5f0ea;
-  --color-info-border: #6a5030;
+  --color-info-bg: #f0f4f8;
+  --color-info-border: #1e3a5f;
 
   --font-size-base: 15px;
   --font-size-sm: 14px;
@@ -197,9 +197,9 @@ ruby rt {
   z-index: 1;
   background: linear-gradient(
     to top,
-    rgba(30, 20, 10, 0.78) 0%,
-    rgba(40, 30, 15, 0.50) 50%,
-    rgba(40, 30, 15, 0.40) 100%
+    rgba(10, 20, 40, 0.78) 0%,
+    rgba(15, 25, 50, 0.50) 50%,
+    rgba(15, 25, 50, 0.40) 100%
   );
 }
 
@@ -1882,7 +1882,7 @@ html:has(:target) {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(ellipse at center, rgba(40, 30, 15, 0.45) 0%, rgba(40, 30, 15, 0.7) 100%);
+  background: radial-gradient(ellipse at center, rgba(15, 25, 50, 0.45) 0%, rgba(15, 25, 50, 0.7) 100%);
 }
 
 .hero__overlay {
@@ -2181,7 +2181,7 @@ html:has(:target) {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: rgba(242, 240, 234, 0.82);
+  background: rgba(238, 242, 247, 0.82);
   pointer-events: none;
 }
 
@@ -2231,8 +2231,8 @@ html:has(:target) {
   border-radius: 8px;
   border: none;
   box-shadow:
-    0 8px 32px rgba(60, 40, 20, 0.18),
-    0 2px 8px rgba(60, 40, 20, 0.10);
+    0 8px 32px rgba(20, 40, 60, 0.18),
+    0 2px 8px rgba(20, 40, 60, 0.10);
 }
 
 .flyer-showcase .event-flyer figcaption {

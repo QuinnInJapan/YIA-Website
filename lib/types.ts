@@ -9,9 +9,17 @@
  * and the renderers in build.js.
  */
 
-import type { I18nString } from "@/lib/i18n";
+import type { I18nString, I18nBlocks } from "@/lib/i18n";
 
 // ─── Atomic / Reusable Types ────────────────────────────────────────
+
+export interface SanityImage {
+  asset: { _ref: string };
+}
+
+export interface SanityFile {
+  asset: { _ref: string };
+}
 
 export interface InfoRow {
   label: I18nString;
@@ -20,19 +28,20 @@ export interface InfoRow {
 
 export interface Document {
   label: I18nString;
-  url: string;
+  file?: SanityFile;
+  url?: string;
   type?: string;
 }
 
 export interface ImageFile {
-  file: string;
+  file: SanityImage;
   caption?: I18nString;
 }
 
 export interface EventFlyer {
-  image?: string;
-  imageJa?: string;
-  imageEn?: string;
+  image?: SanityImage;
+  imageJa?: SanityImage;
+  imageEn?: SanityImage;
   alt?: string;
   altJa?: string;
   altEn?: string;
@@ -40,7 +49,8 @@ export interface EventFlyer {
 
 export interface LinkItem {
   title: I18nString;
-  url: string;
+  file?: SanityFile;
+  url?: string;
   type?: "document" | "youtube" | "website";
   fileType?: string;
 }
@@ -54,7 +64,7 @@ export interface SisterCity {
   name: I18nString;
   country: string;
   countryJa?: string;
-  image?: string;
+  image?: SanityImage;
   note?: string;
 }
 
@@ -64,8 +74,8 @@ export interface GroupScheduleRow {
   time: string;
   location: string;
   timeSlot?: "morning" | "afternoon" | "evening" | "weekend";
-  schedule_pdf?: string;
-  photos_pdf?: string;
+  schedulePdf?: SanityFile;
+  photosPdf?: SanityFile;
   website?: string;
 }
 
@@ -85,18 +95,18 @@ export interface BoardMember {
 
 export interface WarningsSection {
   _type: "warnings";
-  items: I18nString[];
+  items: (I18nString | I18nBlocks)[];
 }
 
 export interface ContentSection {
   _type: "content";
   id?: string;
   title?: I18nString;
-  description?: I18nString;
+  description?: I18nString | I18nBlocks;
   infoTable?: InfoRow[];
   checklist?: { label: I18nString; note?: I18nString }[];
   documents?: Document[];
-  note?: I18nString;
+  note?: I18nString | I18nBlocks;
   images?: ImageFile[];
   schedule?: { city: string; period: string }[];
 }
@@ -160,7 +170,7 @@ export interface LinksSection {
 export interface HistorySection {
   _type: "history";
   title: I18nString;
-  intro?: I18nString;
+  intro?: I18nString | I18nBlocks;
   columns?: string[];
   columnsEn?: string[];
   years?: { year: string; cuisines: string }[];
@@ -169,9 +179,9 @@ export interface HistorySection {
 export interface FairTradeSection {
   _type: "fairTrade";
   title: I18nString;
-  description?: I18nString;
+  description?: I18nString | I18nBlocks;
   priceList?: { type: string; weight: string; price: string }[];
-  delivery?: I18nString;
+  delivery?: I18nString | I18nBlocks;
 }
 
 export interface FlyersSection {
@@ -247,7 +257,7 @@ export interface Category {
   _type: "category";
   id: string;
   label: I18nString;
-  heroImage: string;
+  heroImage?: SanityImage;
 }
 
 export interface Navigation {
@@ -273,16 +283,16 @@ export interface Announcement {
   date?: string;
   pinned?: boolean;
   title: I18nString;
-  content: I18nString;
+  content: I18nString | I18nBlocks;
   documents?: Document[];
-  image?: string;
+  image?: SanityImage;
 }
 
 export interface Sidebar {
   _type: "sidebar";
-  accessMap: { image: string; label: I18nString };
+  accessMap: { image?: SanityImage; label: I18nString };
   youtubeLink: { url: string; label: I18nString };
-  counselingImage?: string;
+  counselingImage?: SanityImage;
   memberRecruitment: {
     label: I18nString;
     url: string;
@@ -312,11 +322,11 @@ export interface Homepage {
   slug: string;
   template?: string;
   hero: {
-    image: string;
+    image?: SanityImage;
     tagline: I18nString;
   };
   activityGrid: {
-    images: string[];
+    images: SanityImage[];
     stat: {
       value: number;
       label: I18nString;
@@ -334,7 +344,7 @@ export interface Page {
   category?: "shien" | "kehatsu" | "kouryu" | "kokusaikoken";
   title: I18nString;
   subtitle?: I18nString;
-  description?: I18nString;
+  description?: I18nString | I18nBlocks;
   images?: ImageFile[];
   sections: PageSection[];
 }

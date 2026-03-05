@@ -1,4 +1,4 @@
-import { defineConfig } from "sanity";
+import { defineConfig, defineField } from "sanity";
 import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
 import { jaJPLocale } from "@sanity/locale-ja-jp";
@@ -28,10 +28,51 @@ export default defineConfig({
         { id: "en", title: "English" },
         { id: "easy", title: "やさしい日本語" },
       ],
-      fieldTypes: ["string", "text"],
+      fieldTypes: [
+        defineField({ name: "string", type: "string", title: " " }),
+        defineField({ name: "text", type: "text", title: " " }),
+        defineField({
+          name: "blockContent",
+          type: "array",
+          title: " ",
+          of: [
+            {
+              type: "block",
+              styles: [{ title: "Normal", value: "normal" }],
+              marks: {
+                decorators: [
+                  { title: "太字", value: "strong" },
+                  { title: "斜体", value: "em" },
+                ],
+                annotations: [
+                  {
+                    name: "link",
+                    type: "object",
+                    title: "リンク",
+                    fields: [{ name: "href", type: "url", title: "URL" }],
+                  },
+                ],
+              },
+              lists: [
+                { title: "箇条書き", value: "bullet" },
+                { title: "番号付き", value: "number" },
+              ],
+            },
+          ],
+        }),
+      ],
     }),
   ],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    newDocumentOptions: (prev) =>
+      prev.filter(
+        (item) =>
+          !["siteSettings", "homepage", "navigation", "sidebar", "category"].includes(
+            item.templateId,
+          ),
+      ),
   },
 });

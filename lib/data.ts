@@ -2,6 +2,7 @@ import { cache } from "react";
 import { stegaClean } from "next-sanity";
 import type {
   SiteData,
+  SanityImage,
   Page,
   Announcement,
   Category,
@@ -19,8 +20,8 @@ const emptySiteData: SiteData = {
   categories: [],
   navigation: { _type: "navigation", categories: [], orgLinks: [] },
   announcements: [],
-  sidebar: { _type: "sidebar", accessMap: { image: "", label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, youtubeLink: { url: "", label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], url: "" }, resourceBoxes: [], documents: [] },
-  homepage: { _type: "homepage", slug: "", hero: { image: "", tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
+  sidebar: { _type: "sidebar", accessMap: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, youtubeLink: { url: "", label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], url: "" }, resourceBoxes: [], documents: [] },
+  homepage: { _type: "homepage", slug: "", hero: { tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
   pages: [],
 };
 
@@ -64,7 +65,7 @@ interface EnrichedNavCategory {
   categoryId: string;
   id: string;
   label: I18nString;
-  heroImage: string;
+  heroImage?: SanityImage;
   items: EnrichedNavItem[];
 }
 
@@ -106,7 +107,7 @@ export const getEnrichedNavigation = cache(
           categoryId: catId,
           id: stegaClean(cat?.id ?? catId),
           label: cat?.label ?? [],
-          heroImage: cat?.heroImage ?? "",
+          heroImage: cat?.heroImage,
           items: navCat.items.map((item) => ({
             id: stegaClean(item.id),
             title: item.title,

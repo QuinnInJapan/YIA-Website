@@ -1,6 +1,7 @@
 import React from "react";
 import { stegaClean } from "next-sanity";
 import { ja, en } from "@/lib/i18n";
+import { fileUrl } from "@/lib/sanity/image";
 import type { GroupScheduleRow } from "@/lib/types";
 
 interface ScheduleTableProps {
@@ -18,12 +19,16 @@ const slotLabels: Record<string, string> = {
 };
 
 function GroupRow({ r }: { r: GroupScheduleRow }) {
+  const scheduleUrl = fileUrl(r.schedulePdf);
+  const photosUrl = fileUrl(r.photosPdf);
+  const websiteUrl = r.website ? stegaClean(r.website) : "";
+
   let nameContent: React.ReactNode;
-  if (r.schedule_pdf) {
-    nameContent = <a href={stegaClean(r.schedule_pdf)}>{ja(r.name)}</a>;
-  } else if (r.website) {
+  if (scheduleUrl) {
+    nameContent = <a href={scheduleUrl}>{ja(r.name)}</a>;
+  } else if (websiteUrl) {
     nameContent = (
-      <a href={stegaClean(r.website)} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
+      <a href={websiteUrl} target="_blank" rel="noopener noreferrer" aria-label={`${ja(r.name)} (opens in new tab)`} className="external-link">
         {ja(r.name)}
       </a>
     );
@@ -35,19 +40,19 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
     <tr>
       <td>
         {nameContent}
-        {r.photos_pdf && (
+        {photosUrl && (
           <>
             {" "}
-            <a href={stegaClean(r.photos_pdf)} className="schedule-table__photo-link">
+            <a href={photosUrl} className="schedule-table__photo-link">
               📷
             </a>
           </>
         )}
-        {r.website && r.schedule_pdf && (
+        {websiteUrl && scheduleUrl && (
           <>
             {" "}
             <a
-              href={stegaClean(r.website)}
+              href={websiteUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="schedule-table__web-link"

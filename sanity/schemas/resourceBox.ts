@@ -7,7 +7,7 @@ export default defineType({
   fields: [
     defineField({ name: "id", title: "ID", type: "string" }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "url", title: "URL", type: "string" }),
+    defineField({ name: "url", title: "URL", type: "url" }),
     defineField({ name: "attribution", title: "出典", type: "string" }),
     defineField({
       name: "links",
@@ -21,7 +21,7 @@ export default defineType({
             defineField({ name: "label", title: "ラベル", type: "string", validation: (Rule) => Rule.required() }),
             defineField({ name: "labelEasy", title: "ラベル（やさしい日本語）", type: "string" }),
             defineField({ name: "subtitle", title: "サブタイトル", type: "string" }),
-            defineField({ name: "url", title: "URL", type: "string" }),
+            defineField({ name: "url", title: "URL", type: "url" }),
           ],
         },
       ],

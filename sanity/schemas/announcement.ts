@@ -1,9 +1,23 @@
 import { defineType, defineField } from "sanity";
+import { BellIcon } from "@sanity/icons";
 
 export default defineType({
   name: "announcement",
   title: "お知らせ",
   type: "document",
+  icon: BellIcon,
+  orderings: [
+    {
+      title: "日付（新しい順）",
+      name: "dateDesc",
+      by: [{ field: "date", direction: "desc" }],
+    },
+    {
+      title: "日付（古い順）",
+      name: "dateAsc",
+      by: [{ field: "date", direction: "asc" }],
+    },
+  ],
   groups: [
     { name: "meta", title: "設定" },
     { name: "attachments", title: "添付" },
@@ -33,7 +47,7 @@ export default defineType({
       description: "トップに固定表示",
     }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "content", title: "内容", type: "internationalizedArrayText" }),
+    defineField({ name: "content", title: "内容", type: "internationalizedArrayBlockContent" }),
     defineField({
       name: "documents",
       title: "資料",
@@ -41,6 +55,6 @@ export default defineType({
       group: "attachments",
       of: [{ type: "documentLink" }],
     }),
-    defineField({ name: "image", title: "画像", type: "string", group: "attachments" }),
+    defineField({ name: "image", title: "画像", type: "image", group: "attachments" }),
   ],
 });

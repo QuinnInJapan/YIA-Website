@@ -1,9 +1,11 @@
 import { defineType, defineField } from "sanity";
+import { CogIcon } from "@sanity/icons";
 
 export default defineType({
   name: "siteSettings",
   title: "サイト設定",
   type: "document",
+  icon: CogIcon,
   groups: [
     { name: "org", title: "団体情報", default: true },
     { name: "contact", title: "連絡先" },
@@ -41,9 +43,9 @@ export default defineType({
         defineField({ name: "address", title: "住所", type: "internationalizedArrayString" }),
         defineField({ name: "tel", title: "電話番号", type: "string" }),
         defineField({ name: "fax", title: "FAX", type: "string" }),
-        defineField({ name: "email", title: "メール", type: "string" }),
-        defineField({ name: "website", title: "ウェブサイト", type: "string" }),
-        defineField({ name: "youtube", title: "YouTube", type: "string" }),
+        defineField({ name: "email", title: "メール", type: "email" }),
+        defineField({ name: "website", title: "ウェブサイト", type: "url" }),
+        defineField({ name: "youtube", title: "YouTube", type: "url" }),
       ],
     }),
     defineField({
@@ -53,6 +55,6 @@ export default defineType({
       group: "other",
     }),
     defineField({ name: "copyright", title: "著作権表示", type: "string", group: "other" }),
-    defineField({ name: "googleMapsEmbedUrl", title: "Googleマップ埋め込みURL", type: "string", group: "other" }),
+    defineField({ name: "googleMapsEmbedUrl", title: "Googleマップ埋め込みURL", type: "url", group: "other" }),
   ],
 });

@@ -8,7 +8,7 @@ export default defineType({
     defineField({ name: "name", title: "名前", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "country", title: "国", type: "string", validation: (Rule) => Rule.required() }),
     defineField({ name: "countryJa", title: "国（日本語）", type: "string" }),
-    defineField({ name: "image", title: "画像", type: "string" }),
+    defineField({ name: "image", title: "画像", type: "image" }),
     defineField({ name: "note", title: "備考", type: "string" }),
   ],
 });

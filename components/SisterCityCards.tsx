@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { resolveImage } from "@/lib/images";
+import { imageUrl } from "@/lib/sanity/image";
 import { ja, en } from "@/lib/i18n";
 import type { SisterCity } from "@/lib/types";
 
@@ -11,7 +11,7 @@ export default function SisterCityCards({ cities }: SisterCityCardsProps) {
   return (
     <div className="sister-city-showcase">
       {cities.map((c, i) => {
-        const img = c.image ? resolveImage(c.image) : "";
+        const img = imageUrl(c.image);
         const flip = i % 2 === 1 ? " sister-city-row--flip" : "";
         return (
           <div className={`sister-city-row${flip}`} key={i}>

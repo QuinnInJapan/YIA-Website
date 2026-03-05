@@ -1,19 +1,33 @@
 import { defineType, defineField } from "sanity";
+import { DocumentTextIcon } from "@sanity/icons";
 
 export default defineType({
   name: "page",
   title: "ページ",
   type: "document",
+  icon: DocumentTextIcon,
   groups: [
     { name: "meta", title: "設定" },
     { name: "content", title: "コンテンツ", default: true },
+    { name: "sections", title: "セクション" },
   ],
   preview: {
-    select: { title: "title" },
-    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
-      title: title?.find((t) => t._key === "ja")?.value || "Untitled",
-      subtitle: title?.find((t) => t._key === "en")?.value,
-    }),
+    select: { title: "title", category: "category" },
+    prepare: ({ title, category }: { title?: { _key: string; value: string }[]; category?: string }) => {
+      const categoryLabels: Record<string, string> = {
+        shien: "支援事業",
+        kehatsu: "啓発事業",
+        kouryu: "交流事業",
+        kokusaikoken: "国際貢献",
+      };
+      const enTitle = title?.find((t) => t._key === "en")?.value;
+      const catLabel = category ? categoryLabels[category] : undefined;
+      const parts = [catLabel, enTitle].filter(Boolean);
+      return {
+        title: title?.find((t) => t._key === "ja")?.value || "Untitled",
+        subtitle: parts.join(" · ") || undefined,
+      };
+    },
   },
   fields: [
     defineField({ name: "id", title: "ID", type: "string", hidden: true }),
@@ -42,7 +56,7 @@ export default defineType({
     }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", group: "content", validation: (Rule) => Rule.required() }),
     defineField({ name: "subtitle", title: "サブタイトル", type: "internationalizedArrayString", group: "content" }),
-    defineField({ name: "description", title: "説明", type: "internationalizedArrayText", group: "content" }),
+    defineField({ name: "description", title: "説明", type: "internationalizedArrayBlockContent", group: "content" }),
     defineField({
       name: "images",
       title: "画像",
@@ -54,25 +68,25 @@ export default defineType({
       name: "sections",
       title: "セクション",
       type: "array",
-      group: "content",
+      group: "sections",
       of: [
-        { type: "warnings" },
-        { type: "content" },
-        { type: "infoTable" },
-        { type: "tableSchedule" },
-        { type: "groupSchedule" },
-        { type: "eventSchedule" },
-        { type: "gallery" },
-        { type: "sisterCities" },
-        { type: "definitions" },
-        { type: "links" },
-        { type: "history" },
-        { type: "fairTrade" },
-        { type: "flyers" },
-        { type: "boardMembers" },
-        { type: "feeTable" },
-        { type: "directoryList" },
-      ],
+        "content",
+        "infoTable",
+        "links",
+        "warnings",
+        "gallery",
+        "flyers",
+        "eventSchedule",
+        "groupSchedule",
+        "tableSchedule",
+        "definitions",
+        "feeTable",
+        "directoryList",
+        "boardMembers",
+        "fairTrade",
+        "sisterCities",
+        "history",
+      ].map((type) => ({ type, options: { modal: { type: "fold" as const } } })),
     }),
   ],
 });

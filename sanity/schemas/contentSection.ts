@@ -17,7 +17,7 @@ export default defineType({
   fields: [
     defineField({ name: "id", title: "ID", type: "string" }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString" }),
-    defineField({ name: "description", title: "説明", type: "internationalizedArrayText" }),
+    defineField({ name: "description", title: "説明", type: "internationalizedArrayBlockContent" }),
     defineField({
       name: "infoTable",
       title: "情報テーブル",
@@ -44,7 +44,7 @@ export default defineType({
       type: "array",
       of: [{ type: "documentLink" }],
     }),
-    defineField({ name: "note", title: "備考", type: "internationalizedArrayText" }),
+    defineField({ name: "note", title: "備考", type: "internationalizedArrayBlockContent" }),
     defineField({
       name: "images",
       title: "画像",

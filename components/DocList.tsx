@@ -26,14 +26,15 @@ export default function DocList({ docs, sidebar }: DocListProps) {
     if (!isPdf(doc)) return;
 
     e.preventDefault();
+    const url = stegaClean(doc.url) || "";
 
     // Mobile fallback — iOS Safari can't render PDFs in iframes
     if (window.innerWidth <= 768) {
-      window.open(stegaClean(doc.url), "_blank");
+      window.open(url, "_blank");
       return;
     }
 
-    setViewerUrl(stegaClean(doc.url));
+    setViewerUrl(url);
     setViewerTitle(ja(doc.label) + (en(doc.label) ? ` / ${en(doc.label)}` : ""));
   }
 
@@ -42,7 +43,7 @@ export default function DocList({ docs, sidebar }: DocListProps) {
       <ul className={`doc-list${sidebar ? " doc-list--sidebar" : ""}`}>
         {docs.map((d, i) => (
           <li className="doc-list__item" key={i}>
-            <a href={stegaClean(d.url)} onClick={(e) => handleClick(e, d)}>
+            <a href={stegaClean(d.url) || ""} onClick={(e) => handleClick(e, d)}>
               <span className="doc-list__label">
                 {ja(d.label)}
                 {en(d.label) ? ` / ${en(d.label)}` : ""}

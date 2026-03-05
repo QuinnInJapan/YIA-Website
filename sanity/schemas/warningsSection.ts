@@ -14,7 +14,7 @@ export default defineType({
       name: "items",
       title: "項目",
       type: "array",
-      of: [{ type: "internationalizedArrayText" }],
+      of: [{ type: "internationalizedArrayBlockContent" }],
     }),
   ],
 });

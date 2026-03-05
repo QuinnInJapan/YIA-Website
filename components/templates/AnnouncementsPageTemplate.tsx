@@ -1,14 +1,15 @@
 import { stegaClean } from "next-sanity";
 import { getSiteData, getAnnouncementsByRefs } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
-import { Nl2br } from "@/lib/helpers";
-import { resolveImage } from "@/lib/images";
+import { imageUrl } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
+import { resolveDocs } from "@/lib/sanity/image";
 import LazyImage from "@/components/LazyImage";
 import SidebarToc from "@/components/SidebarToc";
+import BilingualPortableText from "@/components/BilingualPortableText";
 
 export default async function AnnouncementsPageTemplate() {
   const data = await getSiteData();
@@ -38,20 +39,15 @@ export default async function AnnouncementsPageTemplate() {
             <span className="announcement__title-en" lang="en"> {en(a.title)}</span>
           )}
         </h2>
-        <div className="announcement__content" lang="ja">
-          <Nl2br text={ja(a.content)} />
-        </div>
-        <div className="announcement__content" lang="en">
-          <Nl2br text={en(a.content)} />
-        </div>
-        {a.image && (
+        <BilingualPortableText field={a.content} />
+        {a.image?.asset?._ref && (
           <div className="announcement__image">
-            <LazyImage src={resolveImage(a.image)} alt={ja(a.title)} />
+            <LazyImage src={imageUrl(a.image)} alt={ja(a.title)} />
           </div>
         )}
         {a.documents && a.documents.length > 0 && (
           <div className="announcement__docs">
-            <DocList docs={a.documents} />
+            <DocList docs={resolveDocs(a.documents)} />
           </div>
         )}
       </article>

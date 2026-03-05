@@ -16,7 +16,7 @@ export default defineType({
   },
   fields: [
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "description", title: "説明", type: "internationalizedArrayText" }),
+    defineField({ name: "description", title: "説明", type: "internationalizedArrayBlockContent" }),
     defineField({
       name: "priceList",
       title: "価格表",
@@ -32,6 +32,6 @@ export default defineType({
         },
       ],
     }),
-    defineField({ name: "delivery", title: "配送について", type: "internationalizedArrayText" }),
+    defineField({ name: "delivery", title: "配送について", type: "internationalizedArrayBlockContent" }),
   ],
 });

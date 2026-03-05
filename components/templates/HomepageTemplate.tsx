@@ -7,7 +7,7 @@ import {
   getAnnouncementsByRefs,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
-import { resolveImage } from "@/lib/images";
+import { imageUrl } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
@@ -19,7 +19,7 @@ export default async function HomepageTemplate() {
   const hp = data.homepage;
   const nav = await getEnrichedNavigation();
   const sidebar = data.sidebar;
-  const heroImage = resolveImage(hp.hero.image);
+  const heroImage = imageUrl(hp.hero.image);
 
   // Inline announcements list
   const hpAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
@@ -31,14 +31,16 @@ export default async function HomepageTemplate() {
   return (
     <HomepageEffects>
       <section className="hero-viewport">
-        <Image
-          src={heroImage}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="hero-viewport__img"
-        />
+        {heroImage && (
+          <Image
+            src={heroImage}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="hero-viewport__img"
+          />
+        )}
         <div className="hero__overlay">
           <h1 className="hero__title">{ja(data.site.org.name)}</h1>
           <p className="hero__subtitle">{en(data.site.org.name)}</p>
@@ -94,8 +96,8 @@ export default async function HomepageTemplate() {
 
         {/* Program card grid */}
         <section className="program-grid reveal-stagger">
-          {nav.categories.filter((cat) => stegaClean(cat.heroImage)).map((cat, i) => {
-            const img = cat.heroImage ? resolveImage(cat.heroImage) : "";
+          {nav.categories.filter((cat) => cat.heroImage?.asset?._ref).map((cat, i) => {
+            const img = imageUrl(cat.heroImage);
             return (
               <div
                 className="program-card reveal"
@@ -140,13 +142,15 @@ export default async function HomepageTemplate() {
           <section
             className="home-section home-section--tinted home-section--events reveal"
           >
-            <Image
-              src={heroImage}
-              alt=""
-              fill
-              sizes="100vw"
-              className="home-section--events__bg"
-            />
+            {heroImage && (
+              <Image
+                src={heroImage}
+                alt=""
+                fill
+                sizes="100vw"
+                className="home-section--events__bg"
+              />
+            )}
             <h2 className="home-section__heading reveal">
               イベント<small lang="en">Upcoming Events</small>
             </h2>
@@ -166,7 +170,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[0])}
+                src={imageUrl(galleryImages[0])}
                 alt=""
                 loading="lazy"
                 fill
@@ -194,7 +198,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[1])}
+                src={imageUrl(galleryImages[1])}
                 alt=""
                 loading="lazy"
                 fill
@@ -207,7 +211,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[2])}
+                src={imageUrl(galleryImages[2])}
                 alt=""
                 loading="lazy"
                 fill
@@ -232,7 +236,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[3])}
+                src={imageUrl(galleryImages[3])}
                 alt=""
                 loading="lazy"
                 fill
@@ -256,7 +260,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[4])}
+                src={imageUrl(galleryImages[4])}
                 alt=""
                 loading="lazy"
                 fill
@@ -269,7 +273,7 @@ export default async function HomepageTemplate() {
               }
             >
               <LazyImage
-                src={resolveImage(galleryImages[5])}
+                src={imageUrl(galleryImages[5])}
                 alt=""
                 loading="lazy"
                 fill

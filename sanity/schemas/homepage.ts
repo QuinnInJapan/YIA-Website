@@ -1,9 +1,15 @@
 import { defineType, defineField } from "sanity";
+import { HomeIcon } from "@sanity/icons";
 
 export default defineType({
   name: "homepage",
   title: "ホームページ",
   type: "document",
+  icon: HomeIcon,
+  groups: [
+    { name: "hero", title: "ヒーロー", default: true },
+    { name: "content", title: "コンテンツ" },
+  ],
   preview: {
     prepare: () => ({ title: "ホームページ" }),
   },
@@ -14,8 +20,13 @@ export default defineType({
       name: "hero",
       title: "ヒーロー",
       type: "object",
+      group: "hero",
       fields: [
-        defineField({ name: "image", title: "画像", type: "string" }),
+        defineField({
+          name: "image",
+          title: "画像",
+          type: "image",
+        }),
         defineField({ name: "tagline", title: "キャッチコピー", type: "internationalizedArrayString" }),
       ],
     }),
@@ -23,12 +34,14 @@ export default defineType({
       name: "activityGrid",
       title: "活動グリッド",
       type: "object",
+      group: "content",
       fields: [
         defineField({
           name: "images",
           title: "画像",
           type: "array",
-          of: [{ type: "string" }],
+          of: [{ type: "image" }],
+          description: "活動写真 6枚 / 6 activity photos",
         }),
         defineField({
           name: "stat",
@@ -45,13 +58,17 @@ export default defineType({
       name: "announcementRefs",
       title: "お知らせ",
       type: "array",
+      group: "content",
       of: [{ type: "reference", to: [{ type: "announcement" }] }],
+      description: "ホームページに表示するお知らせ / Announcements shown on homepage",
     }),
     defineField({
       name: "eventFlyers",
       title: "イベントチラシ",
       type: "array",
+      group: "content",
       of: [{ type: "eventFlyer" }],
+      description: "現在のイベントチラシ / Current event flyers",
     }),
   ],
 });

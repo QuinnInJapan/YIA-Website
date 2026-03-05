@@ -1,12 +1,20 @@
 import Image from "next/image";
+import { PortableText } from "@portabletext/react";
 import { Nl2br } from "@/lib/helpers";
-import { resolveImage, resolveImageLocal, getImageWidth, HERO_MIN_WIDTH } from "@/lib/images";
-import path from "path";
+import { imageUrl } from "@/lib/sanity/image";
 import type { ImageFile } from "@/lib/types";
+import type { I18nString, I18nBlocks } from "@/lib/i18n";
+import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
+
+function isBlocks(field: I18nString | I18nBlocks | undefined): field is I18nBlocks {
+  if (!field || field.length === 0) return false;
+  return Array.isArray(field[0]?.value);
+}
 
 interface PageHeroProps {
   titleJa: string;
   titleEn?: string;
+  description?: I18nString | I18nBlocks;
   descriptionJa?: string;
   descriptionEn?: string;
   images?: ImageFile[];
@@ -15,50 +23,68 @@ interface PageHeroProps {
 export default function PageHero({
   titleJa,
   titleEn,
+  description,
   descriptionJa,
   descriptionEn,
   images,
 }: PageHeroProps) {
-  const descHtml = descriptionJa ? (
-    <div className="page-hero__description">
-      <p>
-        <Nl2br text={descriptionJa} />
-      </p>
-      {descriptionEn && (
-        <p className="page-hero__description-en" lang="en">
-          <Nl2br text={descriptionEn} />
-        </p>
-      )}
-    </div>
-  ) : null;
+  let descHtml: React.ReactNode = null;
 
-  // Try to use first image as hero background
-  const allImages = (images || []).map((img) => img.file);
-  if (allImages.length > 0) {
-    const heroImg = resolveImage(allImages[0]);
-    const heroLocal = resolveImageLocal(allImages[0]);
-    const heroFilePath = path.join(
-      process.cwd(),
-      "public",
-      decodeURIComponent(heroLocal)
-    );
-    const heroWidth = getImageWidth(heroFilePath);
-    if (heroWidth >= HERO_MIN_WIDTH) {
-      return (
-        <div className="page-hero">
-          <Image
-            src={heroImg}
-            alt=""
-            fill
-            sizes="100vw"
-            className="page-hero__img"
-          />
-          <h1 className="page-hero__title">{titleJa}</h1>
-          <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
-          {descHtml}
+  if (description && isBlocks(description)) {
+    const jaB = jaBlocks(description);
+    const enB = enBlocks(description);
+    if (jaB.length > 0 || enB.length > 0) {
+      descHtml = (
+        <div className="page-hero__description">
+          {jaB.length > 0 && (
+            <div>
+              <PortableText value={jaB} />
+            </div>
+          )}
+          {enB.length > 0 && (
+            <div className="page-hero__description-en" lang="en">
+              <PortableText value={enB} />
+            </div>
+          )}
         </div>
       );
     }
+  } else {
+    const jaText = descriptionJa ?? (description ? ja(description) : "");
+    const enText = descriptionEn ?? (description ? en(description) : "");
+    if (jaText) {
+      descHtml = (
+        <div className="page-hero__description">
+          <p>
+            <Nl2br text={jaText} />
+          </p>
+          {enText && (
+            <p className="page-hero__description-en" lang="en">
+              <Nl2br text={enText} />
+            </p>
+          )}
+        </div>
+      );
+    }
+  }
+
+  // Use first image as hero background if available
+  const heroImg = images?.[0]?.file ? imageUrl(images[0].file) : "";
+  if (heroImg) {
+    return (
+      <div className="page-hero">
+        <Image
+          src={heroImg}
+          alt=""
+          fill
+          sizes="100vw"
+          className="page-hero__img"
+        />
+        <h1 className="page-hero__title">{titleJa}</h1>
+        <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
+        {descHtml}
+      </div>
+    );
   }
 
   // Solid hero fallback
