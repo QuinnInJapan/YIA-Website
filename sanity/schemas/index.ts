@@ -3,14 +3,12 @@ import infoRow from "./infoRow";
 import imageFile from "./imageFile";
 import documentLink from "./documentLink";
 import eventFlyer from "./eventFlyer";
-import resourceLink from "./resourceLink";
 import linkItem from "./linkItem";
 import definition from "./definition";
 import sisterCity from "./sisterCity";
 import groupScheduleRow from "./groupScheduleRow";
 import scheduleDateEntry from "./scheduleDateEntry";
 import boardMember from "./boardMember";
-import resourceBox from "./resourceBox";
 
 // Section types
 import warningsSection from "./warningsSection";
@@ -35,7 +33,7 @@ import siteSettings from "./siteSettings";
 import category from "./category";
 import navigation from "./navigation";
 import announcement from "./announcement";
-import globalResources from "./globalResources";
+import sidebar from "./sidebar";
 import homepage from "./homepage";
 import page from "./page";
 
@@ -45,14 +43,12 @@ export const schemaTypes = [
   imageFile,
   documentLink,
   eventFlyer,
-  resourceLink,
   linkItem,
   definition,
   sisterCity,
   groupScheduleRow,
   scheduleDateEntry,
   boardMember,
-  resourceBox,
   // Section types
   warningsSection,
   contentSection,
@@ -75,7 +71,7 @@ export const schemaTypes = [
   category,
   navigation,
   announcement,
-  globalResources,
+  sidebar,
   homepage,
   page,
 ];

@@ -292,31 +292,11 @@ export interface Announcement {
 
 export interface Sidebar {
   _type: "sidebar";
-  accessMap: { image?: SanityImage; label: I18nString };
-  youtubeLink: { url: string; label: I18nString };
-  counselingImage?: SanityImage;
   memberRecruitment: {
     label: I18nString;
     url: string;
   };
-  activityRequestForm?: Document;
-  fairTrade?: { label: I18nString };
-  resourceBoxes: ResourceBox[];
   documents: Document[];
-}
-
-export interface ResourceBox {
-  id?: string;
-  title: I18nString;
-  url?: string;
-  attribution?: string;
-  links: {
-    lang: string;
-    label: string;
-    labelEasy?: string;
-    subtitle?: string;
-    url?: string;
-  }[];
 }
 
 export interface Homepage {
