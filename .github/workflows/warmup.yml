@@ -1,0 +1,32 @@
+name: Cache warmup
+
+on:
+  deployment_status:
+
+jobs:
+  warmup:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warm up pages
+        env:
+          DEPLOY_URL: ${{ github.event.deployment_status.target_url }}
+        run: |
+          # Fetch the homepage and extract all internal href paths
+          PATHS=$(curl -sL "$DEPLOY_URL" \
+            | grep -oP 'href="/[^"]*"' \
+            | sed 's/href="//;s/"//' \
+            | sort -u)
+
+          # Always include the homepage itself
+          echo "Warming: /"
+          curl -sL -o /dev/null -w "%{http_code} %{time_total}s /\n" "$DEPLOY_URL/"
+
+          for path in $PATHS; do
+            echo "Warming: $path"
+            curl -sL -o /dev/null -w "%{http_code} %{time_total}s $path\n" "$DEPLOY_URL$path" &
+          done
+
+          # Wait for all background requests to finish
+          wait
+          echo "Warmup complete"

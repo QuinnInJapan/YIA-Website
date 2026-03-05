@@ -20,7 +20,7 @@ const emptySiteData: SiteData = {
   categories: [],
   navigation: { _type: "navigation", categories: [], orgLinks: [] },
   announcements: [],
-  sidebar: { _type: "sidebar", memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], url: "" }, documents: [] },
+  sidebar: { _type: "sidebar", memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], slug: "" }, documents: [] },
   homepage: { _type: "homepage", slug: "", hero: { tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
   pages: [],
 };

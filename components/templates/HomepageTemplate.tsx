@@ -223,7 +223,7 @@ export default async function HomepageTemplate() {
               />
             </figure>
             <Link
-              href="/kaiinn"
+              href={`/${stegaClean(sidebar.memberRecruitment.slug)}`}
               className="activity-grid__tile activity-grid__tile--gold reveal"
               style={
                 { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties

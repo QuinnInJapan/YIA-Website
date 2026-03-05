@@ -1,14 +1,3 @@
-/**
- * YIA Site Data Schema (CMS-Ready)
- *
- * Canonical type definitions for site-data.json.
- * Each top-level key maps to a Sanity document type.
- * Each sections[] _type maps to a Sanity object type.
- *
- * Usage: reference only (not executed). Keep in sync with site-data.json
- * and the renderers in build.js.
- */
-
 import type { I18nString, I18nBlocks } from "@/lib/i18n";
 
 // ─── Atomic / Reusable Types ────────────────────────────────────────
@@ -294,7 +283,7 @@ export interface Sidebar {
   _type: "sidebar";
   memberRecruitment: {
     label: I18nString;
-    url: string;
+    slug: string;
   };
   documents: Document[];
 }

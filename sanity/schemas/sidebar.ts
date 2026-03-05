@@ -16,7 +16,7 @@ export default defineType({
       type: "object",
       fields: [
         defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
-        defineField({ name: "url", title: "URL", type: "url" }),
+        defineField({ name: "page", title: "ページ", type: "reference", to: [{ type: "page" }] }),
       ],
     }),
     defineField({

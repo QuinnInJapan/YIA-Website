@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import PdfViewer from "./PdfViewer";
+import { useMemo, useState, useCallback } from "react";
+import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
 
 interface PdfLinkProps {
   href: string;
@@ -12,6 +12,10 @@ interface PdfLinkProps {
 
 export default function PdfLink({ href, title, children, className }: PdfLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const items: PdfViewerItem[] = useMemo(() => [{ url: href, title }], [href, title]);
+
+  const handleNavigate = useCallback(() => {}, []);
 
   function handleClick(e: React.MouseEvent) {
     if (!href) return;
@@ -31,10 +35,11 @@ export default function PdfLink({ href, title, children, className }: PdfLinkPro
         {children}
       </a>
       <PdfViewer
-        url={href}
-        title={title}
+        items={items}
+        currentIndex={0}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        onNavigate={handleNavigate}
       />
     </>
   );

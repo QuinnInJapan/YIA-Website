@@ -3,11 +3,17 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-interface PdfViewerProps {
+export interface PdfViewerItem {
   url: string;
   title: string;
+}
+
+interface PdfViewerProps {
+  items: PdfViewerItem[];
+  currentIndex: number;
   isOpen: boolean;
   onClose: () => void;
+  onNavigate: (index: number) => void;
 }
 
 function CloseIcon() {
@@ -18,17 +24,24 @@ function CloseIcon() {
   );
 }
 
-function DownloadIcon() {
+function ArrowIcon({ direction }: { direction: "prev" | "next" }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d="M9 2v10M5 8l4 4 4-4M3 14h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      {direction === "prev" ? (
+        <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      ) : (
+        <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      )}
     </svg>
   );
 }
 
-export default function PdfViewer({ url, title, isOpen, onClose }: PdfViewerProps) {
+export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavigate }: PdfViewerProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  const hasNav = items.length > 1;
+  const item = items[currentIndex];
 
   useEffect(() => {
     if (!isOpen) return;
@@ -43,7 +56,11 @@ export default function PdfViewer({ url, title, isOpen, onClose }: PdfViewerProp
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      else if (e.key === "Tab") {
+      else if (e.key === "ArrowLeft" && hasNav) {
+        onNavigate((currentIndex - 1 + items.length) % items.length);
+      } else if (e.key === "ArrowRight" && hasNav) {
+        onNavigate((currentIndex + 1) % items.length);
+      } else if (e.key === "Tab") {
         const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
           'button, [href], [tabindex]:not([tabindex="-1"])'
         );
@@ -70,16 +87,16 @@ export default function PdfViewer({ url, title, isOpen, onClose }: PdfViewerProp
       document.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, hasNav, currentIndex, items.length, onNavigate]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !item) return null;
 
   const viewer = (
     <div
       className="pdf-viewer"
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-label={item.title}
       ref={dialogRef}
     >
       <div
@@ -87,32 +104,55 @@ export default function PdfViewer({ url, title, isOpen, onClose }: PdfViewerProp
         onClick={onClose}
         role="presentation"
       />
-      <div className="pdf-viewer__panel">
-        <div className="pdf-viewer__header">
-          <span className="pdf-viewer__title">{title}</span>
-          <a
-            className="pdf-viewer__download"
-            href={url}
-            download
-            aria-label="Download"
-          >
-            <DownloadIcon />
-          </a>
-          <button
-            className="pdf-viewer__close"
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </button>
+
+      {hasNav && (
+        <button
+          className="pdf-viewer__nav pdf-viewer__nav--prev"
+          type="button"
+          aria-label="Previous document"
+          onClick={() => onNavigate((currentIndex - 1 + items.length) % items.length)}
+        >
+          <ArrowIcon direction="prev" />
+        </button>
+      )}
+
+      <div className="pdf-viewer__content">
+        <div className="pdf-viewer__panel">
+          <div className="pdf-viewer__header">
+            <span className="pdf-viewer__title">{item.title}</span>
+            <button
+              className="pdf-viewer__close"
+              type="button"
+              aria-label="Close"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <iframe
+            className="pdf-viewer__iframe"
+            src={item.url}
+            title={item.title}
+          />
         </div>
-        <iframe
-          className="pdf-viewer__iframe"
-          src={url}
-          title={title}
-        />
+
+        {hasNav && (
+          <div className="pdf-viewer__counter" aria-live="polite">
+            {currentIndex + 1} / {items.length}
+          </div>
+        )}
       </div>
+
+      {hasNav && (
+        <button
+          className="pdf-viewer__nav pdf-viewer__nav--next"
+          type="button"
+          aria-label="Next document"
+          onClick={() => onNavigate((currentIndex + 1) % items.length)}
+        >
+          <ArrowIcon direction="next" />
+        </button>
+      )}
     </div>
   );
 

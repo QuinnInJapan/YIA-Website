@@ -27,7 +27,7 @@ export async function fetchAnnouncements() {
 
 // ── Sidebar ─────────────────────────────────────────────────────
 export async function fetchSidebar() {
-  const { data } = await sanityFetch({ query: `*[_type == "sidebar"][0]` });
+  const { data } = await sanityFetch({ query: `*[_type == "sidebar"][0]{ ..., memberRecruitment{ label, "slug": page->slug } }` });
   return data;
 }
 
