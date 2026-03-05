@@ -155,7 +155,7 @@ export default function SiteNav({ categories }: SiteNavProps) {
       {/* Desktop nav — hidden on mobile */}
       <div className="site-nav__desktop">
         <div className="site-nav__inner">
-          <Link href="/" className={`site-nav__home${pathname === "/" ? " site-nav__home--active" : ""}`} aria-current={pathname === "/" ? "page" : undefined}>
+          <Link href="/" className={`site-nav__home notranslate${pathname === "/" ? " site-nav__home--active" : ""}`} aria-current={pathname === "/" ? "page" : undefined}>
             HOME
           </Link>
           {categories.map((cat) => {
@@ -219,7 +219,7 @@ export default function SiteNav({ categories }: SiteNavProps) {
 
         <Link
           href="/"
-          className={`site-nav__mobile-home${pathname === "/" ? " site-nav__mobile-home--active" : ""}`}
+          className={`site-nav__mobile-home notranslate${pathname === "/" ? " site-nav__mobile-home--active" : ""}`}
           aria-current={pathname === "/" ? "page" : undefined}
           onClick={closeMobileMenu}
         >

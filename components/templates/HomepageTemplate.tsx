@@ -45,7 +45,7 @@ export default async function HomepageTemplate() {
         )}
         <div className="hero__overlay">
           <h1 className="hero__title">{ja(data.site.org.name)}</h1>
-          <p className="hero__subtitle">{en(data.site.org.name)}</p>
+          <p className="hero__subtitle" lang="en">{en(data.site.org.name)}</p>
           <p className="hero__tagline">{ja(hp.hero.tagline)}</p>
           <p className="hero__tagline-en" lang="en">{en(hp.hero.tagline)}</p>
         </div>

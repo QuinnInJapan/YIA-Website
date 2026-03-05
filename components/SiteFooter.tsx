@@ -43,7 +43,7 @@ export default async function SiteFooter({
         最終更新日 Last Updated: {formatDateDot(org.lastUpdated)}
       </div>
       <div className="site-footer__copyright">
-        &copy; {en(org.name)} ({org.abbreviation})
+        &copy; <span lang="en">{en(org.name)}</span> ({org.abbreviation})
       </div>
     </footer>
   );
