@@ -22,7 +22,6 @@ declare global {
 }
 
 const LANGUAGES = [
-  { code: "en", label: "English" },
   { code: "zh-CN", label: "中文" },
   { code: "ko", label: "한국어" },
   { code: "tl", label: "Tagalog" },
@@ -112,8 +111,15 @@ export default function GoogleTranslate() {
     }
   }, [active]);
 
+  // Skip GT entirely when inside an iframe (e.g. Sanity Presentation tool)
+  const [inIframe] = useState(() =>
+    typeof window !== "undefined" && window.self !== window.top,
+  );
+
   // Initialize Google Translate + read initial cookie state
   useEffect(() => {
+    if (inIframe) return;
+
     setActive(getActiveLanguage());
 
     // Mark all lang="en" elements as notranslate so Google Translate skips them
@@ -143,7 +149,7 @@ export default function GoogleTranslate() {
       script.async = true;
       document.body.appendChild(script);
     }
-  }, []);
+  }, [inIframe]);
 
   function selectLanguage(code: string) {
     setOpen(false);
@@ -175,6 +181,8 @@ export default function GoogleTranslate() {
   const activeLabel = active
     ? LANGUAGES.find((l) => l.code === active)?.label ?? active
     : "翻訳 Translate";
+
+  if (inIframe) return null;
 
   return (
     <div className="gtranslate" ref={containerRef}>
@@ -208,32 +216,32 @@ export default function GoogleTranslate() {
         <span className="gtranslate__label">{activeLabel}</span>
       </button>
 
-      {open && (
-        <ul className="gtranslate__menu" role="menu">
-          {LANGUAGES.map((lang) => (
-            <li key={lang.code} role="none">
-              <button
-                className={`gtranslate__item${active === lang.code ? " gtranslate__item--active" : ""}`}
-                role="menuitem"
-                onClick={() => selectLanguage(lang.code)}
-                type="button"
-              >
-                {lang.label}
-              </button>
-            </li>
-          ))}
-          <li role="none">
+      <ul className={`gtranslate__menu${open ? " gtranslate__menu--open" : ""}`} role="menu">
+        {LANGUAGES.map((lang) => (
+          <li key={lang.code} role="none">
             <button
-              className={`gtranslate__item${!active ? " gtranslate__item--active" : ""}`}
+              className={`gtranslate__item${active === lang.code ? " gtranslate__item--active" : ""}`}
               role="menuitem"
-              onClick={() => selectLanguage("")}
+              onClick={() => selectLanguage(lang.code)}
+              tabIndex={open ? 0 : -1}
               type="button"
             >
-              日本語（元の言語）
+              {lang.label}
             </button>
           </li>
-        </ul>
-      )}
+        ))}
+        <li role="none">
+          <button
+            className={`gtranslate__item${!active ? " gtranslate__item--active" : ""}`}
+            role="menuitem"
+            onClick={() => selectLanguage("")}
+            tabIndex={open ? 0 : -1}
+            type="button"
+          >
+            日本語（元の言語）
+          </button>
+        </li>
+      </ul>
     </div>
   );
 }
