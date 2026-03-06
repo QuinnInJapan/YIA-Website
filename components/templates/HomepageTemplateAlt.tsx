@@ -5,6 +5,7 @@ import {
   getSiteData,
   getEnrichedNavigation,
   shortId,
+  pageUrl,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -21,6 +22,10 @@ export default async function HomepageTemplateAlt() {
   const sidebar = data.sidebar;
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
+  const aboutUrl = await pageUrl("aboutyia");
+  const joinUrl = sidebar.memberRecruitment.slug
+    ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
+    : "";
 
   // Announcements dereferenced by GROQ
   const hpAnnouncements = hp.announcementRefs ?? [];
@@ -68,9 +73,10 @@ export default async function HomepageTemplateAlt() {
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a._id}
                   >
-                    <time className="oshirase-date" dateTime={d}>
+                    <span className="oshirase-date">
                       {dateDisplay}
-                    </time>
+                      {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}
+                    </span>
                     <span className="oshirase-title">
                       <span className="oshirase-title__ja">{ja(a.title)}</span>
                       <span className="oshirase-title__en" lang="en">{en(a.title)}</span>
@@ -142,13 +148,13 @@ export default async function HomepageTemplateAlt() {
             </span>
           </div>
           <nav className="next-steps__inner">
-            <Link href="/aboutyia" className="next-steps__path reveal" style={{ "--reveal-i": 0 } as React.CSSProperties}>
+            <Link href={aboutUrl} className="next-steps__path reveal" style={{ "--reveal-i": 0 } as React.CSSProperties}>
               <span className="next-steps__path-ja">YIAについて</span>
               <span className="next-steps__path-en" lang="en">About YIA</span>
             </Link>
-            {sidebar.memberRecruitment.slug && (
+            {joinUrl && (
               <Link
-                href={`/${stegaClean(sidebar.memberRecruitment.slug)}`}
+                href={joinUrl}
                 className="next-steps__path reveal"
                 style={{ "--reveal-i": 1 } as React.CSSProperties}
               >

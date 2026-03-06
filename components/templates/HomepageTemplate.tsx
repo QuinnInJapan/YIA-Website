@@ -5,6 +5,7 @@ import {
   getSiteData,
   getEnrichedNavigation,
   shortId,
+  pageUrl,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -22,6 +23,10 @@ export default async function HomepageTemplate() {
   const sidebar = data.sidebar;
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
+  const aboutUrl = await pageUrl("aboutyia");
+  const joinUrl = sidebar.memberRecruitment.slug
+    ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
+    : "";
 
   // Announcements dereferenced by GROQ
   const hpAnnouncements = hp.announcementRefs ?? [];
@@ -70,9 +75,10 @@ export default async function HomepageTemplate() {
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a._id}
                   >
-                    <time className="oshirase-date" dateTime={d}>
+                    <span className="oshirase-date">
                       {dateDisplay}
-                    </time>
+                      {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}
+                    </span>
                     <span className="oshirase-title">
                       <span className="oshirase-title__ja">{ja(a.title)}</span>
                       <span className="oshirase-title__en" lang="en">{en(a.title)}</span>
@@ -225,9 +231,9 @@ export default async function HomepageTemplate() {
                 fill
               />
             </figure>
-            {sidebar.memberRecruitment.slug ? (
+            {joinUrl ? (
               <Link
-                href={`/${stegaClean(sidebar.memberRecruitment.slug)}`}
+                href={joinUrl}
                 className="activity-grid__tile activity-grid__tile--gold reveal"
                 style={
                   { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
@@ -265,7 +271,7 @@ export default async function HomepageTemplate() {
               />
             </figure>
             <Link
-              href="/aboutyia"
+              href={aboutUrl}
               className="activity-grid__tile activity-grid__tile--dark reveal"
               style={
                 { gridArea: "g", "--reveal-i": 6 } as React.CSSProperties

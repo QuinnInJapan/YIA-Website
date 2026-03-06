@@ -172,7 +172,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
             HOME
           </Link>
           {categories.map((cat) => {
-            const hasActive = cat.items.some((it) => pathname === it.url);
+            const hasActive = cat.items.some((it) => pathname === it.url) || pathname === `/${cat.categoryId}` || pathname.startsWith(`/${cat.categoryId}/`);
             return (
             <div
               className={`site-nav__group${openId === cat.id ? " site-nav__group--open" : ""}${hasActive ? " site-nav__group--active" : ""}`}
@@ -247,7 +247,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
 
         {categories.map((cat) => {
           const isOpen = openId === cat.id;
-          const hasActive = cat.items.some((it) => pathname === it.url);
+          const hasActive = cat.items.some((it) => pathname === it.url) || pathname === `/${cat.categoryId}` || pathname.startsWith(`/${cat.categoryId}/`);
           return (
             <div className="site-nav__mobile-group" key={cat.id}>
               <button

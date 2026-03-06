@@ -2,14 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getSiteData,
-  getPage,
-  getAllPageSlugs,
   getCategoryIndex,
   getCategoryIds,
   getCategoryIdsStatic,
 } from "@/lib/data";
 import { ja } from "@/lib/i18n";
-import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
@@ -18,15 +15,11 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const [pageSlugs, categoryIds] = await Promise.all([
-    getAllPageSlugs(),
-    getCategoryIdsStatic(),
-  ]);
+  const categoryIds = await getCategoryIdsStatic();
 
   return [
     { slug: "announcements" },
     ...categoryIds.map((s) => ({ slug: s })),
-    ...pageSlugs.map((s) => ({ slug: s })),
   ];
 }
 
@@ -47,12 +40,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (cat) {
       title = ja(cat.label);
       description = ja(cat.description);
-    }
-  } else {
-    const pg = await getPage(slug);
-    if (pg) {
-      title = ja(pg.title);
-      description = ja(pg.description);
     }
   }
 
@@ -76,11 +63,6 @@ export default async function SlugPage({ params }: PageProps) {
   const categoryIds = await getCategoryIds();
   if (categoryIds.includes(slug)) {
     return <CategoryTemplate categoryId={slug} />;
-  }
-
-  const pg = await getPage(slug);
-  if (pg) {
-    return <PageTemplate page={pg} />;
   }
 
   notFound();

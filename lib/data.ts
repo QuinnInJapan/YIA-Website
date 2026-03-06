@@ -63,6 +63,7 @@ export async function getCategoryIndex(): Promise<Record<string, Category>> {
 
 interface EnrichedNavItem {
   id: string;
+  slug: string;
   title: I18nString;
   url: string;
 }
@@ -96,10 +97,12 @@ export const getEnrichedNavigation = cache(
           heroImage: cat?.heroImage,
           items: (navCat.items ?? []).map((item) => {
             const pg = item.pageRef;
+            const pgSlug = pg ? stegaClean(pg.slug) : "";
             return {
               id: pg ? shortId(pg._id) : "",
+              slug: pgSlug,
               title: pg?.title ?? [],
-              url: pg ? `/${stegaClean(pg.slug)}` : "",
+              url: pgSlug ? `/${catId}/${pgSlug}` : "",
             };
           }),
         };
@@ -110,11 +113,12 @@ export const getEnrichedNavigation = cache(
     if (aboutCat) {
       aboutCat.items.push({
         id: "contact",
+        slug: "contact",
         title: [
           { _key: "ja", value: "お問い合わせ" },
           { _key: "en", value: "Contact" },
         ],
-        url: "/contact",
+        url: "/about/contact",
       });
     }
 
@@ -167,4 +171,17 @@ export async function getPagesByCategory(categoryId: string): Promise<Page[]> {
   return data.pages.filter(
     (pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`
   );
+}
+
+// ── URL builder ─────────────────────────────────────────────
+
+/** Derive the canonical URL for a page slug from navigation data. */
+export async function pageUrl(slug: string): Promise<string> {
+  const nav = await getEnrichedNavigation();
+  for (const cat of nav.categories) {
+    for (const item of cat.items) {
+      if (item.slug === slug) return `/${cat.categoryId}/${slug}`;
+    }
+  }
+  return `/${slug}`; // fallback for uncategorized pages
 }
