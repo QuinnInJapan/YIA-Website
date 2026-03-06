@@ -15,6 +15,7 @@ interface NavItem {
 
 interface NavCategory {
   id: string;
+  categoryId: string;
   label: I18nString;
   items: NavItem[];
 }
@@ -25,6 +26,8 @@ interface SiteNavProps {
   orgNameEn: string;
   contact: { tel: string; email: string };
 }
+
+const CATEGORY_LANDING_IDS = new Set(["support", "learning", "events", "exchange"]);
 
 function ChevronIcon({ className }: { className?: string }) {
   return (
@@ -195,6 +198,12 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                   </Link>
                   );
                 })}
+                {CATEGORY_LANDING_IDS.has(cat.categoryId) && (
+                  <Link className={`nav-item nav-item--view-all${pathname === `/${cat.categoryId}` ? " nav-item--active" : ""}`} href={`/${cat.categoryId}`}>
+                    <span className="nav-item__title">すべて見る</span>
+                    <span className="nav-item__en" lang="en">View All →</span>
+                  </Link>
+                )}
               </div>
             </div>
           );
@@ -276,6 +285,16 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                       </Link>
                     );
                   })}
+                  {CATEGORY_LANDING_IDS.has(cat.categoryId) && (
+                    <Link
+                      className={`site-nav__mobile-link site-nav__mobile-link--view-all${pathname === `/${cat.categoryId}` ? " site-nav__mobile-link--active" : ""}`}
+                      href={`/${cat.categoryId}`}
+                      onClick={closeMobileMenu}
+                    >
+                      <span className="nav-item__title">すべて見る</span>
+                      <span className="nav-item__en" lang="en">View All →</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

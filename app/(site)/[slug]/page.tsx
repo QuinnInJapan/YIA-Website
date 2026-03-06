@@ -4,10 +4,14 @@ import {
   getSiteData,
   getPage,
   getAllPageSlugs,
+  getCategoryIndex,
 } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
+import CategoryTemplate from "@/components/templates/CategoryTemplate";
+
+const CATEGORY_SLUGS = ["support", "learning", "events", "exchange"];
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,6 +22,10 @@ export async function generateStaticParams() {
 
   // Announcements
   slugs.push({ slug: "announcements" });
+  // Category landing pages
+  for (const s of CATEGORY_SLUGS) {
+    slugs.push({ slug: s });
+  }
   // All pages
   for (const s of await getAllPageSlugs()) {
     slugs.push({ slug: s });
@@ -36,6 +44,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (slug === "announcements") {
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
+  } else if (CATEGORY_SLUGS.includes(slug)) {
+    const catIndex = await getCategoryIndex();
+    const cat = catIndex[slug];
+    if (cat) {
+      title = ja(cat.label);
+      description = ja(cat.description);
+    }
   } else {
     const pg = await getPage(slug);
     if (pg) {
@@ -59,6 +74,10 @@ export default async function SlugPage({ params }: PageProps) {
 
   if (slug === "announcements") {
     return <AnnouncementsPageTemplate />;
+  }
+
+  if (CATEGORY_SLUGS.includes(slug)) {
+    return <CategoryTemplate categoryId={slug} />;
   }
 
   const pg = await getPage(slug);

@@ -24,7 +24,7 @@ function singleton(
   return item.child(S.document().schemaType(id).documentId(id));
 }
 
-// Category group helper: filters pages by category value
+// Category group helper: filters pages by categoryRef reference
 function categoryGroup(
   S: StructureBuilder,
   id: string,
@@ -38,8 +38,8 @@ function categoryGroup(
       .id(id)
       .title(title)
       .schemaType("page")
-      .filter('_type == "page" && category == $cat')
-      .params({ cat: id }),
+      .filter('_type == "page" && categoryRef._ref == $catRef')
+      .params({ catRef: `category-${id}` }),
   );
 }
 
@@ -84,10 +84,10 @@ export function structure(S: StructureBuilder) {
       S.divider(),
 
       // Program categories
-      categoryGroup(S, "shien", "支援事業 Support Services", HeartIcon),
-      categoryGroup(S, "kehatsu", "啓発事業 Educational Programs", BookIcon),
-      categoryGroup(S, "kouryu", "交流事業 Cultural Exchange", TransferIcon),
-      categoryGroup(S, "kokusaikoken", "国際貢献 International Contribution", EarthGlobeIcon),
+      categoryGroup(S, "support", "生活サポート Living Support", HeartIcon),
+      categoryGroup(S, "learning", "語学・講座 Language & Classes", BookIcon),
+      categoryGroup(S, "events", "イベント Events", TransferIcon),
+      categoryGroup(S, "exchange", "国際交流 Global Exchange", EarthGlobeIcon),
 
       S.divider(),
 
@@ -101,7 +101,7 @@ export function structure(S: StructureBuilder) {
             .id("organization")
             .title("協会について Organization")
             .schemaType("page")
-            .filter('_type == "page" && !defined(category)'),
+            .filter('_type == "page" && !defined(categoryRef)'),
         ),
     ]);
 }

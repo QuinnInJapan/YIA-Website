@@ -10,6 +10,7 @@ import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
+import AccessSection from "@/components/AccessSection";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
@@ -117,10 +118,12 @@ export default async function HomepageTemplate() {
                   />
                 )}
                 <div className="program-card__overlay">
-                  <h3 className="program-card__title">{ja(cat.label)}</h3>
-                  <span className="program-card__title-en" lang="en">
-                    {en(cat.label)}
-                  </span>
+                  <Link href={`/${cat.categoryId}`} className="program-card__heading-link">
+                    <h3 className="program-card__title">{ja(cat.label)}</h3>
+                    <span className="program-card__title-en" lang="en">
+                      {en(cat.label)}
+                    </span>
+                  </Link>
                   <div className="program-card__links">
                     {cat.items.map((it) => (
                       <Link
@@ -301,43 +304,7 @@ export default async function HomepageTemplate() {
           </div>
         </section>
 
-        {/* Access map */}
-        <section className="home-section home-section--tinted reveal">
-          <h2 className="home-section__heading reveal">
-            アクセス<small lang="en">Access</small>
-          </h2>
-          <div className="access-block reveal">
-            <div className="access-block__map">
-              <iframe
-                src={stegaClean(data.site.googleMapsEmbedUrl)}
-                width="100%"
-                height="100%"
-                style={{ border: 0, borderRadius: "6px" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="YIA Access Map"
-              />
-            </div>
-            <div className="access-block__info">
-              <p className="access-block__name">
-                <span className="access-block__designation">{data.site.org.designation}</span>
-                {ja(data.site.org.name)}
-              </p>
-              <div className="access-block__address">
-                <p>
-                  〒{data.site.contact.postalCode}{" "}
-                  {ja(data.site.contact.address)}
-                </p>
-                <p className="access-block__address-en" lang="en">{en(data.site.contact.address)}</p>
-              </div>
-              <div className="access-block__hours">
-                <p>{ja(data.site.businessHours)}</p>
-                <p className="access-block__hours-en" lang="en">{en(data.site.businessHours)}</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AccessSection />
       </main>
 
       <SiteFooter documents={sidebar.documents} />
