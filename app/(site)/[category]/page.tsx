@@ -11,32 +11,32 @@ import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageT
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ category: string }>;
 }
 
 export async function generateStaticParams() {
   const categoryIds = await getCategoryIdsStatic();
 
   return [
-    { slug: "announcements" },
-    ...categoryIds.map((s) => ({ slug: s })),
+    { category: "announcements" },
+    ...categoryIds.map((s) => ({ category: s })),
   ];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { category } = await params;
   const data = await getSiteData();
   const categoryIds = await getCategoryIds();
 
   let title = "";
   let description = "";
 
-  if (slug === "announcements") {
+  if (category === "announcements") {
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
-  } else if (categoryIds.includes(slug)) {
+  } else if (categoryIds.includes(category)) {
     const catIndex = await getCategoryIndex();
-    const cat = catIndex[slug];
+    const cat = catIndex[category];
     if (cat) {
       title = ja(cat.label);
       description = ja(cat.description);
@@ -53,16 +53,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function SlugPage({ params }: PageProps) {
-  const { slug } = await params;
+export default async function CategoryPage({ params }: PageProps) {
+  const { category } = await params;
 
-  if (slug === "announcements") {
+  if (category === "announcements") {
     return <AnnouncementsPageTemplate />;
   }
 
   const categoryIds = await getCategoryIds();
-  if (categoryIds.includes(slug)) {
-    return <CategoryTemplate categoryId={slug} />;
+  if (categoryIds.includes(category)) {
+    return <CategoryTemplate categoryId={category} />;
   }
 
   notFound();
