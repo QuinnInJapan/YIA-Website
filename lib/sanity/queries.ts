@@ -9,13 +9,22 @@ export async function fetchSiteSettings() {
 
 // ── Categories ───────────────────────────────────────────────────
 export async function fetchCategories() {
-  const { data } = await sanityFetch({ query: `*[_type == "category"] | order(id asc)` });
+  const { data } = await sanityFetch({ query: `*[_type == "category"] | order(_id asc)` });
   return data;
 }
 
 // ── Navigation ───────────────────────────────────────────────────
 export async function fetchNavigation() {
-  const { data } = await sanityFetch({ query: `*[_type == "navigation"][0]` });
+  const { data } = await sanityFetch({
+    query: `*[_type == "navigation"][0]{
+      ...,
+      categories[]{
+        ...,
+        categoryRef->,
+        items[]{ ..., pageRef-> }
+      }
+    }`,
+  });
   return data;
 }
 
@@ -33,13 +42,13 @@ export async function fetchSidebar() {
 
 // ── Homepage ─────────────────────────────────────────────────────
 export async function fetchHomepage() {
-  const { data } = await sanityFetch({ query: `*[_type == "homepage"][0]` });
+  const { data } = await sanityFetch({ query: `*[_type == "homepage"][0]{ ..., announcementRefs[]-> }` });
   return data;
 }
 
 // ── Pages ────────────────────────────────────────────────────────
 export async function fetchAllPages() {
-  const { data } = await sanityFetch({ query: `*[_type == "page"] | order(id asc)` });
+  const { data } = await sanityFetch({ query: `*[_type == "page"] | order(_id asc)` });
   return data;
 }
 

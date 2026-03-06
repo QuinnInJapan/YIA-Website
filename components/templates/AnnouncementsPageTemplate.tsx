@@ -1,5 +1,4 @@
-import { stegaClean } from "next-sanity";
-import { getSiteData, getAnnouncementsByRefs } from "@/lib/data";
+import { getSiteData, shortId } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
@@ -14,10 +13,10 @@ import BilingualPortableText from "@/components/BilingualPortableText";
 export default async function AnnouncementsPageTemplate() {
   const data = await getSiteData();
   const hp = data.homepage;
-  const allAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
+  const allAnnouncements = hp.announcementRefs ?? [];
 
   const tocEntries = allAnnouncements.map((a, i) => ({
-    id: stegaClean(a.id) || `ann-${i}`,
+    id: shortId(a._id) || `ann-${i}`,
     textJa: ja(a.title),
     textEn: en(a.title),
   }));
@@ -25,7 +24,7 @@ export default async function AnnouncementsPageTemplate() {
   const tocHtml = <SidebarToc entries={tocEntries} />;
 
   const articles = allAnnouncements.map((a, i) => {
-    const id = stegaClean(a.id) || `ann-${i}`;
+    const id = shortId(a._id) || `ann-${i}`;
     return (
       <article className="announcement" id={id} key={id}>
         {a.date && (

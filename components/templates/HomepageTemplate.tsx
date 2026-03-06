@@ -4,7 +4,7 @@ import { stegaClean } from "next-sanity";
 import {
   getSiteData,
   getEnrichedNavigation,
-  getAnnouncementsByRefs,
+  shortId,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -23,8 +23,8 @@ export default async function HomepageTemplate() {
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
 
-  // Inline announcements list
-  const hpAnnouncements = await getAnnouncementsByRefs(hp.announcementRefs);
+  // Announcements dereferenced by GROQ
+  const hpAnnouncements = hp.announcementRefs ?? [];
 
   // Activity mosaic
   const galleryImages = hp.activityGrid.images;
@@ -65,10 +65,10 @@ export default async function HomepageTemplate() {
                 const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
-                    href={`/announcements#${stegaClean(a.id)}`}
+                    href={`/announcements#${shortId(a._id)}`}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
-                    key={a.id}
+                    key={a._id}
                   >
                     <time className="oshirase-date" dateTime={d}>
                       {dateDisplay}

@@ -30,14 +30,6 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({
-      name: "id",
-      title: "ID",
-      type: "string",
-      group: "meta",
-      readOnly: true,
-      description: "自動生成 Auto-generated",
-    }),
     defineField({ name: "date", title: "日付", type: "date", group: "meta" }),
     defineField({
       name: "pinned",

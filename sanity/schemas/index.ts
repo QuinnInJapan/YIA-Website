@@ -3,7 +3,6 @@ import infoRow from "./infoRow";
 import imageFile from "./imageFile";
 import documentLink from "./documentLink";
 import eventFlyer from "./eventFlyer";
-import linkItem from "./linkItem";
 import definition from "./definition";
 import sisterCity from "./sisterCity";
 import groupScheduleRow from "./groupScheduleRow";
@@ -43,7 +42,6 @@ export const schemaTypes = [
   imageFile,
   documentLink,
   eventFlyer,
-  linkItem,
   definition,
   sisterCity,
   groupScheduleRow,

@@ -27,7 +27,9 @@ export default function SisterCityCards({ cities }: SisterCityCardsProps) {
               )}
             </div>
             <div className="sister-city-row__info">
-              <div className="sister-city-row__country">{c.country}</div>
+              <div className="sister-city-row__country">
+                {typeof c.country === "string" ? c.country : en(c.country)}
+              </div>
               <div className="sister-city-row__name">{en(c.name)}</div>
               <div className="sister-city-row__name-ja">{ja(c.name)}</div>
               {c.note && (

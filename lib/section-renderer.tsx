@@ -181,9 +181,13 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
         addTocHeader(ja(s.title), en(s.title));
         let rows: string[][] = [];
         if (typeof s.rows === "string") {
+          // Legacy: JSON string
           try { rows = JSON.parse(stegaClean(s.rows)); } catch { rows = []; }
         } else if (Array.isArray(s.rows)) {
-          rows = s.rows;
+          // Structured objects { cells: string[] } or legacy string[][]
+          rows = s.rows.map((r) =>
+            typeof r === "object" && "cells" in r ? (r as { cells: string[] }).cells : r as string[]
+          );
         }
         current.push(
           <ScheduleTable
@@ -289,7 +293,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
           current.push(
             <DocList
               docs={docItems.map((it) => ({
-                label: it.title,
+                label: it.label,
                 url: fileUrl(it.file) || it.url,
                 type: it.fileType,
               }))}
@@ -301,8 +305,8 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
             <ResourceLink
               type="youtube"
               url={res.url || ""}
-              titleJa={ja(res.title)}
-              titleEn={en(res.title)}
+              titleJa={ja(res.label)}
+              titleEn={en(res.label)}
             />
           );
         }

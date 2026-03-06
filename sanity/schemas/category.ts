@@ -14,14 +14,6 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({
-      name: "id",
-      title: "ID",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-      readOnly: ({ document }) => !!document?._createdAt,
-      description: "作成後は変更できません",
-    }),
     defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
     defineField({ name: "description", title: "説明文", type: "internationalizedArrayString", description: "ホームページのカテゴリーバンドに表示される短い説明" }),
     defineField({ name: "heroImage", title: "ヒーロー画像", type: "image", options: { hotspot: true } }),

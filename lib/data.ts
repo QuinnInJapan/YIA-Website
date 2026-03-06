@@ -4,15 +4,21 @@ import type {
   SiteData,
   SanityImage,
   Page,
-  Announcement,
   Category,
 } from "./types";
 import type { I18nString } from "@/lib/i18n";
 import {
   fetchSiteData,
-  fetchAnnouncements,
   fetchAllPageSlugsStatic,
 } from "./sanity/queries";
+
+/** Strip the type prefix from a Sanity _id (e.g. "category-support" → "support") */
+export function shortId(docId: string | undefined): string {
+  if (!docId) return "";
+  const clean = stegaClean(docId);
+  const dash = clean.indexOf("-");
+  return dash >= 0 ? clean.slice(dash + 1) : clean;
+}
 
 // Empty defaults for when Sanity has no data yet
 const emptySiteData: SiteData = {
@@ -48,7 +54,7 @@ export async function getCategoryIndex(): Promise<Record<string, Category>> {
   const data = await getSiteData();
   const index: Record<string, Category> = {};
   for (const cat of data.categories) {
-    index[stegaClean(cat.id)] = cat;
+    index[shortId(cat._id)] = cat;
   }
   return index;
 }
@@ -77,41 +83,21 @@ interface EnrichedNavigation {
 export const getEnrichedNavigation = cache(
   async (): Promise<EnrichedNavigation> => {
     const data = await getSiteData();
-    const categoryIndex: Record<string, Category> = {};
-    for (const cat of data.categories) {
-      categoryIndex[stegaClean(cat.id)] = cat;
-    }
-
-    // Build page index keyed by various ID forms so pageRef._ref resolves
-    const pageIndex: Record<string, Page> = {};
-    for (const pg of data.pages) {
-      const cleanId = stegaClean(pg.id);
-      pageIndex[`page-${cleanId}`] = pg;
-      pageIndex[cleanId] = pg;
-      const docId = stegaClean((pg as unknown as { _id?: string })._id ?? "");
-      if (docId) pageIndex[docId] = pg;
-    }
-
-    function resolvePage(ref?: { _ref?: string }): Page | undefined {
-      if (!ref?._ref) return undefined;
-      const refStr = stegaClean(ref._ref);
-      return pageIndex[refStr] || pageIndex[refStr.replace("page-", "")];
-    }
 
     const categories: EnrichedNavCategory[] =
       data.navigation.categories.map((navCat) => {
-        const catId = stegaClean(navCat.categoryRef?._ref?.replace("category-", "") ?? "");
-        const cat = categoryIndex[catId];
+        const cat = navCat.categoryRef;
+        const catId = shortId(cat?._id);
         return {
           categoryId: catId,
-          id: stegaClean(cat?.id ?? catId),
+          id: catId,
           label: cat?.label ?? [],
           description: cat?.description,
           heroImage: cat?.heroImage,
           items: (navCat.items ?? []).map((item) => {
-            const pg = resolvePage(item.pageRef);
+            const pg = item.pageRef;
             return {
-              id: pg ? stegaClean(pg.id) : "",
+              id: pg ? shortId(pg._id) : "",
               title: pg?.title ?? [],
               url: pg ? `/${stegaClean(pg.slug)}` : "",
             };
@@ -136,13 +122,31 @@ export const getEnrichedNavigation = cache(
   }
 );
 
+// ── Category IDs from navigation ─────────────────────────────────
+
+export async function getCategoryIds(): Promise<string[]> {
+  const nav = await getEnrichedNavigation();
+  return nav.categories.map((c) => c.categoryId);
+}
+
+// Static version for generateStaticParams (no draftMode dependency)
+export async function getCategoryIdsStatic(): Promise<string[]> {
+  const { client } = await import("./sanity/client");
+  const nav = await client.fetch<{ categories: { categoryRef: { _id: string } }[] }>(
+    `*[_type == "navigation"][0]{ categories[]{ categoryRef-> { _id } } }`
+  );
+  return (nav?.categories ?? [])
+    .map((c) => shortId(c.categoryRef?._id))
+    .filter(Boolean);
+}
+
 // ── Pages ────────────────────────────────────────────────────────
 
 export async function getPage(
   slug: string
 ): Promise<Page | undefined> {
   const data = await getSiteData();
-  return data.pages.find((pg) => stegaClean(pg.id) === slug || stegaClean(pg.slug) === slug);
+  return data.pages.find((pg) => shortId(pg._id) === slug || stegaClean(pg.slug) === slug);
 }
 
 export async function getAllPageSlugs(): Promise<string[]> {
@@ -163,26 +167,4 @@ export async function getPagesByCategory(categoryId: string): Promise<Page[]> {
   return data.pages.filter(
     (pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`
   );
-}
-
-// ── Announcements ───────────────────────────────────────────────
-
-export async function getAnnouncementsByRefs(
-  refs: ({ _type: "reference"; _ref: string } | string)[]
-): Promise<Announcement[]> {
-  if (!refs?.length) return [];
-  const data = await getSiteData();
-  const index: Record<string, Announcement> = {};
-  for (const a of data.announcements) {
-    // Documents have _id like "announcement-<id>" in Sanity
-    const cleanId = stegaClean(a.id);
-    index[`announcement-${cleanId}`] = a;
-    index[cleanId] = a;
-  }
-  return refs
-    .map((ref) => {
-      const id = stegaClean(typeof ref === "string" ? ref : ref._ref);
-      return index[id];
-    })
-    .filter(Boolean);
 }

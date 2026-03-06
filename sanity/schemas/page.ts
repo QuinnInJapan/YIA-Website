@@ -24,7 +24,6 @@ export default defineType({
     },
   },
   fields: [
-    defineField({ name: "id", title: "ID", type: "string", hidden: true }),
     defineField({
       name: "slug",
       title: "スラッグ",

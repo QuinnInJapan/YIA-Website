@@ -27,7 +27,7 @@ interface SiteNavProps {
   contact: { tel: string; email: string };
 }
 
-const CATEGORY_LANDING_IDS = new Set(["support", "learning", "events", "exchange"]);
+// All categories in the navigation have landing pages — no hardcoded list needed
 
 function ChevronIcon({ className }: { className?: string }) {
   return (
@@ -198,7 +198,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                   </Link>
                   );
                 })}
-                {CATEGORY_LANDING_IDS.has(cat.categoryId) && (
+                {cat.categoryId && (
                   <Link className={`nav-item nav-item--view-all${pathname === `/${cat.categoryId}` ? " nav-item--active" : ""}`} href={`/${cat.categoryId}`}>
                     <span className="nav-item__title">すべて見る</span>
                     <span className="nav-item__en" lang="en">View All →</span>
@@ -285,7 +285,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                       </Link>
                     );
                   })}
-                  {CATEGORY_LANDING_IDS.has(cat.categoryId) && (
+                  {cat.categoryId && (
                     <Link
                       className={`site-nav__mobile-link site-nav__mobile-link--view-all${pathname === `/${cat.categoryId}` ? " site-nav__mobile-link--active" : ""}`}
                       href={`/${cat.categoryId}`}

@@ -83,7 +83,8 @@ export function structure(S: StructureBuilder) {
 
       S.divider(),
 
-      // Program categories
+      // Program categories — hardcoded here because Sanity structure API
+      // doesn't support async data fetching. The site derives these from navigation data.
       categoryGroup(S, "support", "生活サポート Living Support", HeartIcon),
       categoryGroup(S, "learning", "語学・講座 Language & Classes", BookIcon),
       categoryGroup(S, "events", "イベント Events", TransferIcon),

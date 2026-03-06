@@ -30,9 +30,28 @@ export default defineType({
     }),
     defineField({
       name: "rows",
-      title: "行（JSON）",
-      description: "JSON形式の二次元配列（例: [[\"月\",\"10:00\",\"教室A\"],[\"水\",\"14:00\",\"教室B\"]]）",
-      type: "text",
+      title: "行",
+      description: "各行のセルを配列で入力",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "cells",
+              title: "セル",
+              type: "array",
+              of: [{ type: "string" }],
+            }),
+          ],
+          preview: {
+            select: { cells: "cells" },
+            prepare: ({ cells }: { cells?: string[] }) => ({
+              title: cells?.join(" | ") || "Empty row",
+            }),
+          },
+        },
+      ],
     }),
   ],
 });

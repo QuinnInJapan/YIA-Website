@@ -5,38 +5,35 @@ import {
   getPage,
   getAllPageSlugs,
   getCategoryIndex,
+  getCategoryIds,
+  getCategoryIdsStatic,
 } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
-const CATEGORY_SLUGS = ["support", "learning", "events", "exchange"];
-
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const slugs: { slug: string }[] = [];
+  const [pageSlugs, categoryIds] = await Promise.all([
+    getAllPageSlugs(),
+    getCategoryIdsStatic(),
+  ]);
 
-  // Announcements
-  slugs.push({ slug: "announcements" });
-  // Category landing pages
-  for (const s of CATEGORY_SLUGS) {
-    slugs.push({ slug: s });
-  }
-  // All pages
-  for (const s of await getAllPageSlugs()) {
-    slugs.push({ slug: s });
-  }
-
-  return slugs;
+  return [
+    { slug: "announcements" },
+    ...categoryIds.map((s) => ({ slug: s })),
+    ...pageSlugs.map((s) => ({ slug: s })),
+  ];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const data = await getSiteData();
+  const categoryIds = await getCategoryIds();
 
   let title = "";
   let description = "";
@@ -44,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (slug === "announcements") {
     title = "お知らせ";
     description = "横須賀国際交流協会からのお知らせ一覧";
-  } else if (CATEGORY_SLUGS.includes(slug)) {
+  } else if (categoryIds.includes(slug)) {
     const catIndex = await getCategoryIndex();
     const cat = catIndex[slug];
     if (cat) {
@@ -76,7 +73,8 @@ export default async function SlugPage({ params }: PageProps) {
     return <AnnouncementsPageTemplate />;
   }
 
-  if (CATEGORY_SLUGS.includes(slug)) {
+  const categoryIds = await getCategoryIds();
+  if (categoryIds.includes(slug)) {
     return <CategoryTemplate categoryId={slug} />;
   }
 

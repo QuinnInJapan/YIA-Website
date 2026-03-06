@@ -1,4 +1,5 @@
 import { imageUrl } from "@/lib/sanity/image";
+import { ja, en } from "@/lib/i18n";
 import EventFlyerPair from "./EventFlyerPair";
 import type { EventFlyer } from "@/lib/types";
 
@@ -14,27 +15,30 @@ export default function EventFlyerPairWrapper({
   const items: { src: string; alt: string; caption: string }[] = [];
 
   for (const f of flyers) {
+    // alt may be i18n array or legacy plain string
+    const altJa = typeof f.alt === "string" ? f.alt : ja(f.alt);
+    const altEn = typeof f.alt === "string" ? f.alt : en(f.alt);
+
     if (f.imageJa && f.imageEn) {
       items.push({
         src: imageUrl(f.imageJa),
-        alt: f.altJa || "",
+        alt: altJa || "",
         caption: "日本語版",
       });
       items.push({
         src: imageUrl(f.imageEn),
-        alt: f.altEn || "",
+        alt: altEn || "",
         caption: "English",
       });
     } else {
       const img = f.image || f.imageJa;
       items.push({
         src: imageUrl(img),
-        alt: f.alt || f.altJa || "",
-        caption: f.alt || "",
+        alt: altJa || "",
+        caption: altJa || "",
       });
     }
   }
 
-  // Actually, let the client component handle all rendering
   return <EventFlyerPair flyers={items} />;
 }

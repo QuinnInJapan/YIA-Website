@@ -21,7 +21,8 @@ export interface Document {
   label: I18nString;
   file?: SanityFile;
   url?: string;
-  type?: string;
+  type?: "document" | "youtube" | "website" | string;
+  fileType?: string;
 }
 
 export interface ImageFile {
@@ -33,17 +34,7 @@ export interface EventFlyer {
   image?: SanityImage;
   imageJa?: SanityImage;
   imageEn?: SanityImage;
-  alt?: string;
-  altJa?: string;
-  altEn?: string;
-}
-
-export interface LinkItem {
-  title: I18nString;
-  file?: SanityFile;
-  url?: string;
-  type?: "document" | "youtube" | "website";
-  fileType?: string;
+  alt?: I18nString;
 }
 
 export interface Definition {
@@ -53,8 +44,7 @@ export interface Definition {
 
 export interface SisterCity {
   name: I18nString;
-  country: string;
-  countryJa?: string;
+  country: I18nString;
   image?: SanityImage;
   note?: string;
 }
@@ -116,7 +106,7 @@ export interface TableScheduleSection {
   title: I18nString;
   columns?: string[];
   columnsEn?: string[];
-  rows?: string[][] | string;
+  rows?: { cells: string[] }[] | string[][] | string;
 }
 
 export interface GroupScheduleSection {
@@ -155,7 +145,7 @@ export interface DefinitionsSection {
 export interface LinksSection {
   _type: "links";
   title: I18nString;
-  items: LinkItem[];
+  items: Document[];
 }
 
 export interface HistorySection {
@@ -246,7 +236,7 @@ export interface SiteSettings {
 
 export interface Category {
   _type: "category";
-  id: string;
+  _id: string;
   label: I18nString;
   description?: I18nString;
   heroImage?: SanityImage;
@@ -255,16 +245,16 @@ export interface Category {
 export interface Navigation {
   _type: "navigation";
   categories: {
-    categoryRef: { _type: "reference"; _ref: string };
+    categoryRef: Category;
     items: {
-      pageRef: { _type: "reference"; _ref: string };
+      pageRef: Page;
     }[];
   }[];
 }
 
 export interface Announcement {
   _type: "announcement";
-  id: string;
+  _id: string;
   date?: string;
   pinned?: boolean;
   title: I18nString;
@@ -297,13 +287,13 @@ export interface Homepage {
       label: I18nString;
     };
   };
-  announcementRefs: { _type: "reference"; _ref: string }[];
+  announcementRefs: Announcement[];
   eventFlyers?: EventFlyer[];
 }
 
 export interface Page {
   _type: "page";
-  id: string;
+  _id: string;
   slug: string;
   template?: string;
   categoryRef?: { _ref: string };
