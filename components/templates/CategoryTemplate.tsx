@@ -23,8 +23,7 @@ export default async function CategoryTemplate({
   // Resolve full page data for each nav item (nav is the source of truth for what belongs in a category)
   const items = await Promise.all(
     navCat.items.map(async (item) => {
-      const slug = item.url.replace(/^\//, "");
-      const page = slug ? await getPage(slug) : undefined;
+      const page = item.slug ? await getPage(item.slug) : undefined;
       return { item, page };
     })
   );
