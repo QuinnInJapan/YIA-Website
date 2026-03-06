@@ -56,6 +56,7 @@ function stripStega(root: Node) {
 export default function GoogleTranslate() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const [dismissed, setDismissed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Close on click outside or Escape
@@ -182,7 +183,7 @@ export default function GoogleTranslate() {
     ? LANGUAGES.find((l) => l.code === active)?.label ?? active
     : "翻訳 Translate";
 
-  if (inIframe) return null;
+  if (inIframe || dismissed) return null;
 
   return (
     <div className="gtranslate" ref={containerRef}>
@@ -214,6 +215,16 @@ export default function GoogleTranslate() {
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z" />
         </svg>
         <span className="gtranslate__label">{activeLabel}</span>
+      </button>
+      <button
+        className="gtranslate__close"
+        onClick={(e) => { e.stopPropagation(); setDismissed(true); }}
+        aria-label="翻訳ボタンを非表示 Hide translate"
+        type="button"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
       </button>
 
       <ul className={`gtranslate__menu${open ? " gtranslate__menu--open" : ""}`} role="menu">

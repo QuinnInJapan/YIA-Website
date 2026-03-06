@@ -13,16 +13,17 @@ interface SiteFooterProps {
 export default async function SiteFooter({
   documents,
 }: SiteFooterProps) {
-  const { site } = await getSiteData();
+  const { site, sidebar } = await getSiteData();
   const { org } = site;
+  const docs = documents ?? sidebar.documents;
 
   return (
     <footer className="site-footer">
-      {documents && documents.length > 0 && (
+      {docs && docs.length > 0 && (
         <div className="site-footer__docs">
           <div className="site-footer__docs-title">公開資料 Documents</div>
           <div className="site-footer__docs-links">
-            {documents.map((d, i) => (
+            {docs.map((d, i) => (
               <span key={i}>
                 {i > 0 && (
                   <span className="site-footer__docs-sep">&middot;</span>

@@ -19,6 +19,13 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-text-size-adjust: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+main {
+  flex: 1;
 }
 
 img {
@@ -384,6 +391,37 @@ body {
 
 .gtranslate__trigger:hover {
   box-shadow: 0 6px 24px rgba(15, 25, 50, 0.45), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.gtranslate__close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (hover: hover) {
+  .gtranslate__close {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .gtranslate:hover .gtranslate__close {
+    opacity: 1;
+  }
+}
+
+.gtranslate__close:hover {
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .gtranslate__icon {
