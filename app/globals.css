@@ -124,6 +124,10 @@ ul, ol {
 
   /* Consistent edge padding for all full-width containers */
   --site-gutter: var(--spacing-lg);
+
+  /* TOC sidebar dimensions */
+  --toc-width: 200px;
+  --toc-gap: 48px;
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -181,6 +185,8 @@ ruby rt {
 .layout-overview,
 .layout-membership,
 .layout-directory {
+  width: 100%;
+  max-width: calc(var(--max-width) + 2 * var(--site-gutter));
   margin: 0 auto;
 }
 
@@ -983,6 +989,48 @@ h3.section-header {
   margin-top: var(--spacing-xs);
 }
 
+/* -- Portable Text elements (inside bilingual blocks, callouts, announcements) -- */
+
+.bilingual-block p,
+.callout p,
+.announcement__content p {
+  margin-bottom: 0.5em;
+}
+
+.bilingual-block p:last-child,
+.callout p:last-child,
+.announcement__content p:last-child {
+  margin-bottom: 0;
+}
+
+.bilingual-block ul,
+.bilingual-block ol,
+.callout ul,
+.callout ol,
+.announcement__content ul,
+.announcement__content ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.bilingual-block ul,
+.callout ul,
+.announcement__content ul {
+  list-style: disc;
+}
+
+.bilingual-block ol,
+.callout ol,
+.announcement__content ol {
+  list-style: decimal;
+}
+
+.bilingual-block li,
+.callout li,
+.announcement__content li {
+  margin-bottom: 0.25em;
+}
+
 /* -- Governance List -- */
 
 .governance-list {
@@ -1120,12 +1168,13 @@ h3.section-header {
 /* -- Announcements Page Layout -- */
 
 .ann-layout {
+  width: 100%;
   max-width: calc(var(--max-width) + 2 * var(--site-gutter));
   margin: 0 auto;
   padding: 40px var(--site-gutter) 64px;
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
+  grid-template-columns: var(--toc-width) 1fr;
+  gap: var(--toc-gap);
   align-items: start;
 }
 
@@ -2671,8 +2720,7 @@ html:has(:target) {
 /* Placed late in the cascade so margin-left/right: auto wins over
    component shorthand margins (e.g. margin: var(--spacing-md) 0). */
 
-.home-section--tinted > *,
-.page-section > * {
+.home-section--tinted > * {
   max-width: var(--max-width);
   margin-left: auto;
   margin-right: auto;
