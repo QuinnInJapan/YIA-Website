@@ -10,10 +10,8 @@ export default function InfoTable({ rows }: InfoTableProps) {
   return (
     <dl className="info-dl">
       {rows.map((r, i) => {
-        const wide =
-          (ja(r.value) || "").length > 80 ? " info-dl__row--wide" : "";
         return (
-          <div className={`info-dl__row${wide}`} key={i}>
+          <div className="info-dl__row" key={i}>
             <dt>
               {ja(r.label)}
               {en(r.label) && (

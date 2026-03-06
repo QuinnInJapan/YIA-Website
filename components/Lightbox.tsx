@@ -55,6 +55,7 @@ export default function Lightbox({
 }: LightboxProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const show = useCallback(
     (idx: number) => {
@@ -63,14 +64,13 @@ export default function Lightbox({
     [items.length, onNavigate]
   );
 
-  // Lock body scroll, keyboard nav, and focus management
+  // Lock body scroll, keyboard nav, focus management, and touch gestures
   useEffect(() => {
     if (!isOpen) return;
 
     // Save and move focus
     previousFocusRef.current = document.activeElement as HTMLElement;
     document.body.style.overflow = "hidden";
-    // Focus the close button on open
     const closeBtn = dialogRef.current?.querySelector<HTMLElement>(
       ".photo-lightbox__close"
     );
@@ -81,7 +81,6 @@ export default function Lightbox({
       else if (e.key === "ArrowLeft") show(currentIndex - 1);
       else if (e.key === "ArrowRight") show(currentIndex + 1);
       else if (e.key === "Tab") {
-        // Focus trap
         const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
           'button, [href], [tabindex]:not([tabindex="-1"])'
         );
@@ -102,11 +101,39 @@ export default function Lightbox({
       }
     };
 
+    const el = dialogRef.current;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartRef.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!touchStartRef.current || e.changedTouches.length !== 1) return;
+      const dx = e.changedTouches[0].clientX - touchStartRef.current.x;
+      const dy = e.changedTouches[0].clientY - touchStartRef.current.y;
+      touchStartRef.current = null;
+
+      // Only count horizontal swipes (dx must be dominant and at least 50px)
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx < 0) show(currentIndex + 1); // swipe left → next
+        else show(currentIndex - 1); // swipe right → prev
+      }
+    };
+
     document.addEventListener("keydown", handleKeyDown);
+    el?.addEventListener("touchstart", handleTouchStart, { passive: true });
+    el?.addEventListener("touchend", handleTouchEnd, { passive: true });
+
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
-      // Restore focus
+      el?.removeEventListener("touchstart", handleTouchStart);
+      el?.removeEventListener("touchend", handleTouchEnd);
       previousFocusRef.current?.focus();
     };
   }, [isOpen, currentIndex, onClose, show]);
