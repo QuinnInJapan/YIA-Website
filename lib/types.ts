@@ -248,6 +248,7 @@ export interface Category {
   _type: "category";
   id: string;
   label: I18nString;
+  description?: I18nString;
   heroImage?: SanityImage;
 }
 
@@ -256,15 +257,8 @@ export interface Navigation {
   categories: {
     categoryRef: { _type: "reference"; _ref: string };
     items: {
-      id: string;
       pageRef: { _type: "reference"; _ref: string };
-      title: I18nString;
     }[];
-  }[];
-  orgLinks: {
-    id: string;
-    pageRef: { _type: "reference"; _ref: string };
-    title: I18nString;
   }[];
 }
 
@@ -312,7 +306,7 @@ export interface Page {
   id: string;
   slug: string;
   template?: string;
-  category?: "shien" | "kehatsu" | "kouryu" | "kokusaikoken";
+  categoryRef?: { _ref: string };
   title: I18nString;
   subtitle?: I18nString;
   description?: I18nString | I18nBlocks;

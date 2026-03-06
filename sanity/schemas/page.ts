@@ -12,17 +12,11 @@ export default defineType({
     { name: "sections", title: "セクション" },
   ],
   preview: {
-    select: { title: "title", category: "category" },
-    prepare: ({ title, category }: { title?: { _key: string; value: string }[]; category?: string }) => {
-      const categoryLabels: Record<string, string> = {
-        shien: "支援事業",
-        kehatsu: "啓発事業",
-        kouryu: "交流事業",
-        kokusaikoken: "国際貢献",
-      };
+    select: { title: "title", catLabel: "categoryRef.label" },
+    prepare: ({ title, catLabel }: { title?: { _key: string; value: string }[]; catLabel?: { _key: string; value: string }[] }) => {
       const enTitle = title?.find((t) => t._key === "en")?.value;
-      const catLabel = category ? categoryLabels[category] : undefined;
-      const parts = [catLabel, enTitle].filter(Boolean);
+      const catJa = catLabel?.find((t) => t._key === "ja")?.value;
+      const parts = [catJa, enTitle].filter(Boolean);
       return {
         title: title?.find((t) => t._key === "ja")?.value || "Untitled",
         subtitle: parts.join(" · ") || undefined,
@@ -41,18 +35,13 @@ export default defineType({
     }),
     defineField({ name: "template", title: "テンプレート", type: "string", hidden: true }),
     defineField({
-      name: "category",
+      name: "categoryRef",
       title: "カテゴリー",
-      type: "string",
+      type: "reference",
+      to: [{ type: "category" }],
       group: "meta",
-      options: {
-        list: [
-          { title: "支援事業", value: "shien" },
-          { title: "啓発事業", value: "kehatsu" },
-          { title: "交流事業", value: "kouryu" },
-          { title: "国際貢献", value: "kokusaikoken" },
-        ],
-      },
+      description: "ナビゲーションから自動同期（手動変更不要）",
+      readOnly: true,
     }),
     defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", group: "content", validation: (Rule) => Rule.required() }),
     defineField({ name: "subtitle", title: "サブタイトル", type: "internationalizedArrayString", group: "content" }),

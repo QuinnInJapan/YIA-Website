@@ -18,7 +18,7 @@ import {
 const emptySiteData: SiteData = {
   site: { _type: "siteSettings", org: { designation: "", name: [{_key: "ja", value: ""}, {_key: "en", value: ""}], abbreviation: "", founded: "", npoEstablished: "", lastUpdated: "", description: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, contact: { postalCode: "", address: [{_key: "ja", value: ""}, {_key: "en", value: ""}], tel: "", fax: "", email: "", website: "" }, businessHours: [{_key: "ja", value: ""}, {_key: "en", value: ""}], copyright: "", googleMapsEmbedUrl: "" },
   categories: [],
-  navigation: { _type: "navigation", categories: [], orgLinks: [] },
+  navigation: { _type: "navigation", categories: [] },
   announcements: [],
   sidebar: { _type: "sidebar", memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], slug: "" }, documents: [] },
   homepage: { _type: "homepage", slug: "", hero: { tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
@@ -65,13 +65,13 @@ interface EnrichedNavCategory {
   categoryId: string;
   id: string;
   label: I18nString;
+  description?: I18nString;
   heroImage?: SanityImage;
   items: EnrichedNavItem[];
 }
 
 interface EnrichedNavigation {
   categories: EnrichedNavCategory[];
-  orgLinks: EnrichedNavItem[];
 }
 
 export const getEnrichedNavigation = cache(
@@ -82,21 +82,20 @@ export const getEnrichedNavigation = cache(
       categoryIndex[stegaClean(cat.id)] = cat;
     }
 
-    // Build page slug index for resolving page references
+    // Build page index keyed by various ID forms so pageRef._ref resolves
     const pageIndex: Record<string, Page> = {};
     for (const pg of data.pages) {
       const cleanId = stegaClean(pg.id);
       pageIndex[`page-${cleanId}`] = pg;
       pageIndex[cleanId] = pg;
+      const docId = stegaClean((pg as unknown as { _id?: string })._id ?? "");
+      if (docId) pageIndex[docId] = pg;
     }
 
-    function resolvePageSlug(ref?: { _ref?: string } | string): string {
-      if (!ref) return "";
-      // Support both reference objects and plain string slugs (backwards compat)
-      const refStr = stegaClean(typeof ref === "string" ? ref : ref._ref ?? "");
-      if (!refStr) return "";
-      const pg = pageIndex[refStr] || pageIndex[refStr.replace("page-", "")];
-      return pg ? `/${stegaClean(pg.slug)}` : "";
+    function resolvePage(ref?: { _ref?: string }): Page | undefined {
+      if (!ref?._ref) return undefined;
+      const refStr = stegaClean(ref._ref);
+      return pageIndex[refStr] || pageIndex[refStr.replace("page-", "")];
     }
 
     const categories: EnrichedNavCategory[] =
@@ -107,24 +106,33 @@ export const getEnrichedNavigation = cache(
           categoryId: catId,
           id: stegaClean(cat?.id ?? catId),
           label: cat?.label ?? [],
+          description: cat?.description,
           heroImage: cat?.heroImage,
-          items: navCat.items.map((item) => ({
-            id: stegaClean(item.id),
-            title: item.title,
-            url: resolvePageSlug(item.pageRef),
-          })),
+          items: (navCat.items ?? []).map((item) => {
+            const pg = resolvePage(item.pageRef);
+            return {
+              id: pg ? stegaClean(pg.id) : "",
+              title: pg?.title ?? [],
+              url: pg ? `/${stegaClean(pg.slug)}` : "",
+            };
+          }),
         };
       });
 
-    const orgLinks: EnrichedNavItem[] = data.navigation.orgLinks.map(
-      (link) => ({
-        id: stegaClean(link.id),
-        title: link.title,
-        url: resolvePageSlug(link.pageRef),
-      })
-    );
+    // Append contact link to the "about" category
+    const aboutCat = categories.find((c) => c.categoryId === "about");
+    if (aboutCat) {
+      aboutCat.items.push({
+        id: "contact",
+        title: [
+          { _key: "ja", value: "お問い合わせ" },
+          { _key: "en", value: "Contact" },
+        ],
+        url: "/contact",
+      });
+    }
 
-    return { categories, orgLinks };
+    return { categories };
   }
 );
 
@@ -146,6 +154,15 @@ export async function getAllPageSlugs(): Promise<string[]> {
 export async function getAllPages(): Promise<Page[]> {
   const data = await getSiteData();
   return data.pages;
+}
+
+// ── Pages by category ───────────────────────────────────────────
+
+export async function getPagesByCategory(categoryId: string): Promise<Page[]> {
+  const data = await getSiteData();
+  return data.pages.filter(
+    (pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`
+  );
 }
 
 // ── Announcements ───────────────────────────────────────────────
