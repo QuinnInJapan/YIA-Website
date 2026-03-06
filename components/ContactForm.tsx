@@ -46,11 +46,6 @@ export default function ContactForm() {
 
   return (
     <section className="contact-form">
-      <h2 className="contact-form__heading">
-        お問い合わせ
-        <span className="contact-form__heading-en" lang="en">Inquiry</span>
-      </h2>
-
       <form onSubmit={handleSubmit} noValidate={false}>
         {/* Honeypot */}
         <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
