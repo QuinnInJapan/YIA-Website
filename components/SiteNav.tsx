@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { stegaClean } from "next-sanity";
 import type { I18nString } from "@/lib/i18n";
 import { ja, en } from "@/lib/i18n";
 
@@ -20,6 +21,9 @@ interface NavCategory {
 
 interface SiteNavProps {
   categories: NavCategory[];
+  orgName: string;
+  orgNameEn: string;
+  contact: { tel: string; email: string };
 }
 
 function ChevronIcon({ className }: { className?: string }) {
@@ -38,7 +42,7 @@ function CloseIcon() {
   );
 }
 
-export default function SiteNav({ categories }: SiteNavProps) {
+export default function SiteNav({ categories, orgName, orgNameEn, contact }: SiteNavProps) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -137,6 +141,12 @@ export default function SiteNav({ categories }: SiteNavProps) {
 
   return (
     <nav className="site-nav" ref={navRef}>
+      {/* Mobile branding — visible only on mobile */}
+      <Link href="/" className="site-nav__brand">
+        <span className="site-nav__brand-jp">{orgName}</span>
+        <span className="site-nav__brand-en" lang="en">{orgNameEn}</span>
+      </Link>
+
       {/* Hamburger button — visible only on mobile */}
       <button
         className="site-nav__hamburger"
@@ -272,7 +282,10 @@ export default function SiteNav({ categories }: SiteNavProps) {
           );
         })}
 
-
+        <div className="site-nav__mobile-contact">
+          <a href={`tel:${stegaClean(contact.tel)}`}>TEL: {contact.tel}</a>
+          <a href={`mailto:${stegaClean(contact.email)}`}>{contact.email}</a>
+        </div>
       </div>
     </nav>
   );

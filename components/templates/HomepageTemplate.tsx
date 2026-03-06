@@ -222,18 +222,32 @@ export default async function HomepageTemplate() {
                 fill
               />
             </figure>
-            <Link
-              href={`/${stegaClean(sidebar.memberRecruitment.slug)}`}
-              className="activity-grid__tile activity-grid__tile--gold reveal"
-              style={
-                { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
-              }
-            >
-              <div className="activity-grid__tile-text">
-                {ja(sidebar.memberRecruitment.label)}
-                <span>{en(sidebar.memberRecruitment.label)}</span>
+            {sidebar.memberRecruitment.slug ? (
+              <Link
+                href={`/${stegaClean(sidebar.memberRecruitment.slug)}`}
+                className="activity-grid__tile activity-grid__tile--gold reveal"
+                style={
+                  { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
+                }
+              >
+                <div className="activity-grid__tile-text">
+                  {ja(sidebar.memberRecruitment.label)}
+                  <span>{en(sidebar.memberRecruitment.label)}</span>
+                </div>
+              </Link>
+            ) : (
+              <div
+                className="activity-grid__tile activity-grid__tile--gold reveal"
+                style={
+                  { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
+                }
+              >
+                <div className="activity-grid__tile-text">
+                  {ja(sidebar.memberRecruitment.label)}
+                  <span>{en(sidebar.memberRecruitment.label)}</span>
+                </div>
               </div>
-            </Link>
+            )}
             <figure
               className="activity-grid__item reveal"
               style={
