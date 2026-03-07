@@ -27,6 +27,21 @@ export default defineType({
       title: "タイトル",
       type: "internationalizedArrayString",
       description: "セクションの見出し。ページ上で太字の見出しとして表示されます。",
+      hidden: ({ parent }) => parent?.hideTitle,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as { hideTitle?: boolean } | undefined;
+          if (parent?.hideTitle) return true;
+          const hasValue = Array.isArray(value) && value.some((v: { value?: string }) => v.value?.trim());
+          return hasValue ? true : "タイトルが未入力です。省略する場合は「タイトルなし」にチェックしてください。";
+        }),
+    }),
+    defineField({
+      name: "hideTitle",
+      title: "タイトルなし",
+      type: "boolean",
+      description: "チェックするとタイトルを省略できます。",
+      initialValue: false,
     }),
     defineField({
       name: "description",
