@@ -108,20 +108,6 @@ export const getEnrichedNavigation = cache(
         };
       });
 
-    // Append contact link to the "about" category
-    const aboutCat = categories.find((c) => c.categoryId === "about");
-    if (aboutCat) {
-      aboutCat.items.push({
-        id: "contact",
-        slug: "contact",
-        title: [
-          { _key: "ja", value: "お問い合わせ" },
-          { _key: "en", value: "Contact" },
-        ],
-        url: "/about/contact",
-      });
-    }
-
     return { categories };
   }
 );

@@ -190,6 +190,11 @@ ruby rt {
   margin: 0 auto;
 }
 
+.layout-category {
+  width: 100%;
+  margin: 0 auto;
+}
+
 /* -- Page Hero Banner (subpages) -- */
 
 .page-hero {
@@ -1126,11 +1131,21 @@ h3.section-header {
   animation: section-flash 2s ease;
 }
 
+.announcement__meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
 .announcement__date {
-  display: block;
   font-size: var(--font-size-sm);
   color: var(--color-text-faint);
-  margin-bottom: var(--spacing-xs);
+}
+
+.announcement__pin {
+  font-size: var(--font-size-xs);
+  color: var(--color-silver);
 }
 
 .announcement__title {
@@ -2249,6 +2264,7 @@ html:has(:target) {
   font-family: "SF Mono", "Menlo", "Consolas", monospace;
   color: var(--color-text-muted);
   letter-spacing: 0.01em;
+  line-height: 1.5;
 }
 
 .oshirase-title {
@@ -2267,6 +2283,12 @@ html:has(:target) {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   line-height: 1.4;
+}
+
+.oshirase-pin {
+  display: block;
+  font-size: 10px;
+  color: var(--color-silver);
 }
 
 .oshirase-footer {
@@ -4136,6 +4158,8 @@ html:has(:target) {
 .cat-list {
   display: flex;
   flex-direction: column;
+  max-width: calc(var(--max-width) + 2 * 1.25rem + 2 * var(--site-gutter));
+  margin: 0 auto;
   padding: 1rem var(--site-gutter) 2rem;
 }
 

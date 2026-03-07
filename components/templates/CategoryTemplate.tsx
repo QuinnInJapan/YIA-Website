@@ -90,7 +90,7 @@ export default async function CategoryTemplate({
     <PageLayout
       heroHtml={heroHtml}
       sectionHtml={sectionHtml}
-      mainClass="layout-program"
+      mainClass="layout-category"
     />
   );
 }

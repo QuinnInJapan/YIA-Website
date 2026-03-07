@@ -4,7 +4,6 @@ import {
   getSiteData,
   getPage,
   getEnrichedNavigation,
-  shortId,
 } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
@@ -48,26 +47,14 @@ export async function generateStaticParams() {
     }
   }
 
-  // Contact page lives under /about/contact
-  params.push({ category: "about", slug: "contact" });
-
   return params;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { category, slug } = await params;
+  const { slug } = await params;
   const data = await getSiteData();
-
-  if (slug === "contact" && category === "about") {
-    return {
-      title: "お問い合わせ",
-      openGraph: {
-        title: `お問い合わせ — ${ja(data.site.org.name)}`,
-      },
-    };
-  }
 
   const pg = await getPage(slug);
   if (!pg) return {};
@@ -95,8 +82,11 @@ export default async function CategorySlugPage({ params }: PageProps) {
   const navItem = navCat.items.find((it) => it.slug === slug);
   if (!navItem) return notFound();
 
-  // Contact page
-  if (slug === "contact" && category === "about") {
+  const pg = await getPage(slug);
+  if (!pg) return notFound();
+
+  // Contact page uses a special template
+  if (pg.template === "contact") {
     const data = await getSiteData();
     return (
       <>
@@ -109,10 +99,6 @@ export default async function CategorySlugPage({ params }: PageProps) {
       </>
     );
   }
-
-  // Regular page
-  const pg = await getPage(slug);
-  if (!pg) return notFound();
 
   return <PageTemplate page={pg} />;
 }
