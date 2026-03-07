@@ -14,8 +14,25 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "description", title: "説明文", type: "internationalizedArrayString", description: "ホームページのカテゴリーバンドに表示される短い説明" }),
-    defineField({ name: "heroImage", title: "ヒーロー画像", type: "image", options: { hotspot: true } }),
+    defineField({
+      name: "label",
+      title: "ラベル",
+      type: "internationalizedArrayString",
+      description: "カテゴリーの表示名。ナビゲーションやページヘッダーに表示されます。",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "description",
+      title: "説明文",
+      type: "internationalizedArrayString",
+      description: "ホームページのカテゴリーバンドに表示される短い説明。",
+    }),
+    defineField({
+      name: "heroImage",
+      title: "ヒーロー画像",
+      type: "image",
+      options: { hotspot: true },
+      description: "カテゴリーページ上部の背景画像。",
+    }),
   ],
 });

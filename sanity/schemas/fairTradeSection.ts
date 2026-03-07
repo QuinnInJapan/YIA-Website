@@ -5,7 +5,7 @@ export default defineType({
   name: "fairTrade",
   title: "フェアトレードセクション",
   type: "object",
-  description: "フェアトレード商品の説明・価格表・配送情報",
+  description: "フェアトレード商品の説明・価格表・配送情報。",
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
@@ -15,8 +15,19 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-    defineField({ name: "description", title: "説明", type: "internationalizedArrayBlockContent" }),
+    defineField({
+      name: "title",
+      title: "タイトル",
+      type: "internationalizedArrayString",
+      description: "セクションの見出し。",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "description",
+      title: "説明",
+      type: "internationalizedArrayBlockContent",
+      description: "フェアトレードについての説明文。",
+    }),
     defineField({
       name: "priceList",
       title: "価格表",
@@ -25,13 +36,19 @@ export default defineType({
         {
           type: "object",
           fields: [
-            defineField({ name: "type", title: "種類", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "weight", title: "重量", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "price", title: "価格", type: "string", validation: (Rule) => Rule.required() }),
+            defineField({ name: "type", title: "種類", type: "string", description: "商品の種類（例：コーヒー）。", validation: (Rule) => Rule.required() }),
+            defineField({ name: "weight", title: "重量", type: "string", description: "商品の重量（例：200g）。", validation: (Rule) => Rule.required() }),
+            defineField({ name: "price", title: "価格", type: "string", description: "税込価格（例：¥800）。", validation: (Rule) => Rule.required() }),
           ],
         },
       ],
+      description: "商品の種類・重量・価格の一覧。",
     }),
-    defineField({ name: "delivery", title: "配送について", type: "internationalizedArrayBlockContent" }),
+    defineField({
+      name: "delivery",
+      title: "配送について",
+      type: "internationalizedArrayBlockContent",
+      description: "配送方法や送料についての説明。",
+    }),
   ],
 });

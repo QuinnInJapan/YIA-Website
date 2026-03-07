@@ -38,6 +38,7 @@ function categoryGroup(
       .id(id)
       .title(title)
       .schemaType("page")
+      .apiVersion("2024-01-01")
       .filter('_type == "page" && categoryRef._ref == $catRef')
       .params({ catRef: `category-${id}` }),
   );
@@ -46,63 +47,62 @@ function categoryGroup(
 export function structure(S: StructureBuilder) {
   return S.list()
     .id("content")
-    .title("Content")
+    .title("コンテンツ")
     .items([
-      // Site Settings
-      S.listItem()
-        .id("settings")
-        .title("サイト設定 Site Settings")
-        .icon(CogIcon)
-        .child(
-          S.list()
-            .id("settings")
-            .title("サイト設定 Site Settings")
-            .items([
-              singleton(S, "siteSettings", "サイト設定", CogIcon),
-              singleton(S, "homepage", "ホームページ", HomeIcon),
-              singleton(S, "navigation", "ナビゲーション", MenuIcon),
-              singleton(S, "sidebar", "サイドバー・フッター", ComponentIcon),
-            ]),
-        ),
-
-      S.divider(),
-
-      // Announcements
+      // Most-used: Announcements
       S.listItem()
         .id("announcements")
-        .title("お知らせ Announcements")
+        .title("お知らせ")
         .icon(BellIcon)
         .child(
           S.documentList()
             .id("announcements")
-            .title("お知らせ Announcements")
+            .title("お知らせ")
             .schemaType("announcement")
+            .apiVersion("2024-01-01")
             .filter('_type == "announcement"')
             .defaultOrdering([{ field: "date", direction: "desc" }]),
         ),
 
-      S.divider(),
-
-      // Program categories — hardcoded here because Sanity structure API
-      // doesn't support async data fetching. The site derives these from navigation data.
-      categoryGroup(S, "support", "生活サポート Living Support", HeartIcon),
-      categoryGroup(S, "learning", "語学・講座 Language & Classes", BookIcon),
-      categoryGroup(S, "events", "イベント Events", TransferIcon),
-      categoryGroup(S, "exchange", "国際交流 Global Exchange", EarthGlobeIcon),
+      // Second most-used: Homepage singleton
+      singleton(S, "homepage", "ホームページ", HomeIcon),
 
       S.divider(),
 
-      // Organization pages
+      // Page categories
+      categoryGroup(S, "support", "生活サポート", HeartIcon),
+      categoryGroup(S, "learning", "語学・講座", BookIcon),
+      categoryGroup(S, "events", "イベント", TransferIcon),
+      categoryGroup(S, "exchange", "国際交流", EarthGlobeIcon),
       S.listItem()
         .id("organization")
-        .title("協会について Organization")
+        .title("協会について")
         .icon(UsersIcon)
         .child(
           S.documentList()
             .id("organization")
-            .title("協会について Organization")
+            .title("協会について")
             .schemaType("page")
+            .apiVersion("2024-01-01")
             .filter('_type == "page" && !defined(categoryRef)'),
+        ),
+
+      S.divider(),
+
+      // Admin settings group
+      S.listItem()
+        .id("admin")
+        .title("管理者設定")
+        .icon(CogIcon)
+        .child(
+          S.list()
+            .id("admin")
+            .title("管理者設定")
+            .items([
+              singleton(S, "siteSettings", "サイト設定", CogIcon),
+              singleton(S, "navigation", "ナビゲーション", MenuIcon),
+              singleton(S, "sidebar", "サイドバー・フッター", ComponentIcon),
+            ]),
         ),
     ]);
 }

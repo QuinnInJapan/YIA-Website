@@ -14,9 +14,10 @@ export default defineType({
       name: "memberRecruitment",
       title: "会員募集",
       type: "object",
+      description: "サイドバーに表示される会員募集バナー。",
       fields: [
-        defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
-        defineField({ name: "page", title: "ページ", type: "reference", to: [{ type: "page" }] }),
+        defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", description: "バナーに表示するテキスト。" }),
+        defineField({ name: "page", title: "ページ", type: "reference", to: [{ type: "page" }], description: "クリック時のリンク先ページ。" }),
       ],
     }),
     defineField({
@@ -24,6 +25,7 @@ export default defineType({
       title: "資料",
       type: "array",
       of: [{ type: "documentLink" }],
+      description: "サイドバーに表示する資料リンク。",
     }),
   ],
 });

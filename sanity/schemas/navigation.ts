@@ -14,6 +14,7 @@ export default defineType({
       name: "categories",
       title: "カテゴリー",
       type: "array",
+      description: "サイトのメインナビゲーション。カテゴリーごとにページを整理します。",
       of: [
         {
           type: "object",
@@ -23,11 +24,13 @@ export default defineType({
               title: "カテゴリー",
               type: "reference",
               to: [{ type: "category" }],
+              description: "ナビゲーションのカテゴリー。",
             }),
             defineField({
               name: "items",
               title: "項目",
               type: "array",
+              description: "このカテゴリーに表示するページの一覧。",
               of: [
                 {
                   type: "object",

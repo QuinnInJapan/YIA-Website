@@ -5,9 +5,14 @@ export default defineType({
   name: "warnings",
   title: "注意事項セクション",
   type: "object",
-  description: "ページ上部に表示する注意事項・警告メッセージ",
+  description: "ページ上部に黄色背景で表示する注意事項・警告メッセージ。",
   preview: {
-    prepare: () => ({ title: "注意事項セクション", subtitle: "Warnings", media: WarningOutlineIcon }),
+    select: { items: "items" },
+    prepare: ({ items }) => ({
+      title: `注意事項（${items?.length || 0}件）`,
+      subtitle: "Warnings",
+      media: WarningOutlineIcon,
+    }),
   },
   fields: [
     defineField({
@@ -15,6 +20,7 @@ export default defineType({
       title: "項目",
       type: "array",
       of: [{ type: "internationalizedArrayBlockContent" }],
+      description: "注意事項の一覧。各項目が1つの警告メッセージとして表示されます。",
     }),
   ],
 });

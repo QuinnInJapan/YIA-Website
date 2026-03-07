@@ -21,14 +21,22 @@ export default defineType({
       title: "ヒーロー",
       type: "object",
       group: "hero",
+      description: "ホームページ最上部のメインビジュアルとキャッチコピー。",
       fields: [
         defineField({
           name: "image",
           title: "画像",
           type: "image",
           options: { hotspot: true },
+          description: "ホームページ上部の大きなメイン画像。推奨サイズ: 横1920px以上。",
+          validation: (Rule) => Rule.required().error("ヒーロー画像は必須です"),
         }),
-        defineField({ name: "tagline", title: "キャッチコピー", type: "internationalizedArrayString" }),
+        defineField({
+          name: "tagline",
+          title: "キャッチコピー",
+          type: "internationalizedArrayString",
+          description: "ヒーロー画像の上に表示されるキャッチコピー。",
+        }),
       ],
     }),
     defineField({
@@ -36,21 +44,24 @@ export default defineType({
       title: "活動グリッド",
       type: "object",
       group: "content",
+      description: "活動写真と統計数値のグリッド表示。レイアウトに関わるため管理者のみ編集可能。",
+      readOnly: true,
       fields: [
         defineField({
           name: "images",
           title: "画像",
           type: "array",
           of: [{ type: "image" }],
-          description: "活動写真 6枚 / 6 activity photos",
+          description: "活動写真6枚。ホームページのグリッドに表示されます。",
         }),
         defineField({
           name: "stat",
           title: "統計",
           type: "object",
+          description: "グリッド内に表示される統計数値（例：会員数）。",
           fields: [
-            defineField({ name: "value", title: "値", type: "number" }),
-            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString" }),
+            defineField({ name: "value", title: "値", type: "number", description: "表示する数値。" }),
+            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", description: "数値の下に表示されるラベル。" }),
           ],
         }),
       ],
@@ -61,7 +72,7 @@ export default defineType({
       type: "array",
       group: "content",
       of: [{ type: "reference", to: [{ type: "announcement" }] }],
-      description: "ホームページに表示するお知らせ / Announcements shown on homepage",
+      description: "ホームページに表示するお知らせを選択します。ここで選んだお知らせがトップページに表示されます。",
     }),
     defineField({
       name: "eventFlyers",
@@ -69,7 +80,7 @@ export default defineType({
       type: "array",
       group: "content",
       of: [{ type: "eventFlyer" }],
-      description: "現在のイベントチラシ / Current event flyers",
+      description: "ホームページの「イベント」欄に表示するチラシ画像。新しいイベントのチラシに差し替えてください。",
     }),
   ],
 });

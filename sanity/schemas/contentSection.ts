@@ -15,14 +15,31 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "id", title: "ID", type: "string" }),
-    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString" }),
-    defineField({ name: "description", title: "説明", type: "internationalizedArrayBlockContent" }),
+    defineField({
+      name: "id",
+      title: "ID",
+      type: "string",
+      description: "セクションの識別子（変更するとページ内リンクが壊れます。管理者のみ変更可能）",
+      readOnly: true,
+    }),
+    defineField({
+      name: "title",
+      title: "タイトル",
+      type: "internationalizedArrayString",
+      description: "セクションの見出し。ページ上で太字の見出しとして表示されます。",
+    }),
+    defineField({
+      name: "description",
+      title: "説明",
+      type: "internationalizedArrayBlockContent",
+      description: "セクションの本文。リッチテキストで書式設定やリンクを追加できます。",
+    }),
     defineField({
       name: "infoTable",
       title: "情報テーブル",
       type: "array",
       of: [{ type: "infoRow" }],
+      description: "ラベルと値のペアで情報を表示（例：日時、場所、対象者など）。",
     }),
     defineField({
       name: "checklist",
@@ -37,19 +54,27 @@ export default defineType({
           ],
         },
       ],
+      description: "チェックマーク付きの項目一覧（例：持ち物リスト、必要書類など）。",
     }),
     defineField({
       name: "documents",
       title: "資料",
       type: "array",
       of: [{ type: "documentLink" }],
+      description: "ダウンロード用のPDFファイルや外部リンク。",
     }),
-    defineField({ name: "note", title: "備考", type: "internationalizedArrayBlockContent" }),
+    defineField({
+      name: "note",
+      title: "備考",
+      type: "internationalizedArrayBlockContent",
+      description: "セクション下部に小さく表示される補足情報。",
+    }),
     defineField({
       name: "images",
       title: "画像",
       type: "array",
       of: [{ type: "imageFile" }],
+      description: "セクション内に表示する画像。",
     }),
     defineField({
       name: "schedule",
@@ -64,6 +89,7 @@ export default defineType({
           ],
         },
       ],
+      description: "都市ごとの派遣スケジュール（姉妹都市交流など）。",
     }),
   ],
 });

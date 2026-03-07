@@ -5,7 +5,7 @@ export default defineType({
   name: "links",
   title: "リンクセクション",
   type: "object",
-  description: "資料ダウンロード・YouTube・外部サイトなどのリンク一覧",
+  description: "資料ダウンロード・YouTube・外部サイトなどのリンク一覧。",
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
@@ -15,12 +15,19 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({
+      name: "title",
+      title: "タイトル",
+      type: "internationalizedArrayString",
+      description: "リンクセクションの見出し。",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "items",
       title: "項目",
       type: "array",
       of: [{ type: "documentLink" }],
+      description: "リンクの一覧。PDF・YouTube・外部サイトなどを追加できます。",
       validation: (Rule) => Rule.required(),
     }),
   ],

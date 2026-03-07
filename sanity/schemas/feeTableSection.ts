@@ -5,7 +5,7 @@ export default defineType({
   name: "feeTable",
   title: "会費表セクション",
   type: "object",
-  description: "会費・料金のテーブル表示（種別・金額）",
+  description: "会費表。会員種別ごとの年会費を表形式で表示します。",
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
@@ -15,7 +15,13 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({
+      name: "title",
+      title: "タイトル",
+      type: "internationalizedArrayString",
+      description: "セクションの見出し。",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "rows",
       title: "会費行",
@@ -24,11 +30,12 @@ export default defineType({
         {
           type: "object",
           fields: [
-            defineField({ name: "memberType", title: "種別", type: "internationalizedArrayString" }),
-            defineField({ name: "fee", title: "会費", type: "string" }),
+            defineField({ name: "memberType", title: "種別", type: "internationalizedArrayString", description: "会員種別（例：個人会員、法人会員）。" }),
+            defineField({ name: "fee", title: "会費", type: "string", description: "年会費の金額（例：¥3,000）。" }),
           ],
         },
       ],
+      description: "会員種別と会費の一覧。",
     }),
   ],
 });

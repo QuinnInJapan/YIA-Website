@@ -5,7 +5,7 @@ export default defineType({
   name: "tableSchedule",
   title: "テーブルスケジュール",
   type: "object",
-  description: "列・行のシンプルなテーブル形式（曜日ベースやイベント一覧など）",
+  description: "列・行のシンプルなテーブル形式（曜日ベースやイベント一覧など）。",
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
@@ -15,23 +15,31 @@ export default defineType({
     }),
   },
   fields: [
-    defineField({ name: "title", title: "タイトル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
+    defineField({
+      name: "title",
+      title: "タイトル",
+      type: "internationalizedArrayString",
+      description: "テーブルの見出し。",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "columns",
       title: "列見出し（日本語）",
       type: "array",
       of: [{ type: "string" }],
+      description: "テーブルの列名（日本語）。",
     }),
     defineField({
       name: "columnsEn",
       title: "列見出し（英語）",
       type: "array",
       of: [{ type: "string" }],
+      description: "テーブルの列名（英語）。",
     }),
     defineField({
       name: "rows",
       title: "行",
-      description: "各行のセルを配列で入力",
+      description: "各行のセルを配列で入力。",
       type: "array",
       of: [
         {
@@ -42,6 +50,7 @@ export default defineType({
               title: "セル",
               type: "array",
               of: [{ type: "string" }],
+              description: "この行の各セルの値。列の順番に対応します。",
             }),
           ],
           preview: {

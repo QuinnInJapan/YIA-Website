@@ -27,10 +27,17 @@ export default async function AnnouncementsPageTemplate() {
     const id = shortId(a._id) || `ann-${i}`;
     return (
       <article className="announcement" id={id} key={id}>
-        {a.date && (
-          <time className="announcement__date" dateTime={a.date}>
-            {formatDateDot(a.date)}
-          </time>
+        {(a.date || a.pinned) && (
+          <div className="announcement__meta">
+            {a.date && (
+              <time className="announcement__date" dateTime={a.date}>
+                {formatDateDot(a.date)}
+              </time>
+            )}
+            {a.pinned && (
+              <span className="announcement__pin">固定 Pinned</span>
+            )}
+          </div>
         )}
         <h2 className="announcement__title">
           {ja(a.title)}

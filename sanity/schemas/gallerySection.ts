@@ -5,9 +5,14 @@ export default defineType({
   name: "gallery",
   title: "ギャラリーセクション",
   type: "object",
-  description: "写真ギャラリー（ヒーロー幅以上の画像のみ表示）",
+  description: "写真ギャラリー。ページ幅いっぱいの画像を複数表示します。",
   preview: {
-    prepare: () => ({ title: "ギャラリーセクション", subtitle: "Gallery", media: ImagesIcon }),
+    select: { images: "images" },
+    prepare: ({ images }) => ({
+      title: `ギャラリー（${images?.length || 0}枚）`,
+      subtitle: "Gallery",
+      media: ImagesIcon,
+    }),
   },
   fields: [
     defineField({
@@ -15,6 +20,7 @@ export default defineType({
       title: "画像",
       type: "array",
       of: [{ type: "imageFile" }],
+      description: "ギャラリーに表示する画像。ドラッグ＆ドロップで並び替えできます。",
       validation: (Rule) => Rule.required(),
     }),
   ],
