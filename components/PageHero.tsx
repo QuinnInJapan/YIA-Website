@@ -5,6 +5,7 @@ import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import type { ImageFile } from "@/lib/types";
 import type { I18nString, I18nBlocks } from "@/lib/i18n";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
+import { ptComponents } from "@/lib/portable-text";
 
 function isBlocks(field: I18nString | I18nBlocks | undefined): field is I18nBlocks {
   if (!field || field.length === 0) return false;
@@ -38,12 +39,12 @@ export default function PageHero({
         <div className="page-hero__description">
           {jaB.length > 0 && (
             <div>
-              <PortableText value={jaB} />
+              <PortableText value={jaB} components={ptComponents} />
             </div>
           )}
           {enB.length > 0 && (
             <div className="page-hero__description-en" lang="en">
-              <PortableText value={enB} />
+              <PortableText value={enB} components={ptComponents} />
             </div>
           )}
         </div>

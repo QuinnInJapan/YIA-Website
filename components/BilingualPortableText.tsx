@@ -3,6 +3,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { Nl2br } from "@/lib/helpers";
 import type { I18nString, I18nBlocks } from "@/lib/i18n";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
+import { ptComponents } from "@/lib/portable-text";
 
 /**
  * Detect whether an i18n field contains Portable Text blocks or plain strings.
@@ -41,12 +42,12 @@ export default function BilingualPortableText({
       <div className={className}>
         {hasContent(jaB) && (
           <div className="bilingual-block__ja" lang="ja">
-            <PortableText value={jaB} />
+            <PortableText value={jaB} components={ptComponents} />
           </div>
         )}
         {hasContent(enB) && (
           <div className="bilingual-block__en" lang="en">
-            <PortableText value={enB} />
+            <PortableText value={enB} components={ptComponents} />
           </div>
         )}
       </div>
