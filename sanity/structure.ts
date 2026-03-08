@@ -10,6 +10,7 @@ import {
   BookIcon,
   EarthGlobeIcon,
   TransferIcon,
+  ComposeIcon,
 } from "@sanity/icons";
 
 // Singleton helper: opens directly to the document editor
@@ -62,6 +63,21 @@ export function structure(S: StructureBuilder) {
             .apiVersion("2024-01-01")
             .filter('_type == "announcement"')
             .defaultOrdering([{ field: "date", direction: "desc" }]),
+        ),
+
+      // Blog posts
+      S.listItem()
+        .id("blog")
+        .title("ブログ")
+        .icon(ComposeIcon)
+        .child(
+          S.documentList()
+            .id("blog")
+            .title("ブログ記事")
+            .schemaType("blogPost")
+            .apiVersion("2024-01-01")
+            .filter('_type == "blogPost"')
+            .defaultOrdering([{ field: "publishedAt", direction: "desc" }]),
         ),
 
       // Second most-used: Homepage singleton

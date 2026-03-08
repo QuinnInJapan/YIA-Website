@@ -72,6 +72,45 @@ export function fetchAllPageSlugsStatic() {
   return client.fetch<{ slug: string }[]>(`*[_type == "page"]{ slug }`);
 }
 
+// ── Blog Posts ──────────────────────────────────────────────────
+export async function fetchBlogPosts(page = 1, pageSize = 10) {
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  const { data } = await sanityFetch({
+    query: `*[_type == "blogPost"] | order(publishedAt desc) [$start...$end] {
+      ...,
+      "slug": slug.current
+    }`,
+    params: { start, end },
+  });
+  return data;
+}
+
+export async function fetchBlogPostBySlug(slug: string) {
+  const { data } = await sanityFetch({
+    query: `*[_type == "blogPost" && slug.current == $slug][0] {
+      ...,
+      "slug": slug.current,
+      relatedPosts[]-> { ..., "slug": slug.current }
+    }`,
+    params: { slug },
+  });
+  return data;
+}
+
+export async function fetchBlogPostCount() {
+  const { data } = await sanityFetch({
+    query: `count(*[_type == "blogPost"])`,
+  });
+  return data;
+}
+
+export function fetchAllBlogSlugsStatic() {
+  return client.fetch<{ slug: string }[]>(
+    `*[_type == "blogPost"]{ "slug": slug.current }`
+  );
+}
+
 // ── Full site data (composite fetch) ─────────────────────────────
 export async function fetchSiteData() {
   const [

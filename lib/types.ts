@@ -304,6 +304,23 @@ export interface Page {
   sections: PageSection[];
 }
 
+// ─── Blog ───────────────────────────────────────────────────────────
+
+export interface BlogPost {
+  _type: "blogPost";
+  _id: string;
+  title: I18nString;
+  slug: string;
+  author?: string;
+  publishedAt: string;
+  category?: "event-report" | "culture" | "community" | "news";
+  heroImage?: SanityImage & { alt?: I18nString };
+  excerpt?: I18nString;
+  body: I18nBlocks;
+  relatedPosts?: BlogPost[];
+  documents?: Document[];
+}
+
 // ─── Top-Level Site Data ────────────────────────────────────────────
 
 export interface SiteData {

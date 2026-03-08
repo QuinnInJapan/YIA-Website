@@ -208,6 +208,13 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
             </div>
           );
           })}
+          <Link
+            href="/blog"
+            className={`site-nav__home${pathname.startsWith("/blog") ? " site-nav__home--active" : ""}`}
+            aria-current={pathname.startsWith("/blog") ? "page" : undefined}
+          >
+            ブログ <span className="site-nav__group-en" lang="en">Blog</span>
+          </Link>
         </div>
       </div>
 
@@ -300,6 +307,15 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
             </div>
           );
         })}
+
+        <Link
+          href="/blog"
+          className={`site-nav__mobile-home${pathname.startsWith("/blog") ? " site-nav__mobile-home--active" : ""}`}
+          aria-current={pathname.startsWith("/blog") ? "page" : undefined}
+          onClick={closeMobileMenu}
+        >
+          ブログ <span className="site-nav__mobile-group-en" lang="en">Blog</span>
+        </Link>
 
         <div className="site-nav__mobile-contact">
           <a href={`tel:${stegaClean(contact.tel)}`}>TEL: {contact.tel}</a>

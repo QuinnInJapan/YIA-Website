@@ -32,6 +32,7 @@ import siteSettings from "./siteSettings";
 import category from "./category";
 import navigation from "./navigation";
 import announcement from "./announcement";
+import blogPost from "./blogPost";
 import sidebar from "./sidebar";
 import homepage from "./homepage";
 import page from "./page";
@@ -69,6 +70,7 @@ export const schemaTypes = [
   category,
   navigation,
   announcement,
+  blogPost,
   sidebar,
   homepage,
   page,

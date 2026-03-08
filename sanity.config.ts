@@ -112,6 +112,48 @@ export default defineConfig({
                 }),
               ],
             },
+            {
+              type: "object",
+              name: "callout",
+              title: "コールアウト",
+              fields: [
+                defineField({
+                  name: "tone",
+                  type: "string",
+                  title: "種類",
+                  options: {
+                    list: [
+                      { title: "情報", value: "info" },
+                      { title: "注意", value: "warning" },
+                      { title: "ヒント", value: "tip" },
+                    ],
+                  },
+                  initialValue: "info",
+                }),
+                defineField({ name: "body", type: "text", title: "内容" }),
+              ],
+              preview: {
+                select: { tone: "tone", body: "body" },
+                prepare: ({ tone, body }: { tone?: string; body?: string }) => ({
+                  title: `${tone ?? "info"}: ${body?.slice(0, 50) ?? ""}`,
+                }),
+              },
+            },
+            {
+              type: "object",
+              name: "youtube",
+              title: "YouTube動画",
+              fields: [
+                defineField({ name: "url", type: "url", title: "YouTube URL" }),
+                defineField({ name: "caption", type: "string", title: "キャプション" }),
+              ],
+              preview: {
+                select: { url: "url", caption: "caption" },
+                prepare: ({ url, caption }: { url?: string; caption?: string }) => ({
+                  title: caption || url || "YouTube動画",
+                }),
+              },
+            },
           ],
         }),
       ],
