@@ -21,6 +21,7 @@ import type {
   ImageFile,
 } from "@/lib/types";
 import { tocId } from "@/lib/helpers";
+import type { I18nString } from "@/lib/i18n";
 import { ja, en } from "@/lib/i18n";
 import { formatDateJa, formatDateEn } from "@/lib/date-format";
 import { imageUrl, resolveDocs, fileUrl } from "@/lib/sanity/image";
@@ -179,15 +180,28 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
       case "tableSchedule": {
         const s = sec as TableScheduleSection;
         addTocHeader(ja(s.title), en(s.title));
-        let rows: string[][] = [];
+        let rows: { ja: string; en: string }[][] = [];
         if (typeof s.rows === "string") {
           // Legacy: JSON string
-          try { rows = JSON.parse(stegaClean(s.rows)); } catch { rows = []; }
+          try {
+            const parsed: string[][] = JSON.parse(stegaClean(s.rows));
+            rows = parsed.map((r) => r.map((v) => ({ ja: v, en: "" })));
+          } catch { rows = []; }
         } else if (Array.isArray(s.rows)) {
-          // Structured objects { cells: string[] } or legacy string[][]
-          rows = s.rows.map((r) =>
-            typeof r === "object" && "cells" in r ? (r as { cells: string[] }).cells : r as string[]
-          );
+          rows = s.rows.map((r) => {
+            if (typeof r === "object" && "cells" in r) {
+              const cells = (r as { cells: ({ text: I18nString } | I18nString | string)[] }).cells || [];
+              return cells.map((c) => {
+                if (typeof c === "string") return { ja: c, en: "" };
+                // New shape: { text: I18nString }
+                if ("text" in c) return { ja: ja(c.text), en: en(c.text) };
+                // Legacy i18n array directly
+                return { ja: ja(c as I18nString), en: en(c as I18nString) };
+              });
+            }
+            // Legacy string[][]
+            return (r as string[]).map((v) => ({ ja: String(v), en: "" }));
+          });
         }
         current.push(
           <ScheduleTable

@@ -106,7 +106,7 @@ export interface TableScheduleSection {
   title: I18nString;
   columns?: string[];
   columnsEn?: string[];
-  rows?: { cells: string[] }[] | string[][] | string;
+  rows?: { cells: ({ text: I18nString } | I18nString | string)[] }[] | string[][] | string;
 }
 
 export interface GroupScheduleSection {

@@ -63,14 +63,31 @@ export default defineType({
               name: "cells",
               title: "セル",
               type: "array",
-              of: [{ type: "string" }],
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    defineField({
+                      name: "text",
+                      title: "テキスト",
+                      type: "internationalizedArrayString",
+                    }),
+                  ],
+                  preview: {
+                    select: { text: "text" },
+                    prepare: ({ text }: { text?: { _key: string; value: string }[] }) => ({
+                      title: text?.find((t) => t._key === "ja")?.value || "",
+                    }),
+                  },
+                },
+              ],
               description: "この行の各セルの値。列の順番に対応します。",
             }),
           ],
           preview: {
             select: { cells: "cells" },
-            prepare: ({ cells }: { cells?: string[] }) => ({
-              title: cells?.join(" | ") || "Empty row",
+            prepare: ({ cells }: { cells?: { text?: { _key: string; value: string }[] }[] }) => ({
+              title: cells?.map((c) => c?.text?.find((v) => v._key === "ja")?.value || "").join(" | ") || "Empty row",
             }),
           },
         },

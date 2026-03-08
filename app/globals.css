@@ -1004,45 +1004,70 @@ h3.section-header {
   margin-top: var(--spacing-xs);
 }
 
-/* -- Portable Text elements (inside bilingual blocks, callouts, announcements) -- */
+/* -- Portable Text elements (inside bilingual blocks and callouts) -- */
 
 .bilingual-block p,
-.callout p,
-.announcement__content p {
+.callout p {
   margin-bottom: 0.5em;
 }
 
 .bilingual-block p:last-child,
-.callout p:last-child,
-.announcement__content p:last-child {
+.callout p:last-child {
   margin-bottom: 0;
+}
+
+.bilingual-block h2,
+.callout h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin: 1em 0 0.4em;
+}
+
+.bilingual-block h3,
+.callout h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin: 0.8em 0 0.3em;
+}
+
+.bilingual-block h4,
+.callout h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.6em 0 0.2em;
+}
+
+.bilingual-block h2:first-child,
+.bilingual-block h3:first-child,
+.bilingual-block h4:first-child,
+.callout h2:first-child,
+.callout h3:first-child,
+.callout h4:first-child {
+  margin-top: 0;
 }
 
 .bilingual-block ul,
 .bilingual-block ol,
 .callout ul,
-.callout ol,
-.announcement__content ul,
-.announcement__content ol {
+.callout ol {
   margin: 0.5em 0;
   padding-left: 1.5em;
 }
 
 .bilingual-block ul,
-.callout ul,
-.announcement__content ul {
+.callout ul {
   list-style: disc;
 }
 
 .bilingual-block ol,
-.callout ol,
-.announcement__content ol {
+.callout ol {
   list-style: decimal;
 }
 
 .bilingual-block li,
-.callout li,
-.announcement__content li {
+.callout li {
   margin-bottom: 0.25em;
 }
 
@@ -1164,18 +1189,6 @@ h3.section-header {
   margin-top: 2px;
 }
 
-.announcement__content {
-  line-height: 1.75;
-  font-size: var(--font-size-base);
-}
-
-.announcement__content[lang="en"] {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px dashed var(--color-border);
-}
 
 .announcement__image {
   margin-top: var(--spacing-md);

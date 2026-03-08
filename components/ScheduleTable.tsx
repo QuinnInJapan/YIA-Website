@@ -5,10 +5,15 @@ import { fileUrl } from "@/lib/sanity/image";
 import type { GroupScheduleRow } from "@/lib/types";
 import PdfLink from "./PdfLink";
 
+export interface BilingualCell {
+  ja: string;
+  en: string;
+}
+
 interface ScheduleTableProps {
   columns: string[];
   columnsEn?: string[];
-  rows: (string[] | GroupScheduleRow)[];
+  rows: (string[] | { ja: string; en: string }[] | GroupScheduleRow)[];
   type?: string;
 }
 
@@ -129,7 +134,7 @@ export default function ScheduleTable({
       bodyRows = groupRows.map((r, i) => <GroupRow r={r} key={i} />);
     }
   } else {
-    bodyRows = (rows as string[][]).map((r, i) => {
+    bodyRows = (rows as (string[] | BilingualCell[])[]).map((r, i) => {
       const cells = Array.isArray(r)
         ? r
         : Object.entries(r)
@@ -137,9 +142,23 @@ export default function ScheduleTable({
             .map(([, v]) => v);
       return (
         <tr key={i}>
-          {cells.map((v, j) => (
-            <td key={j}>{String(v)}</td>
-          ))}
+          {cells.map((v, j) => {
+            if (typeof v === "object" && v !== null && "ja" in v && "en" in v) {
+              const cell = v as BilingualCell;
+              return (
+                <td key={j}>
+                  {cell.ja}
+                  {cell.en && (
+                    <>
+                      <br />
+                      <span className="schedule-table__en" lang="en">{cell.en}</span>
+                    </>
+                  )}
+                </td>
+              );
+            }
+            return <td key={j}>{String(v)}</td>;
+          })}
         </tr>
       );
     });

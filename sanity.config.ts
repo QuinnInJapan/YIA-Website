@@ -75,7 +75,12 @@ export default defineConfig({
           of: [
             {
               type: "block",
-              styles: [{ title: "Normal", value: "normal" }],
+              styles: [
+                { title: "Normal", value: "normal" },
+                { title: "見出し2", value: "h2" },
+                { title: "見出し3", value: "h3" },
+                { title: "見出し4", value: "h4" },
+              ],
               marks: {
                 decorators: [
                   { title: "太字", value: "strong" },
