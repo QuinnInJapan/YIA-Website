@@ -18,7 +18,9 @@ export default async function SiteLayout({
       <SiteNavWrapper />
       {children}
       <SanityLive />
-      {(await draftMode()).isEnabled && <VisualEditing />}
+      {(await draftMode()).isEnabled && (
+        <VisualEditing mode="presentation" />
+      )}
     </>
   );
 }
