@@ -1,8 +1,8 @@
 import { draftMode } from "next/headers";
-import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/lib/sanity/live";
 import SiteHeader from "@/components/SiteHeader";
 import SiteNavWrapper from "@/components/SiteNavWrapper";
+import VisualEditingInFrame from "@/components/VisualEditingInFrame";
 
 export default async function SiteLayout({
   children,
@@ -18,9 +18,7 @@ export default async function SiteLayout({
       <SiteNavWrapper />
       {children}
       <SanityLive />
-      {(await draftMode()).isEnabled && (
-        <VisualEditing mode="presentation" />
-      )}
+      {(await draftMode()).isEnabled && <VisualEditingInFrame />}
     </>
   );
 }
