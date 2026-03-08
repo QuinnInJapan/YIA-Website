@@ -5,9 +5,10 @@ import { ja, en } from "@/lib/i18n";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 import type { I18nString } from "@/lib/i18n";
+import type { SanityImage } from "@/lib/types";
 
 interface ImageFileValue {
-  file?: { asset?: { _ref: string } };
+  file?: SanityImage;
   caption?: I18nString;
 }
 
@@ -34,8 +35,8 @@ export function makeBlogPtComponents(h2IdMap?: Record<string, string>): Portable
   return {
     ...ptComponents,
     block: {
-      h2: ({ children, value }: { children: React.ReactNode; value: { _key: string } }) => (
-        <h2 id={h2IdMap?.[value._key] ?? value._key}>{children}</h2>
+      h2: ({ children, value }: { children?: React.ReactNode; value: { _key?: string } }) => (
+        <h2 id={value._key ? (h2IdMap?.[value._key] ?? value._key) : undefined}>{children}</h2>
       ),
     },
     types: {
@@ -55,7 +56,7 @@ export function makeBlogPtComponents(h2IdMap?: Record<string, string>): Portable
         const images = (value.images ?? [])
           .filter((img) => img.file?.asset?._ref)
           .map((img) => ({
-            src: imageUrl(img.file),
+            src: imageUrl(img.file!),
             alt: ja(img.caption) || "",
             captionJa: ja(img.caption),
             captionEn: en(img.caption),
