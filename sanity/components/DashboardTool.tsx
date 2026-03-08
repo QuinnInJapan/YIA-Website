@@ -38,7 +38,7 @@ interface Announcement {
   pinned: boolean;
 }
 
-const QUERY = `*[_type == "announcement"] | order(pinned desc, date desc) {
+const QUERY = `*[_type == "announcement" && !(_id in path("drafts.**"))] | order(pinned desc, date desc) {
   _id,
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
