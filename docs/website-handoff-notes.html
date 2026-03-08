@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>YIA 新ウェブサイト — 引き渡しについて</title>
+<style>
+@page {
+  size: A4;
+  margin: 25mm 20mm 25mm 20mm;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.9;
+  color: #222;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 25mm 20mm;
+}
+
+/* --- Headings use spacing, not size --- */
+
+h1 {
+  font-size: 13pt;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 12pt;
+  margin-bottom: 20pt;
+  border-bottom: 1.5pt solid #333;
+}
+
+h2 {
+  font-size: 11pt;
+  font-weight: 700;
+  margin-top: 24pt;
+  margin-bottom: 8pt;
+  padding: 4pt 8pt;
+  background: #f0f0f0;
+  border-left: 3pt solid #444;
+}
+
+h3 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin-top: 16pt;
+  margin-bottom: 6pt;
+}
+
+h4 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin-top: 12pt;
+  margin-bottom: 4pt;
+}
+
+/* --- Body text --- */
+
+p {
+  margin-bottom: 6pt;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+strong {
+  font-weight: 700;
+}
+
+/* --- Lists --- */
+
+ul, ol {
+  margin: 4pt 0 8pt 18pt;
+}
+
+li {
+  margin-bottom: 3pt;
+}
+
+li > ul, li > ol {
+  margin-top: 2pt;
+  margin-bottom: 2pt;
+}
+
+/* --- Checkboxes --- */
+
+.checkbox {
+  margin-right: 4pt;
+}
+
+/* --- Tables --- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0 12pt 0;
+  font-size: 10pt;
+}
+
+th, td {
+  border: 0.5pt solid #999;
+  padding: 5pt 8pt;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f0f0f0;
+  font-weight: 700;
+}
+
+/* --- Blockquotes --- */
+
+blockquote {
+  margin: 8pt 0 8pt 12pt;
+  padding: 6pt 12pt;
+  border-left: 2pt solid #aaa;
+  background: #fafafa;
+}
+
+blockquote p {
+  margin-bottom: 2pt;
+}
+
+/* --- Horizontal rules --- */
+
+hr {
+  border: none;
+  border-top: 0.5pt solid #ccc;
+  margin: 16pt 0;
+}
+
+/* --- Misc --- */
+
+.code {
+  font-family: "Menlo", "Consolas", monospace;
+  font-size: 9.5pt;
+  background: #f4f4f4;
+  padding: 1pt 3pt;
+  border-radius: 2pt;
+}
+
+.arrow {
+  margin-left: 12pt;
+  margin-bottom: 6pt;
+}
+
+a {
+  color: #222;
+  text-decoration: underline;
+}
+
+@media print {
+  body {
+    padding: 0;
+  }
+  h2 {
+    break-after: avoid;
+  }
+  h3 {
+    break-after: avoid;
+  }
+  table {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+<h1>YIA 新ウェブサイト — 引き渡しについて</h1>
+<h2>この資料の目的</h2>
+<p>新しいウェブサイトの仕組みと、YIAの皆さんに今後お願いしたいことをご説明します。</p>
+<hr>
+<h2>新しいウェブサイトの特徴</h2>
+<h3>できること</h3>
+<ul>
+<li><strong>お知らせの投稿・編集・削除</strong>（管理画面から簡単に操作できます）</li>
+<li>各ページの<strong>文章や写真の差し替え</strong>（管理画面から操作）</li>
+<li><strong>PDF資料の追加・差し替え</strong>（イベントチラシ、申込書など）</li>
+<li>スケジュール表の更新</li>
+</ul>
+<h3>できないこと（意図的にそうしています）</h3>
+<ul>
+<li>ページの追加・削除</li>
+<li>サイトのデザイン変更（色、レイアウト、フォントなど）</li>
+<li>メニュー構成の変更</li>
+</ul>
+<p><strong>これは「制限」ではなく「保護」です。</strong> 以前のウェブサイトは自由度が高い反面、デザインの統一感を維持することが難しい構造でした。新しいサイトでは、誰が更新しても見た目が崩れないように設計しています。</p>
+<p>YIAの皆さんには<strong>コンテンツ（文章・写真・PDF）の管理</strong>に集中していただき、デザインや技術的な部分は仕組みが自動で守る形になっています。</p>
+<hr>
+<h2>管理画面（Sanity Studio）について</h2>
+<p>新サイトには専用の管理画面があります。ブラウザからアクセスでき、ソフトのインストールは不要です。</p>
+<p>管理画面でできること：</p>
+<ul>
+<li>文章の編集（Wordのような操作感）</li>
+<li>写真のアップロード・差し替え</li>
+<li>PDF資料のアップロード</li>
+<li>お知らせの作成・編集・削除</li>
+<li>スケジュール表の更新</li>
+</ul>
+<p><strong>変更はすぐにサイトに反映されます。</strong></p>
+<h3>管理画面の改善について</h3>
+<p>管理画面はある程度カスタマイズが可能です。例えば：</p>
+<ul>
+<li>項目名やガイド文をわかりやすく変更する</li>
+<li>入力欄の並び順を変える</li>
+<li>不要な項目を非表示にする</li>
+</ul>
+<p>実際に使ってみて「ここがわかりにくい」「この操作が面倒」といった点があれば、ぜひお知らせください。改善できる可能性があります。<strong>使いやすさについてのご要望は遠慮なくお伝えください。</strong></p>
+<hr>
+<h2>お願い：コンテンツの確認作業</h2>
+<p>現在のサイトの内容は、旧サイトから移行したものです。移行の際に内容がずれている箇所があるかもしれません。</p>
+<h3>確認していただきたいこと</h3>
+<ul>
+<li><span class="checkbox">☐</span> 各ページの文章が正しいか（古い情報が残っていないか）</li>
+<li><span class="checkbox">☐</span> 電話番号・メールアドレス・住所が正しいか</li>
+<li><span class="checkbox">☐</span> 各活動の説明が現在の実態と合っているか</li>
+<li><span class="checkbox">☐</span> 写真が適切か（古すぎる写真、関係ない写真がないか）</li>
+<li><span class="checkbox">☐</span> PDF資料が最新のものか</li>
+<li><span class="checkbox">☐</span> リンク先が正しく開くか</li>
+</ul>
+<p><strong>この確認作業は、管理画面の使い方を覚える良い機会にもなります。</strong> 気になった箇所をご自身で直していただくことで、今後の更新作業に慣れることができます。</p>
+<hr>
+<h2>ご相談：ホームページのデザインについて</h2>
+<p>トップページに何を表示するかについて、ご意見をいただきたいです。</p>
+<h3>案1：お知らせのみ（シンプル）</h3>
+<p>トップページには<strong>お知らせ（新着情報）</strong>だけを表示します。</p>
+<p><strong>メリット：</strong></p>
+<ul>
+<li>更新の手間が最も少ない</li>
+<li>お知らせを投稿するだけでトップページが更新される</li>
+<li>内容の品質を気にする必要が少ない（日付のある情報なので、古くても自然）</li>
+</ul>
+<p><strong>デメリット：</strong></p>
+<ul>
+<li>トップページの情報量が少なめ</li>
+<li>初めて訪れた人には「どんな活動をしているか」が伝わりにくい</li>
+</ul>
+<h3>案2：お知らせ ＋ イベント情報</h3>
+<p>お知らせに加えて、<strong>今後のイベント・活動の情報</strong>もトップページに表示します。</p>
+<p><strong>メリット：</strong></p>
+<ul>
+<li>「今何をやっているか」が一目でわかる</li>
+<li>初めての訪問者にも活動内容が伝わる</li>
+<li>サイトが活発に見える</li>
+</ul>
+<p><strong>デメリット：</strong></p>
+<ul>
+<li>イベント情報の更新が必要（お知らせより手間がかかる）</li>
+<li><strong>掲載する内容の質が重要になる</strong>（古いイベントが残っているとマイナス印象）</li>
+<li>イベントが少ない時期にトップページが寂しく見える可能性</li>
+</ul>
+<h3>この場でお聞きしたいこと</h3>
+<ul>
+<li>現実的に、どのくらいの頻度でサイトを更新できそうですか？</li>
+<li>イベント情報の更新を担当できる方はいますか？</li>
+<li>案1と案2、どちらがYIAの運営体制に合っていると思いますか？</li>
+</ul>
+<hr>
+<h2>今後の運営について</h2>
+<h3>新サイトを引き受ける場合にYIAに必要なこと</h3>
+<table>
+<tr><th>項目</th><th>頻度</th><th>内容</th></tr>
+<tr><td>お知らせの投稿</td><td>随時</td><td>新しい情報があるときに管理画面から投稿</td></tr>
+<tr><td>コンテンツの確認</td><td>年1〜2回</td><td>各ページの情報が古くなっていないかチェック</td></tr>
+<tr><td>PDF資料の更新</td><td>随時</td><td>新年度のチラシ・申込書などを差し替え</td></tr>
+<tr><td>ドメインの更新</td><td>年1回</td><td>yia.jpの有効期限を確認・更新（別資料参照）</td></tr>
+</table>
+<h3>技術的な作業（開発者が対応）</h3>
+<p>以下はYIAで対応する必要はありません：</p>
+<ul>
+<li>サーバーの管理（自動化済み）</li>
+<li>セキュリティ対策（ホスティングサービスが対応）</li>
+<li>デザインの調整が必要な場合</li>
+</ul>
+<hr>
+<h2>まとめ</h2>
+<table>
+<tr><th>議題</th><th>決めたいこと</th></tr>
+<tr><td>コンテンツ確認</td><td>いつまでに確認を完了するか</td></tr>
+<tr><td>ホームページ</td><td>案1（お知らせのみ）か 案2（＋イベント）か</td></tr>
+<tr><td>更新担当</td><td>誰がサイトの更新を担当するか</td></tr>
+<tr><td>ドメイン</td><td>管理状況の確認（別資料参照）</td></tr>
+</table>
+</body>
+</html>

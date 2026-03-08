@@ -1,3 +1,4 @@
+import type React from "react";
 import type { PortableTextComponents } from "@portabletext/react";
 import { urlFor, imageUrl } from "@/lib/sanity/image";
 import { ja, en } from "@/lib/i18n";
@@ -28,33 +29,42 @@ export const ptComponents: PortableTextComponents = {
   },
 };
 
-/** Extended portable text components for blog posts — adds callout and YouTube blocks. */
-export const blogPtComponents: PortableTextComponents = {
-  ...ptComponents,
-  types: {
-    ...ptComponents.types,
-    callout: ({ value }: { value: { tone?: string; body?: string } }) => {
-      const tone = value.tone || "info";
-      return (
-        <aside className={`pt-callout pt-callout--${tone}`}>
-          <p>{value.body}</p>
-        </aside>
-      );
+/** Blog portable text components with optional id mapping for h2 headings. */
+export function makeBlogPtComponents(h2IdMap?: Record<string, string>): PortableTextComponents {
+  return {
+    ...ptComponents,
+    block: {
+      h2: ({ children, value }: { children: React.ReactNode; value: { _key: string } }) => (
+        <h2 id={h2IdMap?.[value._key] ?? value._key}>{children}</h2>
+      ),
     },
-    youtube: ({ value }: { value: { url: string; caption?: string } }) => (
-      <YouTubeEmbed url={value.url} caption={value.caption} />
-    ),
-    inlineGallery: ({ value }: { value: { images?: ImageFileValue[] } }) => {
-      const images = (value.images ?? [])
-        .filter((img) => img.file?.asset?._ref)
-        .map((img) => ({
-          src: imageUrl(img.file),
-          alt: ja(img.caption) || "",
-          captionJa: ja(img.caption),
-          captionEn: en(img.caption),
-        }));
-      if (!images.length) return null;
-      return <PhotoGalleryWrapper images={images} />;
+    types: {
+      ...ptComponents.types,
+      callout: ({ value }: { value: { tone?: string; body?: string } }) => {
+        const tone = value.tone || "info";
+        return (
+          <aside className={`pt-callout pt-callout--${tone}`}>
+            <p>{value.body}</p>
+          </aside>
+        );
+      },
+      youtube: ({ value }: { value: { url: string; caption?: string } }) => (
+        <YouTubeEmbed url={value.url} caption={value.caption} />
+      ),
+      inlineGallery: ({ value }: { value: { images?: ImageFileValue[] } }) => {
+        const images = (value.images ?? [])
+          .filter((img) => img.file?.asset?._ref)
+          .map((img) => ({
+            src: imageUrl(img.file),
+            alt: ja(img.caption) || "",
+            captionJa: ja(img.caption),
+            captionEn: en(img.caption),
+          }));
+        if (!images.length) return null;
+        return <PhotoGalleryWrapper images={images} />;
+      },
     },
-  },
-};
+  };
+}
+
+export const blogPtComponents = makeBlogPtComponents();

@@ -21,6 +21,20 @@ const client = createClient({
 
 const DRY_RUN = process.argv.includes("--dry-run");
 
+// Reuse existing high-res images from Sanity
+const HERO_IMAGE_REF = "image-e54900219fc220f825fd41d4bd11d7a3f38aaafe-1600x1205-jpg"; // InternationalYouthForum
+const INLINE_IMAGE_REF = "image-99d9ad2aed050bd45e98411069d07a711ff3f76d-1600x1200-jpg"; // 2024.11 event photo
+const GALLERY_REFS = [
+  "image-109a0d6e0d5951be874c6981cebf545ead113a09-1600x1200-jpg", // 2024 jfy
+  "image-87bf1b370a052d0d400f02e9e731be7a78580e80-1024x768-jpg", // Youth Forum 1
+  "image-d1215461d9c0380c192108fd93f747aa08a3905a-800x450-jpg", // Fremantle
+  "image-2c4d3a7c54dd566b5db104c38f639a93044bc4bc-800x533-jpg", // Rochester Castle
+];
+
+function imageRef(id) {
+  return { _type: "image", asset: { _type: "reference", _ref: id } };
+}
+
 const demoBlogPost = {
   _id: "blogpost-demo-sakura-matsuri-2025",
   _type: "blogPost",
@@ -32,6 +46,13 @@ const demoBlogPost = {
   author: "横須賀国際交流協会",
   publishedAt: "2025-03-15T09:00:00Z",
   category: "event-report",
+  heroImage: {
+    ...imageRef(HERO_IMAGE_REF),
+    alt: [
+      { _key: "ja", value: "国際交流フォーラムの参加者たち" },
+      { _key: "en", value: "Participants at the International Exchange Forum" },
+    ],
+  },
   excerpt: [
     {
       _key: "ja",
@@ -83,6 +104,13 @@ const demoBlogPost = {
           ],
           markDefs: [],
         },
+        // Inline image after highlights
+        {
+          _key: "inline-img-1",
+          _type: "image",
+          asset: { _type: "reference", _ref: INLINE_IMAGE_REF },
+          alt: "イベント会場の様子",
+        },
         {
           _key: "callout-1",
           _type: "callout",
@@ -123,6 +151,20 @@ const demoBlogPost = {
             },
           ],
           markDefs: [],
+        },
+        // Inline gallery after participant voices
+        {
+          _key: "gallery-1",
+          _type: "inlineGallery",
+          images: GALLERY_REFS.map((ref, i) => ({
+            _key: `gimg-${i}`,
+            _type: "imageFile",
+            file: { _type: "image", asset: { _type: "reference", _ref: ref } },
+            caption: [
+              { _key: "ja", value: ["交流フォーラム", "ユースフォーラム", "フリマントル市", "ロチェスター城"][i] },
+              { _key: "en", value: ["Exchange Forum", "Youth Forum", "Fremantle", "Rochester Castle"][i] },
+            ],
+          })),
         },
         {
           _key: "h2-next",
@@ -186,6 +228,13 @@ const demoBlogPost = {
           ],
           markDefs: [],
         },
+        // Inline image in English body too
+        {
+          _key: "en-inline-img-1",
+          _type: "image",
+          asset: { _type: "reference", _ref: INLINE_IMAGE_REF },
+          alt: "Event venue atmosphere",
+        },
         {
           _key: "en-callout-1",
           _type: "callout",
@@ -226,6 +275,20 @@ const demoBlogPost = {
             },
           ],
           markDefs: [],
+        },
+        // Gallery in English body
+        {
+          _key: "en-gallery-1",
+          _type: "inlineGallery",
+          images: GALLERY_REFS.map((ref, i) => ({
+            _key: `en-gimg-${i}`,
+            _type: "imageFile",
+            file: { _type: "image", asset: { _type: "reference", _ref: ref } },
+            caption: [
+              { _key: "ja", value: ["交流フォーラム", "ユースフォーラム", "フリマントル市", "ロチェスター城"][i] },
+              { _key: "en", value: ["Exchange Forum", "Youth Forum", "Fremantle", "Rochester Castle"][i] },
+            ],
+          })),
         },
         {
           _key: "en-h2-next",

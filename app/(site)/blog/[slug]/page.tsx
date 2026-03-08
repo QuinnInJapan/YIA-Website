@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 import {
   fetchBlogPostBySlug,
   fetchAllBlogSlugsStatic,
+  fetchAdjacentBlogPosts,
 } from "@/lib/sanity/queries";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
 import { imageUrl, hotspotPosition, resolveDocs } from "@/lib/sanity/image";
@@ -13,6 +14,9 @@ import { blogPtComponents } from "@/lib/portable-text";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
 import BlogCard from "@/components/BlogCard";
+import BlogLanguageTabs, { BlogLanguageProvider } from "@/components/BlogLanguageTabs";
+import BlogPostNav from "@/components/BlogPostNav";
+import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
 
@@ -72,11 +76,28 @@ export default async function BlogPostPage({
     : "";
   const catLabel = post.category ? CATEGORY_LABELS[post.category] : null;
 
+  const adjacent = post.publishedAt
+    ? await fetchAdjacentBlogPosts(post.publishedAt, post.slug)
+    : { prev: null, next: null };
+
   const jaB = jaBlocks(post.body as I18nBlocks);
   const enB = enBlocks(post.body as I18nBlocks);
 
+  // Build separate TOC entries for each language from their own h2 headings
+  type PtBlock = { _key?: string; _type: string; style?: string; children?: { text?: string }[] };
+  function buildTocEntries(blocks: PtBlock[]) {
+    return blocks
+      .filter((b) => b._type === "block" && b.style === "h2" && b._key)
+      .map((h) => ({
+        id: h._key!,
+        text: h.children?.map((c) => c.text || "").join("") || "",
+      }));
+  }
+  const jaTocEntries = buildTocEntries(jaB as PtBlock[]);
+  const enTocEntries = buildTocEntries(enB as PtBlock[]);
+
   const heroHtml = (
-    <div className={`blog-post__hero${heroSrc ? "" : " blog-post__hero--solid"}`}>
+    <div className={`blog-post__hero${heroSrc ? "" : " blog-post__hero--no-image"}`}>
       {heroSrc && (
         <Image
           src={heroSrc}
@@ -106,37 +127,50 @@ export default async function BlogPostPage({
     </div>
   );
 
+  const jaBody = hasContent(jaB) ? (
+    <div className="blog-post__body-ja">
+      <PortableText value={jaB} components={blogPtComponents} />
+    </div>
+  ) : null;
+
+  const enBody = hasContent(enB) ? (
+    <div className="blog-post__body-en" lang="en">
+      <PortableText value={enB} components={blogPtComponents} />
+    </div>
+  ) : null;
+
+  const hasEn = hasContent(enB);
+
   const sectionHtml = (
     <article className="blog-post__body">
-      {hasContent(jaB) && (
-        <div className="blog-post__body-ja" lang="ja">
-          <PortableText value={jaB} components={blogPtComponents} />
-        </div>
-      )}
-      {hasContent(enB) && (
-        <div className="blog-post__body-en" lang="en">
-          <PortableText value={enB} components={blogPtComponents} />
-        </div>
-      )}
+      <BlogLanguageProvider hasEn={hasEn}>
+        <BlogTocWrapper jaEntries={jaTocEntries} enEntries={enTocEntries} />
+        <BlogLanguageTabs
+          jaContent={jaBody}
+          enContent={enBody}
+        />
 
-      {post.documents && post.documents.length > 0 && (
-        <div className="blog-post__docs">
-          <DocList docs={resolveDocs(post.documents)} />
-        </div>
-      )}
-
-      {post.relatedPosts && post.relatedPosts.length > 0 && (
-        <section className="blog-post__related">
-          <h2>関連記事 <span lang="en">Related Posts</span></h2>
-          <div className="blog-grid blog-grid--related">
-            {post.relatedPosts.map((related) => (
-              <BlogCard key={related._id} post={related} />
-            ))}
+        {post.documents && post.documents.length > 0 && (
+          <div className="blog-post__docs">
+            <DocList docs={resolveDocs(post.documents)} />
           </div>
-        </section>
-      )}
+        )}
+
+        {post.relatedPosts && post.relatedPosts.length > 0 && (
+          <section className="blog-post__related">
+            <h2>関連記事 <span lang="en">Related Posts</span></h2>
+            <div className="blog-grid blog-grid--related">
+              {post.relatedPosts.map((related) => (
+                <BlogCard key={related._id} post={related} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <BlogPostNav prev={adjacent.prev} next={adjacent.next} />
+      </BlogLanguageProvider>
     </article>
   );
 
-  return <PageLayout heroHtml={heroHtml} sectionHtml={sectionHtml} />;
+  return <PageLayout heroHtml={heroHtml} sectionHtml={sectionHtml} mainClass="layout-program" />;
 }

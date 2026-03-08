@@ -6,6 +6,13 @@ export default defineType({
   title: "ページ",
   type: "document",
   icon: DocumentTextIcon,
+  fieldsets: [
+    {
+      name: "settings",
+      title: "設定",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   preview: {
     select: { title: "title", catLabel: "categoryRef.label", slug: "slug" },
     prepare: ({ title, catLabel, slug }: { title?: { _key: string; value: string }[]; catLabel?: { _key: string; value: string }[]; slug?: string }) => {
@@ -22,7 +29,7 @@ export default defineType({
       name: "slug",
       title: "スラッグ",
       type: "string",
-
+      fieldset: "settings",
       description: "このページのURL（変更するとリンクが壊れます。管理者のみ変更可能）",
       validation: (Rule) => Rule.required(),
       readOnly: true,
@@ -33,7 +40,7 @@ export default defineType({
       title: "カテゴリー",
       type: "reference",
       to: [{ type: "category" }],
-
+      fieldset: "settings",
       description: "ナビゲーションから自動同期（手動変更不要）",
       readOnly: true,
     }),

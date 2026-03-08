@@ -45,8 +45,8 @@ import DirectoryList from "@/components/DirectoryList";
 
 export interface TocEntry {
   id: string;
-  textJa: string;
-  textEn: string;
+  text: string;
+  subtext?: string;
 }
 
 interface SectionBuilderResult {
@@ -90,7 +90,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
   function addTocHeader(textJa: string, textEn: string = "") {
     if (!textJa) return;
     const id = tocId(textJa);
-    tocEntries.push({ id, textJa, textEn });
+    tocEntries.push({ id, text: textJa, subtext: textEn || undefined });
     currentSectionId = id;
     current.push(
       <SectionHeader

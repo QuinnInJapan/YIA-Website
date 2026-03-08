@@ -17,8 +17,8 @@ export default async function AnnouncementsPageTemplate() {
 
   const tocEntries = allAnnouncements.map((a, i) => ({
     id: shortId(a._id) || `ann-${i}`,
-    textJa: ja(a.title),
-    textEn: en(a.title),
+    text: ja(a.title),
+    subtext: en(a.title) || undefined,
   }));
 
   const tocHtml = <SidebarToc entries={tocEntries} />;

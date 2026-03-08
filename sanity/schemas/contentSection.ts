@@ -6,6 +6,14 @@ export default defineType({
   title: "コンテンツセクション",
   type: "object",
   description: "汎用コンテンツブロック（説明文、情報テーブル、チェックリスト、資料リンクなど）",
+  fieldsets: [
+    {
+      name: "extras",
+      title: "追加コンテンツ",
+      description: "テーブル、チェックリスト、資料、画像など（任意）",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   preview: {
     select: { title: "title" },
     prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
@@ -53,6 +61,7 @@ export default defineType({
       name: "infoTable",
       title: "情報テーブル",
       type: "array",
+      fieldset: "extras",
       of: [{ type: "infoRow" }],
       description: "ラベルと値のペアで情報を表示（例：日時、場所、対象者など）。",
     }),
@@ -60,6 +69,7 @@ export default defineType({
       name: "checklist",
       title: "チェックリスト",
       type: "array",
+      fieldset: "extras",
       of: [
         {
           type: "object",
@@ -75,6 +85,7 @@ export default defineType({
       name: "documents",
       title: "資料",
       type: "array",
+      fieldset: "extras",
       of: [{ type: "documentLink" }],
       description: "ダウンロード用のPDFファイルや外部リンク。",
     }),
@@ -82,12 +93,14 @@ export default defineType({
       name: "note",
       title: "備考",
       type: "internationalizedArrayBlockContent",
+      fieldset: "extras",
       description: "セクション下部に小さく表示される補足情報。",
     }),
     defineField({
       name: "images",
       title: "画像",
       type: "array",
+      fieldset: "extras",
       of: [{ type: "imageFile" }],
       description: "セクション内に表示する画像。",
     }),
@@ -95,6 +108,7 @@ export default defineType({
       name: "schedule",
       title: "スケジュール",
       type: "array",
+      fieldset: "extras",
       of: [
         {
           type: "object",

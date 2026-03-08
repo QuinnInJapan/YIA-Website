@@ -16,6 +16,7 @@ export default async function BlogIndexPage() {
   return (
     <PageLayout
       heroHtml={<SolidHero titleJa="ブログ" titleEn="Blog" />}
+      mainClass="layout-program"
       sectionHtml={
         posts.length > 0 ? (
           <div className="blog-grid">

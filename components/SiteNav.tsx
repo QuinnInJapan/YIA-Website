@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { stegaClean } from "next-sanity";
 import type { I18nString } from "@/lib/i18n";
 import { ja, en } from "@/lib/i18n";
@@ -46,6 +46,7 @@ function CloseIcon() {
 }
 
 export default function SiteNav({ categories, orgName, orgNameEn, contact }: SiteNavProps) {
+  const router = useRouter();
   const [openId, setOpenId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -208,13 +209,16 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
             </div>
           );
           })}
-          <Link
-            href="/blog"
-            className={`site-nav__home${pathname.startsWith("/blog") ? " site-nav__home--active" : ""}`}
-            aria-current={pathname.startsWith("/blog") ? "page" : undefined}
-          >
-            ブログ <span className="site-nav__group-en" lang="en">Blog</span>
-          </Link>
+          <div className={`site-nav__group${pathname.startsWith("/blog") ? " site-nav__group--active" : ""}`}>
+            <button
+              className="site-nav__group-label"
+              type="button"
+              onClick={() => router.push("/blog")}
+            >
+              ブログ{" "}
+              <span className="site-nav__group-en" lang="en">Blog</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -308,14 +312,18 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
           );
         })}
 
-        <Link
-          href="/blog"
-          className={`site-nav__mobile-home${pathname.startsWith("/blog") ? " site-nav__mobile-home--active" : ""}`}
-          aria-current={pathname.startsWith("/blog") ? "page" : undefined}
-          onClick={closeMobileMenu}
-        >
-          ブログ <span className="site-nav__mobile-group-en" lang="en">Blog</span>
-        </Link>
+        <div className="site-nav__mobile-group">
+          <button
+            className={`site-nav__mobile-group-label${pathname.startsWith("/blog") ? " site-nav__mobile-group-label--has-active" : ""}`}
+            type="button"
+            onClick={() => { router.push("/blog"); closeMobileMenu(); }}
+          >
+            <span className="site-nav__mobile-group-text">
+              <span>ブログ</span>
+              <span className="site-nav__mobile-group-en" lang="en">Blog</span>
+            </span>
+          </button>
+        </div>
 
         <div className="site-nav__mobile-contact">
           <a href={`tel:${stegaClean(contact.tel)}`}>TEL: {contact.tel}</a>

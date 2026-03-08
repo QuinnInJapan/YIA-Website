@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import type { TocEntry } from "@/lib/section-renderer";
 
 interface SidebarTocProps {
   entries: TocEntry[];
+  label?: ReactNode;
+  className?: string;
 }
 
 function ChevronIcon({ className }: { className?: string }) {
@@ -15,7 +18,7 @@ function ChevronIcon({ className }: { className?: string }) {
   );
 }
 
-export default function SidebarToc({ entries }: SidebarTocProps) {
+export default function SidebarToc({ entries, label, className }: SidebarTocProps) {
   const [activeId, setActiveId] = useState<string>(entries.length > 0 ? entries[0].id : "");
   const [isOpen, setIsOpen] = useState(false);
   const clickLockRef = useRef<number | null>(null);
@@ -31,6 +34,11 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
       clickLockRef.current = null;
     }, 800);
   }, []);
+
+  // Reset active id when entries change (e.g. language switch)
+  useEffect(() => {
+    if (entries.length > 0) setActiveId(entries[0].id);
+  }, [entries]);
 
   useEffect(() => {
     if (entries.length < 2) return;
@@ -60,8 +68,10 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
 
   if (entries.length < 2) return null;
 
+  const defaultLabel = <>目次 <span lang="en">Contents</span></>;
+
   return (
-    <nav className={`ann-toc${isOpen ? " ann-toc--open" : ""}`} aria-label="目次">
+    <nav className={`ann-toc${className ? ` ${className}` : ""}${isOpen ? " ann-toc--open" : ""}`} aria-label="目次">
       <button
         className="ann-toc__toggle"
         type="button"
@@ -69,7 +79,7 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
         onClick={toggle}
       >
         <span className="ann-toc__label">
-          目次 <span lang="en">Contents</span>
+          {label ?? defaultLabel}
         </span>
         <ChevronIcon className="ann-toc__chevron" />
       </button>
@@ -82,9 +92,9 @@ export default function SidebarToc({ entries }: SidebarTocProps) {
               key={e.id}
               onClick={() => handleLinkClick(e.id)}
             >
-              {e.textJa}
-              {e.textEn && (
-                <span className="ann-toc__link-en" lang="en">{e.textEn}</span>
+              {e.text}
+              {e.subtext && (
+                <span className="ann-toc__link-en" lang="en">{e.subtext}</span>
               )}
             </a>
           ))}

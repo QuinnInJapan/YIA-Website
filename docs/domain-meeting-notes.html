@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>YIA ウェブサイト移行について — ドメイン（yia.jp）の確認事項</title>
+<style>
+@page {
+  size: A4;
+  margin: 25mm 20mm 25mm 20mm;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.9;
+  color: #222;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 25mm 20mm;
+}
+
+/* --- Headings use spacing, not size --- */
+
+h1 {
+  font-size: 13pt;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 12pt;
+  margin-bottom: 20pt;
+  border-bottom: 1.5pt solid #333;
+}
+
+h2 {
+  font-size: 11pt;
+  font-weight: 700;
+  margin-top: 24pt;
+  margin-bottom: 8pt;
+  padding: 4pt 8pt;
+  background: #f0f0f0;
+  border-left: 3pt solid #444;
+}
+
+h3 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin-top: 16pt;
+  margin-bottom: 6pt;
+}
+
+h4 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin-top: 12pt;
+  margin-bottom: 4pt;
+}
+
+/* --- Body text --- */
+
+p {
+  margin-bottom: 6pt;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+strong {
+  font-weight: 700;
+}
+
+/* --- Lists --- */
+
+ul, ol {
+  margin: 4pt 0 8pt 18pt;
+}
+
+li {
+  margin-bottom: 3pt;
+}
+
+li > ul, li > ol {
+  margin-top: 2pt;
+  margin-bottom: 2pt;
+}
+
+/* --- Checkboxes --- */
+
+.checkbox {
+  margin-right: 4pt;
+}
+
+/* --- Tables --- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0 12pt 0;
+  font-size: 10pt;
+}
+
+th, td {
+  border: 0.5pt solid #999;
+  padding: 5pt 8pt;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f0f0f0;
+  font-weight: 700;
+}
+
+/* --- Blockquotes --- */
+
+blockquote {
+  margin: 8pt 0 8pt 12pt;
+  padding: 6pt 12pt;
+  border-left: 2pt solid #aaa;
+  background: #fafafa;
+}
+
+blockquote p {
+  margin-bottom: 2pt;
+}
+
+/* --- Horizontal rules --- */
+
+hr {
+  border: none;
+  border-top: 0.5pt solid #ccc;
+  margin: 16pt 0;
+}
+
+/* --- Misc --- */
+
+.code {
+  font-family: "Menlo", "Consolas", monospace;
+  font-size: 9.5pt;
+  background: #f4f4f4;
+  padding: 1pt 3pt;
+  border-radius: 2pt;
+}
+
+.arrow {
+  margin-left: 12pt;
+  margin-bottom: 6pt;
+}
+
+a {
+  color: #222;
+  text-decoration: underline;
+}
+
+@media print {
+  body {
+    padding: 0;
+  }
+  h2 {
+    break-after: avoid;
+  }
+  h3 {
+    break-after: avoid;
+  }
+  table {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+<h1>YIA ウェブサイト移行について — ドメイン（yia.jp）の確認事項</h1>
+<h2>この資料の目的</h2>
+<p>YIAの新しいウェブサイトが完成に近づいています。新サイトを「yia.jp」で公開するために、いくつか確認・対応が必要な点があります。この資料ではその内容をご説明します。</p>
+<hr>
+<h2>そもそも「ドメイン」とは？</h2>
+<p>「yia.jp」は、インターネット上の「住所」のようなものです。</p>
+<ul>
+<li>ウェブサイトの住所：<strong>yia.jp</strong></li>
+<li>ウェブサイトそのもの（建物）：今は業者が作ったサイト → 新しいサイトに入れ替えたい</li>
+</ul>
+<p>ドメインの管理には以下の2つがあります：</p>
+<ol>
+<li><strong>ドメインの所有権</strong> — 「この住所は誰のものか」</li>
+<li><strong>ドメインの設定（DNS）</strong> — 「この住所にアクセスしたら、どの建物（サーバー）に案内するか」</li>
+</ol>
+<p>今回やりたいことは、<strong>住所（yia.jp）はそのまま</strong>で、<strong>案内先を新しいサイトに変更する</strong>ことです。</p>
+<hr>
+<h2>現在の状況（WHOIS調査結果）</h2>
+<p>インターネット上の公開情報を調べたところ、以下のことがわかりました：</p>
+<table>
+<tr><th>項目</th><th>内容</th></tr>
+<tr><td>ドメイン名</td><td>yia.jp</td></tr>
+<tr><td>所有者（登録者）</td><td><strong>特定非営利活動法人 横須賀国際交流協会（YIA）</strong></td></tr>
+<tr><td>DNS管理</td><td>So-net（ソニーネットワークコミュニケーションズ）</td></tr>
+<tr><td>有効期限</td><td>2026年10月31日</td></tr>
+<tr><td>最終更新日</td><td>2025年11月1日</td></tr>
+</table>
+<h3>ポイント</h3>
+<ul>
+<li><strong>ドメインの所有者はYIAです。</strong> 業者のものではありません。これは非常に良い状況です。</li>
+<li><strong>有効期限は2026年10月31日です。</strong> これを過ぎると「yia.jp」が使えなくなり、他の人に取られる可能性があります。期限前に更新（延長）が必要です。</li>
+<li><strong>最終更新は2025年11月です。</strong> おそらく自動更新されていますが、確認が必要です。</li>
+</ul>
+<hr>
+<h2>YIAに確認したいこと</h2>
+<h3>質問1：So-netのアカウント情報はありますか？</h3>
+<p>ドメインの設定はSo-netで管理されています。設定を変更するには、So-netの管理画面にログインする必要があります。</p>
+<p><strong>確認していただきたいもの：</strong></p>
+<ul>
+<li>So-netのログインID・パスワード（メールや書類に残っていないか）</li>
+<li>業者から受け取ったマニュアルや書類にSo-netの情報が記載されていないか</li>
+<li>So-netからのメール（更新通知、請求書など）がどのメールアドレスに届いているか</li>
+</ul>
+<h3>質問2：ドメインの更新料は誰が支払っていますか？</h3>
+<p>ドメイン（yia.jp）を維持するには、年間の更新料がかかります（通常、年間数千円程度）。</p>
+<p><strong>考えられるパターン：</strong></p>
+<ul>
+<li><strong>YIAが直接So-netに支払っている</strong> → YIAが管理している可能性が高い</li>
+<li><strong>業者が支払い、YIAに請求している</strong> → 業者経由で管理されている</li>
+<li><strong>よくわからない</strong> → 業者に確認が必要</li>
+</ul>
+<h3>質問3：業者との契約内容はどうなっていますか？</h3>
+<p>業者との契約書があれば確認したい点：</p>
+<ul>
+<li>ドメイン（yia.jp）の管理について何か書いてあるか</li>
+<li>ウェブサイトの保守契約が終了した場合、ドメインはどうなるか</li>
+<li>現在も保守契約は続いているか、すでに終了しているか</li>
+</ul>
+<hr>
+<h2>確認結果に応じた対応</h2>
+<h3>パターンA：So-netのログイン情報がわかる場合（一番簡単）</h3>
+<ol>
+<li>So-netの管理画面にログイン</li>
+<li>DNS設定を変更（新しいサーバーの情報を入力）</li>
+<li>新サイトが「yia.jp」で表示されるようになる</li>
+</ol>
+<p class="arrow">→ <strong>業者への連絡は不要。自分たちで対応できます。</strong></p>
+<h3>パターンB：ログイン情報がわからないが、業者に連絡できる場合</h3>
+<p>業者に以下をお願いする：</p>
+<blockquote>
+<p>「yia.jpのDNS設定を変更したいです。以下の設定に変更をお願いできますか？」</p>
+<p>- Aレコード：76.76.21.21</p>
+<p>- www の CNAME：cname.vercel-dns.com</p>
+</blockquote>
+<p class="arrow">→ <strong>業者が対応してくれれば完了です。</strong></p>
+<p>また、今後のことを考えて以下もお願いすると良いです：</p>
+<blockquote>
+<p>「今後はYIAで直接ドメインを管理したいので、So-netの管理画面のログイン情報を教えていただけますか？」</p>
+</blockquote>
+<h3>パターンC：業者と連絡が取れない、または対応してもらえない場合</h3>
+<p>ドメインの所有者はYIAなので、So-netに直接問い合わせることができます。</p>
+<ul>
+<li>So-netのサポートに連絡</li>
+<li>「yia.jpの登録者（YIA）ですが、管理画面にアクセスできません」と伝える</li>
+<li>本人確認の後、アカウント情報を再発行してもらえる可能性があります</li>
+</ul>
+<hr>
+<h2>更新料（有効期限）について</h2>
+<p>ドメインの有効期限は <strong>2026年10月31日</strong> です。</p>
+<ul>
+<li>期限が切れると「yia.jp」でサイトにアクセスできなくなります</li>
+<li>長期間放置すると、ドメインが第三者に取得される恐れがあります</li>
+<li><strong>誰が更新料を支払っているか</strong>を確認し、今後もYIAで確実に更新できる体制を整えてください</li>
+</ul>
+<hr>
+<h2>まとめ：必要なアクション</h2>
+<table>
+<tr><th>優先度</th><th>やること</th><th>担当</th></tr>
+<tr><td>★★★</td><td>So-netのアカウント情報を探す</td><td>YIA</td></tr>
+<tr><td>★★★</td><td>ドメイン更新料の支払い元を確認する</td><td>YIA</td></tr>
+<tr><td>★★☆</td><td>業者との契約内容を確認する</td><td>YIA</td></tr>
+<tr><td>★☆☆</td><td>上記が判明次第、DNS設定を変更する</td><td>開発者（Quinn）</td></tr>
+</table>
+<p><strong>上記の情報が揃えば、新しいウェブサイトを「yia.jp」で公開できます。</strong></p>
+</body>
+</html>

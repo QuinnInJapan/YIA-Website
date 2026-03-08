@@ -98,6 +98,30 @@ export async function fetchBlogPostBySlug(slug: string) {
   return data;
 }
 
+export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) {
+  const { data } = await sanityFetch({
+    query: `{
+      "prev": *[_type == "blogPost" && (
+        publishedAt > $publishedAt ||
+        (publishedAt == $publishedAt && slug.current > $slug)
+      )] | order(publishedAt asc, slug.current asc) [0] {
+        title, "slug": slug.current
+      },
+      "next": *[_type == "blogPost" && (
+        publishedAt < $publishedAt ||
+        (publishedAt == $publishedAt && slug.current < $slug)
+      )] | order(publishedAt desc, slug.current desc) [0] {
+        title, "slug": slug.current
+      }
+    }`,
+    params: { publishedAt, slug },
+  });
+  return data as {
+    prev: { title: { _key: string; value: string }[]; slug: string } | null;
+    next: { title: { _key: string; value: string }[]; slug: string } | null;
+  };
+}
+
 export async function fetchBlogPostCount() {
   const { data } = await sanityFetch({
     query: `count(*[_type == "blogPost"])`,
