@@ -445,7 +445,7 @@ Follow the existing pattern: plain CSS in `globals.css` using BEM-style class na
 For the initial demo, implement:
 
 1. **Sanity schema** for `blogPost` with all fields from §3.
-2. **Extended portable text** with callout and YouTube blocks (gallery can come later).
+2. **Extended portable text** with callout, YouTube, and inline gallery blocks.
 3. **Blog index page** at `/blog` with card grid.
 4. **Blog post page** at `/blog/[slug]` with full layout.
 5. **Navbar link** added to both desktop and mobile nav.

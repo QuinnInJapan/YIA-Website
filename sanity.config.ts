@@ -154,6 +154,26 @@ export default defineConfig({
                 }),
               },
             },
+            {
+              type: "object",
+              name: "inlineGallery",
+              title: "ギャラリー",
+              fields: [
+                defineField({
+                  name: "images",
+                  type: "array",
+                  title: "画像",
+                  of: [{ type: "imageFile" }],
+                  validation: (Rule) => Rule.min(1).error("画像を1枚以上追加してください"),
+                }),
+              ],
+              preview: {
+                select: { images: "images" },
+                prepare: ({ images }: { images?: unknown[] }) => ({
+                  title: `ギャラリー（${images?.length ?? 0}枚）`,
+                }),
+              },
+            },
           ],
         }),
       ],

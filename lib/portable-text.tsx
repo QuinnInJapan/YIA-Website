@@ -1,6 +1,14 @@
 import type { PortableTextComponents } from "@portabletext/react";
-import { urlFor } from "@/lib/sanity/image";
+import { urlFor, imageUrl } from "@/lib/sanity/image";
+import { ja, en } from "@/lib/i18n";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
+import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
+import type { I18nString } from "@/lib/i18n";
+
+interface ImageFileValue {
+  file?: { asset?: { _ref: string } };
+  caption?: I18nString;
+}
 
 export const ptComponents: PortableTextComponents = {
   types: {
@@ -36,5 +44,17 @@ export const blogPtComponents: PortableTextComponents = {
     youtube: ({ value }: { value: { url: string; caption?: string } }) => (
       <YouTubeEmbed url={value.url} caption={value.caption} />
     ),
+    inlineGallery: ({ value }: { value: { images?: ImageFileValue[] } }) => {
+      const images = (value.images ?? [])
+        .filter((img) => img.file?.asset?._ref)
+        .map((img) => ({
+          src: imageUrl(img.file),
+          alt: ja(img.caption) || "",
+          captionJa: ja(img.caption),
+          captionEn: en(img.caption),
+        }));
+      if (!images.length) return null;
+      return <PhotoGalleryWrapper images={images} />;
+    },
   },
 };
