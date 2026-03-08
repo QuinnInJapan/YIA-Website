@@ -355,11 +355,9 @@ function RecentAnnouncements() {
               style={{ cursor: "pointer" }}
             >
               <Flex align="center" gap={3} style={{ minWidth: 0 }}>
-                {a.pinned && (
-                  <Text size={0} style={{ flexShrink: 0 }}>
-                    <PinIcon />
-                  </Text>
-                )}
+                <Text size={0} style={{ flexShrink: 0, opacity: a.pinned ? 1 : 0 }}>
+                  <PinIcon />
+                </Text>
                 <Text size={0} style={{ flexShrink: 0 }}>
                   {a.date ?? "—"}
                 </Text>
