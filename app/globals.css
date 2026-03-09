@@ -83,9 +83,9 @@ ul, ol {
   --color-gray-mid: #d0d8e0;
   --color-border: #d0d8e0;
   --color-text: #1a2030;
-  --color-text-muted: #506070;
+  --color-text-muted: #3d4f5f;
   --color-text-secondary: #405060;
-  --color-text-faint: #5a6575;
+  --color-text-faint: #4a5565;
   --color-tint: #edf1f5;
   --color-tint-blue: #eef2f7;
   --color-hero-overlay: rgba(15, 25, 50, 0.55);
@@ -105,7 +105,7 @@ ul, ol {
 
   --font-size-base: 15px;
   --font-size-sm: 14px;
-  --font-size-xs: 12px;
+  --font-size-xs: 13px;
   --font-size-lg: 18px;
   --font-size-xl: 22px;
   --font-size-xxl: 26px;
@@ -310,7 +310,6 @@ ruby rt {
 
 .page-hero__description-en {
   font-size: var(--font-size-sm);
-  opacity: 0.7;
   margin-top: var(--spacing-xs);
 }
 
@@ -1170,7 +1169,6 @@ h3.section-header {
 
 .callout__text-en {
   font-size: var(--font-size-xs);
-  opacity: 0.6;
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
 }
@@ -2515,7 +2513,6 @@ html:has(:target) {
 .program-card__link-en {
   display: block;
   font-size: var(--font-size-xs);
-  opacity: 0.65;
 }
 
 
@@ -2888,7 +2885,6 @@ html:has(:target) {
 .mission-block__link-en {
   display: block;
   font-size: var(--font-size-xs);
-  opacity: 0.7;
   margin-top: 2px;
 }
 
