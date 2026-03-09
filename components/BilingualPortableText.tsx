@@ -46,7 +46,7 @@ export default function BilingualPortableText({
           </div>
         )}
         {hasContent(enB) && (
-          <div className="bilingual-block__en" lang="en">
+          <div className="bilingual-block__en" lang="en" translate="no">
             <PortableText value={enB} components={ptComponents} />
           </div>
         )}
@@ -65,7 +65,7 @@ export default function BilingualPortableText({
           <Nl2br text={jaText} />
         </p>
       </div>
-      <div className="bilingual-block__en" lang="en">
+      <div className="bilingual-block__en" lang="en" translate="no">
         <p>
           <Nl2br text={enText} />
         </p>

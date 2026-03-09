@@ -28,7 +28,7 @@ export default function SectionHeader({
   const children = (
     <>
       {text}
-      {textEn && <span className="section-header__en" lang="en"> {textEn}</span>}
+      {textEn && <span className="section-header__en" lang="en" translate="no"> {textEn}</span>}
     </>
   );
 

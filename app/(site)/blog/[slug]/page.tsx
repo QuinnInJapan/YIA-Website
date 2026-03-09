@@ -113,7 +113,7 @@ export default async function BlogPostPage({
         )}
         <h1 className="blog-post__title">{ja(post.title)}</h1>
         {en(post.title) && (
-          <p className="blog-post__title-en" lang="en">{en(post.title)}</p>
+          <p className="blog-post__title-en" lang="en" translate="no">{en(post.title)}</p>
         )}
         <div className="blog-post__meta">
           {dateStr && <time>{dateStr}</time>}
@@ -130,7 +130,7 @@ export default async function BlogPostPage({
   ) : null;
 
   const enBody = hasContent(enB) ? (
-    <div className="blog-post__body-en" lang="en">
+    <div className="blog-post__body-en" lang="en" translate="no">
       <PortableText value={enB} components={blogPtComponents} />
     </div>
   ) : null;
@@ -154,7 +154,7 @@ export default async function BlogPostPage({
 
         {post.relatedPosts && post.relatedPosts.length > 0 && (
           <section className="blog-post__related">
-            <h2>関連記事 <span lang="en">Related Posts</span></h2>
+            <h2>関連記事 <span lang="en" translate="no">Related Posts</span></h2>
             <div className="blog-grid blog-grid--related">
               {post.relatedPosts.map((related) => (
                 <BlogCard key={related._id} post={related} />

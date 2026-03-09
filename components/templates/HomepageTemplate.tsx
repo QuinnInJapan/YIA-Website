@@ -44,9 +44,9 @@ export default async function HomepageTemplate() {
         )}
         <div className="hero__overlay">
           <h1 className="hero__title">{ja(data.site.org.name)}</h1>
-          <p className="hero__subtitle" lang="en">{en(data.site.org.name)}</p>
+          <p className="hero__subtitle" lang="en" translate="no">{en(data.site.org.name)}</p>
           <p className="hero__tagline">{ja(hp.hero.tagline)}</p>
-          <p className="hero__tagline-en" lang="en">{en(hp.hero.tagline)}</p>
+          <p className="hero__tagline-en" lang="en" translate="no">{en(hp.hero.tagline)}</p>
         </div>
       </section>
 
@@ -55,7 +55,7 @@ export default async function HomepageTemplate() {
         <section className="oshirase-band reveal">
           <div className="oshirase-inner">
             <h2 className="home-section__heading reveal">
-              お知らせ<small lang="en">Announcements</small>
+              お知らせ<small lang="en" translate="no">Announcements</small>
             </h2>
             <div className="oshirase-list reveal-stagger">
               {hpAnnouncements.map((a, i) => {
@@ -74,7 +74,7 @@ export default async function HomepageTemplate() {
                     </span>
                     <span className="oshirase-title">
                       <span className="oshirase-title__ja">{ja(a.title)}</span>
-                      <span className="oshirase-title__en" lang="en">{en(a.title)}</span>
+                      <span className="oshirase-title__en" lang="en" translate="no">{en(a.title)}</span>
                     </span>
                   </Link>
                 );
@@ -90,7 +90,7 @@ export default async function HomepageTemplate() {
             >
               <Link href="/announcements" className="oshirase-viewall">
                 <span className="oshirase-viewall__ja">すべてのお知らせを見る</span>
-                <span className="oshirase-viewall__en" lang="en">View All Announcements →</span>
+                <span className="oshirase-viewall__en" lang="en" translate="no">View All Announcements →</span>
               </Link>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default async function HomepageTemplate() {
                 <div className="program-card__overlay">
                   <Link href={`/${cat.categoryId}`} className="program-card__heading-link">
                     <h3 className="program-card__title">{ja(cat.label)}</h3>
-                    <span className="program-card__title-en" lang="en">
+                    <span className="program-card__title-en" lang="en" translate="no">
                       {en(cat.label)}
                     </span>
                   </Link>
@@ -131,7 +131,7 @@ export default async function HomepageTemplate() {
                         key={it.id}
                       >
                         <span className="program-card__link-ja">{ja(it.title)}</span>
-                        <span className="program-card__link-en" lang="en">
+                        <span className="program-card__link-en" lang="en" translate="no">
                           {en(it.title)}
                         </span>
                       </Link>
@@ -159,7 +159,7 @@ export default async function HomepageTemplate() {
               />
             )}
             <h2 className="home-section__heading reveal">
-              イベント<small lang="en">Upcoming Events</small>
+              イベント<small lang="en" translate="no">Upcoming Events</small>
             </h2>
             <div className="flyer-showcase reveal">
               <EventFlyerPairWrapper flyers={hp.eventFlyers} />

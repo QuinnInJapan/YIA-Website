@@ -28,14 +28,14 @@ export default function Announcement({
         <h3 className="announcement__title">
           {titleJa}
           {titleEn && (
-            <span className="announcement__title-en" lang="en"> {titleEn}</span>
+            <span className="announcement__title-en" lang="en" translate="no"> {titleEn}</span>
           )}
         </h3>
       )}
       <div className="announcement__content" lang="ja">
         <Nl2br text={contentJa} />
       </div>
-      <div className="announcement__content" lang="en">
+      <div className="announcement__content" lang="en" translate="no">
         <Nl2br text={contentEn} />
       </div>
       {imgSrc && (

@@ -68,7 +68,7 @@ export default async function CategoryTemplate({
                   {ja(title)}
                 </Link>
                 {en(title) && (
-                  <span className="cat-item__title-en" lang="en">
+                  <span className="cat-item__title-en" lang="en" translate="no">
                     {en(title)}
                   </span>
                 )}

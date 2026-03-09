@@ -13,7 +13,7 @@ export default function BilingualBlock({ ja, en }: BilingualBlockProps) {
           <Nl2br text={ja} />
         </p>
       </div>
-      <div className="bilingual-block__en" lang="en">
+      <div className="bilingual-block__en" lang="en" translate="no">
         <p>
           <Nl2br text={en} />
         </p>

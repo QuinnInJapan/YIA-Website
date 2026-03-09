@@ -120,15 +120,11 @@ export default function GoogleTranslate() {
 
   const gtLoadedRef = useRef(false);
 
-  // Read initial cookie state + mark notranslate elements
+  // Read initial cookie state
   useEffect(() => {
     if (inIframe) return;
     const lang = getActiveLanguage();
     setActive(lang);
-    // Mark all lang="en" elements as notranslate so Google Translate skips them
-    document.querySelectorAll("[lang='en']").forEach((el) => {
-      el.classList.add("notranslate");
-    });
     // If already translated (cookie set from previous visit), load GT immediately
     if (lang) loadGoogleTranslate();
   }, [inIframe]); // eslint-disable-line react-hooks/exhaustive-deps

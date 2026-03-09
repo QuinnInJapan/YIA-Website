@@ -38,7 +38,7 @@ export default function ContactForm() {
       <section className="contact-form">
         <div className="contact-form__success">
           <p>お問い合わせありがとうございます。</p>
-          <p lang="en">Thank you for your inquiry. We will get back to you soon.</p>
+          <p lang="en" translate="no">Thank you for your inquiry. We will get back to you soon.</p>
         </div>
       </section>
     );
@@ -52,21 +52,21 @@ export default function ContactForm() {
 
         <div className="contact-form__field">
           <label htmlFor="contact-name">
-            お名前 <span lang="en">Name</span>
+            お名前 <span lang="en" translate="no">Name</span>
           </label>
           <input id="contact-name" name="name" type="text" required />
         </div>
 
         <div className="contact-form__field">
           <label htmlFor="contact-email">
-            メールアドレス <span lang="en">Email</span>
+            メールアドレス <span lang="en" translate="no">Email</span>
           </label>
           <input id="contact-email" name="email" type="email" required />
         </div>
 
         <div className="contact-form__field">
           <label htmlFor="contact-message">
-            お問い合わせ内容 <span lang="en">Message</span>
+            お問い合わせ内容 <span lang="en" translate="no">Message</span>
           </label>
           <textarea id="contact-message" name="message" required />
         </div>
@@ -74,7 +74,7 @@ export default function ContactForm() {
         {status === "error" && (
           <div className="contact-form__error">
             <p>送信に失敗しました。もう一度お試しください。</p>
-            <p lang="en">Submission failed. Please try again.</p>
+            <p lang="en" translate="no">Submission failed. Please try again.</p>
           </div>
         )}
 

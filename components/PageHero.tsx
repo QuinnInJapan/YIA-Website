@@ -43,7 +43,7 @@ export default function PageHero({
             </div>
           )}
           {enB.length > 0 && (
-            <div className="page-hero__description-en" lang="en">
+            <div className="page-hero__description-en" lang="en" translate="no">
               <PortableText value={enB} components={ptComponents} />
             </div>
           )}
@@ -60,7 +60,7 @@ export default function PageHero({
             <Nl2br text={jaText} />
           </p>
           {enText && (
-            <p className="page-hero__description-en" lang="en">
+            <p className="page-hero__description-en" lang="en" translate="no">
               <Nl2br text={enText} />
             </p>
           )}
@@ -85,7 +85,7 @@ export default function PageHero({
           style={heroPosition ? { objectPosition: heroPosition } : undefined}
         />
         <h1 className="page-hero__title">{titleJa}</h1>
-        <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
+        <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
         {descHtml}
       </div>
     );
@@ -95,7 +95,7 @@ export default function PageHero({
   return (
     <div className="page-hero page-hero--solid">
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
       {descHtml}
     </div>
   );
@@ -111,7 +111,7 @@ export function SolidHero({
   return (
     <div className="page-hero page-hero--solid">
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle" lang="en">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
     </div>
   );
 }

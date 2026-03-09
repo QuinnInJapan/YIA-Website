@@ -9,7 +9,7 @@ export default async function AccessSection() {
   return (
     <section id="access" className="home-section home-section--tinted">
       <h2 className="home-section__heading">
-        アクセス<small lang="en">Access</small>
+        アクセス<small lang="en" translate="no">Access</small>
       </h2>
       <div className="access-block">
         <div className="access-block__map">
@@ -25,11 +25,11 @@ export default async function AccessSection() {
               〒{site.contact.postalCode}{" "}
               {ja(site.contact.address)}
             </p>
-            <p className="access-block__address-en" lang="en">{en(site.contact.address)}</p>
+            <p className="access-block__address-en" lang="en" translate="no">{en(site.contact.address)}</p>
           </div>
           <div className="access-block__hours">
             <p>{ja(site.businessHours)}</p>
-            <p className="access-block__hours-en" lang="en">{en(site.businessHours)}</p>
+            <p className="access-block__hours-en" lang="en" translate="no">{en(site.businessHours)}</p>
           </div>
           <div className="access-block__contact">
             <p>

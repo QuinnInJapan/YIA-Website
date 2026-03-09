@@ -21,7 +21,7 @@ export default function ResourceLink({
         {titleJa}
       </a>
       {titleEn && (
-        <span className="resource-link__en" lang="en">
+        <span className="resource-link__en" lang="en" translate="no">
           {titleEn}
         </span>
       )}

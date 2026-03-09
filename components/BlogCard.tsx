@@ -44,7 +44,7 @@ export default function BlogCard({ post }: { post: BlogPost }) {
         </div>
         <h3 className="blog-card__title">{ja(post.title)}</h3>
         {en(post.title) && (
-          <p className="blog-card__title-en" lang="en">
+          <p className="blog-card__title-en" lang="en" translate="no">
             {en(post.title)}
           </p>
         )}

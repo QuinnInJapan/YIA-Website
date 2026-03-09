@@ -51,7 +51,7 @@ export default function PhotoGallery({ images }: PhotoGalleryProps) {
           <figcaption>
             {img.captionJa}
             {img.captionEn && (
-              <span className="photo-gallery__caption-en" lang="en">
+              <span className="photo-gallery__caption-en" lang="en" translate="no">
                 {" "}
                 {img.captionEn}
               </span>

@@ -148,7 +148,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
       {/* Mobile branding — visible only on mobile */}
       <Link href="/" className="site-nav__brand">
         <span className="site-nav__brand-jp">{orgName}</span>
-        <span className="site-nav__brand-en" lang="en">{orgNameEn}</span>
+        <span className="site-nav__brand-en" lang="en" translate="no">{orgNameEn}</span>
       </Link>
 
       {/* Hamburger button — visible only on mobile */}
@@ -187,7 +187,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                 onClick={() => toggle(cat.id)}
               >
                 {ja(cat.label)}{" "}
-                <span className="site-nav__group-en" lang="en">{en(cat.label)}</span>
+                <span className="site-nav__group-en" lang="en" translate="no">{en(cat.label)}</span>
               </button>
               <div className="site-nav__dropdown" id={`nav-dropdown-${cat.id}`} role="region" aria-label={`${ja(cat.label)} ${en(cat.label)}`}>
                 {cat.items.map((it) => {
@@ -195,14 +195,14 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                   return (
                   <Link className={`nav-item${isActive ? " nav-item--active" : ""}`} href={it.url} key={it.id} aria-current={isActive ? "page" : undefined}>
                     <span className="nav-item__title">{ja(it.title)}</span>
-                    <span className="nav-item__en" lang="en">{en(it.title)}</span>
+                    <span className="nav-item__en" lang="en" translate="no">{en(it.title)}</span>
                   </Link>
                   );
                 })}
                 {cat.categoryId && (
                   <Link className={`nav-item nav-item--view-all${pathname === `/${cat.categoryId}` ? " nav-item--active" : ""}`} href={`/${cat.categoryId}`}>
                     <span className="nav-item__title">すべて見る</span>
-                    <span className="nav-item__en" lang="en">View All →</span>
+                    <span className="nav-item__en" lang="en" translate="no">View All →</span>
                   </Link>
                 )}
               </div>
@@ -216,7 +216,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
               onClick={() => router.push("/blog")}
             >
               ブログ{" "}
-              <span className="site-nav__group-en" lang="en">Blog</span>
+              <span className="site-nav__group-en" lang="en" translate="no">Blog</span>
             </button>
           </div>
         </div>
@@ -270,7 +270,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
               >
                 <span className="site-nav__mobile-group-text">
                   <span>{ja(cat.label)}</span>
-                  <span className="site-nav__mobile-group-en" lang="en">{en(cat.label)}</span>
+                  <span className="site-nav__mobile-group-en" lang="en" translate="no">{en(cat.label)}</span>
                 </span>
                 <ChevronIcon className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} />
               </button>
@@ -292,7 +292,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                         onClick={closeMobileMenu}
                       >
                         <span className="nav-item__title">{ja(it.title)}</span>
-                        <span className="nav-item__en" lang="en">{en(it.title)}</span>
+                        <span className="nav-item__en" lang="en" translate="no">{en(it.title)}</span>
                       </Link>
                     );
                   })}
@@ -303,7 +303,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                       onClick={closeMobileMenu}
                     >
                       <span className="nav-item__title">すべて見る</span>
-                      <span className="nav-item__en" lang="en">View All →</span>
+                      <span className="nav-item__en" lang="en" translate="no">View All →</span>
                     </Link>
                   )}
                 </div>
@@ -320,7 +320,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
           >
             <span className="site-nav__mobile-group-text">
               <span>ブログ</span>
-              <span className="site-nav__mobile-group-en" lang="en">Blog</span>
+              <span className="site-nav__mobile-group-en" lang="en" translate="no">Blog</span>
             </span>
           </button>
         </div>

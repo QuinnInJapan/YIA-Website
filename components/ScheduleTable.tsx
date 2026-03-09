@@ -66,7 +66,7 @@ function GroupRow({ r }: { r: GroupScheduleRow }) {
         {en(r.name) && (
           <>
             <br />
-            <span className="schedule-table__en" lang="en">{en(r.name)}</span>
+            <span className="schedule-table__en" lang="en" translate="no">{en(r.name)}</span>
           </>
         )}
       </td>
@@ -146,7 +146,7 @@ export default function ScheduleTable({
                   {cell.en && (
                     <>
                       <br />
-                      <span className="schedule-table__en" lang="en">{cell.en}</span>
+                      <span className="schedule-table__en" lang="en" translate="no">{cell.en}</span>
                     </>
                   )}
                 </td>

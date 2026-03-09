@@ -22,7 +22,7 @@ export default function Checklist({ items }: ChecklistProps) {
           {en(it.label) && (
             <>
               <br />
-              <span className="checklist__label-en" lang="en">
+              <span className="checklist__label-en" lang="en" translate="no">
                 {en(it.label)}
                 {en(it.note) ? ` — ${en(it.note)}` : ""}
               </span>

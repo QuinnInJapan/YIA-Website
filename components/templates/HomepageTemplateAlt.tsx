@@ -49,9 +49,9 @@ export default async function HomepageTemplateAlt() {
         )}
         <div className="hero__overlay">
           <h1 className="hero__title">{ja(data.site.org.name)}</h1>
-          <p className="hero__subtitle" lang="en">{en(data.site.org.name)}</p>
+          <p className="hero__subtitle" lang="en" translate="no">{en(data.site.org.name)}</p>
           <p className="hero__tagline">{ja(hp.hero.tagline)}</p>
-          <p className="hero__tagline-en" lang="en">{en(hp.hero.tagline)}</p>
+          <p className="hero__tagline-en" lang="en" translate="no">{en(hp.hero.tagline)}</p>
         </div>
       </section>
 
@@ -60,7 +60,7 @@ export default async function HomepageTemplateAlt() {
         <section className="oshirase-band reveal">
           <div className="oshirase-inner">
             <h2 className="home-section__heading reveal">
-              お知らせ<small lang="en">Announcements</small>
+              お知らせ<small lang="en" translate="no">Announcements</small>
             </h2>
             <div className="oshirase-list reveal-stagger">
               {hpAnnouncements.map((a, i) => {
@@ -79,7 +79,7 @@ export default async function HomepageTemplateAlt() {
                     </span>
                     <span className="oshirase-title">
                       <span className="oshirase-title__ja">{ja(a.title)}</span>
-                      <span className="oshirase-title__en" lang="en">{en(a.title)}</span>
+                      <span className="oshirase-title__en" lang="en" translate="no">{en(a.title)}</span>
                     </span>
                   </Link>
                 );
@@ -95,7 +95,7 @@ export default async function HomepageTemplateAlt() {
             >
               <Link href="/announcements" className="oshirase-viewall">
                 <span className="oshirase-viewall__ja">すべてのお知らせを見る</span>
-                <span className="oshirase-viewall__en" lang="en">View All Announcements →</span>
+                <span className="oshirase-viewall__en" lang="en" translate="no">View All Announcements →</span>
               </Link>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default async function HomepageTemplateAlt() {
               {cat.description && (
                 <div className="program-band__text">
                   <p className="program-band__ja">{ja(cat.description)}</p>
-                  <p className="program-band__en" lang="en">{en(cat.description)}</p>
+                  <p className="program-band__en" lang="en" translate="no">{en(cat.description)}</p>
                 </div>
               )}
             </section>
@@ -143,14 +143,14 @@ export default async function HomepageTemplateAlt() {
             <span className="culmination__stat-label">
               {ja(gridStat.label)}
             </span>
-            <span className="culmination__stat-label-en" lang="en">
+            <span className="culmination__stat-label-en" lang="en" translate="no">
               {en(gridStat.label)}
             </span>
           </div>
           <nav className="next-steps__inner">
             <Link href={aboutUrl} className="next-steps__path reveal" style={{ "--reveal-i": 0 } as React.CSSProperties}>
               <span className="next-steps__path-ja">YIAについて</span>
-              <span className="next-steps__path-en" lang="en">About YIA</span>
+              <span className="next-steps__path-en" lang="en" translate="no">About YIA</span>
             </Link>
             {joinUrl && (
               <Link
@@ -159,12 +159,12 @@ export default async function HomepageTemplateAlt() {
                 style={{ "--reveal-i": 1 } as React.CSSProperties}
               >
                 <span className="next-steps__path-ja">参加する</span>
-                <span className="next-steps__path-en" lang="en">Join Us</span>
+                <span className="next-steps__path-en" lang="en" translate="no">Join Us</span>
               </Link>
             )}
             <a href="#access" className="next-steps__path reveal" style={{ "--reveal-i": 2 } as React.CSSProperties}>
               <span className="next-steps__path-ja">お問い合わせ</span>
-              <span className="next-steps__path-en" lang="en">Contact</span>
+              <span className="next-steps__path-en" lang="en" translate="no">Contact</span>
             </a>
           </nav>
         </section>

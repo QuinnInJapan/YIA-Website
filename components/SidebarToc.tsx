@@ -68,7 +68,7 @@ export default function SidebarToc({ entries, label, className }: SidebarTocProp
 
   if (entries.length < 2) return null;
 
-  const defaultLabel = <>目次 <span lang="en">Contents</span></>;
+  const defaultLabel = <>目次 <span lang="en" translate="no">Contents</span></>;
 
   return (
     <nav className={`ann-toc${className ? ` ${className}` : ""}${isOpen ? " ann-toc--open" : ""}`} aria-label="目次">
@@ -94,7 +94,7 @@ export default function SidebarToc({ entries, label, className }: SidebarTocProp
             >
               {e.text}
               {e.subtext && (
-                <span className="ann-toc__link-en" lang="en">{e.subtext}</span>
+                <span className="ann-toc__link-en" lang="en" translate="no">{e.subtext}</span>
               )}
             </a>
           ))}

@@ -42,7 +42,7 @@ export default async function AnnouncementsPageTemplate() {
         <h2 className="announcement__title">
           {ja(a.title)}
           {en(a.title) && (
-            <span className="announcement__title-en" lang="en"> {en(a.title)}</span>
+            <span className="announcement__title-en" lang="en" translate="no"> {en(a.title)}</span>
           )}
         </h2>
         <BilingualPortableText field={a.content} />

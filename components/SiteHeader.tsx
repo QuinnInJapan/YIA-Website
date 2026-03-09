@@ -15,7 +15,7 @@ export default async function SiteHeader() {
           <Link href="/" className="site-header__identity">
             <div className="site-header__designation">{org.designation}</div>
             <div className="site-header__name-jp">{ja(org.name)}</div>
-            <div className="site-header__name-en" lang="en">{en(org.name)}</div>
+            <div className="site-header__name-en" lang="en" translate="no">{en(org.name)}</div>
           </Link>
           <div className="site-header__contact">
             <div>

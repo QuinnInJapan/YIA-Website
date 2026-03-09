@@ -30,7 +30,7 @@ export default function Callout({ field, ja: jaText, en: enText, variant, notePr
           <PortableText value={jaB} components={ptComponents} />
         </div>
         {enB.length > 0 && (
-          <div className="callout__text-en" lang="en">
+          <div className="callout__text-en" lang="en" translate="no">
             <PortableText value={enB} components={ptComponents} />
           </div>
         )}
@@ -49,7 +49,7 @@ export default function Callout({ field, ja: jaText, en: enText, variant, notePr
         <Nl2br text={displayJa} />
       </div>
       {enStr && (
-        <div className="callout__text-en" lang="en">
+        <div className="callout__text-en" lang="en" translate="no">
           <Nl2br text={enStr} />
         </div>
       )}
