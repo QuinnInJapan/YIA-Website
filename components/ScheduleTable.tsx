@@ -105,7 +105,7 @@ export default function ScheduleTable({
       const slotOrder = ["morning", "afternoon", "evening", "weekend"];
       const grouped: Record<string, GroupScheduleRow[]> = {};
       for (const r of groupRows) {
-        const slot = r.timeSlot || "_none";
+        const slot = stegaClean(r.timeSlot) || "_none";
         if (!grouped[slot]) grouped[slot] = [];
         grouped[slot].push(r);
       }
