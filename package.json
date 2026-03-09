@@ -17,6 +17,7 @@
     "@sanity/locale-ja-jp": "^1.1.31",
     "next": "16.1.6",
     "next-sanity": "^12.1.0",
+    "nextjs-toploader": "^3.9.17",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "sanity": "^5.12.0",

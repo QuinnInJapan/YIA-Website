@@ -1,11 +1,10 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { stegaClean } from "next-sanity";
 import {
   getSiteData,
   getEnrichedNavigation,
   shortId,
-  pageUrl,
 } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -15,6 +14,7 @@ import AccessSection from "@/components/AccessSection";
 import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
+import HomepageActivityGrid from "./HomepageActivityGrid";
 
 export default async function HomepageTemplate() {
   const data = await getSiteData();
@@ -23,17 +23,9 @@ export default async function HomepageTemplate() {
   const sidebar = data.sidebar;
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
-  const aboutUrl = await pageUrl("aboutyia");
-  const joinUrl = sidebar.memberRecruitment.slug
-    ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
-    : "";
 
   // Announcements dereferenced by GROQ
   const hpAnnouncements = hp.announcementRefs ?? [];
-
-  // Activity mosaic
-  const galleryImages = hp.activityGrid.images;
-  const gridStat = hp.activityGrid.stat;
 
   return (
     <HomepageEffects>
@@ -44,6 +36,7 @@ export default async function HomepageTemplate() {
             alt=""
             fill
             priority
+            fetchPriority="high"
             sizes="100vw"
             className="hero-viewport__img"
             style={heroPosition ? { objectPosition: heroPosition } : undefined}
@@ -174,143 +167,14 @@ export default async function HomepageTemplate() {
           </section>
         )}
 
-        {/* Activity mosaic grid */}
-        <section className="activity-grid-wrap">
-          <div className="activity-grid reveal-stagger">
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "a", "--reveal-i": 0 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[0])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-            <div
-              className="activity-grid__tile activity-grid__tile--navy reveal"
-              style={
-                { gridArea: "b", "--reveal-i": 1 } as React.CSSProperties
-              }
-              data-counter={gridStat.value}
-            >
-              <div className="activity-grid__tile-big">
-                {gridStat.value}+
-              </div>
-              <div className="activity-grid__tile-text">
-                {ja(gridStat.label)}
-                <span>{en(gridStat.label)}</span>
-              </div>
-            </div>
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "c", "--reveal-i": 2 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[1])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "d", "--reveal-i": 3 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[2])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-            {joinUrl ? (
-              <Link
-                href={joinUrl}
-                className="activity-grid__tile activity-grid__tile--gold reveal"
-                style={
-                  { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
-                }
-              >
-                <div className="activity-grid__tile-text">
-                  {ja(sidebar.memberRecruitment.label)}
-                  <span>{en(sidebar.memberRecruitment.label)}</span>
-                </div>
-              </Link>
-            ) : (
-              <div
-                className="activity-grid__tile activity-grid__tile--gold reveal"
-                style={
-                  { gridArea: "e", "--reveal-i": 4 } as React.CSSProperties
-                }
-              >
-                <div className="activity-grid__tile-text">
-                  {ja(sidebar.memberRecruitment.label)}
-                  <span>{en(sidebar.memberRecruitment.label)}</span>
-                </div>
-              </div>
-            )}
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "f", "--reveal-i": 5 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[3])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-            <Link
-              href={aboutUrl}
-              className="activity-grid__tile activity-grid__tile--dark reveal"
-              style={
-                { gridArea: "g", "--reveal-i": 6 } as React.CSSProperties
-              }
-            >
-              <div className="activity-grid__tile-text">
-                YIAについて<span>About Us</span>
-              </div>
-            </Link>
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "h", "--reveal-i": 7 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[4])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-            <figure
-              className="activity-grid__item reveal"
-              style={
-                { gridArea: "i", "--reveal-i": 8 } as React.CSSProperties
-              }
-            >
-              <LazyImage
-                src={imageUrl(galleryImages[5])}
-                alt=""
-                loading="lazy"
-                fill
-              />
-            </figure>
-          </div>
-        </section>
+        {/* Activity mosaic grid — streamed via Suspense */}
+        <Suspense>
+          <HomepageActivityGrid />
+        </Suspense>
 
-        <AccessSection />
+        <Suspense>
+          <AccessSection />
+        </Suspense>
       </main>
 
       <SiteFooter documents={sidebar.documents} />

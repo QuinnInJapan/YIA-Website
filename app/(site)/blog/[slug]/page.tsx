@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -5,7 +6,6 @@ import { PortableText } from "@portabletext/react";
 import {
   fetchBlogPostBySlug,
   fetchAllBlogSlugsStatic,
-  fetchAdjacentBlogPosts,
 } from "@/lib/sanity/queries";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
 import { imageUrl, hotspotPosition, resolveDocs } from "@/lib/sanity/image";
@@ -15,7 +15,7 @@ import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
 import BlogCard from "@/components/BlogCard";
 import BlogLanguageTabs, { BlogLanguageProvider } from "@/components/BlogLanguageTabs";
-import BlogPostNav from "@/components/BlogPostNav";
+import BlogPostNavAsync from "@/components/BlogPostNavAsync";
 import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
@@ -75,10 +75,6 @@ export default async function BlogPostPage({
     ? formatDateDot(post.publishedAt.slice(0, 10))
     : "";
   const catLabel = post.category ? CATEGORY_LABELS[post.category] : null;
-
-  const adjacent = post.publishedAt
-    ? await fetchAdjacentBlogPosts(post.publishedAt, post.slug)
-    : { prev: null, next: null };
 
   const jaB = jaBlocks(post.body as I18nBlocks);
   const enB = enBlocks(post.body as I18nBlocks);
@@ -167,7 +163,11 @@ export default async function BlogPostPage({
           </section>
         )}
 
-        <BlogPostNav prev={adjacent.prev} next={adjacent.next} />
+        <Suspense>
+          {post.publishedAt && (
+            <BlogPostNavAsync publishedAt={post.publishedAt} slug={post.slug} />
+          )}
+        </Suspense>
       </BlogLanguageProvider>
     </article>
   );

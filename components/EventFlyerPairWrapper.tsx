@@ -1,7 +1,9 @@
+import dynamic from "next/dynamic";
 import { imageUrl } from "@/lib/sanity/image";
 import { ja, en } from "@/lib/i18n";
-import EventFlyerPair from "./EventFlyerPair";
 import type { EventFlyer } from "@/lib/types";
+
+const EventFlyerPair = dynamic(() => import("./EventFlyerPair"));
 
 interface EventFlyerPairWrapperProps {
   flyers: EventFlyer[];

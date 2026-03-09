@@ -1,4 +1,8 @@
-import PhotoGallery from "./PhotoGallery";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const PhotoGallery = dynamic(() => import("./PhotoGallery"), { ssr: false });
 
 interface GalleryImage {
   src: string;

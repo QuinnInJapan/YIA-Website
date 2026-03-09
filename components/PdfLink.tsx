@@ -1,7 +1,10 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
-import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
+import dynamic from "next/dynamic";
+import type { PdfViewerItem } from "./PdfViewer";
+
+const PdfViewer = dynamic(() => import("./PdfViewer"), { ssr: false });
 
 interface PdfLinkProps {
   href: string;
@@ -34,13 +37,15 @@ export default function PdfLink({ href, title, children, className }: PdfLinkPro
       <a href={href} onClick={handleClick} className={className}>
         {children}
       </a>
-      <PdfViewer
-        items={items}
-        currentIndex={0}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        onNavigate={handleNavigate}
-      />
+      {isOpen && (
+        <PdfViewer
+          items={items}
+          currentIndex={0}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          onNavigate={handleNavigate}
+        />
+      )}
     </>
   );
 }
