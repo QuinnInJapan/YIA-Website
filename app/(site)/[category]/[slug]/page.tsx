@@ -4,6 +4,7 @@ import {
   getSiteData,
   getPage,
   getEnrichedNavigation,
+  shortId,
 } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
@@ -35,10 +36,8 @@ export async function generateStaticParams() {
   const params: { category: string; slug: string }[] = [];
 
   for (const navCat of nav?.categories ?? []) {
-    const catId = navCat.categoryRef?._id;
-    if (!catId) continue;
-    const dash = catId.indexOf("-");
-    const category = dash >= 0 ? catId.slice(dash + 1) : catId;
+    const category = shortId(navCat.categoryRef?._id);
+    if (!category) continue;
 
     for (const item of navCat.items ?? []) {
       if (item.pageRef?.slug) {

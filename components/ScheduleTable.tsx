@@ -2,13 +2,8 @@ import React from "react";
 import { stegaClean } from "next-sanity";
 import { ja, en } from "@/lib/i18n";
 import { fileUrl } from "@/lib/sanity/image";
-import type { GroupScheduleRow } from "@/lib/types";
+import type { GroupScheduleRow, BilingualCell } from "@/lib/types";
 import PdfLink from "./PdfLink";
-
-export interface BilingualCell {
-  ja: string;
-  en: string;
-}
 
 interface ScheduleTableProps {
   columns: string[];

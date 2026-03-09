@@ -12,6 +12,17 @@ export interface SanityFile {
   asset: { _ref: string };
 }
 
+export interface TocEntry {
+  id: string;
+  text: string;
+  subtext?: string;
+}
+
+export interface BilingualCell {
+  ja: string;
+  en: string;
+}
+
 export interface InfoRow {
   label: I18nString;
   value: I18nString;

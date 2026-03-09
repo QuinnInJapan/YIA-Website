@@ -31,7 +31,13 @@ const emptySiteData: SiteData = {
   pages: [],
 };
 
-// Cache the full site data fetch per request (React server-component dedup)
+/**
+ * Fetch and return the full site data from Sanity.
+ *
+ * Wrapped in React `cache()` so that multiple calls within the same
+ * server-request are deduplicated automatically — no prop-drilling needed.
+ * Every page/layout that calls `getSiteData()` shares the same promise.
+ */
 export const getSiteData = cache(async (): Promise<SiteData> => {
   const start = performance.now();
   const raw = await fetchSiteData();
