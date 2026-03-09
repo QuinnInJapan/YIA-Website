@@ -119,15 +119,35 @@ ul, ol {
   --spacing-xl: 32px;
   --spacing-2xl: 56px;
 
+  /* Extended spacing */
+  --spacing-3xl: 48px;
+  --spacing-4xl: 64px;
+
   --content-width: 720px;   /* ~40 Japanese chars — optimal reading width */
   --section-width: 900px;   /* for info-dl, tables, galleries */
 
   /* Consistent edge padding for all full-width containers */
   --site-gutter: var(--spacing-lg);
 
+  /* Container widths */
+  --container-max: calc(var(--max-width) + 2 * var(--site-gutter));
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.35);
+
+  /* Touch target */
+  --touch-target: 44px;
+
   /* TOC sidebar dimensions */
   --toc-width: 200px;
-  --toc-gap: 48px;
+  --toc-gap: var(--spacing-3xl);
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -181,7 +201,7 @@ ruby rt {
 .draft-banner button {
   padding: 4px 12px;
   border: 1px solid var(--color-white);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-white);
   font-size: 13px;
@@ -222,7 +242,7 @@ ruby rt {
 .layout-membership,
 .layout-directory {
   width: 100%;
-  max-width: calc(var(--max-width) + 2 * var(--site-gutter));
+  max-width: var(--container-max);
   margin: 0 auto;
 }
 
@@ -491,8 +511,8 @@ body {
   padding: 4px 0;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   transform-origin: bottom right;
   transform: scale(0.9);
   opacity: 0;
@@ -616,8 +636,8 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 44px;
-  height: 44px;
+  width: var(--touch-target);
+  height: var(--touch-target);
   padding: 0;
   margin: 2px 0;
   background: none;
@@ -737,7 +757,7 @@ body {
   min-width: 260px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   z-index: 50;
 }
 
@@ -942,7 +962,7 @@ h3.section-header {
 .section-header[data-cat] {
   background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
   color: var(--color-white);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   border: none;
 }
 
@@ -1239,9 +1259,9 @@ h3.section-header {
 
 .ann-layout {
   width: 100%;
-  max-width: calc(var(--max-width) + 2 * var(--site-gutter));
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 40px var(--site-gutter) 64px;
+  padding: 40px var(--site-gutter) var(--spacing-4xl);
   display: grid;
   grid-template-columns: var(--toc-width) 1fr;
   gap: var(--toc-gap);
@@ -1365,7 +1385,7 @@ html:has(:target) {
 .resource-box,
 .definition-card {
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   margin: var(--spacing-md) 0;
 }
@@ -1660,7 +1680,7 @@ html:has(:target) {
   display: grid;
   gap: 0;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
@@ -1802,7 +1822,7 @@ html:has(:target) {
   all: unset;
   display: block;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   transition: opacity 0.2s, transform 0.2s;
 }
@@ -1849,14 +1869,14 @@ html:has(:target) {
   margin: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   aspect-ratio: 4 / 3;
 }
 
 .photo-gallery__item img {
   object-fit: cover;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .photo-gallery__item figcaption {
@@ -1928,7 +1948,7 @@ html:has(:target) {
   max-width: min(80vw, 1200px);
   max-height: 80vh;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -1937,8 +1957,8 @@ html:has(:target) {
   top: 16px;
   right: 16px;
   z-index: 1;
-  width: 44px;
-  height: 44px;
+  width: var(--touch-target);
+  height: var(--touch-target);
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
@@ -1958,8 +1978,8 @@ html:has(:target) {
 
 .photo-lightbox__nav {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: var(--touch-target);
+  height: var(--touch-target);
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
@@ -2029,8 +2049,8 @@ html:has(:target) {
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
-    width: 44px;
-    height: 44px;
+    width: var(--touch-target);
+    height: var(--touch-target);
     background: rgba(0, 0, 0, 0.35);
   }
 
@@ -2045,8 +2065,8 @@ html:has(:target) {
   .photo-lightbox__close {
     top: 8px;
     right: 8px;
-    width: 44px;
-    height: 44px;
+    width: var(--touch-target);
+    height: var(--touch-target);
   }
 }
 
@@ -2267,7 +2287,7 @@ html:has(:target) {
 
 .oshirase-band {
   background: var(--color-tint-blue);
-  padding: 48px var(--site-gutter);
+  padding: var(--spacing-3xl) var(--site-gutter);
 }
 
 .oshirase-inner {
@@ -2375,13 +2395,13 @@ html:has(:target) {
 .home-section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 64px var(--site-gutter);
+  padding: var(--spacing-4xl) var(--site-gutter);
 }
 
 .home-section--tinted {
   background: var(--color-tint-blue);
   max-width: none;
-  padding: 64px var(--site-gutter);
+  padding: var(--spacing-4xl) var(--site-gutter);
 }
 
 .home-section__heading {
@@ -2865,7 +2885,7 @@ html:has(:target) {
   display: inline-block;
   padding: var(--spacing-sm) var(--spacing-xl);
   border: 2px solid var(--color-navy);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--color-navy);
   text-decoration: none;
   font-weight: 500;
@@ -2915,13 +2935,13 @@ html:has(:target) {
 .event-flyer--clickable:focus-visible {
   outline: 2px solid var(--color-accent, #4a6741);
   outline-offset: 4px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
 }
 
 .flyer-showcase .event-flyer img {
   max-height: 560px;
   width: auto;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   border: none;
   box-shadow:
     0 8px 32px rgba(20, 40, 60, 0.18),
@@ -2945,7 +2965,7 @@ html:has(:target) {
 
 .access-block__map {
   min-height: 320px;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -2958,7 +2978,7 @@ html:has(:target) {
 
 .access-block__map img {
   width: 100%;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -3042,11 +3062,11 @@ html:has(:target) {
   max-width: 900px;
   height: 85vh;
   background: var(--color-white);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-lg);
 }
 
 .pdf-viewer__header {
@@ -3075,7 +3095,7 @@ html:has(:target) {
   width: 36px;
   height: 36px;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: none;
   color: var(--color-text-muted);
   cursor: pointer;
@@ -3098,8 +3118,8 @@ html:has(:target) {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: var(--touch-target);
+  height: var(--touch-target);
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
@@ -3301,8 +3321,8 @@ html:has(:target) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: var(--touch-target);
+    height: var(--touch-target);
     margin: 0 var(--spacing-sm) var(--spacing-sm) auto;
     background: none;
     border: none;
@@ -3323,8 +3343,8 @@ html:has(:target) {
     color: var(--color-navy);
     text-decoration: none;
     border-bottom: 1px solid var(--color-border);
-    min-height: 44px;
-    line-height: 44px;
+    min-height: var(--touch-target);
+    line-height: var(--touch-target);
   }
 
   .site-nav__mobile-home:hover {
@@ -3348,7 +3368,7 @@ html:has(:target) {
     justify-content: space-between;
     width: 100%;
     padding: var(--spacing-sm) var(--spacing-lg);
-    min-height: 44px;
+    min-height: var(--touch-target);
     font-size: var(--font-size-base);
     font-weight: 700;
     color: var(--color-navy);
@@ -3419,7 +3439,7 @@ html:has(:target) {
     text-decoration: none;
     color: var(--color-text);
     border-top: 1px solid var(--color-gray-light);
-    min-height: 44px;
+    min-height: var(--touch-target);
   }
 
   .site-nav__mobile-link .nav-item__title {
@@ -3483,20 +3503,20 @@ html:has(:target) {
   .ann-layout {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 24px var(--site-gutter) 48px;
+    padding: 24px var(--site-gutter) var(--spacing-3xl);
   }
 
   .ann-toc {
     position: static;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
 
   .ann-toc__toggle {
     cursor: pointer;
     padding: var(--spacing-sm) var(--spacing-md);
-    min-height: 44px;
+    min-height: var(--touch-target);
     background: var(--color-tint);
   }
 
@@ -3536,7 +3556,7 @@ html:has(:target) {
   .ann-toc__link {
     border-left: none;
     padding: var(--spacing-sm) var(--spacing-md);
-    min-height: 44px;
+    min-height: var(--touch-target);
     align-items: center;
   }
 
@@ -3601,10 +3621,10 @@ html:has(:target) {
     width: auto;
   }
 
-  /* Program card links: ensure 44px tap targets */
+  /* Program card links: ensure touch-target tap targets */
   .program-card__link {
     padding: var(--spacing-sm) var(--spacing-sm);
-    min-height: 44px;
+    min-height: var(--touch-target);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -3618,7 +3638,7 @@ html:has(:target) {
   .access-block__info {
     text-align: center;
     background: var(--color-gray-light);
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
     font-size: var(--font-size-sm);
     gap: var(--spacing-sm);
@@ -3652,11 +3672,11 @@ html:has(:target) {
   }
 
   .home-section {
-    padding: 48px var(--site-gutter);
+    padding: var(--spacing-3xl) var(--site-gutter);
   }
 
   .home-section--tinted {
-    padding: 48px var(--site-gutter);
+    padding: var(--spacing-3xl) var(--site-gutter);
   }
 
 
@@ -3980,7 +4000,7 @@ html:has(:target) {
   gap: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-lg);
   border: 1px solid var(--color-gray-mid);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
   color: var(--color-text);
   transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
@@ -4040,7 +4060,7 @@ html:has(:target) {
 /* ===== CONTACT FORM ===== */
 
 .contact-form {
-  max-width: calc(var(--max-width) + var(--site-gutter) * 2);
+  max-width: var(--container-max);
   margin: 0 auto;
   padding: var(--spacing-2xl) var(--site-gutter);
 }
@@ -4082,7 +4102,7 @@ html:has(:target) {
   display: block;
   width: 100%;
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: inherit;
   font-size: var(--font-size-base);
@@ -4110,7 +4130,7 @@ html:has(:target) {
   background: var(--color-navy);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: var(--spacing-sm) var(--spacing-xl);
   font-family: inherit;
   font-size: var(--font-size-base);
@@ -4131,7 +4151,7 @@ html:has(:target) {
 .contact-form__success {
   background: #e8f5e9;
   border: 1px solid #a5d6a7;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: var(--spacing-lg);
   line-height: 1.8;
 }
@@ -4145,7 +4165,7 @@ html:has(:target) {
 .contact-form__error {
   background: #fbe9e7;
   border: 1px solid #ef9a9a;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   margin-bottom: var(--spacing-lg);
   line-height: 1.6;
