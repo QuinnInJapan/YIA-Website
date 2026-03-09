@@ -199,7 +199,7 @@ ruby rt {
 }
 
 .draft-banner button {
-  padding: 4px 12px;
+  padding: var(--spacing-xs) 12px;
   border: 1px solid var(--color-white);
   border-radius: var(--radius-sm);
   background: transparent;
@@ -445,7 +445,7 @@ body {
   gap: 6px;
   background: var(--color-navy);
   color: var(--color-white);
-  padding: 10px 16px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 24px;
   border: none;
   font-family: inherit;
@@ -529,7 +529,7 @@ body {
 .gtranslate__item {
   display: block;
   width: 100%;
-  padding: 10px 16px;
+  padding: var(--spacing-sm) var(--spacing-md);
   background: none;
   border: none;
   border-bottom: 1px solid var(--color-gray-light);
@@ -1685,7 +1685,7 @@ html:has(:target) {
 }
 
 .checklist__item {
-  padding: 10px 16px;
+  padding: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-base);
   line-height: 1.5;
   border-bottom: 1px solid var(--color-border);
@@ -4194,12 +4194,12 @@ html:has(:target) {
 }
 
 .demo-switcher button {
-  padding: 0.5rem 1.25rem;
+  padding: var(--spacing-sm) var(--spacing-lg);
   border: none;
   border-radius: 999px;
   background: transparent;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
