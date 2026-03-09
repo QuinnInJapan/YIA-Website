@@ -1,6 +1,7 @@
 import { stegaClean } from "next-sanity";
 import { getSiteData } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
+import LazyMap from "./LazyMap";
 
 export default async function AccessSection() {
   const { site } = await getSiteData();
@@ -12,16 +13,7 @@ export default async function AccessSection() {
       </h2>
       <div className="access-block">
         <div className="access-block__map">
-          <iframe
-            src={stegaClean(site.googleMapsEmbedUrl)}
-            width="100%"
-            height="100%"
-            style={{ border: 0, borderRadius: "6px" }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="YIA Access Map"
-          />
+          <LazyMap src={stegaClean(site.googleMapsEmbedUrl)} />
         </div>
         <div className="access-block__info">
           <p className="access-block__name">

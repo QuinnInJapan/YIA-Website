@@ -118,18 +118,25 @@ export default function GoogleTranslate() {
     typeof window !== "undefined" && window.self !== window.top,
   );
 
-  // Initialize Google Translate + read initial cookie state
+  const gtLoadedRef = useRef(false);
+
+  // Read initial cookie state + mark notranslate elements
   useEffect(() => {
     if (inIframe) return;
-
-    setActive(getActiveLanguage());
-
+    const lang = getActiveLanguage();
+    setActive(lang);
     // Mark all lang="en" elements as notranslate so Google Translate skips them
     document.querySelectorAll("[lang='en']").forEach((el) => {
       el.classList.add("notranslate");
     });
+    // If already translated (cookie set from previous visit), load GT immediately
+    if (lang) loadGoogleTranslate();
+  }, [inIframe]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Define the callback Google Translate expects
+  function loadGoogleTranslate() {
+    if (gtLoadedRef.current) return;
+    gtLoadedRef.current = true;
+
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
@@ -142,7 +149,6 @@ export default function GoogleTranslate() {
       );
     };
 
-    // Append the Google Translate script if not already present
     if (!document.getElementById("google-translate-script")) {
       const script = document.createElement("script");
       script.id = "google-translate-script";
@@ -151,7 +157,7 @@ export default function GoogleTranslate() {
       script.async = true;
       document.body.appendChild(script);
     }
-  }, [inIframe]);
+  }
 
   function selectLanguage(code: string) {
     setOpen(false);
@@ -196,7 +202,7 @@ export default function GoogleTranslate() {
 
       <button
         className="gtranslate__trigger"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { loadGoogleTranslate(); setOpen((o) => !o); }}
         aria-expanded={open}
         aria-haspopup="true"
         type="button"
