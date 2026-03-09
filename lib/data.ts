@@ -33,7 +33,10 @@ const emptySiteData: SiteData = {
 
 // Cache the full site data fetch per request (React server-component dedup)
 export const getSiteData = cache(async (): Promise<SiteData> => {
+  const start = performance.now();
   const raw = await fetchSiteData();
+  const ms = (performance.now() - start).toFixed(1);
+  console.log(`⏱ [data] getSiteData: ${ms}ms`);
   // If Sanity is empty, return defaults so the site still builds
   if (!raw || !raw.site) return emptySiteData;
   return {
