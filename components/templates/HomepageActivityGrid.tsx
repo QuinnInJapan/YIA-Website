@@ -12,7 +12,7 @@ export default async function HomepageActivityGrid() {
 
   const galleryImages = hp.activityGrid.images;
   const gridStat = hp.activityGrid.stat;
-  const aboutUrl = await pageUrl("aboutyia");
+  const aboutUrl = await pageUrl("about");
   const joinUrl = sidebar.memberRecruitment.slug
     ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
     : "";

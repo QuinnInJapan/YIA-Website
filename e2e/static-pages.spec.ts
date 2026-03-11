@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("About Page", () => {
-  test("/aboutyia renders mission and org details", async ({ page }) => {
-    const response = await page.goto("/aboutyia");
+  test("/about/about renders mission and org details", async ({ page }) => {
+    const response = await page.goto("/about/about");
     expect(response?.status()).toBe(200);
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
     // Mission section heading
@@ -15,8 +15,8 @@ test.describe("About Page", () => {
     ).toBeVisible();
   });
 
-  test("/aboutyia renders history section", async ({ page }) => {
-    await page.goto("/aboutyia");
+  test("/about/about renders history section", async ({ page }) => {
+    await page.goto("/about/about");
     await expect(
       page.getByRole("heading", { name: "あゆみ" })
     ).toBeVisible();
@@ -24,8 +24,8 @@ test.describe("About Page", () => {
 });
 
 test.describe("Membership Page", () => {
-  test("/kaiinn renders fee table and registration info", async ({ page }) => {
-    const response = await page.goto("/kaiinn");
+  test("/about/membership renders fee table and registration info", async ({ page }) => {
+    const response = await page.goto("/about/membership");
     expect(response?.status()).toBe(200);
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
     // Fee table section heading
@@ -71,14 +71,12 @@ test.describe("Directory Page", () => {
 });
 
 test.describe("Announcements Page", () => {
-  test("/announcements renders articles with TOC", async ({ page }) => {
+  test("/announcements renders list of announcements", async ({ page }) => {
     const response = await page.goto("/announcements");
     expect(response?.status()).toBe(200);
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
-    // TOC sidebar
-    await expect(page.locator(".ann-toc")).toBeVisible();
-    // At least one announcement article
-    const articles = page.locator(".announcement");
-    expect(await articles.count()).toBeGreaterThanOrEqual(1);
+    // At least one announcement in the list
+    const items = page.locator(".cat-item");
+    expect(await items.count()).toBeGreaterThanOrEqual(1);
   });
 });

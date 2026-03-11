@@ -126,6 +126,44 @@ export async function fetchBlogPostCount() {
   });
 }
 
+// ── Announcements (paginated) ───────────────────────────────────
+export async function fetchAnnouncements(page = 1, pageSize = 10) {
+  return timed("announcements", async () => {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const { data } = await sanityFetch({
+      query: `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end]`,
+      params: { start, end },
+    });
+    return data;
+  });
+}
+
+export async function fetchAnnouncementCount() {
+  return timed("announcementCount", async () => {
+    const { data } = await sanityFetch({
+      query: `count(*[_type == "announcement"])`,
+    });
+    return data;
+  });
+}
+
+export async function fetchAnnouncementById(id: string) {
+  return timed(`announcement[${id}]`, async () => {
+    const { data } = await sanityFetch({
+      query: `*[_type == "announcement" && _id == $id][0]`,
+      params: { id },
+    });
+    return data;
+  });
+}
+
+export function fetchAllAnnouncementIdsStatic() {
+  return client.fetch<{ _id: string }[]>(
+    `*[_type == "announcement"]{ _id }`
+  );
+}
+
 export function fetchAllBlogSlugsStatic() {
   return client.fetch<{ slug: string }[]>(
     `*[_type == "blogPost"]{ "slug": slug.current }`

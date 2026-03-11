@@ -1,16 +1,16 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Program Pages", () => {
-  test("/seikatsusodan loads with title and sections", async ({ page }) => {
-    const response = await page.goto("/seikatsusodan");
+  test("/services/counseling loads with title and sections", async ({ page }) => {
+    const response = await page.goto("/services/counseling");
     expect(response?.status()).toBe(200);
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
     const sections = page.locator(".page-section");
     expect(await sections.count()).toBeGreaterThanOrEqual(1);
   });
 
-  test("/kaiwasalon loads with content", async ({ page }) => {
-    const response = await page.goto("/kaiwasalon");
+  test("/classes/conversation-salon loads with content", async ({ page }) => {
+    const response = await page.goto("/classes/conversation-salon");
     expect(response?.status()).toBe(200);
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
   });

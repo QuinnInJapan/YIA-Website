@@ -8,8 +8,8 @@ import {
   UsersIcon,
   HeartIcon,
   BookIcon,
+  CalendarIcon,
   EarthGlobeIcon,
-  TransferIcon,
   ComposeIcon,
 } from "@sanity/icons";
 
@@ -86,10 +86,10 @@ export function structure(S: StructureBuilder) {
       S.divider(),
 
       // Page categories
-      categoryGroup(S, "support", "生活サポート", HeartIcon),
-      categoryGroup(S, "learning", "語学・講座", BookIcon),
-      categoryGroup(S, "events", "イベント", TransferIcon),
-      categoryGroup(S, "exchange", "国際交流", EarthGlobeIcon),
+      categoryGroup(S, "services", "相談・サービス", HeartIcon),
+      categoryGroup(S, "classes", "教室・講座", BookIcon),
+      categoryGroup(S, "events", "イベント", CalendarIcon),
+      categoryGroup(S, "partnerships", "交流・協力", EarthGlobeIcon),
       S.listItem()
         .id("organization")
         .title("協会について")
@@ -100,7 +100,7 @@ export function structure(S: StructureBuilder) {
             .title("協会について")
             .schemaType("page")
             .apiVersion("2024-01-01")
-            .filter('_type == "page" && !defined(categoryRef)'),
+            .filter('_type == "page" && categoryRef._ref == "category-about"'),
         ),
 
       S.divider(),

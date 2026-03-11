@@ -24,8 +24,10 @@ export default async function HomepageTemplate() {
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
 
-  // Announcements dereferenced by GROQ
-  const hpAnnouncements = hp.announcementRefs ?? [];
+  // Announcements: pinned first, then by date, show 5
+  const hpAnnouncements = [...(data.announcements ?? [])]
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.date ?? "").localeCompare(a.date ?? ""))
+    .slice(0, 5);
 
   return (
     <HomepageEffects>

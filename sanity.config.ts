@@ -3,6 +3,7 @@ import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
 import { jaJPLocale } from "@sanity/locale-ja-jp";
 import { internationalizedArray } from "sanity-plugin-internationalized-array";
+import { media } from "sanity-plugin-media";
 import { schemaTypes } from "./sanity/schemas";
 import { structure } from "./sanity/structure";
 import { dashboardPlugin } from "./sanity/components/DashboardTool";
@@ -58,6 +59,7 @@ export default defineConfig({
         },
       },
     }),
+    media(),
     jaJPLocale(),
     internationalizedArray({
       languages: [

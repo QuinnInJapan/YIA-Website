@@ -12,6 +12,7 @@ import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
 interface PageProps {
   params: Promise<{ category: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -53,11 +54,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CategoryPage({ params }: PageProps) {
+export default async function CategoryPage({ params, searchParams }: PageProps) {
   const { category } = await params;
+  const { page: pageParam } = await searchParams;
 
   if (category === "announcements") {
-    return <AnnouncementsPageTemplate />;
+    const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+    return <AnnouncementsPageTemplate page={page} />;
   }
 
   const categoryIds = await getCategoryIds();

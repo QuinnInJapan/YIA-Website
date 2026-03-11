@@ -1,72 +1,88 @@
-import { getSiteData, shortId } from "@/lib/data";
+import Link from "next/link";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
-import DocList from "@/components/DocList";
-import { resolveDocs } from "@/lib/sanity/image";
 import LazyImage from "@/components/LazyImage";
-import SidebarToc from "@/components/SidebarToc";
-import BilingualPortableText from "@/components/BilingualPortableText";
+import Pagination from "@/components/Pagination";
+import {
+  fetchAnnouncements,
+  fetchAnnouncementCount,
+} from "@/lib/sanity/queries";
+import type { Announcement } from "@/lib/types";
 
-export default async function AnnouncementsPageTemplate() {
-  const data = await getSiteData();
-  const hp = data.homepage;
-  const allAnnouncements = hp.announcementRefs ?? [];
+const PAGE_SIZE = 10;
 
-  const tocEntries = allAnnouncements.map((a, i) => ({
-    id: shortId(a._id) || `ann-${i}`,
-    text: ja(a.title),
-    subtext: en(a.title) || undefined,
-  }));
+interface Props {
+  page?: number;
+}
 
-  const tocHtml = <SidebarToc entries={tocEntries} />;
-
-  const articles = allAnnouncements.map((a, i) => {
-    const id = shortId(a._id) || `ann-${i}`;
-    return (
-      <article className="announcement" id={id} key={id}>
-        {(a.date || a.pinned) && (
-          <div className="announcement__meta">
-            {a.date && (
-              <time className="announcement__date" dateTime={a.date}>
-                {formatDateDot(a.date)}
-              </time>
-            )}
-            {a.pinned && (
-              <span className="announcement__pin">固定 Pinned</span>
-            )}
-          </div>
-        )}
-        <h2 className="announcement__title">
-          {ja(a.title)}
-          {en(a.title) && (
-            <span className="announcement__title-en" lang="en" translate="no"> {en(a.title)}</span>
-          )}
-        </h2>
-        <BilingualPortableText field={a.content} />
-        {a.image?.asset?._ref && (
-          <div className="announcement__image">
-            <LazyImage src={imageUrl(a.image)} alt={ja(a.title)} />
-          </div>
-        )}
-        {a.documents && a.documents.length > 0 && (
-          <div className="announcement__docs">
-            <DocList docs={resolveDocs(a.documents)} />
-          </div>
-        )}
-      </article>
-    );
-  });
+export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
+  const [announcementsData, totalCount] = await Promise.all([
+    fetchAnnouncements(page, PAGE_SIZE),
+    fetchAnnouncementCount(),
+  ]);
+  const announcements = (announcementsData ?? []) as Announcement[];
+  const totalPages = Math.ceil((totalCount as number) / PAGE_SIZE);
 
   return (
     <PageLayout
-      heroHtml={
-        <SolidHero titleJa="お知らせ" titleEn="Announcements" />
+      heroHtml={<SolidHero titleJa="お知らせ" titleEn="Announcements" />}
+      mainClass="layout-category"
+      sectionHtml={
+        <>
+          <div className="cat-list">
+            {announcements.map((a) => {
+              const img = a.image?.asset?._ref ? imageUrl(a.image) : "";
+              const dateStr = a.date ? formatDateDot(a.date) : "";
+
+              return (
+                <article
+                  className={`cat-item${img ? "" : " cat-item--no-img"}`}
+                  key={a._id}
+                >
+                  {img && (
+                    <div className="cat-item__img-wrap">
+                      <LazyImage
+                        src={img}
+                        alt=""
+                        fill
+                        className="cat-item__img"
+                      />
+                    </div>
+                  )}
+                  <div className="cat-item__body">
+                    <h2 className="cat-item__title">
+                      <Link href={`/announcements/${a._id}`} className="cat-item__link">
+                        {ja(a.title)}
+                      </Link>
+                      {en(a.title) && (
+                        <span className="cat-item__title-en" lang="en" translate="no">
+                          {en(a.title)}
+                        </span>
+                      )}
+                    </h2>
+                    <div className="cat-item__meta">
+                      {a.pinned && (
+                        <span className="announcement__pin">固定 Pinned</span>
+                      )}
+                      {dateStr && (
+                        <time className="cat-item__date">{dateStr}</time>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            basePath="/announcements"
+          />
+        </>
       }
-      tocHtml={tocHtml}
-      sectionHtml={<>{articles}</>}
     />
   );
 }

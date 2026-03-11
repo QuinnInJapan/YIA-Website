@@ -146,6 +146,12 @@ export default async function BlogPostPage({
           </div>
         )}
 
+        <Suspense>
+          {post.publishedAt && (
+            <BlogPostNavAsync publishedAt={post.publishedAt} slug={post.slug} />
+          )}
+        </Suspense>
+
         {post.relatedPosts && post.relatedPosts.length > 0 && (
           <section className="blog-post__related">
             <h2>関連記事 <span lang="en" translate="no">Related Posts</span></h2>
@@ -193,12 +199,6 @@ export default async function BlogPostPage({
             </div>
           </section>
         )}
-
-        <Suspense>
-          {post.publishedAt && (
-            <BlogPostNavAsync publishedAt={post.publishedAt} slug={post.slug} />
-          )}
-        </Suspense>
       </BlogLanguageProvider>
     </article>
   );
