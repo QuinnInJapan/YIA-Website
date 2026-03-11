@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { ja, en } from "@/lib/i18n";
-import { imageUrl } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
-import LazyImage from "@/components/LazyImage";
 import Pagination from "@/components/Pagination";
 import {
   fetchAnnouncements,
@@ -28,51 +26,33 @@ export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
 
   return (
     <PageLayout
-      heroHtml={<SolidHero titleJa="お知らせ" titleEn="Announcements" />}
+      heroHtml={<SolidHero titleJa="お知らせ" titleEn="Announcements" narrow />}
       mainClass="layout-category"
       sectionHtml={
         <>
-          <div className="cat-list">
+          <div className="oshirase-list oshirase-list--page">
             {announcements.map((a) => {
-              const img = a.image?.asset?._ref ? imageUrl(a.image) : "";
               const dateStr = a.date ? formatDateDot(a.date) : "";
 
               return (
-                <article
-                  className={`cat-item${img ? "" : " cat-item--no-img"}`}
+                <Link
+                  href={`/announcements/${a._id}`}
+                  className="oshirase-item"
                   key={a._id}
                 >
-                  {img && (
-                    <div className="cat-item__img-wrap">
-                      <LazyImage
-                        src={img}
-                        alt=""
-                        fill
-                        className="cat-item__img"
-                      />
-                    </div>
-                  )}
-                  <div className="cat-item__body">
-                    <h2 className="cat-item__title">
-                      <Link href={`/announcements/${a._id}`} className="cat-item__link">
-                        {ja(a.title)}
-                      </Link>
-                      {en(a.title) && (
-                        <span className="cat-item__title-en" lang="en" translate="no">
-                          {en(a.title)}
-                        </span>
-                      )}
-                    </h2>
-                    <div className="cat-item__meta">
-                      {a.pinned && (
-                        <span className="announcement__pin">固定 Pinned</span>
-                      )}
-                      {dateStr && (
-                        <time className="cat-item__date">{dateStr}</time>
-                      )}
-                    </div>
-                  </div>
-                </article>
+                  <span className="oshirase-date">
+                    {dateStr}
+                    {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}
+                  </span>
+                  <span className="oshirase-title">
+                    <span className="oshirase-title__ja">{ja(a.title)}</span>
+                    {en(a.title) && (
+                      <span className="oshirase-title__en" lang="en" translate="no">
+                        {en(a.title)}
+                      </span>
+                    )}
+                  </span>
+                </Link>
               );
             })}
           </div>

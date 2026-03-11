@@ -65,7 +65,7 @@ export default async function HomepageTemplate() {
                 const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
-                    href={`/announcements#${shortId(a._id)}`}
+                    href={`/announcements/${a._id}`}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a._id}

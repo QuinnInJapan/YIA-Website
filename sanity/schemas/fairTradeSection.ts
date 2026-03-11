@@ -58,9 +58,9 @@ export default defineType({
         {
           type: "object",
           fields: [
-            defineField({ name: "type", title: "種類", type: "string", description: "商品の種類（例：コーヒー）。", validation: (Rule) => Rule.required() }),
-            defineField({ name: "weight", title: "重量", type: "string", description: "商品の重量（例：200g）。", validation: (Rule) => Rule.required() }),
-            defineField({ name: "price", title: "価格", type: "string", description: "税込価格（例：¥800）。", validation: (Rule) => Rule.required() }),
+            defineField({ name: "type", title: "種類", type: "internationalizedArrayString", description: "商品の種類（例：コーヒー）。", validation: (Rule) => Rule.required() }),
+            defineField({ name: "weight", title: "重量", type: "internationalizedArrayString", description: "商品の重量（例：200g）。", validation: (Rule) => Rule.required() }),
+            defineField({ name: "price", title: "価格", type: "internationalizedArrayString", description: "税込価格（例：¥800）。", validation: (Rule) => Rule.required() }),
           ],
         },
       ],

@@ -172,7 +172,7 @@ export interface FairTradeSection {
   _type: "fairTrade";
   title: I18nString;
   description?: I18nString;
-  priceList?: { type: string; weight: string; price: string }[];
+  priceList?: { type: I18nString; weight: I18nString; price: I18nString }[];
   delivery?: I18nString;
 }
 

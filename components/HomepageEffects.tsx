@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 /**
  * Homepage-specific effects:
  *   1. Hero overlay fade-out on scroll
  *   2. Program-band text exit fade
  *   3. Counter animation on stat tiles
+ *   4. Scroll-down arrow on hero (fades when announcements enter view)
  */
 export default function HomepageEffects({
   children,
 }: {
   children: ReactNode;
 }) {
+  const arrowRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -97,10 +100,42 @@ export default function HomepageEffects({
     // Fire once on mount to handle elements already in view
     scrollHandler();
 
+    // 4. Scroll arrow — hide when announcements band enters viewport
+    const arrow = arrowRef.current;
+    const annBand = document.querySelector(".oshirase-band");
+    let observer: IntersectionObserver | undefined;
+    if (arrow && annBand) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          arrow.classList.toggle("hero-scroll--hidden", entry.isIntersecting);
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(annBand);
+    }
+
     return () => {
       window.removeEventListener("scroll", scrollHandler);
+      observer?.disconnect();
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <button
+        ref={arrowRef}
+        className="hero-scroll"
+        type="button"
+        aria-label="Scroll down"
+        onClick={() => {
+          document.querySelector(".oshirase-band")?.scrollIntoView({ behavior: "smooth" });
+        }}
+      >
+        <svg width="24" height="14" viewBox="0 0 24 14" fill="none" aria-hidden="true">
+          <path d="M2 2l10 10L22 2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+    </>
+  );
 }

@@ -73,12 +73,14 @@ export default function PageHero({
 export function SolidHero({
   titleJa,
   titleEn,
+  narrow,
 }: {
   titleJa: string;
   titleEn?: string;
+  narrow?: boolean;
 }) {
   return (
-    <div className="page-hero page-hero--solid">
+    <div className={`page-hero page-hero--solid${narrow ? " page-hero--narrow" : ""}`}>
       <h1 className="page-hero__title">{titleJa}</h1>
       <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
     </div>

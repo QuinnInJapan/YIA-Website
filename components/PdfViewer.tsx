@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export interface PdfViewerItem {
@@ -39,9 +39,15 @@ function ArrowIcon({ direction }: { direction: "prev" | "next" }) {
 export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavigate }: PdfViewerProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const hasNav = items.length > 1;
   const item = items[currentIndex];
+
+  // Reset loading state when the PDF changes
+  useEffect(() => {
+    if (isOpen) setLoading(true);
+  }, [isOpen, currentIndex]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -129,11 +135,20 @@ export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavi
               <CloseIcon />
             </button>
           </div>
-          <iframe
-            className="pdf-viewer__iframe"
-            src={item.url}
-            title={item.title}
-          />
+          <div className="pdf-viewer__body">
+            {loading && (
+              <div className="pdf-viewer__loading">
+                <div className="pdf-viewer__spinner" />
+                <span>読み込み中… Loading…</span>
+              </div>
+            )}
+            <iframe
+              className="pdf-viewer__iframe"
+              src={item.url}
+              title={item.title}
+              onLoad={() => setLoading(false)}
+            />
+          </div>
         </div>
 
         {hasNav && (

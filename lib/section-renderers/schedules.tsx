@@ -9,7 +9,8 @@ import type { I18nString } from "@/lib/i18n";
 import type { SectionHandler } from "./types";
 import { ja, en } from "@/lib/i18n";
 import { formatDateJa, formatDateEn } from "@/lib/date-format";
-import ScheduleTable from "@/components/ScheduleTable";
+import DataTable from "@/components/DataTable";
+import GroupList from "@/components/GroupList";
 import InfoTable from "@/components/InfoTable";
 
 export const tableSchedule: SectionHandler<TableScheduleSection> = (s, ctx) => {
@@ -34,7 +35,7 @@ export const tableSchedule: SectionHandler<TableScheduleSection> = (s, ctx) => {
     });
   }
   ctx.push(
-    <ScheduleTable
+    <DataTable
       columns={s.columns || []}
       columnsEn={s.columnsEn}
       rows={rows}
@@ -45,14 +46,7 @@ export const tableSchedule: SectionHandler<TableScheduleSection> = (s, ctx) => {
 
 export const groupSchedule: SectionHandler<GroupScheduleSection> = (s, ctx) => {
   ctx.addTocHeader(ja(s.title), en(s.title));
-  ctx.push(
-    <ScheduleTable
-      columns={s.columns || []}
-      columnsEn={s.columnsEn}
-      rows={s.groups || []}
-      type="group"
-    />
-  );
+  ctx.push(<GroupList groups={s.groups || []} />);
   ctx.flush();
 };
 
@@ -70,7 +64,7 @@ export const eventSchedule: SectionHandler<EventScheduleSection> = (s, ctx) => {
     if (s.entries[0]?.time) cols.push("時間 Time");
     if (ja(s.entries[0]?.location)) cols.push("場所 Location");
     if (ja(s.entries[0]?.description)) cols.push("内容 Description");
-    ctx.push(<ScheduleTable columns={cols} rows={rows} />);
+    ctx.push(<DataTable columns={cols} rows={rows} />);
   } else if (s.entry) {
     const infoRows = [
       {
