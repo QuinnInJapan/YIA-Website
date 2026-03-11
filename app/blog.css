@@ -10,9 +10,6 @@
   padding: var(--spacing-xl) var(--site-gutter);
 }
 
-.blog-grid--related {
-  padding-top: var(--spacing-md);
-}
 
 @media (max-width: 960px) {
   .blog-grid {
@@ -90,10 +87,6 @@
   background: var(--color-navy);
 }
 
-.blog-card__category--event-report { background: var(--color-navy); }
-.blog-card__category--culture { background: var(--color-accent); }
-.blog-card__category--community { background: var(--color-secondary); }
-.blog-card__category--news { background: var(--color-navy-light); }
 
 .blog-card__date {
   font-variant-numeric: tabular-nums;
@@ -351,6 +344,87 @@
   color: var(--color-text-muted);
   font-weight: 400;
   margin-left: var(--spacing-sm);
+}
+
+/* Related Posts — horizontal list */
+.blog-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.blog-related-item {
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-md);
+  text-decoration: none;
+  color: var(--color-text);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+
+.blog-related-item:hover {
+  background: var(--color-tint);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.blog-related-item__image {
+  position: relative;
+  width: 160px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-tint);
+}
+
+.blog-related-item__image img {
+  object-fit: cover;
+}
+
+.blog-related-item__placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+}
+
+.blog-related-item__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.blog-related-item .blog-related-item__title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.blog-related-item__title-en {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.blog-related-item__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.blog-related-item__category {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-navy);
 }
 
 /* Blog Post — Prev/Next Navigation */

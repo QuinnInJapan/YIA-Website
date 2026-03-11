@@ -19,7 +19,7 @@ export default defineType({
       name: "items",
       title: "項目",
       type: "array",
-      of: [{ type: "internationalizedArrayBlockContent" }],
+      of: [{ type: "internationalizedArrayText" }],
       description: "注意事項の一覧。各項目が1つの警告メッセージとして表示されます。",
     }),
   ],

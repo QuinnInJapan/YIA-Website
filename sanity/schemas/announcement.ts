@@ -25,6 +25,13 @@ export default defineType({
       subtitle: date || "",
     }),
   },
+  fieldsets: [
+    {
+      name: "attachments",
+      title: "添付ファイル",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "date",
@@ -58,12 +65,14 @@ export default defineType({
       name: "image",
       title: "画像",
       type: "image",
+      fieldset: "attachments",
       description: "お知らせに添付する画像（任意）。詳細ページに表示されます。",
     }),
     defineField({
       name: "documents",
       title: "資料",
       type: "array",
+      fieldset: "attachments",
       of: [{ type: "documentLink" }],
       description: "お知らせに添付するPDFや外部リンク（任意）。",
     }),

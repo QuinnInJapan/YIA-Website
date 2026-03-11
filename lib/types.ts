@@ -87,18 +87,18 @@ export interface BoardMember {
 
 export interface WarningsSection {
   _type: "warnings";
-  items: (I18nString | I18nBlocks)[];
+  items: I18nString[];
 }
 
 export interface ContentSection {
   _type: "content";
   id?: string;
   title?: I18nString;
-  description?: I18nString | I18nBlocks;
+  description?: I18nString;
   infoTable?: InfoRow[];
   checklist?: { label: I18nString; note?: I18nString }[];
   documents?: Document[];
-  note?: I18nString | I18nBlocks;
+  note?: I18nString;
   images?: ImageFile[];
   schedule?: { city: string; period: string }[];
 }
@@ -162,7 +162,7 @@ export interface LinksSection {
 export interface HistorySection {
   _type: "history";
   title: I18nString;
-  intro?: I18nString | I18nBlocks;
+  intro?: I18nString;
   columns?: string[];
   columnsEn?: string[];
   years?: { year: string; cuisines: string }[];
@@ -171,9 +171,9 @@ export interface HistorySection {
 export interface FairTradeSection {
   _type: "fairTrade";
   title: I18nString;
-  description?: I18nString | I18nBlocks;
+  description?: I18nString;
   priceList?: { type: string; weight: string; price: string }[];
-  delivery?: I18nString | I18nBlocks;
+  delivery?: I18nString;
 }
 
 export interface FlyersSection {
@@ -310,7 +310,7 @@ export interface Page {
   categoryRef?: { _ref: string };
   title: I18nString;
   subtitle?: I18nString;
-  description?: I18nString | I18nBlocks;
+  description?: I18nString;
   images?: ImageFile[];
   sections: PageSection[];
 }
@@ -324,7 +324,7 @@ export interface BlogPost {
   slug: string;
   author?: string;
   publishedAt: string;
-  category?: "event-report" | "culture" | "community" | "news";
+  category?: I18nString;
   heroImage?: SanityImage & { alt?: I18nString };
   excerpt?: I18nString;
   body: I18nBlocks;

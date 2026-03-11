@@ -14,6 +14,13 @@ export default defineType({
       media: BasketIcon,
     }),
   },
+  fieldsets: [
+    {
+      name: "advanced",
+      title: "詳細設定",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -33,13 +40,14 @@ export default defineType({
       name: "hideTitle",
       title: "タイトルなし",
       type: "boolean",
+      fieldset: "advanced",
       description: "チェックするとタイトルを省略できます。",
       initialValue: false,
     }),
     defineField({
       name: "description",
       title: "説明",
-      type: "internationalizedArrayBlockContent",
+      type: "internationalizedArrayText",
       description: "フェアトレードについての説明文。",
     }),
     defineField({
@@ -61,7 +69,7 @@ export default defineType({
     defineField({
       name: "delivery",
       title: "配送について",
-      type: "internationalizedArrayBlockContent",
+      type: "internationalizedArrayText",
       description: "配送方法や送料についての説明。",
     }),
   ],

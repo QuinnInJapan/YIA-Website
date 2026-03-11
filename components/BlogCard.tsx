@@ -5,16 +5,8 @@ import { formatDateDot } from "@/lib/date-format";
 import LazyImage from "@/components/LazyImage";
 import type { BlogPost } from "@/lib/types";
 
-const CATEGORY_LABELS: Record<string, { ja: string; en: string }> = {
-  "event-report": { ja: "イベントレポート", en: "Event Report" },
-  culture: { ja: "文化", en: "Culture" },
-  community: { ja: "コミュニティ", en: "Community" },
-  news: { ja: "お知らせ", en: "News" },
-};
-
 export default function BlogCard({ post }: { post: BlogPost }) {
   const heroSrc = imageUrl(post.heroImage);
-  const catLabel = post.category ? CATEGORY_LABELS[post.category] : null;
   const dateStr = post.publishedAt
     ? formatDateDot(post.publishedAt.slice(0, 10))
     : "";
@@ -33,11 +25,9 @@ export default function BlogCard({ post }: { post: BlogPost }) {
       </div>
       <div className="blog-card__body">
         <div className="blog-card__meta">
-          {catLabel && (
-            <span
-              className={`blog-card__category blog-card__category--${post.category}`}
-            >
-              {catLabel.ja}
+          {ja(post.category) && (
+            <span className="blog-card__category">
+              {ja(post.category)}
             </span>
           )}
           {dateStr && <time className="blog-card__date">{dateStr}</time>}

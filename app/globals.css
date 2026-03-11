@@ -91,7 +91,6 @@ ul, ol {
   --color-hero-overlay: rgba(15, 25, 50, 0.55);
   --color-link: #1e4a7a;
   --color-link-hover: #153660;
-  --color-easy-jp: #3a5a7a;
   --color-accent: #cc5533;
   --color-accent-pink: #cc5533;
 
@@ -156,7 +155,7 @@ h1, h2, h3, h4 {
   line-height: 1.4;
 }
 
-/* Ruby (Easy Japanese / furigana) */
+/* Ruby (furigana) */
 
 ruby {
   ruby-align: center;
@@ -164,7 +163,7 @@ ruby {
 
 ruby rt {
   font-size: 0.6em;
-  color: var(--color-easy-jp);
+  color: #3a5a7a;
   font-weight: normal;
 }
 
@@ -190,11 +189,11 @@ ruby rt {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 8px 16px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
   background: #b45309;
   color: var(--color-white);
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   text-align: center;
 }
 
@@ -204,7 +203,7 @@ ruby rt {
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-white);
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   cursor: pointer;
 }
 
@@ -1511,7 +1510,7 @@ html:has(:target) {
   justify-content: center;
   padding: var(--spacing-xl) var(--spacing-lg);
   background: var(--color-navy);
-  color: #fff;
+  color: var(--color-white);
 }
 
 .sister-city-row__country {
@@ -1886,7 +1885,7 @@ html:has(:target) {
   right: 0;
   padding: 24px 12px 10px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
-  color: #fff;
+  color: var(--color-white);
   font-size: 1rem;
   font-weight: 600;
   text-align: center;
@@ -1940,7 +1939,7 @@ html:has(:target) {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-sm);
   max-width: 92vw;
 }
 
@@ -1962,7 +1961,7 @@ html:has(:target) {
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
-  color: #fff;
+  color: var(--color-white);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -1983,7 +1982,7 @@ html:has(:target) {
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
-  color: #fff;
+  color: var(--color-white);
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -2149,14 +2148,14 @@ html:has(:target) {
   justify-content: center;
   padding: var(--spacing-lg);
   text-align: center;
-  color: #fff;
+  color: var(--color-white);
   text-decoration: none;
   transition: filter 0.3s;
 }
 
 .activity-grid__tile:hover {
   filter: brightness(1.15);
-  color: #fff;
+  color: var(--color-white);
 }
 
 .activity-grid__tile--navy {
@@ -2247,7 +2246,7 @@ html:has(:target) {
 .hero__overlay {
   position: relative;
   z-index: 2;
-  color: #fff;
+  color: var(--color-white);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -2471,7 +2470,7 @@ html:has(:target) {
   flex-direction: column;
   height: 100%;
   padding: var(--spacing-lg);
-  color: #fff;
+  color: var(--color-white);
 }
 
 .program-card__overlay a {
@@ -2580,7 +2579,7 @@ html:has(:target) {
   justify-content: center;
   padding: var(--spacing-xl);
   text-align: center;
-  color: #fff;
+  color: var(--color-white);
   pointer-events: none;
   /* JS controls opacity for scroll-linked exit fade */
   will-change: opacity;
@@ -2700,7 +2699,7 @@ html:has(:target) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--color-white);
   text-align: center;
 }
 
@@ -2744,7 +2743,7 @@ html:has(:target) {
 
 .culmination--card .next-steps__path,
 .culmination--card .next-steps__path:hover {
-  color: #fff;
+  color: var(--color-white);
   text-decoration: none;
 }
 
@@ -2894,7 +2893,7 @@ html:has(:target) {
 
 .mission-block__link:hover {
   background: var(--color-navy);
-  color: #fff;
+  color: var(--color-white);
 }
 
 .mission-block__link-ja {
@@ -3123,7 +3122,7 @@ html:has(:target) {
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
-  color: #fff;
+  color: var(--color-white);
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -4128,7 +4127,7 @@ html:has(:target) {
 .contact-form__submit {
   display: inline-block;
   background: var(--color-navy);
-  color: #fff;
+  color: var(--color-white);
   border: none;
   border-radius: var(--radius-sm);
   padding: var(--spacing-sm) var(--spacing-xl);
@@ -4207,12 +4206,12 @@ html:has(:target) {
 }
 
 .demo-switcher button:hover {
-  color: #fff;
+  color: var(--color-white);
 }
 
 .demo-switcher button.active {
-  background: #fff;
-  color: #000;
+  background: var(--color-white);
+  color: var(--color-text);
 }
 
 /* ── Category landing page list ────────────────────────────── */

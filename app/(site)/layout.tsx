@@ -22,7 +22,7 @@ export default async function SiteLayout({
       <SiteHeader />
       <SiteNavWrapper />
       {children}
-      <SanityLive />
+      {isDraft && <SanityLive />}
       {isDraft && <VisualEditingInFrame />}
     </>
   );

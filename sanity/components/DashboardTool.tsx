@@ -30,6 +30,10 @@ import createImageUrlBuilder from "@sanity/image-url";
 
 // ── Types & helpers ───────────────────────────────────────
 
+interface SanityImageRef {
+  asset?: { _ref: string };
+}
+
 interface Announcement {
   _id: string;
   titleJa: string | null;
@@ -38,13 +42,37 @@ interface Announcement {
   pinned: boolean;
 }
 
-const QUERY = `*[_type == "announcement" && !(_id in path("drafts.**"))] | order(pinned desc, date desc) {
+const ANNOUNCEMENTS_QUERY = `*[_type == "announcement" && !(_id in path("drafts.**"))] | order(pinned desc, date desc) [0...5] {
   _id,
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
   date,
   pinned
 }`;
+
+const ANNOUNCEMENTS_COUNT_QUERY = `count(*[_type == "announcement" && !(_id in path("drafts.**"))])`;
+
+interface BlogPost {
+  _id: string;
+  titleJa: string | null;
+  titleEn: string | null;
+  publishedAt: string | null;
+  categoryJa: string | null;
+  categoryEn: string | null;
+  heroImage: SanityImageRef | null;
+}
+
+const BLOG_QUERY = `*[_type == "blogPost" && !(_id in path("drafts.**"))] | order(publishedAt desc) [0...5] {
+  _id,
+  "titleJa": title[_key == "ja"][0].value,
+  "titleEn": title[_key == "en"][0].value,
+  publishedAt,
+  "categoryJa": category[_key == "ja"][0].value,
+  "categoryEn": category[_key == "en"][0].value,
+  heroImage
+}`;
+
+const BLOG_COUNT_QUERY = `count(*[_type == "blogPost" && !(_id in path("drafts.**"))])`;
 
 const STUDIO_BASE = "/studio";
 
@@ -59,6 +87,7 @@ type SaveStatus = "idle" | "saving" | "saved" | "error";
 function RecentAnnouncements() {
   const client = useClient({ apiVersion: "2024-01-01" });
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -84,9 +113,14 @@ function RecentAnnouncements() {
   const [createStatus, setCreateStatus] = useState<SaveStatus>("idle");
 
   const fetchAnnouncements = useCallback(() => {
-    client
-      .fetch<Announcement[]>(QUERY)
-      .then(setAnnouncements)
+    Promise.all([
+      client.fetch<Announcement[]>(ANNOUNCEMENTS_QUERY),
+      client.fetch<number>(ANNOUNCEMENTS_COUNT_QUERY),
+    ])
+      .then(([items, count]) => {
+        setAnnouncements(items);
+        setTotalCount(count);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [client]);
@@ -328,8 +362,7 @@ function RecentAnnouncements() {
         />
       )}
 
-      {/* Announcement list */}
-      {announcements.length === 0 && (
+      {announcements.length === 0 && !loading && (
         <Card padding={4} radius={2} border>
           <Text muted>お知らせがまだありません。</Text>
         </Card>
@@ -522,15 +555,418 @@ function RecentAnnouncements() {
           </Card>
         );
       })}
+
+      {totalCount > 5 && (
+        <Button
+          text={`すべてのお知らせを表示（${totalCount}件）`}
+          mode="ghost"
+          fontSize={1}
+          padding={3}
+          onClick={() => navigateStudio("structure/announcements")}
+        />
+      )}
+    </Stack>
+  );
+}
+
+// ── Recent blog posts ─────────────────────────────────────
+
+
+function RecentBlogPosts() {
+  const client = useClient({ apiVersion: "2024-01-01" });
+  const builder = createImageUrlBuilder(client);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // Draft state for expanded card
+  const [draftTitleJa, setDraftTitleJa] = useState("");
+  const [draftTitleEn, setDraftTitleEn] = useState("");
+  const [draftDate, setDraftDate] = useState("");
+  const [draftCategoryJa, setDraftCategoryJa] = useState("");
+  const [draftCategoryEn, setDraftCategoryEn] = useState("");
+  const [blogSaveStatus, setBlogSaveStatus] = useState<SaveStatus>("idle");
+  const [blogDirty, setBlogDirty] = useState(false);
+  const [blogConfirmingDelete, setBlogConfirmingDelete] = useState<string | null>(null);
+
+  const blogDirtyRef = useRef(false);
+  blogDirtyRef.current = blogDirty;
+
+  function markBlogDirty() {
+    setBlogDirty(true);
+    setBlogSaveStatus("idle");
+  }
+
+  const fetchPosts = useCallback(() => {
+    Promise.all([
+      client.fetch<BlogPost[]>(BLOG_QUERY),
+      client.fetch<number>(BLOG_COUNT_QUERY),
+    ])
+      .then(([items, count]) => {
+        setPosts(items);
+        setTotalCount(count);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [client]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  useEffect(() => {
+    const subscription = client
+      .listen('*[_type == "blogPost"]')
+      .subscribe(() => {
+        fetchPosts();
+      });
+    return () => subscription.unsubscribe();
+  }, [client, fetchPosts]);
+
+  function expandBlogCard(p: BlogPost) {
+    if (expandedId === p._id) {
+      setExpandedId(null);
+      setBlogDirty(false);
+      return;
+    }
+    if (blogDirtyRef.current && !window.confirm("未保存の変更があります。破棄しますか？")) {
+      return;
+    }
+    setExpandedId(p._id);
+    setDraftTitleJa(p.titleJa ?? "");
+    setDraftTitleEn(p.titleEn ?? "");
+    setDraftDate(p.publishedAt ? p.publishedAt.slice(0, 10) : "");
+    setDraftCategoryJa(p.categoryJa ?? "");
+    setDraftCategoryEn(p.categoryEn ?? "");
+    setBlogSaveStatus("idle");
+    setBlogDirty(false);
+    setBlogConfirmingDelete(null);
+  }
+
+  async function handleBlogSave(id: string) {
+    setBlogSaveStatus("saving");
+    try {
+      await client
+        .patch(id)
+        .set({
+          publishedAt: draftDate ? `${draftDate}T00:00:00.000Z` : undefined,
+          'title[_key == "ja"].value': draftTitleJa,
+          'title[_key == "en"].value': draftTitleEn,
+          'category[_key == "ja"].value': draftCategoryJa,
+          'category[_key == "en"].value': draftCategoryEn,
+        })
+        .commit();
+
+      setBlogSaveStatus("saved");
+      setBlogDirty(false);
+      setPosts((prev) =>
+        prev.map((p) =>
+          p._id === id
+            ? {
+                ...p,
+                titleJa: draftTitleJa,
+                titleEn: draftTitleEn,
+                publishedAt: draftDate ? `${draftDate}T00:00:00.000Z` : null,
+                categoryJa: draftCategoryJa,
+                categoryEn: draftCategoryEn,
+              }
+            : p,
+        ),
+      );
+      setTimeout(() => setBlogSaveStatus("idle"), 2000);
+    } catch (err) {
+      console.error("Save failed:", err);
+      setBlogSaveStatus("error");
+      setTimeout(() => setBlogSaveStatus("idle"), 3000);
+    }
+  }
+
+  async function handleBlogDelete(id: string) {
+    try {
+      await client.delete(id);
+      setPosts((prev) => prev.filter((p) => p._id !== id));
+      setExpandedId(null);
+      setBlogConfirmingDelete(null);
+      setBlogDirty(false);
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  }
+
+  if (loading) {
+    return (
+      <Card padding={4} radius={2} border>
+        <Text muted>読み込み中…</Text>
+      </Card>
+    );
+  }
+
+  return (
+    <Stack space={3}>
+      <Button
+        icon={AddIcon}
+        text="新しいブログ記事を作成"
+        mode="ghost"
+        tone="positive"
+        fontSize={1}
+        padding={3}
+        onClick={() => navigateStudio("structure/blog;_create_new")}
+      />
+
+      {posts.length === 0 && (
+        <Card padding={4} radius={2} border>
+          <Text muted>ブログ記事がまだありません。</Text>
+        </Card>
+      )}
+
+      {posts.map((p) => {
+        const isExpanded = expandedId === p._id;
+
+        return (
+          <Card
+            key={p._id}
+            padding={3}
+            radius={2}
+            border
+            tone={isExpanded ? "primary" : undefined}
+          >
+            {/* Collapsed row */}
+            <Flex
+              align="center"
+              justify="space-between"
+              gap={3}
+              onClick={() => expandBlogCard(p)}
+              style={{ cursor: "pointer" }}
+            >
+              <Flex align="center" gap={3} style={{ minWidth: 0 }}>
+                {p.heroImage?.asset ? (
+                  <img
+                    src={builder.image(p.heroImage).width(80).height(52).auto("format").url()}
+                    alt=""
+                    style={{
+                      width: 80,
+                      height: 52,
+                      objectFit: "cover",
+                      borderRadius: 4,
+                      flexShrink: 0,
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: 80,
+                      height: 52,
+                      borderRadius: 4,
+                      flexShrink: 0,
+                      background: "var(--card-border-color)",
+                    }}
+                  />
+                )}
+                <Stack space={2} style={{ minWidth: 0 }}>
+                  <Text
+                    size={1}
+                    weight="medium"
+                    textOverflow="ellipsis"
+                    style={{ minWidth: 0 }}
+                  >
+                    {p.titleJa ?? "（タイトルなし）"}
+                  </Text>
+                  <Flex align="center" gap={2}>
+                    <Text size={0} muted>
+                      {p.publishedAt
+                        ? new Date(p.publishedAt).toLocaleDateString("ja-JP")
+                        : "下書き"}
+                    </Text>
+                    {p.categoryJa && (
+                      <Text size={0} muted>
+                        {p.categoryJa}
+                      </Text>
+                    )}
+                  </Flex>
+                </Stack>
+              </Flex>
+              <Text size={0} muted style={{ flexShrink: 0 }}>
+                {isExpanded ? "▲" : "▼"}
+              </Text>
+            </Flex>
+
+            {/* Expanded editing fields */}
+            {isExpanded && (
+              <Box marginTop={4}>
+                <Stack space={4}>
+                  {/* Date */}
+                  <Stack space={2}>
+                    <Label size={0}>公開日</Label>
+                    <input
+                      type="date"
+                      value={draftDate}
+                      onChange={(e) => {
+                        setDraftDate(e.target.value);
+                        markBlogDirty();
+                      }}
+                      style={{
+                        font: "inherit",
+                        fontSize: "0.8125rem",
+                        padding: "0.5rem 0.75rem",
+                        border: "1px solid var(--card-border-color)",
+                        borderRadius: "3px",
+                        background: "var(--card-bg-color)",
+                        color: "inherit",
+                        width: "100%",
+                        boxSizing: "border-box",
+                      }}
+                    />
+                  </Stack>
+
+                  {/* Title (Japanese) */}
+                  <Stack space={2}>
+                    <Label size={0}>タイトル（日本語）</Label>
+                    <TextInput
+                      value={draftTitleJa}
+                      onChange={(e) => {
+                        setDraftTitleJa(e.currentTarget.value);
+                        markBlogDirty();
+                      }}
+                      fontSize={1}
+                    />
+                  </Stack>
+
+                  {/* Title (English) */}
+                  <Stack space={2}>
+                    <Label size={0}>Title (English)</Label>
+                    <TextInput
+                      value={draftTitleEn}
+                      onChange={(e) => {
+                        setDraftTitleEn(e.currentTarget.value);
+                        markBlogDirty();
+                      }}
+                      fontSize={1}
+                    />
+                  </Stack>
+
+                  {/* Category (Japanese) */}
+                  <Stack space={2}>
+                    <Label size={0}>カテゴリー（日本語）</Label>
+                    <TextInput
+                      value={draftCategoryJa}
+                      onChange={(e) => {
+                        setDraftCategoryJa(e.currentTarget.value);
+                        markBlogDirty();
+                      }}
+                      fontSize={1}
+                    />
+                  </Stack>
+
+                  {/* Category (English) */}
+                  <Stack space={2}>
+                    <Label size={0}>Category (English)</Label>
+                    <TextInput
+                      value={draftCategoryEn}
+                      onChange={(e) => {
+                        setDraftCategoryEn(e.currentTarget.value);
+                        markBlogDirty();
+                      }}
+                      fontSize={1}
+                    />
+                  </Stack>
+
+                  {/* Actions */}
+                  <Flex align="center" justify="space-between" gap={3}>
+                    <Inline space={2}>
+                      <Button
+                        text="保存"
+                        tone="positive"
+                        fontSize={1}
+                        padding={2}
+                        onClick={() => handleBlogSave(p._id)}
+                        disabled={blogSaveStatus === "saving"}
+                      />
+                      {blogSaveStatus === "saving" && (
+                        <Text size={1} muted>
+                          保存中…
+                        </Text>
+                      )}
+                      {blogSaveStatus === "saved" && (
+                        <Inline space={1}>
+                          <Text size={1} style={{ color: "green" }}>
+                            <CheckmarkCircleIcon />
+                          </Text>
+                          <Text size={1} style={{ color: "green" }}>
+                            保存しました
+                          </Text>
+                        </Inline>
+                      )}
+                      {blogSaveStatus === "error" && (
+                        <Text size={1} style={{ color: "red" }}>
+                          保存に失敗しました
+                        </Text>
+                      )}
+                    </Inline>
+                    <Inline space={2}>
+                      <Button
+                        icon={EditIcon}
+                        text="詳細を編集"
+                        mode="ghost"
+                        tone="primary"
+                        fontSize={1}
+                        padding={2}
+                        onClick={() =>
+                          navigateStudio(
+                            `structure/blog;${p._id}`,
+                          )
+                        }
+                      />
+                      {blogConfirmingDelete === p._id ? (
+                        <Inline space={2}>
+                          <Button
+                            text="削除する"
+                            tone="critical"
+                            fontSize={1}
+                            padding={2}
+                            onClick={() => handleBlogDelete(p._id)}
+                          />
+                          <Button
+                            text="キャンセル"
+                            mode="ghost"
+                            fontSize={1}
+                            padding={2}
+                            onClick={() => setBlogConfirmingDelete(null)}
+                          />
+                        </Inline>
+                      ) : (
+                        <Button
+                          icon={TrashIcon}
+                          mode="ghost"
+                          tone="critical"
+                          fontSize={1}
+                          padding={2}
+                          onClick={() => setBlogConfirmingDelete(p._id)}
+                        />
+                      )}
+                    </Inline>
+                  </Flex>
+                </Stack>
+              </Box>
+            )}
+          </Card>
+        );
+      })}
+
+      {totalCount > 5 && (
+        <Button
+          text={`すべてのブログ記事を表示（${totalCount}件）`}
+          mode="ghost"
+          fontSize={1}
+          padding={3}
+          onClick={() => navigateStudio("structure/blog")}
+        />
+      )}
     </Stack>
   );
 }
 
 // ── Event flyer preview ──────────────────────────────────
-
-interface SanityImageRef {
-  asset?: { _ref: string };
-}
 
 interface FlyerData {
   image?: SanityImageRef;
@@ -660,6 +1096,13 @@ function DashboardComponent() {
             お知らせ
           </Heading>
           <RecentAnnouncements />
+        </Stack>
+
+        <Stack space={3}>
+          <Heading as="h2" size={1}>
+            ブログ
+          </Heading>
+          <RecentBlogPosts />
         </Stack>
       </Stack>
     </Box>

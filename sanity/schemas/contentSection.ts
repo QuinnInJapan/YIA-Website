@@ -8,6 +8,11 @@ export default defineType({
   description: "汎用コンテンツブロック（説明文、情報テーブル、チェックリスト、資料リンクなど）",
   fieldsets: [
     {
+      name: "advanced",
+      title: "詳細設定",
+      options: { collapsible: true, collapsed: true },
+    },
+    {
       name: "extras",
       title: "追加コンテンツ",
       description: "テーブル、チェックリスト、資料、画像など（任意）",
@@ -27,6 +32,7 @@ export default defineType({
       name: "id",
       title: "ID",
       type: "string",
+      fieldset: "advanced",
       description: "セクションの識別子（変更するとページ内リンクが壊れます。管理者のみ変更可能）",
       readOnly: true,
     }),
@@ -48,14 +54,15 @@ export default defineType({
       name: "hideTitle",
       title: "タイトルなし",
       type: "boolean",
+      fieldset: "advanced",
       description: "チェックするとタイトルを省略できます。",
       initialValue: false,
     }),
     defineField({
       name: "description",
       title: "説明",
-      type: "internationalizedArrayBlockContent",
-      description: "セクションの本文。リッチテキストで書式設定やリンクを追加できます。",
+      type: "internationalizedArrayText",
+      description: "セクションの本文。",
     }),
     defineField({
       name: "infoTable",
@@ -92,7 +99,7 @@ export default defineType({
     defineField({
       name: "note",
       title: "備考",
-      type: "internationalizedArrayBlockContent",
+      type: "internationalizedArrayText",
       fieldset: "extras",
       description: "セクション下部に小さく表示される補足情報。",
     }),

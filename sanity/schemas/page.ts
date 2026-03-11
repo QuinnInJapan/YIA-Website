@@ -62,9 +62,9 @@ export default defineType({
     defineField({
       name: "description",
       title: "説明",
-      type: "internationalizedArrayBlockContent",
+      type: "internationalizedArrayText",
 
-      description: "ページ上部の説明文。リッチテキストで書式設定できます。",
+      description: "ページ上部の説明文。",
     }),
     defineField({
       name: "images",
@@ -72,6 +72,7 @@ export default defineType({
       type: "array",
 
       of: [{ type: "imageFile" }],
+      options: { layout: "grid" },
       description: "ページ上部に表示する画像（任意）。",
     }),
     defineField({

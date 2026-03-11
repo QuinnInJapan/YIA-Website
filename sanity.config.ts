@@ -63,7 +63,6 @@ export default defineConfig({
       languages: [
         { id: "ja", title: "日本語" },
         { id: "en", title: "English" },
-        { id: "easy", title: "やさしい日本語" },
       ],
       fieldTypes: [
         defineField({ name: "string", type: "string", title: " " }),

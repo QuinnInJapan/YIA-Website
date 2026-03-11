@@ -14,6 +14,13 @@ export default defineType({
       media: ClockIcon,
     }),
   },
+  fieldsets: [
+    {
+      name: "advanced",
+      title: "詳細設定",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -33,13 +40,14 @@ export default defineType({
       name: "hideTitle",
       title: "タイトルなし",
       type: "boolean",
+      fieldset: "advanced",
       description: "チェックするとタイトルを省略できます。",
       initialValue: false,
     }),
     defineField({
       name: "intro",
       title: "紹介文",
-      type: "internationalizedArrayBlockContent",
+      type: "internationalizedArrayText",
       description: "年表の前に表示する説明文（任意）。",
     }),
     defineField({

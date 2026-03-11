@@ -14,6 +14,13 @@ export default defineType({
       media: EarthGlobeIcon,
     }),
   },
+  fieldsets: [
+    {
+      name: "advanced",
+      title: "詳細設定",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -31,6 +38,7 @@ export default defineType({
     }),
     defineField({
       name: "hideTitle",
+      fieldset: "advanced",
       title: "タイトルなし",
       type: "boolean",
       description: "チェックするとタイトルを省略できます。",

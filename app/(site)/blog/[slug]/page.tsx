@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import {
@@ -13,19 +14,12 @@ import { formatDateDot } from "@/lib/date-format";
 import { blogPtComponents } from "@/lib/portable-text";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
-import BlogCard from "@/components/BlogCard";
 import BlogLanguageTabs, { BlogLanguageProvider } from "@/components/BlogLanguageTabs";
 import BlogPostNavAsync from "@/components/BlogPostNavAsync";
 import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  "event-report": "イベントレポート",
-  culture: "文化",
-  community: "コミュニティ",
-  news: "お知らせ",
-};
 
 export async function generateStaticParams() {
   const slugs = await fetchAllBlogSlugsStatic();
@@ -74,7 +68,7 @@ export default async function BlogPostPage({
   const dateStr = post.publishedAt
     ? formatDateDot(post.publishedAt.slice(0, 10))
     : "";
-  const catLabel = post.category ? CATEGORY_LABELS[post.category] : null;
+  const catLabel = ja(post.category) || null;
 
   const jaB = jaBlocks(post.body as I18nBlocks);
   const enB = enBlocks(post.body as I18nBlocks);
@@ -107,7 +101,7 @@ export default async function BlogPostPage({
       )}
       <div className="blog-post__hero-overlay">
         {catLabel && (
-          <span className={`blog-post__category blog-post__category--${post.category}`}>
+          <span className="blog-post__category">
             {catLabel}
           </span>
         )}
@@ -155,10 +149,47 @@ export default async function BlogPostPage({
         {post.relatedPosts && post.relatedPosts.length > 0 && (
           <section className="blog-post__related">
             <h2>関連記事 <span lang="en" translate="no">Related Posts</span></h2>
-            <div className="blog-grid blog-grid--related">
-              {post.relatedPosts.map((related) => (
-                <BlogCard key={related._id} post={related} />
-              ))}
+            <div className="blog-related-list">
+              {post.relatedPosts.map((related) => {
+                const thumb = imageUrl(related.heroImage);
+                const relDateStr = related.publishedAt
+                  ? formatDateDot(related.publishedAt.slice(0, 10))
+                  : "";
+                return (
+                  <Link
+                    key={related._id}
+                    href={`/blog/${related.slug}`}
+                    className="blog-related-item"
+                  >
+                    <div className="blog-related-item__image">
+                      {thumb ? (
+                        <Image
+                          src={thumb}
+                          alt={ja(related.heroImage?.alt) || ja(related.title)}
+                          fill
+                          sizes="120px"
+                        />
+                      ) : (
+                        <div className="blog-related-item__placeholder" />
+                      )}
+                    </div>
+                    <div className="blog-related-item__body">
+                      <h3 className="blog-related-item__title">{ja(related.title)}</h3>
+                      {en(related.title) && (
+                        <p className="blog-related-item__title-en" lang="en" translate="no">
+                          {en(related.title)}
+                        </p>
+                      )}
+                      <div className="blog-related-item__meta">
+                        {ja(related.category) && (
+                          <span className="blog-related-item__category">{ja(related.category)}</span>
+                        )}
+                        {relDateStr && <time>{relDateStr}</time>}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}

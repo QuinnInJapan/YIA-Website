@@ -4,7 +4,7 @@ export type I18nString = { _key: string; value: string }[];
 export type I18nBlocks = { _key: string; value: PortableTextBlock[] }[];
 
 /** Extract a language value from an i18n array field. Returns "" for PT block fields. */
-export function i18n(field: I18nString | I18nBlocks | undefined, lang: "ja" | "en" | "easy"): string {
+export function i18n(field: I18nString | I18nBlocks | undefined, lang: "ja" | "en"): string {
   if (!field) return "";
   const entry = field.find((f) => f._key === lang);
   if (!entry) return "";
@@ -18,10 +18,6 @@ export function ja(field: I18nString | I18nBlocks | undefined): string {
 
 export function en(field: I18nString | I18nBlocks | undefined): string {
   return i18n(field, "en");
-}
-
-export function easy(field: I18nString | I18nBlocks | undefined): string {
-  return i18n(field, "easy");
 }
 
 /** Extract Portable Text blocks for a language from an i18n block content field */

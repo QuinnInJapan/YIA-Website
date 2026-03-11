@@ -87,7 +87,6 @@ export default function HomepageEffects({
             big!.textContent = Math.round(target * ease) + "+";
             if (p < 1) requestAnimationFrame(step);
           }
-          big.textContent = "0+";
           requestAnimationFrame(step);
         }
 

@@ -18,6 +18,13 @@ export default defineType({
       by: [{ field: "publishedAt", direction: "asc" }],
     },
   ],
+  fieldsets: [
+    {
+      name: "attachments",
+      title: "添付ファイル・関連記事",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   preview: {
     select: { title: "title", date: "publishedAt", image: "heroImage" },
     prepare: ({
@@ -51,10 +58,20 @@ export default defineType({
       type: "slug",
       description:
         "URLに使用されるスラッグ。タイトルから自動生成できます。",
-      options: { source: (doc: Record<string, unknown>) => {
-        const title = doc.title as { _key: string; value: string }[] | undefined;
-        return title?.find((t) => t._key === "ja")?.value || "";
-      }, maxLength: 96 },
+      options: {
+        source: (doc: Record<string, unknown>) => {
+          const title = doc.title as { _key: string; value: string }[] | undefined;
+          return title?.find((t) => t._key === "en")?.value || title?.find((t) => t._key === "ja")?.value || "";
+        },
+        slugify: (input: string) =>
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/[&/\\#,+()$~%.'":*?<>{}!@^=;`[\]|]/g, "")
+            .slice(0, 96),
+        maxLength: 96,
+      },
       validation: (Rule) => Rule.required().error("スラッグは必須です"),
     }),
     defineField({
@@ -74,16 +91,8 @@ export default defineType({
     defineField({
       name: "category",
       title: "カテゴリー",
-      type: "string",
-      description: "記事のカテゴリータグ。カード上にラベルとして表示されます。",
-      options: {
-        list: [
-          { title: "イベントレポート", value: "event-report" },
-          { title: "文化", value: "culture" },
-          { title: "コミュニティ", value: "community" },
-          { title: "お知らせ", value: "news" },
-        ],
-      },
+      type: "internationalizedArrayString",
+      description: "記事のカテゴリータグ（任意）。カード上にラベルとして表示されます。",
     }),
     defineField({
       name: "heroImage",
@@ -103,7 +112,7 @@ export default defineType({
     defineField({
       name: "excerpt",
       title: "抜粋",
-      type: "internationalizedArrayString",
+      type: "internationalizedArrayText",
       description:
         "一覧カードに表示される短い要約。省略時は本文から自動生成。",
     }),
@@ -118,6 +127,7 @@ export default defineType({
       name: "relatedPosts",
       title: "関連記事",
       type: "array",
+      fieldset: "attachments",
       of: [{ type: "reference", to: [{ type: "blogPost" }] }],
       description: "記事の下部に表示される関連記事（任意）。",
     }),
@@ -125,6 +135,7 @@ export default defineType({
       name: "documents",
       title: "資料",
       type: "array",
+      fieldset: "attachments",
       of: [{ type: "documentLink" }],
       description: "記事に添付するPDFや外部リンク（任意）。",
     }),
