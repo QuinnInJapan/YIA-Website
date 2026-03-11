@@ -3,7 +3,7 @@ import type { I18nString } from "@/lib/i18n";
 
 interface FeeRow {
   memberType: I18nString;
-  fee: string;
+  fee: I18nString;
 }
 
 interface FeeTableProps {
@@ -25,7 +25,7 @@ export default function FeeTable({ rows }: FeeTableProps) {
             <td>
               {ja(r.memberType)} {en(r.memberType)}
             </td>
-            <td>{r.fee}</td>
+            <td>{ja(r.fee)}</td>
           </tr>
         ))}
       </tbody>

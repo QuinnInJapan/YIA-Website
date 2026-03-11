@@ -16,6 +16,12 @@ export function imageUrl(image: SanityImage | undefined | null): string {
   return builder.image(image).auto("format").quality(90).url();
 }
 
+/** Generate a tiny low-quality placeholder URL for an image (20px wide, quality 20). */
+export function imageLqip(image: SanityImage | undefined | null): string {
+  if (!image?.asset?._ref) return "";
+  return builder.image(image).width(20).quality(20).auto("format").blur(10).url();
+}
+
 /** Convert a SanityFile to a CDN URL string. Returns "" if no asset.
  *  File _ref format: "file-{id}-{ext}" → https://cdn.sanity.io/files/{projectId}/{dataset}/{id}.{ext} */
 export function fileUrl(file: SanityFile | undefined | null): string {

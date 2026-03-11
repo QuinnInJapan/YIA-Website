@@ -1757,6 +1757,66 @@ html:has(:target) {
   word-break: break-word;
 }
 
+/* -- Membership Table -- */
+
+.membership-table {
+  border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.membership-table thead th {
+  background: var(--color-navy);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+}
+
+.membership-table__th-en {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+
+.membership-table tbody td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.membership-table__name {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.membership-table__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary, #555);
+}
+
+.membership-table__parens {
+  font-weight: 400;
+  font-size: var(--font-size-sm);
+  opacity: 0.7;
+}
+
+.membership-table__fee {
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-navy);
+}
+
+.membership-tables {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-md) 0;
+}
+
+.membership-table tbody tr:nth-child(even) {
+  background: var(--color-gray-light);
+}
+
 /* -- Document List -- */
 
 .doc-list {
@@ -1872,10 +1932,19 @@ html:has(:target) {
   aspect-ratio: 4 / 3;
 }
 
+.photo-gallery__item--loading {
+  background-color: var(--color-bg-muted, #e8e8e8);
+}
+
+.photo-gallery__item--loading img {
+  opacity: 0;
+}
+
 .photo-gallery__item img {
   object-fit: cover;
   border: none;
   border-radius: var(--radius-sm);
+  transition: opacity 0.3s ease;
 }
 
 .photo-gallery__item figcaption {
@@ -1943,12 +2012,41 @@ html:has(:target) {
   max-width: 92vw;
 }
 
+.photo-lightbox__image-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 120px;
+}
+
+.photo-lightbox__spinner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: lightbox-spin 0.8s linear infinite;
+}
+
+@keyframes lightbox-spin {
+  to { transform: rotate(360deg); }
+}
+
 .photo-lightbox__image {
   max-width: min(80vw, 1200px);
   max-height: 80vh;
   object-fit: contain;
   border-radius: var(--radius-md);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photo-lightbox__image--loaded {
+  opacity: 1;
 }
 
 .photo-lightbox__close {
@@ -2014,6 +2112,53 @@ html:has(:target) {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
+.photo-lightbox__thumbstrip {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  margin-top: var(--spacing-sm);
+  max-width: min(80vw, 1200px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.photo-lightbox__thumbstrip::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-lightbox__thumb {
+  flex-shrink: 0;
+  width: 110px;
+  height: 76px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+
+.photo-lightbox__thumb:hover {
+  opacity: 0.8;
+}
+
+.photo-lightbox__thumb--active {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.photo-lightbox__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .photo-lightbox__counter {
   position: relative;
   color: rgba(255, 255, 255, 0.5);
@@ -2040,7 +2185,16 @@ html:has(:target) {
 
   .photo-lightbox__image {
     max-width: 96vw;
-    max-height: 75vh;
+    max-height: 60vh;
+  }
+
+  .photo-lightbox__thumbstrip {
+    max-width: 96vw;
+  }
+
+  .photo-lightbox__thumb {
+    width: 64px;
+    height: 44px;
   }
 
   .photo-lightbox__nav {
@@ -3226,7 +3380,7 @@ html:has(:target) {
 
 /* -- Mobile Navigation (≤768px) -- */
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   /* Hide desktop header — nav bar becomes the combined header */
   .site-header {
     display: none;

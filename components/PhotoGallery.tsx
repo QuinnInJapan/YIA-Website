@@ -6,6 +6,7 @@ import Lightbox, { type LightboxItem } from "./Lightbox";
 
 interface GalleryImage {
   src: string;
+  lqip?: string;
   alt: string;
   captionJa?: string;
   captionEn?: string;
@@ -18,6 +19,7 @@ interface PhotoGalleryProps {
 export default function PhotoGallery({ images }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   const lightboxItems: LightboxItem[] = images.map((img) => ({
     src: img.src,
@@ -30,6 +32,10 @@ export default function PhotoGallery({ images }: PhotoGalleryProps) {
     setLightboxOpen(true);
   }, []);
 
+  const handleImageLoad = useCallback((idx: number) => {
+    setLoadedImages((prev) => new Set(prev).add(idx));
+  }, []);
+
   const count = images.length;
 
   const makeFigure = (img: GalleryImage, idx: number, cls?: string) => (
@@ -40,12 +46,16 @@ export default function PhotoGallery({ images }: PhotoGalleryProps) {
       onClick={() => openLightbox(idx)}
       key={idx}
     >
-      <figure className="photo-gallery__item">
+      <figure
+        className={`photo-gallery__item${loadedImages.has(idx) ? "" : " photo-gallery__item--loading"}`}
+        style={!loadedImages.has(idx) && img.lqip ? { backgroundImage: `url(${img.lqip})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+      >
         <Image
           src={img.src}
           alt={img.alt}
           fill
           sizes={cls ? "100vw" : "(max-width: 768px) 50vw, 33vw"}
+          onLoad={() => handleImageLoad(idx)}
         />
         {img.captionJa && (
           <figcaption>

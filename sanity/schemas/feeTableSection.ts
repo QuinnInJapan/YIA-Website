@@ -53,7 +53,8 @@ export default defineType({
           type: "object",
           fields: [
             defineField({ name: "memberType", title: "種別", type: "internationalizedArrayString", description: "会員種別（例：個人会員、法人会員）。" }),
-            defineField({ name: "fee", title: "会費", type: "string", description: "年会費の金額（例：¥3,000）。" }),
+            defineField({ name: "fee", title: "会費", type: "internationalizedArrayString", description: "年会費の金額（例：¥3,000 / ¥3,000）。" }),
+            defineField({ name: "description", title: "説明", type: "internationalizedArrayString", description: "この会員種別の説明（任意）。" }),
           ],
         },
       ],

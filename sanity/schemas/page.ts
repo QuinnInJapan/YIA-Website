@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
+import { HeroImageField } from "../components/HeroImagePreview";
 
 export default defineType({
   name: "page",
@@ -73,7 +74,8 @@ export default defineType({
 
       of: [{ type: "imageFile" }],
       options: { layout: "grid" },
-      description: "ページ上部に表示する画像（任意）。",
+      description: "ページ上部に表示する画像（任意）。1枚目がヒーロー画像として大きく表示されます。",
+      components: { field: HeroImageField },
     }),
     defineField({
       name: "sections",

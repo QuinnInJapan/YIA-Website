@@ -1,6 +1,6 @@
 import type React from "react";
 import type { PortableTextComponents } from "@portabletext/react";
-import { urlFor, imageUrl } from "@/lib/sanity/image";
+import { urlFor, imageUrl, imageLqip } from "@/lib/sanity/image";
 import { ja, en } from "@/lib/i18n";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
@@ -57,6 +57,7 @@ export function makeBlogPtComponents(h2IdMap?: Record<string, string>): Portable
           .filter((img) => img.file?.asset?._ref)
           .map((img) => ({
             src: imageUrl(img.file!),
+            lqip: imageLqip(img.file!),
             alt: ja(img.caption) || "",
             captionJa: ja(img.caption),
             captionEn: en(img.caption),

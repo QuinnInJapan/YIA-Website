@@ -1,7 +1,7 @@
 import type { GallerySection, ImageFile } from "@/lib/types";
 import type { SectionHandler } from "./types";
 import { ja, en } from "@/lib/i18n";
-import { imageUrl } from "@/lib/sanity/image";
+import { imageUrl, imageLqip } from "@/lib/sanity/image";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 
 export function buildGalleryImages(images: ImageFile[]) {
@@ -9,6 +9,7 @@ export function buildGalleryImages(images: ImageFile[]) {
     .filter((img) => img.file?.asset?._ref)
     .map((img) => ({
       src: imageUrl(img.file),
+      lqip: imageLqip(img.file),
       alt: ja(img.caption) || "",
       captionJa: ja(img.caption),
       captionEn: en(img.caption),

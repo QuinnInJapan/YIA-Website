@@ -6,6 +6,7 @@ const PhotoGallery = dynamic(() => import("./PhotoGallery"), { ssr: false });
 
 interface GalleryImage {
   src: string;
+  lqip?: string;
   alt: string;
   captionJa?: string;
   captionEn?: string;

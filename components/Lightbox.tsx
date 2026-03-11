@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 
 export interface LightboxItem {
   src: string;
   alt: string;
   caption: string;
+}
+
+/** Generate a small thumbnail URL from a Sanity image URL */
+function thumbSrc(src: string): string {
+  const encoded = encodeSrc(src);
+  // Sanity CDN URLs support query params for transforms
+  if (encoded.includes("cdn.sanity.io")) {
+    const sep = encoded.includes("?") ? "&" : "?";
+    return `${encoded}${sep}w=160&q=60`;
+  }
+  return encoded;
 }
 
 /** Encode src for browser: leave full URLs intact, encode local path segments */
@@ -53,9 +64,24 @@ export default function Lightbox({
   onClose,
   onNavigate,
 }: LightboxProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const thumbStripRef = useRef<HTMLDivElement>(null);
+
+  // Reset loaded state when navigating to a new image
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [currentIndex]);
+
+  // Scroll active thumbnail into view
+  useEffect(() => {
+    const strip = thumbStripRef.current;
+    if (!strip) return;
+    const active = strip.children[currentIndex] as HTMLElement | undefined;
+    active?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }, [currentIndex]);
 
   const show = useCallback(
     (idx: number) => {
@@ -63,6 +89,18 @@ export default function Lightbox({
     },
     [items.length, onNavigate]
   );
+
+  // Preload all images when lightbox opens
+  useEffect(() => {
+    if (!isOpen) return;
+    items.forEach((item, i) => {
+      if (i === currentIndex) return; // current image already loading
+      const img = new Image();
+      img.src = encodeSrc(item.src);
+    });
+    // Only run on open, not on every navigation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   // Lock body scroll, keyboard nav, focus management, and touch gestures
   useEffect(() => {
@@ -172,12 +210,16 @@ export default function Lightbox({
         >
           <LightboxArrowIcon direction="prev" />
         </button>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="photo-lightbox__image"
-          src={encodeSrc(item.src)}
-          alt={item.alt}
-        />
+        <div className="photo-lightbox__image-wrap">
+          {!imageLoaded && <div className="photo-lightbox__spinner" aria-label="Loading image" />}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className={`photo-lightbox__image${imageLoaded ? " photo-lightbox__image--loaded" : ""}`}
+            src={encodeSrc(item.src)}
+            alt={item.alt}
+            onLoad={() => setImageLoaded(true)}
+          />
+        </div>
         <button
           className="photo-lightbox__nav photo-lightbox__nav--next"
           type="button"
@@ -189,6 +231,24 @@ export default function Lightbox({
       </div>
       {item.caption && (
         <div className="photo-lightbox__caption">{item.caption}</div>
+      )}
+      {items.length > 1 && (
+        <div className="photo-lightbox__thumbstrip" ref={thumbStripRef} role="tablist" aria-label="Gallery thumbnails">
+          {items.map((thumb, i) => (
+            <button
+              key={i}
+              className={`photo-lightbox__thumb${i === currentIndex ? " photo-lightbox__thumb--active" : ""}`}
+              type="button"
+              role="tab"
+              aria-selected={i === currentIndex}
+              aria-label={`Image ${i + 1} of ${items.length}`}
+              onClick={() => show(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={thumbSrc(thumb.src)} alt="" />
+            </button>
+          ))}
+        </div>
       )}
       <div className="photo-lightbox__counter" aria-live="polite">
         {currentIndex + 1} / {items.length}

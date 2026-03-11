@@ -191,7 +191,7 @@ export interface BoardMembersSection {
 export interface FeeTableSection {
   _type: "feeTable";
   title: I18nString;
-  rows: { memberType: I18nString; fee: string }[];
+  rows: { memberType: I18nString; fee: I18nString; description?: I18nString }[];
 }
 
 export interface DirectoryListSection {
