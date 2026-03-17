@@ -4,10 +4,7 @@ import { formatDateDot } from "@/lib/date-format";
 import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import Pagination from "@/components/Pagination";
-import {
-  fetchAnnouncements,
-  fetchAnnouncementCount,
-} from "@/lib/sanity/queries";
+import { fetchAnnouncements, fetchAnnouncementCount } from "@/lib/sanity/queries";
 import type { Announcement } from "@/lib/types";
 
 const PAGE_SIZE = 10;
@@ -30,16 +27,13 @@ export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
       mainClass="layout-category"
       sectionHtml={
         <>
+          <Pagination currentPage={page} totalPages={totalPages} basePath="/announcements" />
           <div className="oshirase-list oshirase-list--page">
             {announcements.map((a) => {
               const dateStr = a.date ? formatDateDot(a.date) : "";
 
               return (
-                <Link
-                  href={`/announcements/${a._id}`}
-                  className="oshirase-item"
-                  key={a._id}
-                >
+                <Link href={`/announcements/${a._id}`} className="oshirase-item" key={a._id}>
                   <span className="oshirase-date">
                     {dateStr}
                     {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}
@@ -56,11 +50,7 @@ export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
               );
             })}
           </div>
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            basePath="/announcements"
-          />
+          <Pagination currentPage={page} totalPages={totalPages} basePath="/announcements" />
         </>
       }
     />

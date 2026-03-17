@@ -14,7 +14,8 @@ const PAGE_SIZE = 10;
 
 export const metadata: Metadata = {
   title: "ブログ | 横須賀国際交流協会",
-  description: "横須賀国際交流協会のブログ記事一覧。イベントレポート、文化、コミュニティの話題をお届けします。",
+  description:
+    "横須賀国際交流協会のブログ記事一覧。イベントレポート、文化、コミュニティの話題をお届けします。",
 };
 
 interface PageProps {
@@ -29,7 +30,7 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
     fetchBlogPosts(currentPage, PAGE_SIZE),
     fetchBlogPostCount(),
   ]);
-  const allPosts = ((posts) ?? []) as BlogPost[];
+  const allPosts = (posts ?? []) as BlogPost[];
   const totalPages = Math.ceil((totalCount as number) / PAGE_SIZE);
 
   return (
@@ -39,6 +40,7 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
       sectionHtml={
         allPosts.length > 0 ? (
           <>
+            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
             <div className="cat-list">
               {allPosts.map((post) => {
                 const heroSrc = imageUrl(post.heroImage);
@@ -62,6 +64,12 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
                       </div>
                     )}
                     <div className="cat-item__body">
+                      <div className="cat-item__meta">
+                        {ja(post.category) && (
+                          <span className="cat-item__category">{ja(post.category)}</span>
+                        )}
+                        {dateStr && <time className="cat-item__date">{dateStr}</time>}
+                      </div>
                       <h2 className="cat-item__title">
                         <Link href={`/blog/${post.slug}`} className="cat-item__link">
                           {ja(post.title)}
@@ -72,29 +80,13 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
                           </span>
                         )}
                       </h2>
-                      <div className="cat-item__meta">
-                        {ja(post.category) && (
-                          <span className="cat-item__category">
-                            {ja(post.category)}
-                          </span>
-                        )}
-                        {dateStr && (
-                          <time className="cat-item__date">{dateStr}</time>
-                        )}
-                      </div>
-                      {ja(post.excerpt) && (
-                        <p className="cat-item__excerpt">{ja(post.excerpt)}</p>
-                      )}
+                      {ja(post.excerpt) && <p className="cat-item__excerpt">{ja(post.excerpt)}</p>}
                     </div>
                   </article>
                 );
               })}
             </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              basePath="/blog"
-            />
+            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
           </>
         ) : (
           <p className="blog-empty">まだ記事がありません。 No posts yet.</p>

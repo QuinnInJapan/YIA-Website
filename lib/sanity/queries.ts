@@ -39,6 +39,16 @@ export async function fetchSiteData() {
   });
 }
 
+// ── Homepage "About" variant (standalone singleton) ─────────────
+export async function fetchHomepageAbout() {
+  return timed("homepageAbout", async () => {
+    const { data } = await sanityFetch({
+      query: `*[_type == "homepageAbout"][0]`,
+    });
+    return data;
+  });
+}
+
 // ── Single page fetch ───────────────────────────────────────────
 export async function fetchPageBySlug(slug: string) {
   const { data } = await sanityFetch({
@@ -159,13 +169,9 @@ export async function fetchAnnouncementById(id: string) {
 }
 
 export function fetchAllAnnouncementIdsStatic() {
-  return client.fetch<{ _id: string }[]>(
-    `*[_type == "announcement"]{ _id }`
-  );
+  return client.fetch<{ _id: string }[]>(`*[_type == "announcement"]{ _id }`);
 }
 
 export function fetchAllBlogSlugsStatic() {
-  return client.fetch<{ slug: string }[]>(
-    `*[_type == "blogPost"]{ "slug": slug.current }`
-  );
+  return client.fetch<{ slug: string }[]>(`*[_type == "blogPost"]{ "slug": slug.current }`);
 }

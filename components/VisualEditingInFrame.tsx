@@ -11,6 +11,12 @@ export default function VisualEditingInFrame() {
     setInIframe(window.self !== window.top);
   }, []);
 
-  if (!inIframe) return null;
+  // Skip overlays for custom tool previews (they pass ?preview param)
+  const [isToolPreview, setIsToolPreview] = useState(false);
+  useEffect(() => {
+    setIsToolPreview(new URLSearchParams(window.location.search).has("preview"));
+  }, []);
+
+  if (!inIframe || isToolPreview) return null;
   return <VisualEditing />;
 }
