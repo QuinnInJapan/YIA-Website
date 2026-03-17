@@ -35,6 +35,7 @@ import announcement from "./announcement";
 import blogPost from "./blogPost";
 import sidebar from "./sidebar";
 import homepage from "./homepage";
+import homepageAbout from "./homepageAbout";
 import page from "./page";
 
 export const schemaTypes = [
@@ -73,5 +74,6 @@ export const schemaTypes = [
   blogPost,
   sidebar,
   homepage,
+  homepageAbout,
   page,
 ];

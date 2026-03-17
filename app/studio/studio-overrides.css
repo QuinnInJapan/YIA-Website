@@ -1,0 +1,87 @@
+/* ── YIA Studio Theme ─────────────────────────────────────
+   Maps the website's navy palette onto Sanity Studio.
+
+   Sanity UI sets --card-* vars as inline styles on every
+   Card element, so we must use a wildcard selector with
+   !important to override them.
+   ──────────────────────────────────────────────────────── */
+
+[data-ui="Studio"],
+[data-ui="Studio"] * {
+  /* ── Typography ──────────────────────────────────────── */
+  --font-size-0: 13px;
+  --font-size-1: 15px;
+  --font-size-2: 17px;
+  --font-size-3: 21px;
+  --font-size-4: 25px;
+
+  /* ── Surface ─────────────────────────────────────────── */
+  --card-bg-color: #f7f9fb !important;
+  --card-bg2-color: #fcfdfe !important;
+  --card-fg-color: #1a2030 !important;
+
+  /* ── Borders & hairlines ─────────────────────────────── */
+  --card-border-color: #d0d8e0 !important;
+  --card-hairline-hard-color: #d0d8e0 !important;
+  --card-hairline-soft-color: #eef1f5 !important;
+
+  /* ── Muted / secondary text ──────────────────────────── */
+  --card-muted-fg-color: #3d4f5f !important;
+  --card-muted-bg-color: #eef1f5 !important;
+  --card-icon-color: #3d4f5f !important;
+
+  /* ── Brand / accent (navy) ───────────────────────────── */
+  --card-focus-ring-color: #1e3a5f !important;
+  --card-accent-fg-color: #1e3a5f !important;
+  --card-link-color: #1e4a7a !important;
+  --card-link-fg-color: #1e4a7a !important;
+
+  /* ── Code blocks ─────────────────────────────────────── */
+  --card-code-bg-color: #eef1f5 !important;
+  --card-code-fg-color: #1a2030 !important;
+
+  /* ── Shadows (navy-tinted) ───────────────────────────── */
+  --card-shadow-outline-color: rgba(30, 58, 95, 0.08) !important;
+  --card-shadow-umbra-color: rgba(19, 40, 69, 0.12) !important;
+  --card-shadow-penumbra-color: rgba(19, 40, 69, 0.07) !important;
+  --card-shadow-ambient-color: rgba(19, 40, 69, 0.05) !important;
+
+  /* ── Backdrop (overlay) ──────────────────────────────── */
+  --card-backdrop-color: rgba(15, 25, 50, 0.55) !important;
+
+  /* ── Inputs ──────────────────────────────────────────── */
+  --input-fg-color: #1a2030 !important;
+  --input-placeholder-color: #9aa8b8 !important;
+
+  /* ── Badge: primary (navy) ───────────────────────────── */
+  --card-badge-primary-bg-color: rgba(30, 58, 95, 0.1) !important;
+  --card-badge-primary-fg-color: #1e3a5f !important;
+  --card-badge-primary-icon-color: #1e3a5f !important;
+  --card-badge-primary-dot-color: #1e3a5f !important;
+
+  /* ── Badge: default ──────────────────────────────────── */
+  --card-badge-default-bg-color: #eef1f5 !important;
+  --card-badge-default-fg-color: #3d4f5f !important;
+  --card-badge-default-dot-color: #9aa8b8 !important;
+
+  /* ── Badge: positive ─────────────────────────────────── */
+  --card-badge-positive-bg-color: rgba(45, 120, 80, 0.1) !important;
+  --card-badge-positive-fg-color: #2d7850 !important;
+  --card-badge-positive-dot-color: #2d7850 !important;
+
+  /* ── Badge: caution ──────────────────────────────────── */
+  --card-badge-caution-bg-color: rgba(133, 95, 7, 0.1) !important;
+  --card-badge-caution-fg-color: #855f07 !important;
+  --card-badge-caution-dot-color: #855f07 !important;
+  --card-badge-caution-icon-color: #855f07 !important;
+
+  /* ── Badge: critical ─────────────────────────────────── */
+  --card-badge-critical-bg-color: rgba(204, 85, 51, 0.1) !important;
+  --card-badge-critical-fg-color: #cc5533 !important;
+  --card-badge-critical-dot-color: #cc5533 !important;
+  --card-badge-critical-icon-color: #cc5533 !important;
+
+  /* ── Skeleton loading ────────────────────────────────── */
+  --card-skeleton-color-from: #eef1f5 !important;
+  --card-skeleton-color-to: #d0d8e0 !important;
+}

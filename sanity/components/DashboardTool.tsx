@@ -19,7 +19,6 @@ import {
 } from "@sanity/ui";
 import {
   AddIcon,
-
   EditIcon,
   PinIcon,
   CheckmarkCircleIcon,
@@ -106,9 +105,7 @@ function RecentAnnouncements() {
   const [creating, setCreating] = useState(false);
   const [createTitleJa, setCreateTitleJa] = useState("");
   const [createTitleEn, setCreateTitleEn] = useState("");
-  const [createDate, setCreateDate] = useState(
-    () => new Date().toISOString().slice(0, 10),
-  );
+  const [createDate, setCreateDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [createPinned, setCreatePinned] = useState(false);
   const [createStatus, setCreateStatus] = useState<SaveStatus>("idle");
 
@@ -131,11 +128,9 @@ function RecentAnnouncements() {
 
   // Real-time listener
   useEffect(() => {
-    const subscription = client
-      .listen('*[_type == "announcement"]')
-      .subscribe(() => {
-        fetchAnnouncements();
-      });
+    const subscription = client.listen('*[_type == "announcement"]').subscribe(() => {
+      fetchAnnouncements();
+    });
     return () => subscription.unsubscribe();
   }, [client, fetchAnnouncements]);
 
@@ -300,10 +295,7 @@ function RecentAnnouncements() {
               />
             </Stack>
             <Flex align="center" gap={3}>
-              <Switch
-                checked={createPinned}
-                onChange={() => setCreatePinned(!createPinned)}
-              />
+              <Switch checked={createPinned} onChange={() => setCreatePinned(!createPinned)} />
               <Label size={0}>固定表示</Label>
             </Flex>
             <Flex align="center" gap={2}>
@@ -313,9 +305,7 @@ function RecentAnnouncements() {
                 fontSize={1}
                 padding={2}
                 onClick={handleCreate}
-                disabled={
-                  createStatus === "saving" || !createTitleJa.trim()
-                }
+                disabled={createStatus === "saving" || !createTitleJa.trim()}
               />
               <Button
                 text="キャンセル"
@@ -372,13 +362,7 @@ function RecentAnnouncements() {
         const isExpanded = expandedId === a._id;
 
         return (
-          <Card
-            key={a._id}
-            padding={3}
-            radius={2}
-            border
-            tone={isExpanded ? "primary" : undefined}
-          >
+          <Card key={a._id} padding={3} radius={2} border tone={isExpanded ? "primary" : undefined}>
             {/* Collapsed row — always visible */}
             <Flex
               align="center"
@@ -394,12 +378,7 @@ function RecentAnnouncements() {
                 <Text size={0} style={{ flexShrink: 0 }}>
                   {a.date ?? "—"}
                 </Text>
-                <Text
-                  size={1}
-                  weight="medium"
-                  textOverflow="ellipsis"
-                  style={{ minWidth: 0 }}
-                >
+                <Text size={1} weight="medium" textOverflow="ellipsis" style={{ minWidth: 0 }}>
                   {a.titleJa ?? "（タイトルなし）"}
                 </Text>
               </Flex>
@@ -514,11 +493,7 @@ function RecentAnnouncements() {
                         tone="primary"
                         fontSize={1}
                         padding={2}
-                        onClick={() =>
-                          navigateStudio(
-                            `structure/announcements;${a._id}`,
-                          )
-                        }
+                        onClick={() => navigateStudio(`structure/announcements;${a._id}`)}
                       />
                       {confirmingDelete === a._id ? (
                         <Inline space={2}>
@@ -571,7 +546,6 @@ function RecentAnnouncements() {
 
 // ── Recent blog posts ─────────────────────────────────────
 
-
 function RecentBlogPosts() {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
@@ -599,10 +573,7 @@ function RecentBlogPosts() {
   }
 
   const fetchPosts = useCallback(() => {
-    Promise.all([
-      client.fetch<BlogPost[]>(BLOG_QUERY),
-      client.fetch<number>(BLOG_COUNT_QUERY),
-    ])
+    Promise.all([client.fetch<BlogPost[]>(BLOG_QUERY), client.fetch<number>(BLOG_COUNT_QUERY)])
       .then(([items, count]) => {
         setPosts(items);
         setTotalCount(count);
@@ -616,11 +587,9 @@ function RecentBlogPosts() {
   }, [fetchPosts]);
 
   useEffect(() => {
-    const subscription = client
-      .listen('*[_type == "blogPost"]')
-      .subscribe(() => {
-        fetchPosts();
-      });
+    const subscription = client.listen('*[_type == "blogPost"]').subscribe(() => {
+      fetchPosts();
+    });
     return () => subscription.unsubscribe();
   }, [client, fetchPosts]);
 
@@ -684,6 +653,19 @@ function RecentBlogPosts() {
 
   async function handleBlogDelete(id: string) {
     try {
+      // Find all posts that reference this one in relatedPosts and remove the reference
+      const referring = await client.fetch<string[]>(
+        `*[_type == "blogPost" && references($id)]._id`,
+        { id },
+      );
+      if (referring.length > 0) {
+        const tx = client.transaction();
+        for (const refId of referring) {
+          tx.patch(refId, (p) => p.unset([`relatedPosts[_ref=="${id}"]`]));
+        }
+        await tx.commit();
+      }
+
       await client.delete(id);
       setPosts((prev) => prev.filter((p) => p._id !== id));
       setExpandedId(null);
@@ -724,13 +706,7 @@ function RecentBlogPosts() {
         const isExpanded = expandedId === p._id;
 
         return (
-          <Card
-            key={p._id}
-            padding={3}
-            radius={2}
-            border
-            tone={isExpanded ? "primary" : undefined}
-          >
+          <Card key={p._id} padding={3} radius={2} border tone={isExpanded ? "primary" : undefined}>
             {/* Collapsed row */}
             <Flex
               align="center"
@@ -764,12 +740,7 @@ function RecentBlogPosts() {
                   />
                 )}
                 <Stack space={2} style={{ minWidth: 0 }}>
-                  <Text
-                    size={1}
-                    weight="medium"
-                    textOverflow="ellipsis"
-                    style={{ minWidth: 0 }}
-                  >
+                  <Text size={1} weight="medium" textOverflow="ellipsis" style={{ minWidth: 0 }}>
                     {p.titleJa ?? "（タイトルなし）"}
                   </Text>
                   <Flex align="center" gap={2}>
@@ -911,11 +882,7 @@ function RecentBlogPosts() {
                         tone="primary"
                         fontSize={1}
                         padding={2}
-                        onClick={() =>
-                          navigateStudio(
-                            `structure/blog;${p._id}`,
-                          )
-                        }
+                        onClick={() => navigateStudio(`structure/blog;${p._id}`)}
                       />
                       {blogConfirmingDelete === p._id ? (
                         <Inline space={2}>
