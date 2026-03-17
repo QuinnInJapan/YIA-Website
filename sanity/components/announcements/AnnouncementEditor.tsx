@@ -9,20 +9,19 @@ import type { PortableTextBlock } from "@portabletext/editor";
 import { HotspotCropTool, DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
-import { BodyEditor } from "./PteEditor";
-import type { GalleryImageItem } from "./GalleryPanel";
+import { BodyEditor } from "../blog/PteEditor";
+import type { GalleryImageItem } from "../blog/GalleryPanel";
 
 // ── Types ────────────────────────────────────────────────
 
-export interface BlogPostDoc {
+export interface AnnouncementDoc {
   _id: string;
   _rev?: string;
   _updatedAt?: string;
   title: { _key: string; value: string }[] | null;
   slug: { current: string } | null;
-  author: string | null;
-  publishedAt: string | null;
-  category: { _key: string; value: string }[] | null;
+  date: string | null;
+  pinned: boolean | null;
   heroImage: {
     asset?: { _ref: string };
     alt?: { _key: string; value: string }[];
@@ -31,21 +30,27 @@ export interface BlogPostDoc {
   } | null;
   excerpt: { _key: string; value: string }[] | null;
   body: { _key: string; value: PortableTextBlock[] }[] | null;
+  documents: DocumentLinkItem[] | null;
+}
+
+interface DocumentLinkItem {
+  _key: string;
+  _type: "documentLink";
+  label?: { _key: string; value: string }[];
+  file?: { asset: { _ref: string } };
+  url?: string;
+  type?: string;
+  fileType?: string;
 }
 
 // ── Constants ────────────────────────────────────────────
 
 export const DOC_PROJECTION = `{
-  _id, _rev, _updatedAt, title, slug, author, publishedAt, category,
-  heroImage, excerpt, body
+  _id, _rev, _updatedAt, title, slug, date, pinned,
+  heroImage, excerpt, body, documents
 }`;
 
 // ── Helpers ──────────────────────────────────────────────
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return "下書き";
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
 
 function formatRelativeTime(dateStr: string | undefined | null): string {
   if (!dateStr) return "";
@@ -60,32 +65,22 @@ function formatRelativeTime(dateStr: string | undefined | null): string {
   return new Date(dateStr).toLocaleDateString("ja-JP");
 }
 
-// ── PostEditor ───────────────────────────────────────────
+// ── AnnouncementEditor ──────────────────────────────────
 
-export function PostEditor({
+export function AnnouncementEditor({
   documentId,
   onOpenImagePicker,
-  onOpenGalleryEditor,
-  activeGalleryBlockKey,
-  onDeselectGallery,
   onDelete,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
-  onOpenGalleryEditor: (
-    blockKey: string,
-    images: GalleryImageItem[],
-    onUpdate: (images: GalleryImageItem[]) => void,
-  ) => void;
-  activeGalleryBlockKey: string | null;
-  onDeselectGallery: () => void;
   onDelete: () => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
 
-  const [publishedDoc, setPublishedDoc] = useState<BlogPostDoc | null>(null);
-  const [draftDoc, setDraftDoc] = useState<BlogPostDoc | null>(null);
+  const [publishedDoc, setPublishedDoc] = useState<AnnouncementDoc | null>(null);
+  const [draftDoc, setDraftDoc] = useState<AnnouncementDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"saved" | "dirty" | "saving" | "error">("saved");
@@ -99,24 +94,20 @@ export function PostEditor({
       setFrozenHeight(bodyContainerRef.current.offsetHeight);
     }
     setBodyLang(lang);
-    // Release the frozen height after the editor has mounted
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setFrozenHeight(null));
     });
   }, []);
 
-  // Always show draft if available, otherwise published
   const doc = draftDoc ?? publishedDoc;
   const hasDraft = draftDoc !== null;
 
-  // Track local edits (only apply when viewing draft)
-  const [edits, setEdits] = useState<Partial<BlogPostDoc>>({});
+  const [edits, setEdits] = useState<Partial<AnnouncementDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Merged doc = fetched + local edits
   const merged = useMemo(() => {
     if (!doc) return null;
-    return { ...doc, ...edits } as BlogPostDoc;
+    return { ...doc, ...edits } as AnnouncementDoc;
   }, [doc, edits]);
 
   // ── Load document ──────────────────────────────────────
@@ -127,8 +118,8 @@ export function PostEditor({
     const draftId = `drafts.${pubId}`;
 
     Promise.all([
-      client.fetch<BlogPostDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: pubId }),
-      client.fetch<BlogPostDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: draftId }),
+      client.fetch<AnnouncementDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: pubId }),
+      client.fetch<AnnouncementDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: draftId }),
     ])
       .then(([pub, draft]) => {
         setPublishedDoc(pub);
@@ -143,7 +134,7 @@ export function PostEditor({
   // ── Auto-save ──────────────────────────────────────────
 
   const saveToSanity = useCallback(
-    async (updates: Partial<BlogPostDoc>) => {
+    async (updates: Partial<AnnouncementDoc>) => {
       const baseDoc = draftDoc ?? publishedDoc;
       if (!baseDoc) return;
       setSaving(true);
@@ -151,15 +142,13 @@ export function PostEditor({
       try {
         const pubId = documentId.replace(/^drafts\./, "");
         const draftId = `drafts.${pubId}`;
-        // Ensure draft exists
         await client.createIfNotExists({
           ...baseDoc,
           _id: draftId,
-          _type: "blogPost",
+          _type: "announcement",
         });
         await client.patch(draftId).set(updates).commit();
-        // Re-fetch draft to get updated _updatedAt
-        const updated = await client.fetch<BlogPostDoc | null>(
+        const updated = await client.fetch<AnnouncementDoc | null>(
           `*[_id == $id][0] ${DOC_PROJECTION}`,
           { id: draftId },
         );
@@ -195,28 +184,25 @@ export function PostEditor({
       const pubId = documentId.replace(/^drafts\./, "");
       const draftId = `drafts.${pubId}`;
 
-      // Get latest draft
-      const draft = await client.fetch<BlogPostDoc | null>(
+      const draft = await client.fetch<AnnouncementDoc | null>(
         `*[_id == $draftId][0] ${DOC_PROJECTION}`,
         { draftId },
       );
       const source = draft ?? merged;
 
-      // Create/replace published version
       const { _rev, _updatedAt, ...rest } = source;
       await client.createOrReplace({
         ...rest,
         _id: pubId,
-        _type: "blogPost",
+        _type: "announcement",
       });
 
-      // Delete draft
       await client.delete(draftId).catch(() => {});
 
-      // Refresh state
-      const newPub = await client.fetch<BlogPostDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, {
-        id: pubId,
-      });
+      const newPub = await client.fetch<AnnouncementDoc | null>(
+        `*[_id == $id][0] ${DOC_PROJECTION}`,
+        { id: pubId },
+      );
       setPublishedDoc(newPub);
       setDraftDoc(null);
       setEdits({});
@@ -244,10 +230,10 @@ export function PostEditor({
     }
   }
 
-  // ── Delete post ───────────────────────────────────────
+  // ── Delete ─────────────────────────────────────────────
 
-  async function handleDeletePost() {
-    const label = !publishedDoc ? "この下書き" : "この記事（公開版・下書き含む）";
+  async function handleDelete() {
+    const label = !publishedDoc ? "この下書き" : "このお知らせ（公開版・下書き含む）";
     if (!confirm(`${label}を完全に削除しますか？この操作は元に戻せません。`)) return;
     const pubId = documentId.replace(/^drafts\./, "");
     const draftId = `drafts.${pubId}`;
@@ -271,10 +257,50 @@ export function PostEditor({
     });
   }
 
-  // ── Render ─────────────────────────────────────────────
+  // ── Documents ─────────────────────────────────────────
 
-  const slug = merged?.slug?.current ?? null;
-  const previewUrl = slug ? `/blog/${slug}?preview` : null;
+  function handleRemoveDocument(key: string) {
+    const docs = (merged?.documents ?? []).filter((d) => d._key !== key);
+    updateField("documents", docs);
+  }
+
+  function handleAddUrlDocument(label: string, url: string) {
+    const docs = merged?.documents ?? [];
+    const newDoc: DocumentLinkItem = {
+      _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+      _type: "documentLink",
+      label: [{ _key: "ja", value: label }],
+      url,
+      type: url.includes("youtube") ? "youtube" : "website",
+    };
+    updateField("documents", [...docs, newDoc]);
+  }
+
+  async function handleFileUpload(file: File) {
+    try {
+      const asset = await client.assets.upload("file", file);
+      const docs = merged?.documents ?? [];
+      const ext = file.name.split(".").pop()?.toUpperCase() ?? "";
+      const newDoc: DocumentLinkItem = {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        _type: "documentLink",
+        label: [{ _key: "ja", value: file.name.replace(/\.[^.]+$/, "") }],
+        file: { asset: { _ref: asset._id } },
+        type: "document",
+        fileType: ext,
+      };
+      updateField("documents", [...docs, newDoc]);
+    } catch (err) {
+      console.error("File upload failed:", err);
+    }
+  }
+
+  // ── Gallery no-ops (required by BodyEditor interface) ──
+
+  const handleOpenGalleryEditor = useCallback(() => {}, []);
+  const handleDeselectGallery = useCallback(() => {}, []);
+
+  // ── Render ─────────────────────────────────────────────
 
   const statusLabel: Record<string, string> = {
     saved: "保存済み",
@@ -295,7 +321,6 @@ export function PostEditor({
       <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
         <Flex align="center" justify="space-between">
           <Flex align="center" gap={2}>
-            {/* Status badge */}
             <span
               style={{
                 display: "inline-block",
@@ -337,7 +362,7 @@ export function PostEditor({
               tone="critical"
               fontSize={0}
               padding={2}
-              onClick={handleDeletePost}
+              onClick={handleDelete}
               disabled={saving}
             />
             <Button
@@ -353,18 +378,13 @@ export function PostEditor({
         </Flex>
       </Box>
 
-      {/* Content area — title, metadata, body editor */}
+      {/* Content area */}
       {!merged ? (
         <Flex flex={1} align="center" justify="center">
           <LoadingDots />
         </Flex>
       ) : (
-        <div
-          style={{
-            flex: 1,
-            overflow: "auto",
-          }}
-        >
+        <div style={{ flex: 1, overflow: "auto" }}>
           <div
             style={{
               maxWidth: 720,
@@ -373,7 +393,7 @@ export function PostEditor({
               padding: "16px 24px",
             }}
           >
-            {/* Hero image — compact inline */}
+            {/* Hero image */}
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
                 ヒーロー画像
@@ -502,7 +522,7 @@ export function PostEditor({
               />
             </div>
 
-            {/* Inline metadata grid */}
+            {/* Metadata grid */}
             <div
               style={{
                 display: "grid",
@@ -528,39 +548,36 @@ export function PostEditor({
               </div>
               <div>
                 <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                  公開日
+                  日付
                 </div>
                 <TextInput
                   fontSize={0}
                   type="date"
-                  value={merged.publishedAt ? merged.publishedAt.slice(0, 10) : ""}
-                  onChange={(e) => {
-                    const val = e.currentTarget.value;
-                    updateField("publishedAt", val ? new Date(val).toISOString() : null);
+                  value={merged.date ?? ""}
+                  onChange={(e) => updateField("date", e.currentTarget.value || null)}
+                />
+              </div>
+              <div>
+                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                  固定表示
+                </div>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    cursor: "pointer",
+                    fontSize: 13,
                   }}
-                />
-              </div>
-              <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                  著者
-                </div>
-                <TextInput
-                  fontSize={0}
-                  value={merged.author ?? ""}
-                  onChange={(e) => updateField("author", e.currentTarget.value)}
-                />
-              </div>
-              <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                  カテゴリー
-                </div>
-                <TextInput
-                  fontSize={0}
-                  value={i18nGet(merged.category, "ja")}
-                  onChange={(e) =>
-                    updateField("category", i18nSet(merged.category, "ja", e.currentTarget.value))
-                  }
-                />
+                >
+                  <input
+                    type="checkbox"
+                    checked={merged.pinned ?? false}
+                    onChange={(e) => updateField("pinned", e.target.checked)}
+                    style={{ width: 16, height: 16 }}
+                  />
+                  上部に固定
+                </label>
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
                 <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
@@ -587,14 +604,8 @@ export function PostEditor({
               </div>
             </div>
 
-            {/* Language toggle + body editor */}
-            <div
-              ref={bodyContainerRef}
-              style={{
-                minHeight: frozenHeight ?? undefined,
-              }}
-            >
-              {/* Language toggle */}
+            {/* Body editor with language toggle */}
+            <div ref={bodyContainerRef} style={{ minHeight: frozenHeight ?? undefined }}>
               <div
                 style={{
                   display: "flex",
@@ -643,11 +654,19 @@ export function PostEditor({
                 initialValue={i18nGetBody(merged.body, bodyLang)}
                 onChange={(value) => updateField("body", i18nSetBody(merged.body, bodyLang, value))}
                 onOpenImagePicker={onOpenImagePicker}
-                onOpenGalleryEditor={onOpenGalleryEditor}
-                activeGalleryBlockKey={activeGalleryBlockKey}
-                onDeselectGallery={onDeselectGallery}
+                onOpenGalleryEditor={handleOpenGalleryEditor}
+                activeGalleryBlockKey={null}
+                onDeselectGallery={handleDeselectGallery}
               />
             </div>
+
+            {/* Documents section */}
+            <DocumentsSection
+              documents={merged.documents ?? []}
+              onRemove={handleRemoveDocument}
+              onAddUrl={handleAddUrlDocument}
+              onUploadFile={handleFileUpload}
+            />
           </div>
         </div>
       )}
@@ -669,6 +688,194 @@ export function PostEditor({
           }}
           onClose={() => setShowHotspotCrop(false)}
         />
+      )}
+    </div>
+  );
+}
+
+// ── Documents Section ───────────────────────────────────
+
+function DocumentsSection({
+  documents,
+  onRemove,
+  onAddUrl,
+  onUploadFile,
+}: {
+  documents: DocumentLinkItem[];
+  onRemove: (key: string) => void;
+  onAddUrl: (label: string, url: string) => void;
+  onUploadFile: (file: File) => void;
+}) {
+  const [showAddUrl, setShowAddUrl] = useState(false);
+  const [urlLabel, setUrlLabel] = useState("");
+  const [urlValue, setUrlValue] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleSubmitUrl() {
+    if (!urlLabel.trim() || !urlValue.trim()) return;
+    onAddUrl(urlLabel.trim(), urlValue.trim());
+    setUrlLabel("");
+    setUrlValue("");
+    setShowAddUrl(false);
+  }
+
+  const typeLabels: Record<string, string> = {
+    document: "PDF",
+    youtube: "YouTube",
+    website: "Web",
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        paddingTop: 16,
+        borderTop: "1px solid var(--card-border-color)",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 12,
+          color: "var(--card-muted-fg-color)",
+          marginBottom: 8,
+        }}
+      >
+        添付資料
+      </div>
+
+      {documents.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+          {documents.map((doc) => {
+            const label = doc.label?.find((l) => l._key === "ja")?.value ?? "（無題）";
+            const typeLabel = doc.type ? (typeLabels[doc.type] ?? doc.type) : "";
+            const fileTypeLabel = doc.fileType ?? "";
+            const subtitle = [typeLabel, fileTypeLabel].filter(Boolean).join(" · ");
+
+            return (
+              <div
+                key={doc._key}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "6px 10px",
+                  borderRadius: 4,
+                  border: "1px solid var(--card-border-color)",
+                  fontSize: 13,
+                }}
+              >
+                <span style={{ fontSize: 14 }}>{doc.file ? "📎" : "🔗"}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {label}
+                  </div>
+                  {subtitle && (
+                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                      {subtitle}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onRemove(doc._key)}
+                  style={{
+                    padding: "2px 6px",
+                    border: "none",
+                    borderRadius: 3,
+                    background: "transparent",
+                    color: "var(--card-muted-fg-color)",
+                    cursor: "pointer",
+                    fontSize: 14,
+                  }}
+                  title="削除"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {showAddUrl ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+            padding: 12,
+            border: "1px solid var(--card-border-color)",
+            borderRadius: 6,
+            marginBottom: 8,
+          }}
+        >
+          <TextInput
+            fontSize={0}
+            placeholder="ラベル（例：申込書）"
+            value={urlLabel}
+            onChange={(e) => setUrlLabel(e.currentTarget.value)}
+          />
+          <TextInput
+            fontSize={0}
+            placeholder="URL（https://...）"
+            value={urlValue}
+            onChange={(e) => setUrlValue(e.currentTarget.value)}
+          />
+          <Flex gap={2}>
+            <Button
+              text="追加"
+              tone="primary"
+              fontSize={0}
+              padding={2}
+              onClick={handleSubmitUrl}
+              disabled={!urlLabel.trim() || !urlValue.trim()}
+            />
+            <Button
+              text="キャンセル"
+              mode="ghost"
+              fontSize={0}
+              padding={2}
+              onClick={() => {
+                setShowAddUrl(false);
+                setUrlLabel("");
+                setUrlValue("");
+              }}
+            />
+          </Flex>
+        </div>
+      ) : (
+        <Flex gap={2}>
+          <Button
+            text="+ URLを追加"
+            mode="ghost"
+            fontSize={0}
+            padding={2}
+            onClick={() => setShowAddUrl(true)}
+          />
+          <Button
+            text="+ ファイルをアップロード"
+            mode="ghost"
+            fontSize={0}
+            padding={2}
+            onClick={() => fileInputRef.current?.click()}
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onUploadFile(file);
+              e.target.value = "";
+            }}
+          />
+        </Flex>
       )}
     </div>
   );

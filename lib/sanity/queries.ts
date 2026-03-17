@@ -26,7 +26,7 @@ export async function fetchSiteData() {
             items[]{ ..., pageRef-> }
           }
         },
-        "announcements": *[_type == "announcement"] | order(date desc),
+        "announcements": *[_type == "announcement"] | order(date desc) { ..., "slug": slug.current },
         "sidebar": *[_type == "sidebar"][0]{
           ...,
           memberRecruitment{ label, "slug": page->slug }
@@ -142,7 +142,10 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
     const { data } = await sanityFetch({
-      query: `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end]`,
+      query: `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end] {
+        ...,
+        "slug": slug.current
+      }`,
       params: { start, end },
     });
     return data;
@@ -161,15 +164,27 @@ export async function fetchAnnouncementCount() {
 export async function fetchAnnouncementById(id: string) {
   return timed(`announcement[${id}]`, async () => {
     const { data } = await sanityFetch({
-      query: `*[_type == "announcement" && _id == $id][0]`,
+      query: `*[_type == "announcement" && _id == $id][0] { ..., "slug": slug.current }`,
       params: { id },
     });
     return data;
   });
 }
 
+export async function fetchAnnouncementBySlug(slug: string) {
+  return timed(`announcement[slug:${slug}]`, async () => {
+    const { data } = await sanityFetch({
+      query: `*[_type == "announcement" && slug.current == $slug][0] { ..., "slug": slug.current }`,
+      params: { slug },
+    });
+    return data;
+  });
+}
+
 export function fetchAllAnnouncementIdsStatic() {
-  return client.fetch<{ _id: string }[]>(`*[_type == "announcement"]{ _id }`);
+  return client.fetch<{ _id: string; slug?: string }[]>(
+    `*[_type == "announcement"]{ _id, "slug": slug.current }`,
+  );
 }
 
 export function fetchAllBlogSlugsStatic() {
