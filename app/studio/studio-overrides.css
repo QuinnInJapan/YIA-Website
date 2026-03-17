@@ -85,3 +85,10 @@
   --card-skeleton-color-from: #eef1f5 !important;
   --card-skeleton-color-to: #d0d8e0 !important;
 }
+
+/* Reset global img styles that leak into Studio and break the hotspot editor */
+[data-ui="Studio"] img {
+  max-width: none;
+  height: unset;
+  display: unset;
+}
