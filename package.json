@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "test:e2e": "playwright test",
-    "typecheck": "tsc --noEmit",
-    "postinstall": "patch-package"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@portabletext/react": "^6.0.3",
@@ -31,7 +30,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.3.1",
-    "patch-package": "^8.0.1",
     "prettier": "3.8.1",
     "sharp": "^0.34.5",
     "svgpath": "^2.6.0",
