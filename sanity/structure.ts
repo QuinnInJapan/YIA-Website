@@ -1,7 +1,6 @@
 import type { StructureBuilder } from "sanity/structure";
 import {
   CogIcon,
-  BellIcon,
   HomeIcon,
   MenuIcon,
   ComponentIcon,
@@ -10,28 +9,17 @@ import {
   BookIcon,
   CalendarIcon,
   EarthGlobeIcon,
-  ComposeIcon,
 } from "@sanity/icons";
 
 // Singleton helper: opens directly to the document editor
-function singleton(
-  S: StructureBuilder,
-  id: string,
-  title: string,
-  icon?: React.ComponentType,
-) {
+function singleton(S: StructureBuilder, id: string, title: string, icon?: React.ComponentType) {
   const item = S.listItem().id(id).title(title);
   if (icon) item.icon(icon);
   return item.child(S.document().schemaType(id).documentId(id));
 }
 
 // Category group helper: filters pages by categoryRef reference
-function categoryGroup(
-  S: StructureBuilder,
-  id: string,
-  title: string,
-  icon?: React.ComponentType,
-) {
+function categoryGroup(S: StructureBuilder, id: string, title: string, icon?: React.ComponentType) {
   const item = S.listItem().id(id).title(title);
   if (icon) item.icon(icon);
   return item.child(
@@ -50,37 +38,7 @@ export function structure(S: StructureBuilder) {
     .id("content")
     .title("コンテンツ")
     .items([
-      // Most-used: Announcements
-      S.listItem()
-        .id("announcements")
-        .title("お知らせ")
-        .icon(BellIcon)
-        .child(
-          S.documentList()
-            .id("announcements")
-            .title("お知らせ")
-            .schemaType("announcement")
-            .apiVersion("2024-01-01")
-            .filter('_type == "announcement"')
-            .defaultOrdering([{ field: "date", direction: "desc" }]),
-        ),
-
-      // Blog posts
-      S.listItem()
-        .id("blog")
-        .title("ブログ")
-        .icon(ComposeIcon)
-        .child(
-          S.documentList()
-            .id("blog")
-            .title("ブログ記事")
-            .schemaType("blogPost")
-            .apiVersion("2024-01-01")
-            .filter('_type == "blogPost"')
-            .defaultOrdering([{ field: "publishedAt", direction: "desc" }]),
-        ),
-
-      // Second most-used: Homepage singleton
+      // Homepage singleton
       singleton(S, "homepage", "ホームページ", HomeIcon),
 
       S.divider(),

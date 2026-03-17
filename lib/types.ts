@@ -266,11 +266,17 @@ export interface Navigation {
 export interface Announcement {
   _type: "announcement";
   _id: string;
+  slug?: string;
   date?: string;
   pinned?: boolean;
   title: I18nString;
-  content: I18nString | I18nBlocks;
+  heroImage?: SanityImage & { alt?: I18nString };
+  excerpt?: I18nString;
+  body: I18nBlocks;
   documents?: Document[];
+  /** @deprecated Use body instead */
+  content?: I18nString | I18nBlocks;
+  /** @deprecated Use heroImage instead */
   image?: SanityImage;
 }
 

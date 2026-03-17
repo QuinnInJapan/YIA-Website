@@ -33,7 +33,11 @@ export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
               const dateStr = a.date ? formatDateDot(a.date) : "";
 
               return (
-                <Link href={`/announcements/${a._id}`} className="oshirase-item" key={a._id}>
+                <Link
+                  href={`/announcements/${a.slug || a._id}`}
+                  className="oshirase-item"
+                  key={a._id}
+                >
                   <span className="oshirase-date">
                     {dateStr}
                     {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
+  fetchAnnouncementBySlug,
   fetchAnnouncementById,
+  fetchAllAnnouncementSlugsStatic,
   fetchAllAnnouncementIdsStatic,
 } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
@@ -15,9 +17,26 @@ import LazyImage from "@/components/LazyImage";
 import BilingualPortableText from "@/components/BilingualPortableText";
 import type { Announcement } from "@/lib/types";
 
+async function fetchAnnouncement(id: string): Promise<Announcement | null> {
+  // Try slug first, then fall back to _id for legacy URLs
+  const bySlug = (await fetchAnnouncementBySlug(id)) as Announcement | null;
+  if (bySlug) return bySlug;
+  return (await fetchAnnouncementById(id)) as Announcement | null;
+}
+
 export async function generateStaticParams() {
-  const items = await fetchAllAnnouncementIdsStatic();
-  return (items ?? []).map(({ _id }) => ({ id: _id }));
+  const [slugItems, idItems] = await Promise.all([
+    fetchAllAnnouncementSlugsStatic(),
+    fetchAllAnnouncementIdsStatic(),
+  ]);
+  const params = new Set<string>();
+  for (const { slug } of slugItems ?? []) {
+    if (slug) params.add(slug);
+  }
+  for (const { _id } of idItems ?? []) {
+    params.add(_id);
+  }
+  return Array.from(params).map((id) => ({ id }));
 }
 
 export async function generateMetadata({
@@ -26,7 +45,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const ann = (await fetchAnnouncementById(id)) as Announcement | null;
+  const ann = await fetchAnnouncement(id);
   if (!ann) return {};
   return {
     title: `${ja(ann.title)} | お知らせ | 横須賀国際交流協会`,
@@ -40,16 +59,18 @@ export default async function AnnouncementDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const ann = (await fetchAnnouncementById(id)) as Announcement | null;
+  const ann = await fetchAnnouncement(id);
   if (!ann) notFound();
 
   const dateStr = ann.date ? formatDateDot(ann.date) : "";
+  // Support both new (body) and legacy (content) field names
+  const bodyField = ann.body ?? ann.content;
+  // Support both new (heroImage) and legacy (image) field names
+  const image = ann.heroImage ?? ann.image;
 
   return (
     <PageLayout
-      heroHtml={
-        <SolidHero titleJa="お知らせ" titleEn="Announcements" />
-      }
+      heroHtml={<SolidHero titleJa="お知らせ" titleEn="Announcements" />}
       mainClass="layout-program"
       sectionHtml={
         <article className="announcement-detail">
@@ -59,9 +80,7 @@ export default async function AnnouncementDetailPage({
                 {dateStr}
               </time>
             )}
-            {ann.pinned && (
-              <span className="announcement__pin">固定 Pinned</span>
-            )}
+            {ann.pinned && <span className="announcement__pin">固定 Pinned</span>}
           </div>
           <h1 className="announcement-detail__title">
             {ja(ann.title)}
@@ -71,10 +90,10 @@ export default async function AnnouncementDetailPage({
               </span>
             )}
           </h1>
-          <BilingualPortableText field={ann.content} />
-          {ann.image?.asset?._ref && (
+          {bodyField && <BilingualPortableText field={bodyField} />}
+          {image?.asset?._ref && (
             <div className="announcement-detail__image">
-              <LazyImage src={imageUrl(ann.image)} alt={ja(ann.title)} />
+              <LazyImage src={imageUrl(image)} alt={ja(ann.title)} />
             </div>
           )}
           {ann.documents && ann.documents.length > 0 && (
