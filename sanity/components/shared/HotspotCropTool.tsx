@@ -93,12 +93,23 @@ export function HotspotCropTool({
     startCrop: typeof crop;
   } | null>(null);
 
-  // Force re-render after mount to get container dimensions
-  const [, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // Track container size reactively so SVG overlay positions correctly on first render
+  const [containerSize, setContainerSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        setContainerSize({ w: entry.contentRect.width, h: entry.contentRect.height });
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-  const containerW = containerRef.current?.clientWidth ?? 0;
-  const containerH = containerRef.current?.clientHeight ?? 0;
+  const containerW = containerSize.w;
+  const containerH = containerSize.h;
   let imgW = containerW;
   let imgH = containerH;
   if (imgSize && containerW > 0 && containerH > 0) {
@@ -282,7 +293,7 @@ export function HotspotCropTool({
           }}
         >
           <div>
-            <div style={{ fontWeight: 600, fontSize: 13 }}>ホットスポット & 切り抜き</div>
+            <div style={{ fontWeight: 600, fontSize: 13 }}>切り抜き & フォーカス</div>
             <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginTop: 2 }}>
               四角形で切り抜き範囲を調整。円で常に表示する領域を指定。
             </div>
@@ -633,30 +644,16 @@ export function HotspotCropTool({
                     </div>
                     <div
                       style={{
-                        position: "relative",
                         width: "100%",
                         aspectRatio: `${w} / ${h}`,
-                        overflow: "hidden",
                         borderRadius: 2,
                         border: "1px solid var(--card-border-color)",
-                        background:
-                          "repeating-conic-gradient(#e5e5e5 0% 25%, #fff 0% 50%) 0 0 / 12px 12px",
+                        backgroundImage: `url(${imageUrl})`,
+                        backgroundSize: `${(1 / pr.w) * 100}% ${(1 / pr.h) * 100}%`,
+                        backgroundPosition: `${pr.w < 1 ? (pr.x / (1 - pr.w)) * 100 : 0}% ${pr.h < 1 ? (pr.y / (1 - pr.h)) * 100 : 0}%`,
+                        backgroundRepeat: "no-repeat",
                       }}
-                    >
-                      <img
-                        src={imageUrl}
-                        alt=""
-                        style={{
-                          position: "absolute",
-                          left: `${(-pr.x / pr.w) * 100}%`,
-                          top: `${(-pr.y / pr.h) * 100}%`,
-                          width: `${(1 / pr.w) * 100}%`,
-                          height: `${(1 / pr.h) * 100}%`,
-                          objectFit: "cover",
-                          objectPosition: "top left",
-                        }}
-                      />
-                    </div>
+                    />
                   </div>
                 );
               })}

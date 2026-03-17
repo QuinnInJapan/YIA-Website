@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   fetchAnnouncementById,
@@ -6,13 +7,10 @@ import {
   fetchAllAnnouncementIdsStatic,
 } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
-import { imageUrl } from "@/lib/sanity/image";
 import { resolveDocs } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
-import { SolidHero } from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
-import LazyImage from "@/components/LazyImage";
 import BilingualPortableText from "@/components/BilingualPortableText";
 import type { Announcement } from "@/lib/types";
 
@@ -58,14 +56,19 @@ export default async function AnnouncementDetailPage({
 
   const dateStr = ann.date ? formatDateDot(ann.date) : "";
   const bodyField = ann.body ?? ann.content;
-  const heroImg = ann.heroImage ?? ann.image;
 
   return (
     <PageLayout
-      heroHtml={<SolidHero titleJa="お知らせ" titleEn="Announcements" />}
+      heroHtml={null}
       mainClass="layout-program"
       sectionHtml={
         <article className="announcement-detail">
+          <Link href="/announcements" className="announcement-detail__back">
+            <span className="announcement-detail__back-ja">← お知らせ一覧</span>
+            <span className="announcement-detail__back-en" lang="en" translate="no">
+              All Announcements
+            </span>
+          </Link>
           <div className="announcement-detail__meta">
             {dateStr && (
               <time className="announcement-detail__date" dateTime={ann.date}>
@@ -83,11 +86,6 @@ export default async function AnnouncementDetailPage({
             )}
           </h1>
           <BilingualPortableText field={bodyField} />
-          {heroImg?.asset?._ref && (
-            <div className="announcement-detail__image">
-              <LazyImage src={imageUrl(heroImg)} alt={ja(ann.title)} />
-            </div>
-          )}
           {ann.documents && ann.documents.length > 0 && (
             <div className="announcement-detail__docs">
               <DocList docs={resolveDocs(ann.documents)} />

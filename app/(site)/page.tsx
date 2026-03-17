@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getSiteData } from "@/lib/data";
 import { ja } from "@/lib/i18n";
-import HomepageTemplate from "@/components/templates/HomepageTemplate";
+import HomepageTemplateAbout from "@/components/templates/HomepageTemplateAbout";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();
@@ -16,5 +16,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function HomePage() {
-  return <HomepageTemplate />;
+  return <HomepageTemplateAbout />;
 }

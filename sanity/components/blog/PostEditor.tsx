@@ -388,7 +388,13 @@ export function PostEditor({
                   }}
                 >
                   <img
-                    src={builder.image(merged.heroImage).width(720).auto("format").url()}
+                    src={builder
+                      .image(merged.heroImage)
+                      .width(720)
+                      .height(180)
+                      .fit("crop")
+                      .auto("format")
+                      .url()}
                     alt=""
                     style={{
                       width: "100%",
@@ -436,7 +442,7 @@ export function PostEditor({
                         backdropFilter: "blur(4px)",
                       }}
                     >
-                      ホットスポット
+                      切り抜き
                     </button>
                     <button
                       type="button"

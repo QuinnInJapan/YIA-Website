@@ -12,20 +12,21 @@ export const HeroImageField: ComponentType<ArrayFieldProps> = (props) => {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = imageUrlBuilder(client);
 
-  // Get the images array from the document
+  // Get the images array from the document (includes hotspot/crop on .file)
   const images = useFormValue(["images"]) as
-    | Array<{ file?: { asset?: { _ref: string } } }>
+    | Array<{
+        file?: {
+          asset?: { _ref: string };
+          hotspot?: { x: number; y: number; width: number; height: number };
+          crop?: { top: number; bottom: number; left: number; right: number };
+        };
+      }>
     | undefined;
 
-  const firstImage = images?.[0]?.file?.asset?._ref;
+  const firstFile = images?.[0]?.file;
 
-  const heroUrl = firstImage
-    ? builder
-        .image({ asset: { _ref: firstImage } })
-        .width(800)
-        .quality(80)
-        .auto("format")
-        .url()
+  const heroUrl = firstFile?.asset?._ref
+    ? builder.image(firstFile).width(800).height(360).fit("crop").quality(80).auto("format").url()
     : null;
 
   return (

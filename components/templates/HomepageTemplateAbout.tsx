@@ -201,9 +201,9 @@ export default async function HomepageTemplateAbout() {
             )}
             <div className="mission-block">
               <h2 className="home-section__heading">
-                YIAについて
+                {about?.titleJa ?? "YIAについて"}
                 <small lang="en" translate="no">
-                  About Us
+                  {about?.titleEn ?? "About Us"}
                 </small>
               </h2>
               <p className="mission-block__ja">{bodyJa}</p>

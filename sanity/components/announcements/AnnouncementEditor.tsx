@@ -70,10 +70,20 @@ function formatRelativeTime(dateStr: string | undefined | null): string {
 export function AnnouncementEditor({
   documentId,
   onOpenImagePicker,
+  onOpenGalleryEditor,
+  activeGalleryBlockKey,
+  onDeselectGallery,
   onDelete,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
+  onOpenGalleryEditor: (
+    blockKey: string,
+    images: GalleryImageItem[],
+    onUpdate: (images: GalleryImageItem[]) => void,
+  ) => void;
+  activeGalleryBlockKey: string | null;
+  onDeselectGallery: () => void;
   onDelete: () => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
@@ -295,11 +305,6 @@ export function AnnouncementEditor({
     }
   }
 
-  // ── Gallery no-ops (required by BodyEditor interface) ──
-
-  const handleOpenGalleryEditor = useCallback(() => {}, []);
-  const handleDeselectGallery = useCallback(() => {}, []);
-
   // ── Render ─────────────────────────────────────────────
 
   const statusLabel: Record<string, string> = {
@@ -408,7 +413,13 @@ export function AnnouncementEditor({
                   }}
                 >
                   <img
-                    src={builder.image(merged.heroImage).width(720).auto("format").url()}
+                    src={builder
+                      .image(merged.heroImage)
+                      .width(720)
+                      .height(180)
+                      .fit("crop")
+                      .auto("format")
+                      .url()}
                     alt=""
                     style={{
                       width: "100%",
@@ -456,7 +467,7 @@ export function AnnouncementEditor({
                         backdropFilter: "blur(4px)",
                       }}
                     >
-                      ホットスポット
+                      切り抜き
                     </button>
                     <button
                       type="button"
@@ -654,9 +665,9 @@ export function AnnouncementEditor({
                 initialValue={i18nGetBody(merged.body, bodyLang)}
                 onChange={(value) => updateField("body", i18nSetBody(merged.body, bodyLang, value))}
                 onOpenImagePicker={onOpenImagePicker}
-                onOpenGalleryEditor={handleOpenGalleryEditor}
-                activeGalleryBlockKey={null}
-                onDeselectGallery={handleDeselectGallery}
+                onOpenGalleryEditor={onOpenGalleryEditor}
+                activeGalleryBlockKey={activeGalleryBlockKey}
+                onDeselectGallery={onDeselectGallery}
               />
             </div>
 

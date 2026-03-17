@@ -6,6 +6,7 @@ import { Box, Button, Flex, Stack, Text, TextInput } from "@sanity/ui";
 import { AddIcon, SearchIcon } from "@sanity/icons";
 import { Pagination } from "./shared/ui";
 import { ImagePickerPanel } from "./shared/ImagePickerPanel";
+import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
 import { AnnouncementEditor } from "./announcements/AnnouncementEditor";
 
 // ── Types ────────────────────────────────────────────────
@@ -167,18 +168,37 @@ export function AnnouncementsTool() {
   // Selection → opens editor
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Sidebar collapse
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // Right panel state (image picker only — no gallery for announcements)
-  const [rightPanel, setRightPanel] = useState<{
-    type: "imagePicker";
-    onSelect: (assetId: string) => void;
-  } | null>(null);
+  // Right panel state
+  const [rightPanel, setRightPanel] = useState<
+    | { type: "imagePicker"; onSelect: (assetId: string) => void }
+    | {
+        type: "galleryEditor";
+        blockKey: string;
+        initialImages: GalleryImageItem[];
+        onUpdateImages: (images: GalleryImageItem[]) => void;
+      }
+    | null
+  >(null);
 
   const handleOpenImagePicker = useCallback((onSelect: (assetId: string) => void) => {
     setRightPanel({ type: "imagePicker", onSelect });
   }, []);
+
+  const handleOpenGalleryEditor = useCallback(
+    (
+      blockKey: string,
+      images: GalleryImageItem[],
+      onUpdate: (images: GalleryImageItem[]) => void,
+    ) => {
+      setRightPanel({
+        type: "galleryEditor",
+        blockKey,
+        initialImages: images,
+        onUpdateImages: onUpdate,
+      });
+    },
+    [],
+  );
 
   // ── Fetch items ────────────────────────────────────────
 
@@ -268,207 +288,124 @@ export function AnnouncementsTool() {
       {/* ── Left: List sidebar ── */}
       <div
         style={{
-          width: sidebarCollapsed ? 60 : 340,
+          width: 340,
           flexShrink: 0,
           borderRight: "1px solid var(--card-border-color)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
-          transition: "width 200ms ease",
         }}
       >
-        {sidebarCollapsed ? (
-          <>
-            <Box padding={2} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-              <button
-                type="button"
-                onClick={() => setSidebarCollapsed(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 36,
-                  height: 36,
-                  border: "none",
-                  borderRadius: 4,
-                  background: "transparent",
-                  cursor: "pointer",
-                  color: "var(--card-fg-color)",
-                  margin: "0 auto",
-                }}
-                title="サイドバーを展開"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M6 3l5 5-5 5V3z" />
-                </svg>
-              </button>
-            </Box>
-            <div style={{ flex: 1, overflow: "auto", padding: 4 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                {items.map((item) => {
-                  const isSelected = item._id === editingId;
-                  return (
-                    <button
-                      key={item._id}
-                      type="button"
-                      onClick={() => {
-                        setEditingId(item._id);
-                        setRightPanel(null);
-                      }}
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 4,
-                        overflow: "hidden",
-                        border: isSelected
-                          ? "2px solid var(--card-focus-ring-color, #4a90d9)"
-                          : "1px solid var(--card-border-color)",
-                        padding: 0,
-                        cursor: "pointer",
-                        background: "var(--card-border-color)",
-                        margin: "0 auto",
-                        flexShrink: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 11,
-                        color: "var(--card-muted-fg-color)",
-                      }}
-                      title={item.titleJa ?? "（タイトルなし）"}
-                    >
-                      {item.pinned ? "📌" : (item.titleJa ?? "?")[0]}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* Sidebar header */}
-            <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-              <Stack space={3}>
-                <Flex align="center" justify="space-between">
-                  <Flex align="center" gap={2}>
-                    {editingId && (
-                      <button
-                        type="button"
-                        onClick={() => setSidebarCollapsed(true)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 28,
-                          height: 28,
-                          border: "none",
-                          borderRadius: 4,
-                          background: "transparent",
-                          cursor: "pointer",
-                          color: "var(--card-muted-fg-color)",
-                        }}
-                        title="サイドバーを折りたたむ"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                          <path d="M10 3l-5 5 5 5V3z" />
-                        </svg>
-                      </button>
-                    )}
-                    <Text size={1} weight="semibold">
-                      お知らせ
-                    </Text>
-                  </Flex>
-                  <Button
-                    icon={AddIcon}
-                    mode="bleed"
-                    tone="primary"
-                    fontSize={0}
-                    padding={2}
-                    onClick={handleCreate}
-                  />
-                </Flex>
-                <TextInput
-                  icon={SearchIcon}
-                  placeholder="検索…"
-                  value={searchInput}
-                  onChange={(e) => handleSearchChange(e.currentTarget.value)}
-                  fontSize={0}
-                />
-                <Flex gap={1} wrap="wrap">
-                  {FILTERS.map((f) => (
-                    <Button
-                      key={f.mode}
-                      text={f.label}
-                      mode={filterMode === f.mode ? "default" : "ghost"}
-                      tone={filterMode === f.mode ? "primary" : "default"}
-                      fontSize={0}
-                      padding={1}
-                      onClick={() => handleFilterChange(f.mode)}
-                    />
-                  ))}
-                </Flex>
-              </Stack>
-            </Box>
-
-            {/* List */}
-            <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
-              {loading && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: "var(--card-focus-ring-color, #4a90d9)",
-                    animation: "sidebarLoad 1.5s ease-in-out infinite",
-                    transformOrigin: "left",
-                    zIndex: 1,
-                  }}
-                />
-              )}
-              <style>{`@keyframes sidebarLoad { 0% { transform: scaleX(0); } 50% { transform: scaleX(0.7); } 100% { transform: scaleX(1); opacity: 0; } }`}</style>
-              <div
-                style={{
-                  opacity: loading && items.length > 0 ? 0.5 : 1,
-                  pointerEvents: loading && items.length > 0 ? "none" : "auto",
-                  transition: "opacity 150ms ease",
-                }}
-              >
-                {!loading && items.length === 0 ? (
-                  <Box padding={3}>
-                    <Text size={0} muted>
-                      {searchQuery || filterMode !== "all"
-                        ? "検索結果がありません"
-                        : "お知らせがありません"}
-                    </Text>
-                  </Box>
-                ) : (
-                  <Stack space={1}>
-                    {items.map((item) => (
-                      <SidebarRow
-                        key={item._id}
-                        item={item}
-                        isSelected={item._id === editingId}
-                        onSelect={() => {
-                          setEditingId(item._id);
-                          setRightPanel(null);
-                          setSidebarCollapsed(true);
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                )}
-              </div>
-
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPrev={() => setPage((p) => p - 1)}
-                onNext={() => setPage((p) => p + 1)}
+        {/* Sidebar header */}
+        <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
+          <Stack space={3}>
+            <Flex align="center" justify="space-between">
+              <Text size={1} weight="semibold">
+                お知らせ
+              </Text>
+              <Button
+                icon={AddIcon}
+                mode="bleed"
+                tone="primary"
+                fontSize={0}
+                padding={2}
+                onClick={handleCreate}
               />
-            </div>
-          </>
-        )}
+            </Flex>
+            <TextInput
+              icon={SearchIcon}
+              placeholder="検索…"
+              value={searchInput}
+              onChange={(e) => handleSearchChange(e.currentTarget.value)}
+              fontSize={0}
+            />
+            <Flex gap={1} wrap="wrap">
+              {FILTERS.map((f) => (
+                <Button
+                  key={f.mode}
+                  text={f.label}
+                  mode={filterMode === f.mode ? "default" : "ghost"}
+                  tone={filterMode === f.mode ? "primary" : "default"}
+                  fontSize={0}
+                  padding={1}
+                  onClick={() => handleFilterChange(f.mode)}
+                />
+              ))}
+            </Flex>
+          </Stack>
+        </Box>
+
+        {/* List */}
+        <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
+          {loading && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 2,
+                background: "var(--card-focus-ring-color, #4a90d9)",
+                animation: "sidebarLoad 1.5s ease-in-out infinite",
+                transformOrigin: "left",
+                zIndex: 1,
+              }}
+            />
+          )}
+          <style>{`@keyframes sidebarLoad { 0% { transform: scaleX(0); } 50% { transform: scaleX(0.7); } 100% { transform: scaleX(1); opacity: 0; } }`}</style>
+          <div
+            style={{
+              opacity: loading && items.length > 0 ? 0.5 : 1,
+              pointerEvents: loading && items.length > 0 ? "none" : "auto",
+              transition: "opacity 150ms ease",
+            }}
+          >
+            {!loading && items.length === 0 ? (
+              <Box padding={3}>
+                {searchQuery || filterMode !== "all" ? (
+                  <Text size={0} muted>
+                    検索結果がありません
+                  </Text>
+                ) : (
+                  <Flex direction="column" align="center" gap={3} paddingY={4}>
+                    <Text size={0} muted>
+                      お知らせがありません
+                    </Text>
+                    <Button
+                      icon={AddIcon}
+                      text="最初のお知らせを作成"
+                      tone="primary"
+                      fontSize={0}
+                      padding={2}
+                      onClick={handleCreate}
+                    />
+                  </Flex>
+                )}
+              </Box>
+            ) : (
+              <Stack space={1}>
+                {items.map((item) => (
+                  <SidebarRow
+                    key={item._id}
+                    item={item}
+                    isSelected={item._id === editingId}
+                    onSelect={() => {
+                      setEditingId(item._id);
+                      setRightPanel(null);
+                    }}
+                  />
+                ))}
+              </Stack>
+            )}
+          </div>
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+          />
+        </div>
       </div>
 
       {/* ── Center: Editor ── */}
@@ -478,6 +415,11 @@ export function AnnouncementsTool() {
             key={editingId}
             documentId={editingId.replace(/^drafts\./, "")}
             onOpenImagePicker={handleOpenImagePicker}
+            onOpenGalleryEditor={handleOpenGalleryEditor}
+            activeGalleryBlockKey={
+              rightPanel?.type === "galleryEditor" ? rightPanel.blockKey : null
+            }
+            onDeselectGallery={() => setRightPanel(null)}
             onDelete={() => {
               setEditingId(null);
               setRightPanel(null);
@@ -488,11 +430,22 @@ export function AnnouncementsTool() {
           <Flex
             align="center"
             justify="center"
+            direction="column"
+            gap={4}
             style={{ height: "100%", color: "var(--card-muted-fg-color)" }}
           >
-            <Text size={1} muted>
+            <Text size={3} muted>
               お知らせを選択してください
             </Text>
+            <Button
+              icon={AddIcon}
+              text="新しいお知らせを作成"
+              tone="primary"
+              mode="ghost"
+              fontSize={1}
+              padding={3}
+              onClick={handleCreate}
+            />
           </Flex>
         )}
       </div>
@@ -509,7 +462,16 @@ export function AnnouncementsTool() {
             flexDirection: "column",
           }}
         >
-          <ImagePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
+          {rightPanel.type === "imagePicker" ? (
+            <ImagePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
+          ) : rightPanel.type === "galleryEditor" ? (
+            <CombinedGalleryPanel
+              key={rightPanel.blockKey}
+              initialImages={rightPanel.initialImages}
+              onUpdateImages={rightPanel.onUpdateImages}
+              onClose={() => setRightPanel(null)}
+            />
+          ) : null}
         </div>
       )}
     </div>

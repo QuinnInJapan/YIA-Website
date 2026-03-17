@@ -180,9 +180,6 @@ export function BlogPostsTool() {
   // Selection → opens editor
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  // Sidebar collapse
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
   // Right panel state
   const [rightPanel, setRightPanel] = useState<
     | { type: "imagePicker"; onSelect: (assetId: string) => void }
@@ -308,259 +305,145 @@ export function BlogPostsTool() {
       {/* ── Left: Post list sidebar ── */}
       <div
         style={{
-          width: sidebarCollapsed ? 60 : 340,
+          width: 340,
           flexShrink: 0,
           borderRight: "1px solid var(--card-border-color)",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
-          transition: "width 200ms ease",
         }}
       >
-        {sidebarCollapsed ? (
-          /* Collapsed sidebar: expand button + thumbnail strip */
-          <>
-            <Box padding={2} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-              <button
-                type="button"
-                onClick={() => setSidebarCollapsed(false)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 36,
-                  height: 36,
-                  border: "none",
-                  borderRadius: 4,
-                  background: "transparent",
-                  cursor: "pointer",
-                  color: "var(--card-fg-color)",
-                  margin: "0 auto",
-                }}
-                title="サイドバーを展開"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M6 3l5 5-5 5V3z" />
-                </svg>
-              </button>
-            </Box>
-            <div style={{ flex: 1, overflow: "auto", padding: 4 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                {posts.map((post) => {
-                  const isSelected = post._id === editingId;
-                  const thumbUrl = post.heroImage?.asset?._ref
-                    ? builder
-                        .image(post.heroImage)
-                        .width(88)
-                        .height(88)
-                        .fit("crop")
-                        .auto("format")
-                        .url()
-                    : null;
-                  return (
-                    <button
-                      key={post._id}
-                      type="button"
-                      onClick={() => {
-                        setEditingId(post._id);
-                        setRightPanel(null);
-                      }}
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 4,
-                        overflow: "hidden",
-                        border: isSelected
-                          ? "2px solid var(--card-focus-ring-color, #4a90d9)"
-                          : "1px solid var(--card-border-color)",
-                        padding: 0,
-                        cursor: "pointer",
-                        background: "var(--card-border-color)",
-                        margin: "0 auto",
-                        flexShrink: 0,
-                      }}
-                      title={post.titleJa ?? "（タイトルなし）"}
-                    >
-                      {thumbUrl ? (
-                        <img
-                          src={thumbUrl}
-                          alt=""
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: 11,
-                            color: "var(--card-muted-fg-color)",
-                          }}
-                        >
-                          {(post.titleJa ?? "?")[0]}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </>
-        ) : (
-          /* Expanded sidebar */
-          <>
-            {/* Sidebar header */}
-            <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-              <Stack space={3}>
-                <Flex align="center" justify="space-between">
-                  <Flex align="center" gap={2}>
-                    {editingId && (
-                      <button
-                        type="button"
-                        onClick={() => setSidebarCollapsed(true)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 28,
-                          height: 28,
-                          border: "none",
-                          borderRadius: 4,
-                          background: "transparent",
-                          cursor: "pointer",
-                          color: "var(--card-muted-fg-color)",
-                        }}
-                        title="サイドバーを折りたたむ"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                          <path d="M10 3l-5 5 5 5V3z" />
-                        </svg>
-                      </button>
-                    )}
-                    <Text size={1} weight="semibold">
-                      ブログ
-                    </Text>
-                  </Flex>
-                  <Button
-                    icon={AddIcon}
-                    mode="bleed"
-                    tone="primary"
-                    fontSize={0}
-                    padding={2}
-                    onClick={handleCreate}
-                  />
-                </Flex>
-                <TextInput
-                  icon={SearchIcon}
-                  placeholder="検索…"
-                  value={searchInput}
-                  onChange={(e) => handleSearchChange(e.currentTarget.value)}
-                  fontSize={0}
-                />
-                {categories.length > 0 && (
-                  <Flex gap={1} wrap="wrap">
-                    <Button
-                      text="すべて"
-                      mode={activeCategory === "" ? "default" : "ghost"}
-                      tone={activeCategory === "" ? "primary" : "default"}
-                      fontSize={0}
-                      padding={1}
-                      onClick={() => handleCategoryChange("")}
-                    />
-                    {categories.map((cat) => (
-                      <Button
-                        key={cat}
-                        text={cat}
-                        mode={activeCategory === cat ? "default" : "ghost"}
-                        tone={activeCategory === cat ? "primary" : "default"}
-                        fontSize={0}
-                        padding={1}
-                        onClick={() => handleCategoryChange(cat)}
-                      />
-                    ))}
-                  </Flex>
-                )}
-              </Stack>
-            </Box>
-
-            {/* Sidebar post list */}
-            <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
-              {loading && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: "var(--card-focus-ring-color, #4a90d9)",
-                    animation: "sidebarLoad 1.5s ease-in-out infinite",
-                    transformOrigin: "left",
-                    zIndex: 1,
-                  }}
-                />
-              )}
-              <style>{`@keyframes sidebarLoad { 0% { transform: scaleX(0); } 50% { transform: scaleX(0.7); } 100% { transform: scaleX(1); opacity: 0; } }`}</style>
-              <div
-                style={{
-                  opacity: loading && posts.length > 0 ? 0.5 : 1,
-                  pointerEvents: loading && posts.length > 0 ? "none" : "auto",
-                  transition: "opacity 150ms ease",
-                }}
-              >
-                {!loading && posts.length === 0 ? (
-                  <Box padding={3}>
-                    <Text size={0} muted>
-                      {searchQuery || activeCategory
-                        ? "検索結果がありません"
-                        : "ブログ記事がありません"}
-                    </Text>
-                  </Box>
-                ) : (
-                  <Stack space={1}>
-                    {posts.map((post) => (
-                      <SidebarRow
-                        key={post._id}
-                        post={post}
-                        isSelected={post._id === editingId}
-                        onSelect={() => {
-                          setEditingId(post._id);
-                          setRightPanel(null);
-                          setSidebarCollapsed(true);
-                        }}
-                        thumbnailUrl={
-                          post.heroImage?.asset?._ref
-                            ? builder
-                                .image(post.heroImage)
-                                .width(96)
-                                .height(68)
-                                .fit("crop")
-                                .auto("format")
-                                .url()
-                            : null
-                        }
-                      />
-                    ))}
-                  </Stack>
-                )}
-              </div>
-
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPrev={() => setPage((p) => p - 1)}
-                onNext={() => setPage((p) => p + 1)}
+        {/* Sidebar header */}
+        <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
+          <Stack space={3}>
+            <Flex align="center" justify="space-between">
+              <Text size={1} weight="semibold">
+                ブログ
+              </Text>
+              <Button
+                icon={AddIcon}
+                mode="bleed"
+                tone="primary"
+                fontSize={0}
+                padding={2}
+                onClick={handleCreate}
               />
-            </div>
-          </>
-        )}
+            </Flex>
+            <TextInput
+              icon={SearchIcon}
+              placeholder="検索…"
+              value={searchInput}
+              onChange={(e) => handleSearchChange(e.currentTarget.value)}
+              fontSize={0}
+            />
+            {categories.length > 0 && (
+              <Flex gap={1} wrap="wrap">
+                <Button
+                  text="すべて"
+                  mode={activeCategory === "" ? "default" : "ghost"}
+                  tone={activeCategory === "" ? "primary" : "default"}
+                  fontSize={0}
+                  padding={1}
+                  onClick={() => handleCategoryChange("")}
+                />
+                {categories.map((cat) => (
+                  <Button
+                    key={cat}
+                    text={cat}
+                    mode={activeCategory === cat ? "default" : "ghost"}
+                    tone={activeCategory === cat ? "primary" : "default"}
+                    fontSize={0}
+                    padding={1}
+                    onClick={() => handleCategoryChange(cat)}
+                  />
+                ))}
+              </Flex>
+            )}
+          </Stack>
+        </Box>
+
+        {/* Sidebar post list */}
+        <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
+          {loading && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 2,
+                background: "var(--card-focus-ring-color, #4a90d9)",
+                animation: "sidebarLoad 1.5s ease-in-out infinite",
+                transformOrigin: "left",
+                zIndex: 1,
+              }}
+            />
+          )}
+          <style>{`@keyframes sidebarLoad { 0% { transform: scaleX(0); } 50% { transform: scaleX(0.7); } 100% { transform: scaleX(1); opacity: 0; } }`}</style>
+          <div
+            style={{
+              opacity: loading && posts.length > 0 ? 0.5 : 1,
+              pointerEvents: loading && posts.length > 0 ? "none" : "auto",
+              transition: "opacity 150ms ease",
+            }}
+          >
+            {!loading && posts.length === 0 ? (
+              <Box padding={3}>
+                {searchQuery || activeCategory ? (
+                  <Text size={0} muted>
+                    検索結果がありません
+                  </Text>
+                ) : (
+                  <Flex direction="column" align="center" gap={3} paddingY={4}>
+                    <Text size={0} muted>
+                      ブログ記事がありません
+                    </Text>
+                    <Button
+                      icon={AddIcon}
+                      text="最初の記事を作成"
+                      tone="primary"
+                      fontSize={0}
+                      padding={2}
+                      onClick={handleCreate}
+                    />
+                  </Flex>
+                )}
+              </Box>
+            ) : (
+              <Stack space={1}>
+                {posts.map((post) => (
+                  <SidebarRow
+                    key={post._id}
+                    post={post}
+                    isSelected={post._id === editingId}
+                    onSelect={() => {
+                      setEditingId(post._id);
+                      setRightPanel(null);
+                    }}
+                    thumbnailUrl={
+                      post.heroImage?.asset?._ref
+                        ? builder
+                            .image(post.heroImage)
+                            .width(96)
+                            .height(68)
+                            .fit("crop")
+                            .auto("format")
+                            .url()
+                        : null
+                    }
+                  />
+                ))}
+              </Stack>
+            )}
+          </div>
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+          />
+        </div>
       </div>
 
       {/* ── Center: Editor ── */}
@@ -591,11 +474,22 @@ export function BlogPostsTool() {
           <Flex
             align="center"
             justify="center"
+            direction="column"
+            gap={4}
             style={{ height: "100%", color: "var(--card-muted-fg-color)" }}
           >
-            <Text size={1} muted>
+            <Text size={3} muted>
               記事を選択してください
             </Text>
+            <Button
+              icon={AddIcon}
+              text="新しい記事を作成"
+              tone="primary"
+              mode="ghost"
+              fontSize={1}
+              padding={3}
+              onClick={handleCreate}
+            />
           </Flex>
         )}
       </div>

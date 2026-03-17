@@ -1,7 +1,6 @@
 import type { StructureBuilder } from "sanity/structure";
 import {
   CogIcon,
-  HomeIcon,
   MenuIcon,
   ComponentIcon,
   UsersIcon,
@@ -38,11 +37,6 @@ export function structure(S: StructureBuilder) {
     .id("content")
     .title("コンテンツ")
     .items([
-      // Homepage singleton
-      singleton(S, "homepage", "ホームページ", HomeIcon),
-
-      S.divider(),
-
       // Page categories
       categoryGroup(S, "services", "相談・サービス", HeartIcon),
       categoryGroup(S, "classes", "教室・講座", BookIcon),

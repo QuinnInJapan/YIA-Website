@@ -6,6 +6,7 @@ import { internationalizedArray } from "sanity-plugin-internationalized-array";
 import { mediaPlugin } from "./sanity/components/mediaPlugin";
 import { blogPostsPlugin } from "./sanity/components/blogPostsPlugin";
 import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
+import { homepagePlugin } from "./sanity/components/homepagePlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { structure } from "./sanity/structure";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
@@ -17,6 +18,7 @@ export default defineConfig({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
   basePath: "/studio",
   plugins: [
+    homepagePlugin(),
     announcementsPlugin(),
     blogPostsPlugin(),
     structureTool({ structure, title: "コンテンツ管理" }),

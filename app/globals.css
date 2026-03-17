@@ -4907,6 +4907,25 @@ html:has(:target) {
   padding: var(--spacing-xl) var(--site-gutter);
 }
 
+.announcement-detail__back {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: var(--spacing-lg);
+}
+
+.announcement-detail__back:hover {
+  color: var(--color-link);
+}
+
+.announcement-detail__back-en {
+  font-size: var(--font-size-xs);
+  opacity: 0.7;
+}
+
 .announcement-detail__meta {
   display: flex;
   align-items: center;
@@ -4933,16 +4952,6 @@ html:has(:target) {
   font-weight: 400;
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
-}
-
-.announcement-detail__image {
-  margin-top: var(--spacing-lg);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.announcement-detail__image img {
-  width: 100%;
 }
 
 .announcement-detail__docs {

@@ -767,6 +767,11 @@ export function BodyEditor({
               <span>ギャラリー（{images.length > 0 ? `${images.length}枚` : "画像なし"}）</span>
             </div>
 
+            {/* Delete button */}
+            {!readOnly && blockKey && (
+              <RemoveBlockButton blockKey={blockKey} onRemove={removeBlock} />
+            )}
+
             {/* Thumbnail grid */}
             {images.length > 0 && (
               <div

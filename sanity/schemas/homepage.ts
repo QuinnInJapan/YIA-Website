@@ -44,8 +44,7 @@ export default defineType({
       title: "活動グリッド",
       type: "object",
       group: "content",
-      description: "活動写真と統計数値のグリッド表示。レイアウトに関わるため管理者のみ編集可能。",
-      readOnly: true,
+      description: "活動写真と統計数値のグリッド表示。",
       fields: [
         defineField({
           name: "images",
@@ -60,8 +59,18 @@ export default defineType({
           type: "object",
           description: "グリッド内に表示される統計数値（例：会員数）。",
           fields: [
-            defineField({ name: "value", title: "値", type: "number", description: "表示する数値。" }),
-            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", description: "数値の下に表示されるラベル。" }),
+            defineField({
+              name: "value",
+              title: "値",
+              type: "number",
+              description: "表示する数値。",
+            }),
+            defineField({
+              name: "label",
+              title: "ラベル",
+              type: "internationalizedArrayString",
+              description: "数値の下に表示されるラベル。",
+            }),
           ],
         }),
       ],
@@ -72,7 +81,8 @@ export default defineType({
       type: "array",
       group: "content",
       of: [{ type: "reference", to: [{ type: "announcement" }] }],
-      description: "ホームページに表示するお知らせを選択します。ここで選んだお知らせがトップページに表示されます。",
+      description:
+        "ホームページに表示するお知らせを選択します。ここで選んだお知らせがトップページに表示されます。",
     }),
     defineField({
       name: "eventFlyers",
@@ -80,7 +90,8 @@ export default defineType({
       type: "array",
       group: "content",
       of: [{ type: "eventFlyer" }],
-      description: "ホームページの「イベント」欄に表示するチラシ画像。新しいイベントのチラシに差し替えてください。",
+      description:
+        "ホームページの「イベント」欄に表示するチラシ画像。新しいイベントのチラシに差し替えてください。",
     }),
   ],
 });

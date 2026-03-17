@@ -16,6 +16,18 @@ export default defineType({
   },
   fields: [
     defineField({
+      name: "titleJa",
+      title: "タイトル（日本語）",
+      type: "string",
+      description: "セクションの見出し（日本語）。",
+    }),
+    defineField({
+      name: "titleEn",
+      title: "タイトル（English）",
+      type: "string",
+      description: "セクションの見出し（英語）。",
+    }),
+    defineField({
       name: "image",
       title: "写真",
       type: "image",
