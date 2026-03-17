@@ -1,18 +1,22 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteData, getEnrichedNavigation, shortId } from "@/lib/data";
+import { getSiteData, getEnrichedNavigation } from "@/lib/data";
+import { fetchHomepageAbout } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
 import SiteFooter from "@/components/SiteFooter";
 import AccessSection from "@/components/AccessSection";
-import EventFlyerPairWrapper from "@/components/EventFlyerPairWrapper";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
 import HomepageActivityGrid from "./HomepageActivityGrid";
 
-export default async function HomepageTemplate() {
+/**
+ * Variant C — identical to the current homepage except the event flyers
+ * section is replaced with an "About YIA" mission block + framed photo.
+ */
+export default async function HomepageTemplateAbout() {
   const data = await getSiteData();
   const hp = data.homepage;
   const nav = await getEnrichedNavigation();
@@ -27,6 +31,23 @@ export default async function HomepageTemplate() {
         (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.date ?? "").localeCompare(a.date ?? ""),
     )
     .slice(0, 5);
+
+  // Fetch "About YIA" content — falls back to hardcoded defaults
+  const about = await fetchHomepageAbout();
+  const aboutImage = about?.image ? imageUrl(about.image) : null;
+  const aboutImagePos = about?.image ? hotspotPosition(about.image) : null;
+  const aboutAlt = about?.imageAlt ? ja(about.imageAlt) : "YIA活動の様子";
+  // Fallback to activity grid image if no dedicated photo uploaded yet
+  const framedPhoto =
+    aboutImage ?? (hp.activityGrid?.images?.[0] ? imageUrl(hp.activityGrid.images[0]) : null);
+  const framedPhotoPos = aboutImage ? aboutImagePos : null;
+
+  const bodyJa =
+    about?.bodyJa ??
+    "横須賀国際交流協会（YIA）は、横須賀市における多文化共生社会の実現を目指し、国際交流・国際協力・在住外国人支援の三つの柱で活動しています。日本語教室、文化交流イベント、生活相談など、地域に根ざした多様なプログラムを通じて、すべての人が安心して暮らせるまちづくりに貢献しています。";
+  const bodyEn =
+    about?.bodyEn ??
+    "The Yokosuka International Association (YIA) works toward a multicultural society in Yokosuka through international exchange, cooperation, and support for foreign residents. From Japanese language classes and cultural events to daily-life consultations, our community-rooted programs help everyone feel at home.";
 
   return (
     <HomepageEffects>
@@ -108,7 +129,7 @@ export default async function HomepageTemplate() {
           </div>
         </section>
 
-        {/* Program card grid */}
+        {/* Program card grid — same as current */}
         <section className="program-grid reveal-stagger">
           {nav.categories
             .filter((cat) => cat.heroImage?.asset?._ref)
@@ -153,30 +174,51 @@ export default async function HomepageTemplate() {
             })}
         </section>
 
-        {/* Event flyers */}
-        {hp.eventFlyers && hp.eventFlyers.length > 0 && (
-          <section className="home-section home-section--tinted home-section--events reveal">
-            {heroImage && (
-              <Image
-                src={heroImage}
-                alt=""
-                fill
-                sizes="100vw"
-                className="home-section--events__bg"
-                style={heroPosition ? { objectPosition: heroPosition } : undefined}
-              />
+        {/* About YIA — replaces event flyers */}
+        <section className="home-section home-section--tinted home-section--mission reveal">
+          {heroImage && (
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              sizes="100vw"
+              className="home-section--mission__bg"
+              style={heroPosition ? { objectPosition: heroPosition } : undefined}
+            />
+          )}
+          <div className="about-showcase reveal">
+            {framedPhoto && (
+              <figure className="about-showcase__photo">
+                <Image
+                  src={framedPhoto}
+                  alt={aboutAlt}
+                  width={480}
+                  height={640}
+                  className="about-showcase__img"
+                  style={framedPhotoPos ? { objectPosition: framedPhotoPos } : undefined}
+                />
+              </figure>
             )}
-            <h2 className="home-section__heading reveal">
-              イベント
-              <small lang="en" translate="no">
-                Upcoming Events
-              </small>
-            </h2>
-            <div className="flyer-showcase reveal">
-              <EventFlyerPairWrapper flyers={hp.eventFlyers} />
+            <div className="mission-block">
+              <h2 className="home-section__heading">
+                YIAについて
+                <small lang="en" translate="no">
+                  About Us
+                </small>
+              </h2>
+              <p className="mission-block__ja">{bodyJa}</p>
+              <p className="mission-block__en" lang="en" translate="no">
+                {bodyEn}
+              </p>
+              <Link href="/about" className="mission-block__link">
+                <span className="mission-block__link-ja">もっと詳しく</span>
+                <span className="mission-block__link-en" lang="en" translate="no">
+                  Learn More
+                </span>
+              </Link>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Activity mosaic grid — streamed via Suspense */}
         <Suspense>

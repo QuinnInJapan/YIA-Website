@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { getSiteData } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import HomepageTemplate from "@/components/templates/HomepageTemplate";
-import HomepageTemplateAlt from "@/components/templates/HomepageTemplateAlt";
+import HomepageTemplateAbout from "@/components/templates/HomepageTemplateAbout";
 import HomepageDemoSwitcher from "@/components/HomepageDemoSwitcher";
 
 const VARIANTS: Record<string, { label: string; component: React.ComponentType }> = {
   a: { label: "案A: イベント", component: HomepageTemplate },
-  b: { label: "案B: ミッション", component: HomepageTemplateAlt },
+  b: { label: "案B: YIAについて", component: HomepageTemplateAbout },
 };
 
 const DEFAULT_VARIANT = "a";
