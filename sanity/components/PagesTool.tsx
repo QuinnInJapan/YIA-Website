@@ -10,7 +10,8 @@ import { PageEditor } from "./pages/PageEditor";
 import { PreviewPanel } from "./shared/PreviewPanel";
 import { RightPanel } from "./shared/RightPanel";
 import { PagePreview } from "./pages/PagePreview";
-import type { PageDoc } from "./pages/types";
+import { SectionPickerPanel } from "./pages/SectionPickerPanel";
+import type { PageDoc, SectionTypeName } from "./pages/types";
 
 export function PagesTool() {
   const [selectedPageId, setSelectedPageId] = useState<string | null>(null);
@@ -28,6 +29,7 @@ export function PagesTool() {
         initialImages: GalleryImageItem[];
         onUpdateImages: (images: GalleryImageItem[]) => void;
       }
+    | { type: "sectionPicker"; onSelect: (type: SectionTypeName) => void }
     | null
   >(null);
 
@@ -41,6 +43,10 @@ export function PagesTool() {
     },
     [],
   );
+
+  const handleOpenSectionPicker = useCallback((onSelect: (type: SectionTypeName) => void) => {
+    setRightPanel({ type: "sectionPicker", onSelect });
+  }, []);
 
   const handleOpenGalleryEditor = useCallback(
     (
@@ -102,6 +108,7 @@ export function PagesTool() {
             documentId={selectedPageId}
             onOpenImagePicker={handleOpenImagePicker}
             onOpenFilePicker={handleOpenFilePicker}
+            onOpenSectionPicker={handleOpenSectionPicker}
             onOpenGalleryEditor={handleOpenGalleryEditor}
             activeGallerySectionKey={
               rightPanel?.type === "galleryEditor" ? rightPanel.sectionKey : null
@@ -137,6 +144,14 @@ export function PagesTool() {
               key={rightPanel.sectionKey}
               initialImages={rightPanel.initialImages}
               onUpdateImages={rightPanel.onUpdateImages}
+              onClose={() => setRightPanel(null)}
+            />
+          ) : rightPanel.type === "sectionPicker" ? (
+            <SectionPickerPanel
+              onSelect={(type) => {
+                rightPanel.onSelect(type);
+                setRightPanel(null);
+              }}
               onClose={() => setRightPanel(null)}
             />
           ) : null}
