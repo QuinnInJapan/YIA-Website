@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { Button, Flex, TextInput } from "@sanity/ui";
-import { TrashIcon } from "@sanity/icons";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { i18nGet } from "../../shared/i18n";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../../shared/DocumentDetailPanel";
 import type { SectionItem } from "../types";
 
 interface DocumentLinkItem {
@@ -21,10 +21,16 @@ export function LinksSectionEditor({
   section,
   onUpdateField,
   onOpenFilePicker,
+  onOpenDocumentDetail,
 }: {
   section: SectionItem;
   onUpdateField: (field: string, value: unknown) => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
+  onOpenDocumentDetail?: (
+    doc: SharedDocumentLinkItem,
+    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
 }) {
   const items = (section.items as DocumentLinkItem[]) ?? [];
   const [showAddUrl, setShowAddUrl] = useState(false);
@@ -95,16 +101,36 @@ export function LinksSectionEditor({
               const subtitle = [typeLabel, fileTypeLabel].filter(Boolean).join(" · ");
 
               return (
-                <div
+                <button
                   key={doc._key}
+                  type="button"
+                  onClick={() => {
+                    onOpenDocumentDetail?.(
+                      doc,
+                      (updated) => {
+                        onUpdateField(
+                          "items",
+                          items.map((d) =>
+                            d._key === doc._key ? (updated as DocumentLinkItem) : d,
+                          ),
+                        );
+                      },
+                      () => handleRemove(doc._key),
+                    );
+                  }}
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
+                    width: "100%",
+                    textAlign: "left",
                     padding: "6px 10px",
                     borderRadius: 4,
                     border: "1px solid var(--card-border-color)",
+                    background: "transparent",
+                    cursor: "pointer",
                     fontSize: 13,
+                    color: "var(--card-fg-color)",
                   }}
                 >
                   <span style={{ fontSize: 14 }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
@@ -120,21 +146,7 @@ export function LinksSectionEditor({
                       </div>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemove(doc._key)}
-                    style={{
-                      padding: "2px 6px",
-                      border: "none",
-                      borderRadius: 3,
-                      background: "transparent",
-                      color: "var(--card-muted-fg-color)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <TrashIcon />
-                  </button>
-                </div>
+                </button>
               );
             })}
           </div>

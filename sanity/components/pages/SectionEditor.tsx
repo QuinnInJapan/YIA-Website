@@ -12,6 +12,7 @@ import { DefinitionsSectionEditor } from "./sections/DefinitionsSectionEditor";
 import { BoardMembersSectionEditor } from "./sections/BoardMembersSectionEditor";
 import { FeeTableSectionEditor } from "./sections/FeeTableSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
 
 export function SectionEditor({
@@ -19,11 +20,17 @@ export function SectionEditor({
   onUpdateField,
   onOpenImagePicker,
   onOpenFilePicker,
+  onOpenDocumentDetail,
 }: {
   section: SectionItem;
   onUpdateField: (field: string, value: unknown) => void;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
+  onOpenDocumentDetail?: (
+    doc: SharedDocumentLinkItem,
+    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
 }) {
   function renderEditor() {
     switch (section._type) {
@@ -37,6 +44,7 @@ export function SectionEditor({
             section={section}
             onUpdateField={onUpdateField}
             onOpenFilePicker={onOpenFilePicker}
+            onOpenDocumentDetail={onOpenDocumentDetail}
           />
         );
       case "eventSchedule":

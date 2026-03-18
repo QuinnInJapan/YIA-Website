@@ -2,9 +2,14 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Flex, Text } from "@sanity/ui";
+import { useDeepLink } from "./shared/useDeepLink";
 import { ImagePickerPanel } from "./shared/ImagePickerPanel";
 import { FilePickerPanel } from "./shared/FilePickerPanel";
 import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
+import {
+  DocumentDetailPanel,
+  type DocumentLinkItem as SharedDocumentLinkItem,
+} from "./shared/DocumentDetailPanel";
 import { PagesSidebar, type PagesSidebarHandle } from "./pages/PagesSidebar";
 import { PageEditor } from "./pages/PageEditor";
 import { PreviewPanel } from "./shared/PreviewPanel";
@@ -14,8 +19,8 @@ import { SectionPickerPanel } from "./pages/SectionPickerPanel";
 import type { PageDoc, SectionTypeName } from "./pages/types";
 
 export function PagesTool() {
-  const [selectedPageId, setSelectedPageId] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(true);
+  const deepLinkId = useDeepLink("pages");
+  const [selectedPageId, setSelectedPageId] = useState<string | null>(deepLinkId);
   const [mergedDoc, setMergedDoc] = useState<PageDoc | null>(null);
   const sidebarRef = useRef<PagesSidebarHandle>(null);
 
@@ -30,6 +35,12 @@ export function PagesTool() {
         onUpdateImages: (images: GalleryImageItem[]) => void;
       }
     | { type: "sectionPicker"; onSelect: (type: SectionTypeName) => void }
+    | {
+        type: "documentDetail";
+        doc: SharedDocumentLinkItem;
+        onUpdate: (doc: SharedDocumentLinkItem) => void;
+        onRemove: () => void;
+      }
     | null
   >(null);
 
@@ -40,6 +51,17 @@ export function PagesTool() {
   const handleOpenFilePicker = useCallback(
     (onSelect: (assetId: string, filename: string, ext: string) => void) => {
       setRightPanel({ type: "filePicker", onSelect });
+    },
+    [],
+  );
+
+  const handleOpenDocumentDetail = useCallback(
+    (
+      doc: SharedDocumentLinkItem,
+      onUpdate: (doc: SharedDocumentLinkItem) => void,
+      onRemove: () => void,
+    ) => {
+      setRightPanel({ type: "documentDetail", doc, onUpdate, onRemove });
     },
     [],
   );
@@ -64,11 +86,20 @@ export function PagesTool() {
     [],
   );
 
-  const handleSelectPage = useCallback((pageId: string) => {
-    setSelectedPageId(pageId);
-    setMergedDoc(null);
-    setRightPanel(null);
-  }, []);
+  const handleSelectPage = useCallback(
+    (pageId: string) => {
+      setSelectedPageId((prev) => {
+        if (prev === pageId) return prev; // already viewing this page
+        return pageId;
+      });
+      setMergedDoc((prev) => {
+        if (selectedPageId === pageId) return prev; // keep existing doc
+        return null;
+      });
+      setRightPanel(null);
+    },
+    [selectedPageId],
+  );
 
   return (
     <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
@@ -110,6 +141,7 @@ export function PagesTool() {
             onOpenFilePicker={handleOpenFilePicker}
             onOpenSectionPicker={handleOpenSectionPicker}
             onOpenGalleryEditor={handleOpenGalleryEditor}
+            onOpenDocumentDetail={handleOpenDocumentDetail}
             activeGallerySectionKey={
               rightPanel?.type === "galleryEditor" ? rightPanel.sectionKey : null
             }
@@ -132,7 +164,7 @@ export function PagesTool() {
         )}
       </div>
 
-      {/* ── Right: Image picker or Preview ── */}
+      {/* ── Right: Tool panel or Preview ── */}
       {rightPanel ? (
         <RightPanel>
           {rightPanel.type === "imagePicker" ? (
@@ -154,35 +186,49 @@ export function PagesTool() {
               }}
               onClose={() => setRightPanel(null)}
             />
+          ) : rightPanel.type === "documentDetail" ? (
+            <DocumentDetailPanel
+              doc={rightPanel.doc}
+              onUpdate={(updated) => {
+                rightPanel.onUpdate(updated);
+                setRightPanel((prev) =>
+                  prev?.type === "documentDetail" ? { ...prev, doc: updated } : prev,
+                );
+              }}
+              onRemove={() => {
+                rightPanel.onRemove();
+                setRightPanel(null);
+              }}
+              onChangeFile={() => {
+                const { doc, onUpdate } = rightPanel;
+                setRightPanel({
+                  type: "filePicker",
+                  onSelect: (assetId, filename, ext) => {
+                    const updated: SharedDocumentLinkItem = {
+                      ...doc,
+                      file: { asset: { _ref: assetId } },
+                      fileType: ext,
+                    };
+                    onUpdate(updated);
+                    setRightPanel({
+                      type: "documentDetail",
+                      doc: updated,
+                      onUpdate,
+                      onRemove: rightPanel.onRemove,
+                    });
+                  },
+                });
+              }}
+              onClose={() => setRightPanel(null)}
+            />
           ) : null}
         </RightPanel>
-      ) : showPreview && mergedDoc ? (
+      ) : mergedDoc ? (
         <RightPanel>
-          <PreviewPanel onClose={() => setShowPreview(false)}>
+          <PreviewPanel>
             <PagePreview page={mergedDoc} />
           </PreviewPanel>
         </RightPanel>
-      ) : !showPreview && mergedDoc ? (
-        <button
-          type="button"
-          onClick={() => setShowPreview(true)}
-          style={{
-            position: "absolute",
-            right: 12,
-            bottom: 12,
-            padding: "8px 14px",
-            border: "1px solid var(--card-border-color)",
-            borderRadius: 6,
-            background: "var(--card-bg-color)",
-            color: "var(--card-fg-color)",
-            fontSize: 12,
-            cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-            zIndex: 10,
-          }}
-        >
-          プレビューを表示
-        </button>
       ) : null}
     </div>
   );

@@ -9,6 +9,7 @@ import { i18nGet, i18nSet } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import { SectionBar } from "./SectionBar";
 import { SectionEditor } from "./SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "./types";
@@ -54,6 +55,7 @@ export function PageEditor({
   onMergedChange,
   onDraftChange,
   onOpenFilePicker,
+  onOpenDocumentDetail,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -66,6 +68,11 @@ export function PageEditor({
   activeGallerySectionKey?: string | null;
   onDeselectGallery?: () => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
+  onOpenDocumentDetail?: (
+    doc: SharedDocumentLinkItem,
+    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
   onSave?: () => void;
   onMergedChange?: (doc: PageDoc | null) => void;
   onDraftChange?: () => void;
@@ -632,6 +639,7 @@ export function PageEditor({
                           onUpdateField={(field, value) => updateSection(index, field, value)}
                           onOpenImagePicker={onOpenImagePicker}
                           onOpenFilePicker={onOpenFilePicker}
+                          onOpenDocumentDetail={onOpenDocumentDetail}
                         />
                       )}
                     </div>

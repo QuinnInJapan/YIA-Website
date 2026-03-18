@@ -10,10 +10,12 @@ import { HeroSection } from "./HeroSection";
 import { ProgramCardsSection } from "./ProgramCardsSection";
 import { AboutSection } from "./AboutSection";
 import { ActivityGridSection } from "./ActivityGridSection";
+import { SettingsSection } from "./SettingsSection";
 import type {
   HomepageData,
   HomepageAboutData,
   SiteSettingsData,
+  SidebarData,
   CategoryData,
   NavCategoryData,
   AnnouncementPreviewData,
@@ -30,6 +32,7 @@ const SECTIONS = [
   { id: "section-programs", label: "プログラム" },
   { id: "section-about", label: "YIA" },
   { id: "section-activity", label: "活動" },
+  { id: "section-settings", label: "設定" },
 ] as const;
 
 // ── Document state tracker ──────────────────────────
@@ -44,11 +47,19 @@ interface DocState<T> {
 
 export function HomepageEditor({
   onOpenImagePicker,
+  onOpenFilePicker,
   onShowHotspotCrop,
+  onOpenDocumentDetail,
   onMergedChange,
 }: {
   onOpenImagePicker: OpenPickerFn;
+  onOpenFilePicker: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
   onShowHotspotCrop: ShowHotspotCropFn;
+  onOpenDocumentDetail?: (
+    doc: import("../shared/DocumentDetailPanel").DocumentLinkItem,
+    onUpdate: (doc: import("../shared/DocumentDetailPanel").DocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
   onMergedChange?: (state: HomepageMergedState | null) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
@@ -71,6 +82,11 @@ export function HomepageEditor({
     edits: {},
   });
   const [settingsState, setSettingsState] = useState<DocState<SiteSettingsData>>({
+    published: null,
+    draft: null,
+    edits: {},
+  });
+  const [sidebarState, setSidebarState] = useState<DocState<SidebarData>>({
     published: null,
     draft: null,
     edits: {},
@@ -105,6 +121,12 @@ export function HomepageEditor({
     return { ...base, ...settingsState.edits } as SiteSettingsData;
   }, [settingsState]);
 
+  const sidebar = useMemo<SidebarData | null>(() => {
+    const base = sidebarState.draft ?? sidebarState.published;
+    if (!base) return null;
+    return { ...base, ...sidebarState.edits } as SidebarData;
+  }, [sidebarState]);
+
   const categories = useMemo<CategoryData[]>(() => {
     const result: CategoryData[] = [];
     for (const [, state] of categoriesState) {
@@ -121,11 +143,28 @@ export function HomepageEditor({
   // Notify parent of merged state changes for preview
   useEffect(() => {
     if (homepage && siteSettings) {
-      onMergedChange?.({ homepage, about, siteSettings, categories, navCategories, announcements });
+      onMergedChange?.({
+        homepage,
+        about,
+        siteSettings,
+        sidebar,
+        categories,
+        navCategories,
+        announcements,
+      });
     } else {
       onMergedChange?.(null);
     }
-  }, [homepage, about, siteSettings, categories, navCategories, announcements, onMergedChange]);
+  }, [
+    homepage,
+    about,
+    siteSettings,
+    sidebar,
+    categories,
+    navCategories,
+    announcements,
+    onMergedChange,
+  ]);
 
   // ── Load all documents ───────────────────────────
 
@@ -139,6 +178,8 @@ export function HomepageEditor({
       ),
       client.fetch<SiteSettingsData | null>(`*[_id == "siteSettings"][0]`),
       client.fetch<SiteSettingsData | null>(`*[_id == "drafts.siteSettings"][0]`),
+      client.fetch<SidebarData | null>(`*[_id == "sidebar"][0]`),
+      client.fetch<SidebarData | null>(`*[_id == "drafts.sidebar"][0]`),
       client.fetch<CategoryData[]>(
         `*[_type == "category" && !(_id in path("drafts.**"))] | order(_createdAt asc)`,
       ),
@@ -155,7 +196,18 @@ export function HomepageEditor({
       ),
     ])
       .then(
-        async ([hpPub, hpDraft, aboutPub, settingsPub, settingsDraft, cats, navCats, annList]) => {
+        async ([
+          hpPub,
+          hpDraft,
+          aboutPub,
+          settingsPub,
+          settingsDraft,
+          sidebarPub,
+          sidebarDraft,
+          cats,
+          navCats,
+          annList,
+        ]) => {
           setHomepageState({ published: hpPub, draft: hpDraft, edits: {} });
 
           // For homepageAbout, also fetch its draft
@@ -168,6 +220,7 @@ export function HomepageEditor({
           setAboutState({ published: aboutPub, draft: aboutDraft, edits: {} });
 
           setSettingsState({ published: settingsPub, draft: settingsDraft, edits: {} });
+          setSidebarState({ published: sidebarPub, draft: sidebarDraft, edits: {} });
 
           // Categories: fetch drafts for each
           const catMap = new Map<string, DocState<CategoryData>>();
@@ -268,6 +321,8 @@ export function HomepageEditor({
           baseDoc = aboutState.draft ?? aboutState.published;
         } else if (docType === "siteSettings") {
           baseDoc = settingsState.draft ?? settingsState.published;
+        } else if (docType === "sidebar") {
+          baseDoc = sidebarState.draft ?? sidebarState.published;
         } else if (docType === "category") {
           const catState = categoriesState.get(pubId);
           baseDoc = catState?.draft ?? catState?.published ?? null;
@@ -278,14 +333,7 @@ export function HomepageEditor({
         transaction.createIfNotExists({
           ...baseDoc,
           _id: draftId,
-          _type:
-            docType === "homepage"
-              ? "homepage"
-              : docType === "homepageAbout"
-                ? "homepageAbout"
-                : docType === "siteSettings"
-                  ? "siteSettings"
-                  : "category",
+          _type: docType === "category" ? "category" : docType,
         } as any);
         transaction.patch(draftId, (p) => p.set(edits));
       }
@@ -321,6 +369,12 @@ export function HomepageEditor({
                 setSettingsState((prev) => ({ ...prev, draft, edits: {} }));
               }),
           );
+        } else if (docType === "sidebar") {
+          refreshes.push(
+            client.fetch<SidebarData | null>(`*[_id == $id][0]`, { id: draftId }).then((draft) => {
+              setSidebarState((prev) => ({ ...prev, draft, edits: {} }));
+            }),
+          );
         } else if (docType === "category") {
           refreshes.push(
             client.fetch<CategoryData | null>(`*[_id == $id][0]`, { id: draftId }).then((draft) => {
@@ -342,7 +396,7 @@ export function HomepageEditor({
     } finally {
       setSaving(false);
     }
-  }, [client, homepageState, aboutState, settingsState, categoriesState]);
+  }, [client, homepageState, aboutState, settingsState, sidebarState, categoriesState]);
 
   // ── updateField — routes edits to correct doc ────
 
@@ -358,6 +412,8 @@ export function HomepageEditor({
         setAboutState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
       } else if (docType === "siteSettings") {
         setSettingsState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
+      } else if (docType === "sidebar") {
+        setSidebarState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
       } else if (docType === "category") {
         setCategoriesState((prev) => {
           const next = new Map(prev);
@@ -411,6 +467,7 @@ export function HomepageEditor({
       queuePublish("homepage", homepageState.published, homepageState.draft);
       queuePublish("homepageAbout", aboutState.published, aboutState.draft);
       queuePublish("siteSettings", settingsState.published, settingsState.draft);
+      queuePublish("sidebar", sidebarState.published, sidebarState.draft);
       for (const [pubId, catState] of categoriesState) {
         queuePublish("category", catState.published, catState.draft);
       }
@@ -438,6 +495,9 @@ export function HomepageEditor({
             id: pubId,
           });
           setSettingsState({ published: pub, draft: null, edits: {} });
+        } else if (type === "sidebar") {
+          const pub = await client.fetch<SidebarData | null>(`*[_id == $id][0]`, { id: pubId });
+          setSidebarState({ published: pub, draft: null, edits: {} });
         } else if (type === "category") {
           const pub = await client.fetch<CategoryData | null>(`*[_id == $id][0]`, { id: pubId });
           setCategoriesState((prev) => {
@@ -463,11 +523,12 @@ export function HomepageEditor({
     if (homepageState.draft) return true;
     if (aboutState.draft) return true;
     if (settingsState.draft) return true;
+    if (sidebarState.draft) return true;
     for (const [, state] of categoriesState) {
       if (state.draft) return true;
     }
     return false;
-  }, [homepageState, aboutState, settingsState, categoriesState]);
+  }, [homepageState, aboutState, settingsState, sidebarState, categoriesState]);
 
   // ── Status labels ────────────────────────────────
 
@@ -606,6 +667,14 @@ export function HomepageEditor({
             onOpenImagePicker={onOpenImagePicker}
             onShowHotspotCrop={onShowHotspotCrop}
           />
+
+          <SettingsSection
+            siteSettings={siteSettings}
+            sidebar={sidebar}
+            updateField={updateField}
+            onOpenFilePicker={onOpenFilePicker}
+            onOpenDocumentDetail={onOpenDocumentDetail}
+          />
         </div>
       </div>
 
@@ -614,6 +683,7 @@ export function HomepageEditor({
           homepage: homepageState,
           about: aboutState,
           settings: settingsState,
+          sidebar: sidebarState,
         })}
       />
     </div>

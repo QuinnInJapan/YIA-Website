@@ -6,7 +6,8 @@ import { Box, Button, Flex, Text, TextInput } from "@sanity/ui";
 import { PublishIcon, TrashIcon, RevertIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import type { PortableTextBlock } from "@portabletext/editor";
-import { HotspotCropTool, DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
+import { DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
@@ -98,6 +99,8 @@ export function PostEditor({
   onMergedChange,
   onDraftChange,
   onOpenFilePicker,
+  onShowHotspotCrop,
+  onOpenDocumentDetail,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -112,6 +115,16 @@ export function PostEditor({
   onMergedChange?: (doc: BlogPostDoc | null) => void;
   onDraftChange?: () => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
+  onShowHotspotCrop?: (
+    imageUrl: string,
+    value: { hotspot: any; crop: any },
+    onChange: (v: { hotspot: any; crop: any }) => void,
+  ) => void;
+  onOpenDocumentDetail?: (
+    doc: SharedDocumentLinkItem,
+    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
@@ -126,7 +139,7 @@ export function PostEditor({
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
-  const [showHotspotCrop, setShowHotspotCrop] = useState(false);
+  // showHotspotCrop removed — now uses onShowHotspotCrop callback
 
   const handleBodyLangChange = useCallback((lang: "ja" | "en") => {
     if (bodyContainerRef.current) {
@@ -327,6 +340,11 @@ export function PostEditor({
 
   function handleRemoveDocument(key: string) {
     const docs = (merged?.documents ?? []).filter((d) => d._key !== key);
+    updateField("documents", docs);
+  }
+
+  function handleUpdateDocument(key: string, updated: DocumentLinkItem) {
+    const docs = (merged?.documents ?? []).map((d) => (d._key === key ? updated : d));
     updateField("documents", docs);
   }
 
@@ -538,7 +556,24 @@ export function PostEditor({
                     </button>
                     <button
                       type="button"
-                      onClick={() => setShowHotspotCrop(true)}
+                      onClick={() => {
+                        if (merged?.heroImage?.asset?._ref) {
+                          onShowHotspotCrop?.(
+                            builder.image(merged.heroImage).width(1200).auto("format").url(),
+                            {
+                              hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
+                              crop: merged.heroImage.crop ?? DEFAULT_CROP,
+                            },
+                            ({ hotspot, crop }) => {
+                              updateField("heroImage", {
+                                ...merged.heroImage,
+                                hotspot: { _type: "sanity.imageHotspot", ...hotspot },
+                                crop: { _type: "sanity.imageCrop", ...crop },
+                              });
+                            },
+                          );
+                        }
+                      }}
                       style={{
                         padding: "3px 8px",
                         borderRadius: 4,
@@ -767,8 +802,10 @@ export function PostEditor({
             <DocumentsSection
               documents={merged.documents ?? []}
               onRemove={handleRemoveDocument}
+              onUpdate={handleUpdateDocument}
               onAddUrl={handleAddUrlDocument}
               onPickFile={handleFilePick}
+              onOpenDocumentDetail={onOpenDocumentDetail}
             />
 
             {/* Related posts section */}
@@ -783,25 +820,6 @@ export function PostEditor({
         </div>
       )}
 
-      {/* Hotspot & crop dialog */}
-      {showHotspotCrop && merged?.heroImage?.asset?._ref && (
-        <HotspotCropTool
-          imageUrl={builder.image(merged.heroImage).width(1200).auto("format").url()}
-          value={{
-            hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
-            crop: merged.heroImage.crop ?? DEFAULT_CROP,
-          }}
-          onChange={({ hotspot, crop }) => {
-            updateField("heroImage", {
-              ...merged.heroImage,
-              hotspot: { _type: "sanity.imageHotspot", ...hotspot },
-              crop: { _type: "sanity.imageCrop", ...crop },
-            });
-          }}
-          onClose={() => setShowHotspotCrop(false)}
-        />
-      )}
-
       {merged && <RawJsonButton getDocument={() => merged} />}
     </div>
   );
@@ -812,13 +830,21 @@ export function PostEditor({
 function DocumentsSection({
   documents,
   onRemove,
+  onUpdate,
   onAddUrl,
   onPickFile,
+  onOpenDocumentDetail,
 }: {
   documents: DocumentLinkItem[];
   onRemove: (key: string) => void;
+  onUpdate: (key: string, updated: DocumentLinkItem) => void;
   onAddUrl: (label: string, url: string) => void;
   onPickFile: () => void;
+  onOpenDocumentDetail?: (
+    doc: SharedDocumentLinkItem,
+    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    onRemove: () => void,
+  ) => void;
 }) {
   const [showAddUrl, setShowAddUrl] = useState(false);
   const [urlLabel, setUrlLabel] = useState("");
@@ -859,26 +885,35 @@ function DocumentsSection({
             const subtitle = [typeLabel, fileTypeLabel].filter(Boolean).join(" · ");
 
             return (
-              <div
+              <button
                 key={doc._key}
+                type="button"
+                onClick={() => {
+                  onOpenDocumentDetail?.(
+                    doc,
+                    (updated) => onUpdate(doc._key, updated as DocumentLinkItem),
+                    () => onRemove(doc._key),
+                  );
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
+                  width: "100%",
+                  textAlign: "left",
                   padding: "6px 10px",
                   borderRadius: 4,
                   border: "1px solid var(--card-border-color)",
+                  background: "transparent",
+                  cursor: "pointer",
                   fontSize: 13,
+                  color: "var(--card-fg-color)",
                 }}
               >
                 <span style={{ fontSize: 14 }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
+                    style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
                   >
                     {label}
                   </div>
@@ -888,23 +923,7 @@ function DocumentsSection({
                     </div>
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onRemove(doc._key)}
-                  style={{
-                    padding: "2px 6px",
-                    border: "none",
-                    borderRadius: 3,
-                    background: "transparent",
-                    color: "var(--card-muted-fg-color)",
-                    cursor: "pointer",
-                    fontSize: 14,
-                  }}
-                  title="削除"
-                >
-                  ✕
-                </button>
-              </div>
+              </button>
             );
           })}
         </div>
