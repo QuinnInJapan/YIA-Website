@@ -29,6 +29,7 @@ interface AnnouncementItem {
   pinned: boolean | null;
   slug: string | null;
   hasDraft: boolean;
+  isDraftOnly: boolean;
 }
 
 // ── Constants ────────────────────────────────────────────
@@ -51,17 +52,26 @@ function todayStr(): string {
 // ── GROQ ─────────────────────────────────────────────────
 
 const LIST_PROJECTION = `{
-  _id,
+  "_id": select(
+    _id in path("drafts.**") => string::split(_id, "drafts.")[1],
+    _id
+  ),
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
   date,
   pinned,
   "slug": slug.current,
-  "hasDraft": defined(*[_id == "drafts." + ^._id][0])
+  "isDraftOnly": _id in path("drafts.**") && !defined(*[_id == string::split(^._id, "drafts.")[1]][0]),
+  "hasDraft": select(
+    _id in path("drafts.**") => true,
+    defined(*[_id == "drafts." + ^._id][0])
+  )
 }`;
 
 function buildFilter(search: string, filterMode: FilterMode): string {
-  let filter = `_type == "announcement" && !(_id in path("drafts.**"))`;
+  // Include published docs + draft-only docs (no published version).
+  // Exclude drafts that also have a published version (to avoid duplicates).
+  let filter = `_type == "announcement" && !(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
   if (search.trim()) {
     const terms = search
       .trim()
@@ -150,6 +160,7 @@ function SidebarRow({
             />
           )}
           {formatDate(item.date)}
+          {item.isDraftOnly && <span style={{ color: "#e6a317" }}>未公開</span>}
         </div>
       </div>
     </button>

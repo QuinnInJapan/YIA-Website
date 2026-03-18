@@ -31,6 +31,7 @@ interface BlogPostItem {
   slug: string | null;
   heroImage: { asset?: { _ref: string } } | null;
   hasDraft: boolean;
+  isDraftOnly: boolean;
 }
 
 // ── Constants ────────────────────────────────────────────
@@ -47,18 +48,27 @@ function formatDate(dateStr: string | null): string {
 // ── GROQ ─────────────────────────────────────────────────
 
 const LIST_PROJECTION = `{
-  _id,
+  "_id": select(
+    _id in path("drafts.**") => string::split(_id, "drafts.")[1],
+    _id
+  ),
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
   publishedAt,
   "categoryJa": category[_key == "ja"][0].value,
   "slug": slug.current,
   heroImage,
-  "hasDraft": defined(*[_id == "drafts." + ^._id][0])
+  "isDraftOnly": _id in path("drafts.**") && !defined(*[_id == string::split(^._id, "drafts.")[1]][0]),
+  "hasDraft": select(
+    _id in path("drafts.**") => true,
+    defined(*[_id == "drafts." + ^._id][0])
+  )
 }`;
 
 function buildFilter(search: string, category: string): string {
-  let filter = `_type == "blogPost" && !(_id in path("drafts.**"))`;
+  // Include published docs + draft-only docs (no published version).
+  // Exclude drafts that also have a published version (to avoid duplicates).
+  let filter = `_type == "blogPost" && !(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
   if (search.trim()) {
     const terms = search
       .trim()
@@ -158,6 +168,7 @@ function SidebarRow({
             />
           )}
           {formatDate(post.publishedAt)}
+          {post.isDraftOnly && <span style={{ color: "#e6a317" }}>未公開</span>}
           {post.categoryJa && ` · ${post.categoryJa}`}
         </div>
       </div>
