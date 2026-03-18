@@ -25,6 +25,9 @@ export default function HomepageEffects({ children }: { children: ReactNode }) {
       }),
     );
 
+    const arrow = arrowRef.current;
+    const annBand = document.querySelector(".oshirase-band");
+
     let ticking = false;
     const scrollHandler = () => {
       if (ticking) return;
@@ -54,6 +57,12 @@ export default function HomepageEffects({ children }: { children: ReactNode }) {
           text.style.opacity = String(opacity);
         }
 
+        // Scroll arrow — hide once announcements band top reaches viewport
+        if (arrow && annBand) {
+          const rect = annBand.getBoundingClientRect();
+          arrow.classList.toggle("hero-scroll--hidden", rect.top < vh);
+        }
+
         ticking = false;
       });
     };
@@ -61,23 +70,8 @@ export default function HomepageEffects({ children }: { children: ReactNode }) {
     // Fire once on mount to handle elements already in view
     scrollHandler();
 
-    // 4. Scroll arrow — hide when announcements band enters viewport
-    const arrow = arrowRef.current;
-    const annBand = document.querySelector(".oshirase-band");
-    let observer: IntersectionObserver | undefined;
-    if (arrow && annBand) {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          arrow.classList.toggle("hero-scroll--hidden", entry.isIntersecting);
-        },
-        { threshold: 0.1 },
-      );
-      observer.observe(annBand);
-    }
-
     return () => {
       window.removeEventListener("scroll", scrollHandler);
-      observer?.disconnect();
     };
   }, []);
 
