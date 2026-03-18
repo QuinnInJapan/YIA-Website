@@ -6,7 +6,7 @@ import { TextInput } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet, i18nSet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
-import { FieldLabel, OverlayButton, EmptyImageSlot } from "./HeroSection";
+import { FieldLabel, OverlayButton, ImageOverlayActions, EmptyImageSlot } from "./HeroSection";
 import type { HomepageAboutData, UpdateFieldFn, OpenPickerFn, ShowHotspotCropFn } from "./types";
 
 export function AboutSection({
@@ -77,23 +77,28 @@ export function AboutSection({
           写真
         </div>
         {about.image?.asset?._ref ? (
-          <div style={{ position: "relative", borderRadius: 6, overflow: "hidden", lineHeight: 0 }}>
-            <img
-              src={builder
-                .image(about.image)
-                .width(720)
-                .height(200)
-                .fit("crop")
-                .auto("format")
-                .url()}
-              alt=""
-              style={{ width: "100%", maxHeight: 200, objectFit: "cover", display: "block" }}
-            />
-            <div style={{ position: "absolute", top: 6, right: 6, display: "flex", gap: 4 }}>
-              <OverlayButton label="変更" onClick={handlePickImage} />
-              <OverlayButton label="切り抜き" onClick={handleHotspot} />
+          <ImageOverlayActions
+            buttons={
+              <>
+                <OverlayButton label="変更" onClick={handlePickImage} />
+                <OverlayButton label="切り抜き" onClick={handleHotspot} />
+              </>
+            }
+          >
+            <div style={{ borderRadius: 6, overflow: "hidden", lineHeight: 0 }}>
+              <img
+                src={builder
+                  .image(about.image)
+                  .width(720)
+                  .height(200)
+                  .fit("crop")
+                  .auto("format")
+                  .url()}
+                alt=""
+                style={{ width: "100%", maxHeight: 200, objectFit: "cover", display: "block" }}
+              />
             </div>
-          </div>
+          </ImageOverlayActions>
         ) : (
           <EmptyImageSlot onClick={handlePickImage} />
         )}

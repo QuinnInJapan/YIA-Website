@@ -98,17 +98,25 @@ export function DocumentDetailPanel({
           {loading ? (
             <div
               style={{
-                height: 200,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                height: 500,
                 borderRadius: 4,
+                border: "1px solid var(--card-border-color)",
                 background: "var(--card-border-color)",
+                overflow: "hidden",
               }}
             >
-              <Text size={1} muted>
-                読み込み中…
-              </Text>
+              {/* Skeleton shimmer */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background:
+                    "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+                  backgroundSize: "200% 100%",
+                  animation: "skeletonShimmer 1.5s ease-in-out infinite",
+                }}
+              />
+              <style>{`@keyframes skeletonShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }`}</style>
             </div>
           ) : asset ? (
             isPdf ? (
@@ -118,17 +126,23 @@ export function DocumentDetailPanel({
                     style={{
                       position: "absolute",
                       inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
                       borderRadius: 4,
-                      background: "rgba(255, 255, 255, 0.85)",
+                      border: "1px solid var(--card-border-color)",
+                      background: "var(--card-border-color)",
+                      overflow: "hidden",
                       zIndex: 1,
                     }}
                   >
-                    <Text size={1} muted>
-                      読み込み中…
-                    </Text>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        background:
+                          "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+                        backgroundSize: "200% 100%",
+                        animation: "skeletonShimmer 1.5s ease-in-out infinite",
+                      }}
+                    />
                   </div>
                 )}
                 <iframe

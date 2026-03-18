@@ -7,6 +7,7 @@ import { PublishIcon, TrashIcon, RevertIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import type { PortableTextBlock } from "@portabletext/editor";
 import { DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
+import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
@@ -446,106 +447,54 @@ export function AnnouncementEditor({
                 ヒーロー画像
               </div>
               {merged.heroImage?.asset?._ref ? (
-                <div
-                  style={{
-                    position: "relative",
-                    borderRadius: 6,
-                    overflow: "hidden",
-                    lineHeight: 0,
-                  }}
+                <ImageOverlayActions
+                  buttons={
+                    <>
+                      <OverlayButton label="変更" onClick={handleHeroImagePick} />
+                      <OverlayButton
+                        label="切り抜き"
+                        onClick={() => {
+                          if (merged?.heroImage?.asset?._ref) {
+                            onShowHotspotCrop?.(
+                              builder.image(merged.heroImage).width(1200).auto("format").url(),
+                              {
+                                hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
+                                crop: merged.heroImage.crop ?? DEFAULT_CROP,
+                              },
+                              ({ hotspot, crop }) => {
+                                updateField("heroImage", {
+                                  ...merged.heroImage,
+                                  hotspot: { _type: "sanity.imageHotspot", ...hotspot },
+                                  crop: { _type: "sanity.imageCrop", ...crop },
+                                });
+                              },
+                            );
+                          }
+                        }}
+                      />
+                      <OverlayButton label="削除" onClick={() => updateField("heroImage", null)} />
+                    </>
+                  }
                 >
-                  <img
-                    src={builder
-                      .image(merged.heroImage)
-                      .width(720)
-                      .height(180)
-                      .fit("crop")
-                      .auto("format")
-                      .url()}
-                    alt=""
-                    style={{
-                      width: "100%",
-                      maxHeight: 180,
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 6,
-                      right: 6,
-                      display: "flex",
-                      gap: 4,
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={handleHeroImagePick}
+                  <div style={{ borderRadius: 6, overflow: "hidden", lineHeight: 0 }}>
+                    <img
+                      src={builder
+                        .image(merged.heroImage)
+                        .width(720)
+                        .height(180)
+                        .fit("crop")
+                        .auto("format")
+                        .url()}
+                      alt=""
                       style={{
-                        padding: "3px 8px",
-                        borderRadius: 4,
-                        border: "none",
-                        background: "rgba(0,0,0,0.55)",
-                        color: "#fff",
-                        fontSize: 11,
-                        cursor: "pointer",
-                        backdropFilter: "blur(4px)",
+                        width: "100%",
+                        maxHeight: 180,
+                        objectFit: "cover",
+                        display: "block",
                       }}
-                    >
-                      変更
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (merged?.heroImage?.asset?._ref) {
-                          onShowHotspotCrop?.(
-                            builder.image(merged.heroImage).width(1200).auto("format").url(),
-                            {
-                              hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
-                              crop: merged.heroImage.crop ?? DEFAULT_CROP,
-                            },
-                            ({ hotspot, crop }) => {
-                              updateField("heroImage", {
-                                ...merged.heroImage,
-                                hotspot: { _type: "sanity.imageHotspot", ...hotspot },
-                                crop: { _type: "sanity.imageCrop", ...crop },
-                              });
-                            },
-                          );
-                        }
-                      }}
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: 4,
-                        border: "none",
-                        background: "rgba(0,0,0,0.55)",
-                        color: "#fff",
-                        fontSize: 11,
-                        cursor: "pointer",
-                        backdropFilter: "blur(4px)",
-                      }}
-                    >
-                      切り抜き
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => updateField("heroImage", null)}
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: 4,
-                        border: "none",
-                        background: "rgba(0,0,0,0.55)",
-                        color: "#fff",
-                        fontSize: 11,
-                        cursor: "pointer",
-                        backdropFilter: "blur(4px)",
-                      }}
-                    >
-                      削除
-                    </button>
+                    />
                   </div>
-                </div>
+                </ImageOverlayActions>
               ) : (
                 <button
                   type="button"

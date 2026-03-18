@@ -69,6 +69,7 @@ export function HeroSection({
         </div>
         {heroImage?.asset?._ref ? (
           <div
+            className="img-overlay-wrap"
             style={{
               position: "relative",
               borderRadius: 6,
@@ -171,9 +172,22 @@ export function HeroSection({
                 {i18nGet(homepage.hero?.tagline, "en") || "Tagline"}
               </p>
             </div>
-            {/* Editor controls */}
+            {/* Editor controls — centered on hover */}
             <div
-              style={{ position: "absolute", top: 6, right: 6, display: "flex", gap: 4, zIndex: 1 }}
+              className="img-overlay-actions"
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                background: "rgba(0,0,0,0.35)",
+                opacity: 0,
+                transition: "opacity 150ms ease",
+                pointerEvents: "none",
+                zIndex: 2,
+              }}
             >
               <OverlayButton label="変更" onClick={handlePickHero} />
               <OverlayButton label="切り抜き" onClick={handleHotspot} />
@@ -258,18 +272,59 @@ export function OverlayButton({ label, onClick }: { label: string; onClick: () =
       type="button"
       onClick={onClick}
       style={{
-        padding: "3px 8px",
-        borderRadius: 4,
-        border: "none",
-        background: "rgba(0,0,0,0.55)",
+        padding: "6px 16px",
+        borderRadius: 6,
+        border: "1px solid rgba(255,255,255,0.25)",
+        background: "rgba(0,0,0,0.6)",
         color: "#fff",
-        fontSize: 11,
+        fontSize: 13,
+        fontWeight: 500,
         cursor: "pointer",
-        backdropFilter: "blur(4px)",
+        backdropFilter: "blur(8px)",
+        whiteSpace: "nowrap",
       }}
     >
       {label}
     </button>
+  );
+}
+
+/** Wraps an image thumbnail and shows action buttons centered on hover. */
+export function ImageOverlayActions({
+  children,
+  buttons,
+}: {
+  children: React.ReactNode;
+  buttons: React.ReactNode;
+}) {
+  return (
+    <div className="img-overlay-wrap" style={{ position: "relative" }}>
+      {children}
+      <div
+        className="img-overlay-actions"
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          background: "rgba(0,0,0,0.35)",
+          opacity: 0,
+          transition: "opacity 150ms ease",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      >
+        {buttons}
+      </div>
+      <style>{`
+        .img-overlay-wrap:hover .img-overlay-actions {
+          opacity: 1 !important;
+          pointer-events: auto !important;
+        }
+      `}</style>
+    </div>
   );
 }
 

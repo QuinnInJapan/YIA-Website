@@ -6,7 +6,7 @@ import { TextInput } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet, i18nSet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
-import { FieldLabel, OverlayButton } from "./HeroSection";
+import { FieldLabel, OverlayButton, ImageOverlayActions } from "./HeroSection";
 import type {
   HomepageData,
   ImageField,
@@ -85,37 +85,20 @@ export function ActivityGridSection({
         }}
       >
         {img?.asset?._ref ? (
-          <>
+          <ImageOverlayActions
+            buttons={
+              <>
+                <OverlayButton label="変更" onClick={() => handlePickImage(index)} />
+                <OverlayButton label="切り抜き" onClick={() => handleHotspot(index)} />
+              </>
+            }
+          >
             <img
               src={builder.image(img).width(600).height(400).fit("crop").auto("format").url()}
               alt=""
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(0,0,0,0)",
-                transition: "background 150ms ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6,
-                opacity: 0,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = "1";
-                e.currentTarget.style.background = "rgba(0,0,0,0.35)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = "0";
-                e.currentTarget.style.background = "rgba(0,0,0,0)";
-              }}
-            >
-              <OverlayButton label="変更" onClick={() => handlePickImage(index)} />
-              <OverlayButton label="切り抜き" onClick={() => handleHotspot(index)} />
-            </div>
-          </>
+          </ImageOverlayActions>
         ) : (
           <button
             type="button"

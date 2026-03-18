@@ -5,7 +5,7 @@ import { useClient } from "sanity";
 import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
-import { OverlayButton, EmptyImageSlot } from "./HeroSection";
+import { OverlayButton, ImageOverlayActions, EmptyImageSlot } from "./HeroSection";
 import type { CategoryData, UpdateFieldFn, OpenPickerFn, ShowHotspotCropFn } from "./types";
 
 export function ProgramCardsSection({
@@ -76,31 +76,40 @@ export function ProgramCardsSection({
                 {i18nGet(cat.label, "ja")} / {i18nGet(cat.label, "en")}
               </div>
               {cat.heroImage?.asset?._ref ? (
-                <div
-                  style={{
-                    position: "relative",
-                    borderRadius: 6,
-                    overflow: "hidden",
-                    lineHeight: 0,
-                    aspectRatio: "16 / 9",
-                  }}
+                <ImageOverlayActions
+                  buttons={
+                    <>
+                      <OverlayButton label="変更" onClick={() => handlePick(cat)} />
+                      <OverlayButton label="切り抜き" onClick={() => handleHotspot(cat)} />
+                    </>
+                  }
                 >
-                  <img
-                    src={builder
-                      .image(cat.heroImage)
-                      .width(400)
-                      .height(225)
-                      .fit("crop")
-                      .auto("format")
-                      .url()}
-                    alt=""
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                  />
-                  <div style={{ position: "absolute", top: 4, right: 4, display: "flex", gap: 4 }}>
-                    <OverlayButton label="変更" onClick={() => handlePick(cat)} />
-                    <OverlayButton label="切り抜き" onClick={() => handleHotspot(cat)} />
+                  <div
+                    style={{
+                      borderRadius: 6,
+                      overflow: "hidden",
+                      lineHeight: 0,
+                      aspectRatio: "16 / 9",
+                    }}
+                  >
+                    <img
+                      src={builder
+                        .image(cat.heroImage)
+                        .width(400)
+                        .height(225)
+                        .fit("crop")
+                        .auto("format")
+                        .url()}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
                   </div>
-                </div>
+                </ImageOverlayActions>
               ) : (
                 <EmptyImageSlot onClick={() => handlePick(cat)} />
               )}
