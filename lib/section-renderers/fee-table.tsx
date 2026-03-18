@@ -5,9 +5,15 @@ import FeeTable from "@/components/FeeTable";
 import MembershipTiers from "@/components/MembershipTiers";
 
 export const feeTable: SectionHandler<FeeTableSection> = (s, ctx) => {
+  if (!s.rows) {
+    ctx.flush();
+    return;
+  }
   ctx.addTocHeader(ja(s.title), en(s.title));
 
-  const hasDescriptions = s.rows.some((r) => r.description && (ja(r.description) || en(r.description)));
+  const hasDescriptions = s.rows.some(
+    (r) => r.description && (ja(r.description) || en(r.description)),
+  );
 
   if (hasDescriptions) {
     ctx.push(<MembershipTiers rows={s.rows} />);
