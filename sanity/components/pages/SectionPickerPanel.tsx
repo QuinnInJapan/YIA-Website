@@ -1,6 +1,6 @@
 import { SECTION_TYPES, SECTION_TYPE_LABELS, SECTION_TYPE_META } from "./types";
 import type { SectionTypeName } from "./types";
-import { SectionThumbnail } from "./SectionThumbnails";
+import { SectionPreview } from "./SectionPreviews";
 
 export function SectionPickerPanel({
   onSelect,
@@ -84,8 +84,8 @@ function SectionGroup({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-          gap: 10,
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: 12,
         }}
       >
         {types.map((type) => (
@@ -116,11 +116,11 @@ function SectionGroup({
           >
             <div
               style={{
-                background: "var(--card-border-color)",
-                padding: "8px 12px",
+                borderBottom: "1px solid var(--card-border-color)",
+                containerType: "inline-size",
               }}
             >
-              <SectionThumbnail type={type} />
+              <SectionPreview type={type} />
             </div>
             <div style={{ padding: "8px 10px" }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: "var(--card-fg-color)" }}>
