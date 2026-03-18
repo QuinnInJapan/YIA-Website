@@ -31,7 +31,6 @@ interface BlogPostItem {
   slug: string | null;
   heroImage: { asset?: { _ref: string } } | null;
   hasDraft: boolean;
-  isDraftOnly: boolean;
 }
 
 // ── Constants ────────────────────────────────────────────
@@ -47,18 +46,18 @@ function formatDate(dateStr: string | null): string {
 
 // ── GROQ ─────────────────────────────────────────────────
 
+// Pull everything, deduplicate: keep drafts that have NO published version,
+// plus all published docs. This makes draft-only items visible in the sidebar.
+const DEDUP_FILTER = `!(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
+
 const LIST_PROJECTION = `{
-  "_id": select(
-    _id in path("drafts.**") => string::split(_id, "drafts.")[1],
-    _id
-  ),
+  "_id": select(_id in path("drafts.**") => string::split(_id, "drafts.")[1], _id),
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
   publishedAt,
   "categoryJa": category[_key == "ja"][0].value,
   "slug": slug.current,
   heroImage,
-  "isDraftOnly": _id in path("drafts.**") && !defined(*[_id == string::split(^._id, "drafts.")[1]][0]),
   "hasDraft": select(
     _id in path("drafts.**") => true,
     defined(*[_id == "drafts." + ^._id][0])
@@ -66,9 +65,7 @@ const LIST_PROJECTION = `{
 }`;
 
 function buildFilter(search: string, category: string): string {
-  // Include published docs + draft-only docs (no published version).
-  // Exclude drafts that also have a published version (to avoid duplicates).
-  let filter = `_type == "blogPost" && !(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
+  let filter = `_type == "blogPost" && ${DEDUP_FILTER}`;
   if (search.trim()) {
     const terms = search
       .trim()
@@ -168,7 +165,6 @@ function SidebarRow({
             />
           )}
           {formatDate(post.publishedAt)}
-          {post.isDraftOnly && <span style={{ color: "#e6a317" }}>未公開</span>}
           {post.categoryJa && ` · ${post.categoryJa}`}
         </div>
       </div>
@@ -304,7 +300,7 @@ export function BlogPostsTool() {
 
       Promise.all([
         client.fetch<BlogPostItem[]>(
-          `*[${filter}] | order(publishedAt desc) [${start}...${end}] ${LIST_PROJECTION}`,
+          `*[${filter}] | order(select(_id in path("drafts.**") => true, defined(*[_id == "drafts." + ^._id][0])) desc, publishedAt desc) [${start}...${end}] ${LIST_PROJECTION}`,
         ),
         client.fetch<number>(`count(*[${filter}])`),
       ])

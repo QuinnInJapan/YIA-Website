@@ -29,7 +29,6 @@ interface AnnouncementItem {
   pinned: boolean | null;
   slug: string | null;
   hasDraft: boolean;
-  isDraftOnly: boolean;
 }
 
 // ── Constants ────────────────────────────────────────────
@@ -51,17 +50,17 @@ function todayStr(): string {
 
 // ── GROQ ─────────────────────────────────────────────────
 
+// Pull everything, deduplicate: keep drafts that have NO published version,
+// plus all published docs. This makes draft-only items visible in the sidebar.
+const DEDUP_FILTER = `!(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
+
 const LIST_PROJECTION = `{
-  "_id": select(
-    _id in path("drafts.**") => string::split(_id, "drafts.")[1],
-    _id
-  ),
+  "_id": select(_id in path("drafts.**") => string::split(_id, "drafts.")[1], _id),
   "titleJa": title[_key == "ja"][0].value,
   "titleEn": title[_key == "en"][0].value,
   date,
   pinned,
   "slug": slug.current,
-  "isDraftOnly": _id in path("drafts.**") && !defined(*[_id == string::split(^._id, "drafts.")[1]][0]),
   "hasDraft": select(
     _id in path("drafts.**") => true,
     defined(*[_id == "drafts." + ^._id][0])
@@ -69,9 +68,7 @@ const LIST_PROJECTION = `{
 }`;
 
 function buildFilter(search: string, filterMode: FilterMode): string {
-  // Include published docs + draft-only docs (no published version).
-  // Exclude drafts that also have a published version (to avoid duplicates).
-  let filter = `_type == "announcement" && !(_id in path("drafts.**") && defined(*[_id == string::split(^._id, "drafts.")[1]][0]))`;
+  let filter = `_type == "announcement" && ${DEDUP_FILTER}`;
   if (search.trim()) {
     const terms = search
       .trim()
@@ -160,7 +157,6 @@ function SidebarRow({
             />
           )}
           {formatDate(item.date)}
-          {item.isDraftOnly && <span style={{ color: "#e6a317" }}>未公開</span>}
         </div>
       </div>
     </button>
@@ -278,7 +274,7 @@ export function AnnouncementsTool() {
 
       Promise.all([
         client.fetch<AnnouncementItem[]>(
-          `*[${f}] | order(pinned desc, date desc) [${start}...${end}] ${LIST_PROJECTION}`,
+          `*[${f}] | order(select(_id in path("drafts.**") => true, defined(*[_id == "drafts." + ^._id][0])) desc, pinned desc, date desc) [${start}...${end}] ${LIST_PROJECTION}`,
         ),
         client.fetch<number>(`count(*[${f}])`),
       ])
