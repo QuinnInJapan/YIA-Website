@@ -42,6 +42,7 @@ export function PagePreview({ page }: { page: PageDoc }) {
       <main className="layout-program" id="preview-main">
         {subtitleNode}
         {groups}
+        <div style={{ height: 200 }} />
       </main>
     </div>
   );

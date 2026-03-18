@@ -12,7 +12,6 @@ import type { GalleryImageItem } from "../blog/GalleryPanel";
 import { SectionBar } from "./SectionBar";
 import { SectionEditor } from "./SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "./types";
-import { SECTION_TYPES, SECTION_TYPE_LABELS } from "./types";
 
 // ── Constants ────────────────────────────────────────────
 
@@ -47,6 +46,7 @@ function formatRelativeTime(dateStr: string | undefined | null): string {
 export function PageEditor({
   documentId,
   onOpenImagePicker,
+  onOpenSectionPicker,
   onOpenGalleryEditor,
   activeGallerySectionKey,
   onDeselectGallery,
@@ -57,6 +57,7 @@ export function PageEditor({
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
+  onOpenSectionPicker?: (onSelect: (type: SectionTypeName) => void) => void;
   onOpenGalleryEditor?: (
     sectionKey: string,
     images: GalleryImageItem[],
@@ -98,9 +99,6 @@ export function PageEditor({
 
   // Section accordion state
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
-
-  // Section add menu
-  const [showAddSection, setShowAddSection] = useState(false);
 
   // ── Load document ──────────────────────────────────────
 
@@ -204,7 +202,6 @@ export function PageEditor({
     };
     sections.push(newSection);
     updateField("sections", sections);
-    setShowAddSection(false);
 
     // Auto-open the gallery editor for new gallery sections
     if (type === "gallery" && onOpenGalleryEditor) {
@@ -380,7 +377,7 @@ export function PageEditor({
               maxWidth: 720,
               width: "100%",
               margin: "0 auto",
-              padding: "16px 24px",
+              padding: "16px 24px 200px",
             }}
           >
             {/* Hero image */}
@@ -644,85 +641,22 @@ export function PageEditor({
 
               {/* Add section button */}
               <div style={{ marginTop: 12 }}>
-                {showAddSection ? (
-                  <div
-                    style={{
-                      border: "1px solid var(--card-border-color)",
-                      borderRadius: 6,
-                      padding: 12,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: "var(--card-muted-fg-color)",
-                        marginBottom: 8,
-                      }}
-                    >
-                      セクションを追加
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 4,
-                      }}
-                    >
-                      {SECTION_TYPES.map((type) => (
-                        <button
-                          key={type}
-                          type="button"
-                          onClick={() => addSection(type)}
-                          style={{
-                            padding: "4px 10px",
-                            border: "1px solid var(--card-border-color)",
-                            borderRadius: 4,
-                            background: "transparent",
-                            color: "var(--card-fg-color)",
-                            fontSize: 12,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {SECTION_TYPE_LABELS[type]}
-                        </button>
-                      ))}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setShowAddSection(false)}
-                      style={{
-                        marginTop: 8,
-                        padding: "4px 10px",
-                        border: "none",
-                        borderRadius: 4,
-                        background: "transparent",
-                        color: "var(--card-muted-fg-color)",
-                        fontSize: 12,
-                        cursor: "pointer",
-                      }}
-                    >
-                      キャンセル
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setShowAddSection(true)}
-                    style={{
-                      width: "100%",
-                      padding: "10px 0",
-                      border: "1px dashed var(--card-border-color)",
-                      borderRadius: 6,
-                      background: "transparent",
-                      color: "var(--card-muted-fg-color)",
-                      fontSize: 13,
-                      cursor: "pointer",
-                    }}
-                  >
-                    + セクションを追加
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => onOpenSectionPicker?.(addSection)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 0",
+                    border: "1px dashed var(--card-border-color)",
+                    borderRadius: 6,
+                    background: "transparent",
+                    color: "var(--card-muted-fg-color)",
+                    fontSize: 13,
+                    cursor: "pointer",
+                  }}
+                >
+                  + セクションを追加
+                </button>
               </div>
             </div>
           </div>
