@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { stegaClean } from "next-sanity";
-import { getSiteData, pageUrl } from "@/lib/data";
+import { getSiteData } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl } from "@/lib/sanity/image";
 import LazyImage from "@/components/LazyImage";
@@ -9,14 +8,9 @@ import CounterTile from "@/components/CounterTile";
 export default async function HomepageActivityGrid() {
   const data = await getSiteData();
   const hp = data.homepage;
-  const sidebar = data.sidebar;
 
   const galleryImages = hp.activityGrid.images;
   const gridStat = hp.activityGrid.stat;
-
-  const joinUrl = sidebar.memberRecruitment.slug
-    ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
-    : "";
 
   return (
     <section className="activity-grid-wrap">
@@ -46,28 +40,14 @@ export default async function HomepageActivityGrid() {
         >
           <LazyImage src={imageUrl(galleryImages[2])} alt="" loading="lazy" fill />
         </figure>
-        {joinUrl ? (
-          <Link
-            href={joinUrl}
-            className="activity-grid__tile activity-grid__tile--gold reveal"
-            style={{ gridArea: "e", "--reveal-i": 4 } as React.CSSProperties}
-          >
-            <div className="activity-grid__tile-text">
-              {ja(sidebar.memberRecruitment.label)}
-              <span>{en(sidebar.memberRecruitment.label)}</span>
-            </div>
-          </Link>
-        ) : (
-          <div
-            className="activity-grid__tile activity-grid__tile--gold reveal"
-            style={{ gridArea: "e", "--reveal-i": 4 } as React.CSSProperties}
-          >
-            <div className="activity-grid__tile-text">
-              {ja(sidebar.memberRecruitment.label)}
-              <span>{en(sidebar.memberRecruitment.label)}</span>
-            </div>
+        <div
+          className="activity-grid__tile activity-grid__tile--gold reveal"
+          style={{ gridArea: "e", "--reveal-i": 4 } as React.CSSProperties}
+        >
+          <div className="activity-grid__tile-text">
+            入会案内<span>Join Us</span>
           </div>
-        )}
+        </div>
         <figure
           className="activity-grid__item reveal"
           style={{ gridArea: "f", "--reveal-i": 5 } as React.CSSProperties}

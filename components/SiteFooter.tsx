@@ -10,9 +10,7 @@ interface SiteFooterProps {
   documents?: Document[];
 }
 
-export default async function SiteFooter({
-  documents,
-}: SiteFooterProps) {
+export default async function SiteFooter({ documents }: SiteFooterProps) {
   const { site, sidebar } = await getSiteData();
   const { org } = site;
   const docs = documents ?? sidebar.documents;
@@ -25,15 +23,9 @@ export default async function SiteFooter({
           <div className="site-footer__docs-links">
             {docs.map((d, i) => (
               <span key={i}>
-                {i > 0 && (
-                  <span className="site-footer__docs-sep">&middot;</span>
-                )}{" "}
-                <PdfLink
-                  href={fileUrl(d.file) || stegaClean(d.url) || ""}
-                  title={ja(d.label) + (en(d.label) ? ` / ${en(d.label)}` : "")}
-                >
+                {i > 0 && <span className="site-footer__docs-sep">&middot;</span>}{" "}
+                <PdfLink href={fileUrl(d.file) || stegaClean(d.url) || ""} title={ja(d.label)}>
                   {ja(d.label)}
-                  {en(d.label) ? ` / ${en(d.label)}` : ""}
                 </PdfLink>
               </span>
             ))}
@@ -44,7 +36,11 @@ export default async function SiteFooter({
         最終更新日 Last Updated: {formatDateDot(org.lastUpdated)}
       </div>
       <div className="site-footer__copyright">
-        &copy; <span lang="en" translate="no">{en(org.name)}</span> ({org.abbreviation})
+        &copy;{" "}
+        <span lang="en" translate="no">
+          {en(org.name)}
+        </span>{" "}
+        ({org.abbreviation})
       </div>
     </footer>
   );

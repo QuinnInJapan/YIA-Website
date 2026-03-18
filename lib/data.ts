@@ -1,16 +1,8 @@
 import { cache } from "react";
 import { stegaClean } from "next-sanity";
-import type {
-  SiteData,
-  SanityImage,
-  Page,
-  Category,
-} from "./types";
+import type { SiteData, SanityImage, Page, Category } from "./types";
 import type { I18nString } from "@/lib/i18n";
-import {
-  fetchSiteData,
-  fetchAllPageSlugsStatic,
-} from "./sanity/queries";
+import { fetchSiteData, fetchAllPageSlugsStatic } from "./sanity/queries";
 
 /** Strip the type prefix from a Sanity _id (e.g. "category-support" → "support") */
 export function shortId(docId: string | undefined): string {
@@ -22,12 +14,66 @@ export function shortId(docId: string | undefined): string {
 
 // Empty defaults for when Sanity has no data yet
 const emptySiteData: SiteData = {
-  site: { _type: "siteSettings", org: { designation: "", name: [{_key: "ja", value: ""}, {_key: "en", value: ""}], abbreviation: "", founded: "", npoEstablished: "", lastUpdated: "", description: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, contact: { postalCode: "", address: [{_key: "ja", value: ""}, {_key: "en", value: ""}], tel: "", fax: "", email: "", website: "" }, businessHours: [{_key: "ja", value: ""}, {_key: "en", value: ""}], copyright: "", googleMapsEmbedUrl: "" },
+  site: {
+    _type: "siteSettings",
+    org: {
+      designation: "",
+      name: [
+        { _key: "ja", value: "" },
+        { _key: "en", value: "" },
+      ],
+      abbreviation: "",
+      founded: "",
+      npoEstablished: "",
+      lastUpdated: "",
+      description: [
+        { _key: "ja", value: "" },
+        { _key: "en", value: "" },
+      ],
+    },
+    contact: {
+      postalCode: "",
+      address: [
+        { _key: "ja", value: "" },
+        { _key: "en", value: "" },
+      ],
+      tel: "",
+      fax: "",
+      email: "",
+      website: "",
+    },
+    businessHours: [
+      { _key: "ja", value: "" },
+      { _key: "en", value: "" },
+    ],
+    copyright: "",
+    googleMapsEmbedUrl: "",
+  },
   categories: [],
   navigation: { _type: "navigation", categories: [] },
   announcements: [],
-  sidebar: { _type: "sidebar", memberRecruitment: { label: [{_key: "ja", value: ""}, {_key: "en", value: ""}], slug: "" }, documents: [] },
-  homepage: { _type: "homepage", slug: "", hero: { tagline: [{_key: "ja", value: ""}, {_key: "en", value: ""}] }, activityGrid: { images: [], stat: { value: 0, label: [{_key: "ja", value: ""}, {_key: "en", value: ""}] } }, announcementRefs: [] },
+  sidebar: { _type: "sidebar", documents: [] },
+  homepage: {
+    _type: "homepage",
+    slug: "",
+    hero: {
+      tagline: [
+        { _key: "ja", value: "" },
+        { _key: "en", value: "" },
+      ],
+    },
+    activityGrid: {
+      images: [],
+      stat: {
+        value: 0,
+        label: [
+          { _key: "ja", value: "" },
+          { _key: "en", value: "" },
+        ],
+      },
+    },
+    announcementRefs: [],
+  },
   pages: [],
 };
 
@@ -90,36 +136,33 @@ interface EnrichedNavigation {
   categories: EnrichedNavCategory[];
 }
 
-export const getEnrichedNavigation = cache(
-  async (): Promise<EnrichedNavigation> => {
-    const data = await getSiteData();
+export const getEnrichedNavigation = cache(async (): Promise<EnrichedNavigation> => {
+  const data = await getSiteData();
 
-    const categories: EnrichedNavCategory[] =
-      data.navigation.categories.map((navCat) => {
-        const cat = navCat.categoryRef;
-        const catId = shortId(cat?._id);
+  const categories: EnrichedNavCategory[] = data.navigation.categories.map((navCat) => {
+    const cat = navCat.categoryRef;
+    const catId = shortId(cat?._id);
+    return {
+      categoryId: catId,
+      id: catId,
+      label: cat?.label ?? [],
+      description: cat?.description,
+      heroImage: cat?.heroImage,
+      items: (navCat.items ?? []).map((item) => {
+        const pg = item.pageRef;
+        const pgSlug = pg ? stegaClean(pg.slug) : "";
         return {
-          categoryId: catId,
-          id: catId,
-          label: cat?.label ?? [],
-          description: cat?.description,
-          heroImage: cat?.heroImage,
-          items: (navCat.items ?? []).map((item) => {
-            const pg = item.pageRef;
-            const pgSlug = pg ? stegaClean(pg.slug) : "";
-            return {
-              id: pg ? shortId(pg._id) : "",
-              slug: pgSlug,
-              title: pg?.title ?? [],
-              url: pgSlug ? `/${catId}/${pgSlug}` : "",
-            };
-          }),
+          id: pg ? shortId(pg._id) : "",
+          slug: pgSlug,
+          title: pg?.title ?? [],
+          url: pgSlug ? `/${catId}/${pgSlug}` : "",
         };
-      });
+      }),
+    };
+  });
 
-    return { categories };
-  }
-);
+  return { categories };
+});
 
 // ── Category IDs from navigation ─────────────────────────────────
 
@@ -132,18 +175,14 @@ export async function getCategoryIds(): Promise<string[]> {
 export async function getCategoryIdsStatic(): Promise<string[]> {
   const { client } = await import("./sanity/client");
   const nav = await client.fetch<{ categories: { categoryRef: { _id: string } }[] }>(
-    `*[_type == "navigation"][0]{ categories[]{ categoryRef-> { _id } } }`
+    `*[_type == "navigation"][0]{ categories[]{ categoryRef-> { _id } } }`,
   );
-  return (nav?.categories ?? [])
-    .map((c) => shortId(c.categoryRef?._id))
-    .filter(Boolean);
+  return (nav?.categories ?? []).map((c) => shortId(c.categoryRef?._id)).filter(Boolean);
 }
 
 // ── Pages ────────────────────────────────────────────────────────
 
-export async function getPage(
-  slug: string
-): Promise<Page | undefined> {
+export async function getPage(slug: string): Promise<Page | undefined> {
   const data = await getSiteData();
   return data.pages.find((pg) => shortId(pg._id) === slug || stegaClean(pg.slug) === slug);
 }
@@ -163,9 +202,7 @@ export async function getAllPages(): Promise<Page[]> {
 
 export async function getPagesByCategory(categoryId: string): Promise<Page[]> {
   const data = await getSiteData();
-  return data.pages.filter(
-    (pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`
-  );
+  return data.pages.filter((pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`);
 }
 
 // ── URL builder ─────────────────────────────────────────────

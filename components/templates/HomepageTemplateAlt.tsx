@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { stegaClean } from "next-sanity";
 import { getSiteData, getEnrichedNavigation, shortId, pageUrl } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -18,9 +17,6 @@ export default async function HomepageTemplateAlt() {
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
   const aboutUrl = await pageUrl("about");
-  const joinUrl = sidebar.memberRecruitment.slug
-    ? await pageUrl(stegaClean(sidebar.memberRecruitment.slug))
-    : "";
 
   // Announcements: pinned first, then by date, show 5
   const hpAnnouncements = [...(data.announcements ?? [])]
@@ -166,22 +162,10 @@ export default async function HomepageTemplateAlt() {
                 About YIA
               </span>
             </Link>
-            {joinUrl && (
-              <Link
-                href={joinUrl}
-                className="next-steps__path reveal"
-                style={{ "--reveal-i": 1 } as React.CSSProperties}
-              >
-                <span className="next-steps__path-ja">参加する</span>
-                <span className="next-steps__path-en" lang="en" translate="no">
-                  Join Us
-                </span>
-              </Link>
-            )}
             <a
               href="#access"
               className="next-steps__path reveal"
-              style={{ "--reveal-i": 2 } as React.CSSProperties}
+              style={{ "--reveal-i": 1 } as React.CSSProperties}
             >
               <span className="next-steps__path-ja">お問い合わせ</span>
               <span className="next-steps__path-en" lang="en" translate="no">

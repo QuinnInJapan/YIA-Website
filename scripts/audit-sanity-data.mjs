@@ -216,10 +216,6 @@ function auditHomepage(doc) {
 }
 
 function auditSidebar(doc) {
-  if (doc.memberRecruitment?.label)
-    checkI18nField(doc, "memberRecruitment.label", doc.memberRecruitment.label);
-  if (doc.memberRecruitment?.page)
-    checkRef(doc, "memberRecruitment.page", doc.memberRecruitment.page);
   if (doc.documents) {
     for (const [i, d] of doc.documents.entries()) {
       checkI18nField(doc, `documents[${i}].label`, d.label);

@@ -81,7 +81,24 @@ export interface AnnouncementPreviewData {
   pinned?: boolean;
 }
 
-export type DocType = "homepage" | "homepageAbout" | "siteSettings" | "category";
+export interface DocumentLinkItem {
+  _key: string;
+  label?: I18nString[];
+  url?: string;
+  file?: { asset?: { _ref: string } };
+  type?: string;
+  fileType?: string;
+}
+
+export interface SidebarData {
+  _id: string;
+  _type: string;
+  _rev?: string;
+  documents?: DocumentLinkItem[];
+  [key: string]: unknown;
+}
+
+export type DocType = "homepage" | "homepageAbout" | "siteSettings" | "sidebar" | "category";
 
 export type UpdateFieldFn = (
   docType: DocType,

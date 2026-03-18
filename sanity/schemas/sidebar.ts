@@ -11,16 +11,6 @@ export default defineType({
   },
   fields: [
     defineField({
-      name: "memberRecruitment",
-      title: "会員募集",
-      type: "object",
-      description: "サイドバーに表示される会員募集バナー。",
-      fields: [
-        defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", description: "バナーに表示するテキスト。" }),
-        defineField({ name: "page", title: "ページ", type: "reference", to: [{ type: "page" }], description: "クリック時のリンク先ページ。" }),
-      ],
-    }),
-    defineField({
       name: "documents",
       title: "資料",
       type: "array",

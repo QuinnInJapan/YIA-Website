@@ -298,7 +298,10 @@ export function ImageOverlayActions({
   buttons: React.ReactNode;
 }) {
   return (
-    <div className="img-overlay-wrap" style={{ position: "relative" }}>
+    <div
+      className="img-overlay-wrap"
+      style={{ position: "relative", width: "100%", height: "100%" }}
+    >
       {children}
       <div
         className="img-overlay-actions"

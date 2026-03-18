@@ -5,6 +5,7 @@ import { useClient } from "sanity";
 import { Box, Button, Flex, Text } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
 import { ImagePickerPanel } from "../shared/ImagePickerPanel";
+import { i18nGet, i18nSet } from "../shared/i18n";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -12,6 +13,7 @@ export interface GalleryImageItem {
   _key: string;
   _type: "imageFile";
   file: { _type: "image"; asset: { _type: "reference"; _ref: string } };
+  caption?: { _key: string; value: string }[];
 }
 
 // ── CombinedGalleryPanel ─────────────────────────────────
@@ -34,6 +36,10 @@ export function CombinedGalleryPanel({
   const dragIdxRef = useRef<number | null>(null);
   const [draggingKey, setDraggingKey] = useState<string | null>(null);
 
+  // Click-to-select for caption editing
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const didDragRef = useRef(false);
+
   function commitImages(next: GalleryImageItem[]) {
     setImages(next);
     onUpdateImages(next);
@@ -48,6 +54,8 @@ export function CombinedGalleryPanel({
   function handleToggle(assetId: string) {
     const exists = images.some((img) => img.file?.asset?._ref === assetId);
     if (exists) {
+      const removed = images.find((img) => img.file?.asset?._ref === assetId);
+      if (removed && removed._key === selectedKey) setSelectedKey(null);
       commitImages(images.filter((img) => img.file?.asset?._ref !== assetId));
     } else {
       const newItem: GalleryImageItem = {
@@ -141,16 +149,26 @@ export function CombinedGalleryPanel({
                 const ref = img.file?.asset?._ref;
                 if (!ref) return null;
                 const isDragging = img._key === draggingKey;
+                const isSelected = img._key === selectedKey;
+                const hasCaption = !!i18nGet(img.caption, "ja") || !!i18nGet(img.caption, "en");
                 return (
                   <div
                     key={img._key}
                     draggable
                     onDragStart={() => {
+                      didDragRef.current = true;
                       dragIdxRef.current = idx;
                       setDraggingKey(img._key);
                     }}
                     onDragOver={(e) => handleStripDragOver(e, idx)}
                     onDragEnd={handleStripDragEnd}
+                    onClick={() => {
+                      if (didDragRef.current) {
+                        didDragRef.current = false;
+                        return;
+                      }
+                      setSelectedKey(isSelected ? null : img._key);
+                    }}
                     style={{
                       width: 80,
                       height: 80,
@@ -158,9 +176,11 @@ export function CombinedGalleryPanel({
                       overflow: "hidden",
                       cursor: "grab",
                       opacity: isDragging ? 0.4 : 1,
-                      border: isDragging
+                      border: isSelected
                         ? "2px solid var(--card-focus-ring-color, #4a90d9)"
-                        : "1px solid var(--card-border-color)",
+                        : isDragging
+                          ? "2px solid var(--card-focus-ring-color, #4a90d9)"
+                          : "1px solid var(--card-border-color)",
                       position: "relative",
                     }}
                   >
@@ -181,10 +201,29 @@ export function CombinedGalleryPanel({
                         pointerEvents: "none",
                       }}
                     />
+                    {hasCaption && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: 2,
+                          left: 2,
+                          background: "rgba(0,0,0,0.6)",
+                          color: "#fff",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          lineHeight: 1,
+                          padding: "2px 3px",
+                          borderRadius: 3,
+                        }}
+                      >
+                        Aa
+                      </span>
+                    )}
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
+                        if (img._key === selectedKey) setSelectedKey(null);
                         commitImages(images.filter((i) => i._key !== img._key));
                       }}
                       style={{
@@ -213,6 +252,98 @@ export function CombinedGalleryPanel({
               })}
         </div>
       </div>
+
+      {/* Caption editor strip */}
+      {selectedKey &&
+        (() => {
+          const selImg = images.find((img) => img._key === selectedKey);
+          if (!selImg) return null;
+          const ref = selImg.file?.asset?._ref;
+          return (
+            <div
+              style={{
+                borderBottom: "1px solid var(--card-border-color)",
+                padding: "8px 12px",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                background: "var(--card-bg-color)",
+              }}
+            >
+              {ref && (
+                <img
+                  src={builder.image(ref).width(96).height(96).fit("crop").auto("format").url()}
+                  alt=""
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 4,
+                    objectFit: "cover",
+                    flexShrink: 0,
+                  }}
+                />
+              )}
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, width: 24, flexShrink: 0 }}>
+                    JA:
+                  </span>
+                  <input
+                    type="text"
+                    value={i18nGet(selImg.caption, "ja")}
+                    onChange={(e) => {
+                      const next = images.map((img) =>
+                        img._key === selectedKey
+                          ? { ...img, caption: i18nSet(img.caption, "ja", e.target.value) }
+                          : img,
+                      );
+                      commitImages(next);
+                    }}
+                    placeholder="キャプション（日本語）"
+                    style={{
+                      flex: 1,
+                      fontSize: 12,
+                      padding: "4px 6px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 3,
+                      background: "var(--card-bg-color)",
+                      color: "inherit",
+                      outline: "none",
+                    }}
+                  />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, width: 24, flexShrink: 0 }}>
+                    EN:
+                  </span>
+                  <input
+                    type="text"
+                    value={i18nGet(selImg.caption, "en")}
+                    onChange={(e) => {
+                      const next = images.map((img) =>
+                        img._key === selectedKey
+                          ? { ...img, caption: i18nSet(img.caption, "en", e.target.value) }
+                          : img,
+                      );
+                      commitImages(next);
+                    }}
+                    placeholder="Caption (English)"
+                    style={{
+                      flex: 1,
+                      fontSize: 12,
+                      padding: "4px 6px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 3,
+                      background: "var(--card-bg-color)",
+                      color: "inherit",
+                      outline: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
       {/* Image picker grid */}
       <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>

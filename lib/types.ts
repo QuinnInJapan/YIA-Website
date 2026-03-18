@@ -282,10 +282,6 @@ export interface Announcement {
 
 export interface Sidebar {
   _type: "sidebar";
-  memberRecruitment: {
-    label: I18nString;
-    slug: string;
-  };
   documents: Document[];
 }
 

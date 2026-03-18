@@ -258,409 +258,387 @@ export function HotspotCropTool({
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 1000,
-        background: "rgba(0,0,0,0.6)",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        height: "100%",
+        overflow: "hidden",
       }}
-      onClick={onClose}
     >
+      {/* Header */}
       <div
-        onClick={(e) => e.stopPropagation()}
         style={{
-          background: "var(--card-bg-color, #fff)",
-          borderRadius: 8,
           display: "flex",
-          flexDirection: "column",
-          width: "min(900px, 92vw)",
-          maxHeight: "92vh",
-          overflow: "hidden",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.3)",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 16px",
+          borderBottom: "1px solid var(--card-border-color)",
+          flexShrink: 0,
         }}
       >
-        {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "12px 16px",
-            borderBottom: "1px solid var(--card-border-color)",
-          }}
-        >
-          <div>
-            <div style={{ fontWeight: 600, fontSize: 13 }}>切り抜き & フォーカス</div>
-            <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginTop: 2 }}>
-              四角形で切り抜き範囲を調整。円で常に表示する領域を指定。
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                padding: "5px 14px",
-                borderRadius: 3,
-                border: "1px solid var(--card-border-color)",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: 12,
-                color: "inherit",
-              }}
-            >
-              キャンセル
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                onChange({ hotspot, crop });
-                onClose();
-              }}
-              style={{
-                padding: "5px 14px",
-                borderRadius: 3,
-                border: "none",
-                background: "#2276fc",
-                color: "#fff",
-                cursor: "pointer",
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-            >
-              適用
-            </button>
+        <div>
+          <div style={{ fontWeight: 600, fontSize: 13 }}>切り抜き & フォーカス</div>
+          <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginTop: 2 }}>
+            四角形で切り抜き範囲。円でフォーカス領域。
           </div>
         </div>
-
-        {/* Canvas */}
-        <div
-          ref={containerRef}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          style={{
-            position: "relative",
-            flex: 1,
-            minHeight: 0,
-            aspectRatio: "3 / 2",
-            maxHeight: "min(500px, 55vh)",
-            userSelect: "none",
-            touchAction: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#1a1a1a",
-          }}
-        >
-          {/* Background image at 25% opacity (Sanity shows full image dimly behind crop) */}
-          <img
-            src={imageUrl}
-            alt=""
-            onLoad={(e) =>
-              setImgSize({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })
-            }
+        <div style={{ display: "flex", gap: 6 }}>
+          <button
+            type="button"
+            onClick={onClose}
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
-              display: "block",
-              pointerEvents: "none",
-              opacity: 0.25,
+              padding: "5px 14px",
+              borderRadius: 3,
+              border: "1px solid var(--card-border-color)",
+              background: "transparent",
+              cursor: "pointer",
+              fontSize: 12,
+              color: "inherit",
             }}
-          />
-          {imgSize && (
-            <svg
-              style={{
-                position: "absolute",
-                left: offsetX,
-                top: offsetY,
-                width: imgW,
-                height: imgH,
-              }}
-              overflow="visible"
-              fill="none"
-            >
-              <defs>
-                <mask id="hc-crop-mask">
-                  <rect width={imgW} height={imgH} fill="white" />
-                  <rect x={cropX} y={cropY} width={cropW} height={cropH} fill="black" />
-                </mask>
-                <clipPath id="hc-crop-clip">
-                  <rect x={cropX} y={cropY} width={cropW} height={cropH} />
-                </clipPath>
-              </defs>
-
-              {/* Full-brightness image clipped to crop area */}
-              <image
-                href={imageUrl}
-                width={imgW}
-                height={imgH}
-                clipPath="url(#hc-crop-clip)"
-                preserveAspectRatio="none"
-              />
-
-              {/* Dark overlay outside crop */}
-              <rect
-                width={imgW}
-                height={imgH}
-                fill="rgba(0,0,0,0.5)"
-                mask="url(#hc-crop-mask)"
-                pointerEvents="none"
-              />
-
-              {/* Crop border (draggable body) */}
-              <rect
-                x={cropX}
-                y={cropY}
-                width={cropW}
-                height={cropH}
-                stroke={cropStroke}
-                strokeWidth={cropActive ? 2 : 1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: dragging === "crop" ? "grabbing" : "grab" }}
-                onPointerDown={(e) => handlePointerDown(e, "crop")}
-              />
-
-              {/* Edge handles */}
-              <rect
-                x={cropX + cropW / 2 - 16}
-                y={cropY - HANDLE_SIZE / 2}
-                width={32}
-                height={HANDLE_SIZE}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                rx={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: "ns-resize" }}
-                onPointerDown={(e) => handlePointerDown(e, "crop-top")}
-              />
-              <rect
-                x={cropX + cropW / 2 - 16}
-                y={cropY + cropH - HANDLE_SIZE / 2}
-                width={32}
-                height={HANDLE_SIZE}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                rx={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: "ns-resize" }}
-                onPointerDown={(e) => handlePointerDown(e, "crop-bottom")}
-              />
-              <rect
-                x={cropX - HANDLE_SIZE / 2}
-                y={cropY + cropH / 2 - 16}
-                width={HANDLE_SIZE}
-                height={32}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                rx={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: "ew-resize" }}
-                onPointerDown={(e) => handlePointerDown(e, "crop-left")}
-              />
-              <rect
-                x={cropX + cropW - HANDLE_SIZE / 2}
-                y={cropY + cropH / 2 - 16}
-                width={HANDLE_SIZE}
-                height={32}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                rx={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: "ew-resize" }}
-                onPointerDown={(e) => handlePointerDown(e, "crop-right")}
-              />
-
-              {/* Corner handles — L-shaped */}
-              {(
-                [
-                  { t: "crop-topLeft", x: cropX, y: cropY, dx: 1, dy: 1 },
-                  { t: "crop-topRight", x: cropX + cropW, y: cropY, dx: -1, dy: 1 },
-                  { t: "crop-bottomLeft", x: cropX, y: cropY + cropH, dx: 1, dy: -1 },
-                  { t: "crop-bottomRight", x: cropX + cropW, y: cropY + cropH, dx: -1, dy: -1 },
-                ] as const
-              ).map(({ t, x, y, dx, dy }) => (
-                <g key={t}>
-                  <path
-                    d={cornerPath(x, y, dx, dy)}
-                    stroke="#fff"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <rect
-                    x={x - HANDLE_HIT / 2}
-                    y={y - HANDLE_HIT / 2}
-                    width={HANDLE_HIT}
-                    height={HANDLE_HIT}
-                    fill="transparent"
-                    style={{ cursor: cornerCursors[t] }}
-                    onPointerDown={(e) => handlePointerDown(e, t)}
-                  />
-                </g>
-              ))}
-
-              {/* Hotspot guidelines — dashed crosshairs */}
-              <line
-                x1={hx}
-                y1={0}
-                x2={hx}
-                y2={imgH}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.2}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-              <line
-                x1={0}
-                y1={hy}
-                x2={imgW}
-                y2={hy}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.2}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-              {/* Hotspot boundary lines */}
-              <line
-                x1={hx - hrx}
-                y1={0}
-                x2={hx - hrx}
-                y2={imgH}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.1}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-              <line
-                x1={hx + hrx}
-                y1={0}
-                x2={hx + hrx}
-                y2={imgH}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.1}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-              <line
-                x1={0}
-                y1={hy - hry}
-                x2={imgW}
-                y2={hy - hry}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.1}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-              <line
-                x1={0}
-                y1={hy + hry}
-                x2={imgW}
-                y2={hy + hry}
-                stroke="var(--card-fg-color, #fff)"
-                strokeOpacity={0.1}
-                strokeWidth={1}
-                strokeDasharray="3 3"
-                vectorEffect="non-scaling-stroke"
-                pointerEvents="none"
-              />
-
-              {/* Hotspot ellipse */}
-              <ellipse
-                cx={hx}
-                cy={hy}
-                rx={hrx}
-                ry={hry}
-                stroke={hotspotStroke}
-                strokeWidth={hotspotActive ? 2 : 1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: dragging === "hotspot" ? "grabbing" : "grab" }}
-                onPointerDown={(e) => handlePointerDown(e, "hotspot")}
-              />
-
-              {/* Hotspot center dot */}
-              <circle
-                cx={hx}
-                cy={hy}
-                r={3}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: dragging === "hotspot" ? "grabbing" : "grab" }}
-                onPointerDown={(e) => handlePointerDown(e, "hotspot")}
-              />
-
-              {/* Hotspot resize handle at 45° */}
-              <circle
-                cx={hhx}
-                cy={hhy}
-                r={HANDLE_HOTSPOT / 2}
-                fill="#fff"
-                stroke="#000"
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-                style={{ cursor: "move" }}
-                onPointerDown={(e) => handlePointerDown(e, "hotspot-handle")}
-              />
-            </svg>
-          )}
-        </div>
-
-        {/* Preview strip */}
-        {imgSize && (
-          <div
-            style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--card-border-color)" }}
           >
-            <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
-              プレビュー
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-              {PREVIEW_RATIOS.map(({ label, w, h }) => {
-                const pr = computePreviewRect(imgSize.w, imgSize.h, hotspot, crop, w, h);
-                return (
-                  <div key={label}>
-                    <div
-                      style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 4 }}
-                    >
-                      {label}
-                    </div>
-                    <div
-                      style={{
-                        width: "100%",
-                        aspectRatio: `${w} / ${h}`,
-                        borderRadius: 2,
-                        border: "1px solid var(--card-border-color)",
-                        backgroundImage: `url(${imageUrl})`,
-                        backgroundSize: `${(1 / pr.w) * 100}% ${(1 / pr.h) * 100}%`,
-                        backgroundPosition: `${pr.w < 1 ? (pr.x / (1 - pr.w)) * 100 : 0}% ${pr.h < 1 ? (pr.y / (1 - pr.h)) * 100 : 0}%`,
-                        backgroundRepeat: "no-repeat",
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+            キャンセル
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onChange({ hotspot, crop });
+              onClose();
+            }}
+            style={{
+              padding: "5px 14px",
+              borderRadius: 3,
+              border: "none",
+              background: "#2276fc",
+              color: "#fff",
+              cursor: "pointer",
+              fontSize: 12,
+              fontWeight: 500,
+            }}
+          >
+            適用
+          </button>
+        </div>
+      </div>
+
+      {/* Canvas */}
+      <div
+        ref={containerRef}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        style={{
+          position: "relative",
+          flex: 1,
+          minHeight: 0,
+          userSelect: "none",
+          touchAction: "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#1a1a1a",
+        }}
+      >
+        {/* Background image at 25% opacity (Sanity shows full image dimly behind crop) */}
+        <img
+          src={imageUrl}
+          alt=""
+          onLoad={(e) =>
+            setImgSize({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })
+          }
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            objectFit: "contain",
+            display: "block",
+            pointerEvents: "none",
+            opacity: 0.25,
+          }}
+        />
+        {imgSize && (
+          <svg
+            style={{
+              position: "absolute",
+              left: offsetX,
+              top: offsetY,
+              width: imgW,
+              height: imgH,
+            }}
+            overflow="visible"
+            fill="none"
+          >
+            <defs>
+              <mask id="hc-crop-mask">
+                <rect width={imgW} height={imgH} fill="white" />
+                <rect x={cropX} y={cropY} width={cropW} height={cropH} fill="black" />
+              </mask>
+              <clipPath id="hc-crop-clip">
+                <rect x={cropX} y={cropY} width={cropW} height={cropH} />
+              </clipPath>
+            </defs>
+
+            {/* Full-brightness image clipped to crop area */}
+            <image
+              href={imageUrl}
+              width={imgW}
+              height={imgH}
+              clipPath="url(#hc-crop-clip)"
+              preserveAspectRatio="none"
+            />
+
+            {/* Dark overlay outside crop */}
+            <rect
+              width={imgW}
+              height={imgH}
+              fill="rgba(0,0,0,0.5)"
+              mask="url(#hc-crop-mask)"
+              pointerEvents="none"
+            />
+
+            {/* Crop border (draggable body) */}
+            <rect
+              x={cropX}
+              y={cropY}
+              width={cropW}
+              height={cropH}
+              stroke={cropStroke}
+              strokeWidth={cropActive ? 2 : 1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: dragging === "crop" ? "grabbing" : "grab" }}
+              onPointerDown={(e) => handlePointerDown(e, "crop")}
+            />
+
+            {/* Edge handles */}
+            <rect
+              x={cropX + cropW / 2 - 16}
+              y={cropY - HANDLE_SIZE / 2}
+              width={32}
+              height={HANDLE_SIZE}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              rx={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: "ns-resize" }}
+              onPointerDown={(e) => handlePointerDown(e, "crop-top")}
+            />
+            <rect
+              x={cropX + cropW / 2 - 16}
+              y={cropY + cropH - HANDLE_SIZE / 2}
+              width={32}
+              height={HANDLE_SIZE}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              rx={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: "ns-resize" }}
+              onPointerDown={(e) => handlePointerDown(e, "crop-bottom")}
+            />
+            <rect
+              x={cropX - HANDLE_SIZE / 2}
+              y={cropY + cropH / 2 - 16}
+              width={HANDLE_SIZE}
+              height={32}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              rx={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: "ew-resize" }}
+              onPointerDown={(e) => handlePointerDown(e, "crop-left")}
+            />
+            <rect
+              x={cropX + cropW - HANDLE_SIZE / 2}
+              y={cropY + cropH / 2 - 16}
+              width={HANDLE_SIZE}
+              height={32}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              rx={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: "ew-resize" }}
+              onPointerDown={(e) => handlePointerDown(e, "crop-right")}
+            />
+
+            {/* Corner handles — L-shaped */}
+            {(
+              [
+                { t: "crop-topLeft", x: cropX, y: cropY, dx: 1, dy: 1 },
+                { t: "crop-topRight", x: cropX + cropW, y: cropY, dx: -1, dy: 1 },
+                { t: "crop-bottomLeft", x: cropX, y: cropY + cropH, dx: 1, dy: -1 },
+                { t: "crop-bottomRight", x: cropX + cropW, y: cropY + cropH, dx: -1, dy: -1 },
+              ] as const
+            ).map(({ t, x, y, dx, dy }) => (
+              <g key={t}>
+                <path
+                  d={cornerPath(x, y, dx, dy)}
+                  stroke="#fff"
+                  strokeWidth={3}
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <rect
+                  x={x - HANDLE_HIT / 2}
+                  y={y - HANDLE_HIT / 2}
+                  width={HANDLE_HIT}
+                  height={HANDLE_HIT}
+                  fill="transparent"
+                  style={{ cursor: cornerCursors[t] }}
+                  onPointerDown={(e) => handlePointerDown(e, t)}
+                />
+              </g>
+            ))}
+
+            {/* Hotspot guidelines — dashed crosshairs */}
+            <line
+              x1={hx}
+              y1={0}
+              x2={hx}
+              y2={imgH}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.2}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+            <line
+              x1={0}
+              y1={hy}
+              x2={imgW}
+              y2={hy}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.2}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+            {/* Hotspot boundary lines */}
+            <line
+              x1={hx - hrx}
+              y1={0}
+              x2={hx - hrx}
+              y2={imgH}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.1}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+            <line
+              x1={hx + hrx}
+              y1={0}
+              x2={hx + hrx}
+              y2={imgH}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.1}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+            <line
+              x1={0}
+              y1={hy - hry}
+              x2={imgW}
+              y2={hy - hry}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.1}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+            <line
+              x1={0}
+              y1={hy + hry}
+              x2={imgW}
+              y2={hy + hry}
+              stroke="var(--card-fg-color, #fff)"
+              strokeOpacity={0.1}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              vectorEffect="non-scaling-stroke"
+              pointerEvents="none"
+            />
+
+            {/* Hotspot ellipse */}
+            <ellipse
+              cx={hx}
+              cy={hy}
+              rx={hrx}
+              ry={hry}
+              stroke={hotspotStroke}
+              strokeWidth={hotspotActive ? 2 : 1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: dragging === "hotspot" ? "grabbing" : "grab" }}
+              onPointerDown={(e) => handlePointerDown(e, "hotspot")}
+            />
+
+            {/* Hotspot center dot */}
+            <circle
+              cx={hx}
+              cy={hy}
+              r={3}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: dragging === "hotspot" ? "grabbing" : "grab" }}
+              onPointerDown={(e) => handlePointerDown(e, "hotspot")}
+            />
+
+            {/* Hotspot resize handle at 45° */}
+            <circle
+              cx={hhx}
+              cy={hhy}
+              r={HANDLE_HOTSPOT / 2}
+              fill="#fff"
+              stroke="#000"
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+              style={{ cursor: "move" }}
+              onPointerDown={(e) => handlePointerDown(e, "hotspot-handle")}
+            />
+          </svg>
         )}
       </div>
+
+      {/* Preview strip */}
+      {imgSize && (
+        <div style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--card-border-color)" }}>
+          <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+            プレビュー
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+            {PREVIEW_RATIOS.map(({ label, w, h }) => {
+              const pr = computePreviewRect(imgSize.w, imgSize.h, hotspot, crop, w, h);
+              return (
+                <div key={label}>
+                  <div
+                    style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 4 }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      aspectRatio: `${w} / ${h}`,
+                      borderRadius: 2,
+                      border: "1px solid var(--card-border-color)",
+                      backgroundImage: `url(${imageUrl})`,
+                      backgroundSize: `${(1 / pr.w) * 100}% ${(1 / pr.h) * 100}%`,
+                      backgroundPosition: `${pr.w < 1 ? (pr.x / (1 - pr.w)) * 100 : 0}% ${pr.h < 1 ? (pr.y / (1 - pr.h)) * 100 : 0}%`,
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

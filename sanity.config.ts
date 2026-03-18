@@ -1,6 +1,4 @@
 import { defineConfig, defineField } from "sanity";
-import { structureTool } from "sanity/structure";
-import { presentationTool } from "sanity/presentation";
 import { jaJPLocale } from "@sanity/locale-ja-jp";
 import { internationalizedArray } from "sanity-plugin-internationalized-array";
 import { mediaPlugin } from "./sanity/components/mediaPlugin";
@@ -9,7 +7,6 @@ import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
 import { homepagePlugin } from "./sanity/components/homepagePlugin";
 import { pagesPlugin } from "./sanity/components/pagesPlugin";
 import { schemaTypes } from "./sanity/schemas";
-import { structure } from "./sanity/structure";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 
 export default defineConfig({
@@ -23,15 +20,6 @@ export default defineConfig({
     announcementsPlugin(),
     pagesPlugin(),
     blogPostsPlugin(),
-    structureTool({ structure, title: "コンテンツ管理" }),
-    presentationTool({
-      title: "プレビュー",
-      previewUrl: {
-        previewMode: {
-          enable: "/api/draft-mode/enable",
-        },
-      },
-    }),
     mediaPlugin(),
     jaJPLocale(),
     internationalizedArray({

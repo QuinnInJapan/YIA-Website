@@ -7,6 +7,7 @@ import type {
   HomepageData,
   HomepageAboutData,
   SiteSettingsData,
+  SidebarData,
   CategoryData,
   NavCategoryData,
   AnnouncementPreviewData,
@@ -16,13 +17,24 @@ export interface HomepageMergedState {
   homepage: HomepageData;
   about: HomepageAboutData | null;
   siteSettings: SiteSettingsData;
+  sidebar: SidebarData | null;
   categories: CategoryData[];
   navCategories: NavCategoryData[];
   announcements: AnnouncementPreviewData[];
 }
 
 export function HomepagePreview({ state }: { state: HomepageMergedState }) {
-  const { homepage: hp, about, siteSettings, categories, navCategories, announcements } = state;
+  const {
+    homepage: hp,
+    about,
+    siteSettings,
+    sidebar,
+    categories,
+    navCategories,
+    announcements,
+  } = state;
+  const contact = siteSettings.contact as any;
+  const org = siteSettings.org as any;
 
   const heroSrc = imageUrl(hp.hero?.image as any);
   const heroPosition = hotspotPosition(hp.hero?.image as any);
@@ -309,7 +321,97 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
 
         {/* Activity grid */}
         {renderActivityGrid()}
+
+        {/* Access section */}
+        <section className="home-section home-section--tinted">
+          <h2 className="home-section__heading">
+            アクセス
+            <small lang="en" translate="no">
+              Access
+            </small>
+          </h2>
+          <div className="access-block">
+            <div className="access-block__map">
+              {siteSettings.googleMapsEmbedUrl ? (
+                <iframe
+                  src={siteSettings.googleMapsEmbedUrl as string}
+                  style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                  title="Map"
+                  loading="lazy"
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: 200,
+                    background: "#e8e8e8",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#999",
+                    fontSize: 13,
+                  }}
+                >
+                  マップURL未設定
+                </div>
+              )}
+            </div>
+            <div className="access-block__info">
+              <p className="access-block__name">
+                <span className="access-block__designation">
+                  {(org?.designation as string) ?? ""}
+                </span>
+                {ja(org?.name)}
+              </p>
+              <div className="access-block__address">
+                <p>
+                  〒{(contact?.postalCode as string) ?? ""} {ja(contact?.address)}
+                </p>
+                <p className="access-block__address-en" lang="en" translate="no">
+                  {en(contact?.address)}
+                </p>
+              </div>
+              <div className="access-block__hours">
+                <p>{ja(siteSettings.businessHours as any)}</p>
+                <p className="access-block__hours-en" lang="en" translate="no">
+                  {en(siteSettings.businessHours as any)}
+                </p>
+              </div>
+              <div className="access-block__contact">
+                <p>TEL {(contact?.tel as string) ?? ""}</p>
+                <p>FAX {(contact?.fax as string) ?? ""}</p>
+                <p>{(contact?.email as string) ?? ""}</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
+      {/* Footer */}
+      <footer className="site-footer">
+        {sidebar?.documents && (sidebar.documents as any[]).length > 0 && (
+          <div className="site-footer__docs">
+            <div className="site-footer__docs-title">公開資料 Documents</div>
+            <div className="site-footer__docs-links">
+              {(sidebar.documents as any[]).map((d: any, i: number) => (
+                <span key={d._key ?? i}>
+                  {i > 0 && <span className="site-footer__docs-sep">&middot;</span>} {ja(d.label)}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="site-footer__updated">
+          最終更新日 Last Updated: {(org?.lastUpdated as string) ?? ""}
+        </div>
+        <div className="site-footer__copyright">
+          &copy;{" "}
+          <span lang="en" translate="no">
+            {en(org?.name)}
+          </span>{" "}
+          ({(org?.abbreviation as string) ?? ""})
+        </div>
+      </footer>
     </div>
   );
 }

@@ -72,7 +72,7 @@ function PreviewIframe({ children, width }: { children: ReactNode; width: string
   );
 }
 
-export function PreviewPanel({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+export function PreviewPanel({ children, onClose }: { children: ReactNode; onClose?: () => void }) {
   const [mode, setMode] = useState<PreviewMode>("desktop");
 
   return (
@@ -135,22 +135,24 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
               SP
             </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            title="プレビューを閉じる"
-            style={{
-              padding: "2px 8px",
-              border: "1px solid var(--card-border-color)",
-              borderRadius: 4,
-              background: "transparent",
-              color: "var(--card-muted-fg-color)",
-              fontSize: 11,
-              cursor: "pointer",
-            }}
-          >
-            閉じる
-          </button>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              title="プレビューを閉じる"
+              style={{
+                padding: "2px 8px",
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 4,
+                background: "transparent",
+                color: "var(--card-muted-fg-color)",
+                fontSize: 11,
+                cursor: "pointer",
+              }}
+            >
+              閉じる
+            </button>
+          )}
         </div>
       </div>
 

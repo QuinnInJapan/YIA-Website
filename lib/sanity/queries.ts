@@ -1,6 +1,5 @@
 import { cache } from "react";
 import { client } from "./client";
-import { sanityFetch } from "./live";
 
 // ── Timing helper ───────────────────────────────────────────────
 async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
@@ -14,8 +13,7 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
 // ── Full site data (single composite GROQ query) ────────────────
 export async function fetchSiteData() {
   return timed("fetchSiteData (1 query)", async () => {
-    const { data } = await sanityFetch({
-      query: `{
+    return client.fetch(`{
         "site": *[_type == "siteSettings"][0],
         "categories": *[_type == "category"] | order(_id asc),
         "navigation": *[_type == "navigation"][0]{
@@ -27,42 +25,27 @@ export async function fetchSiteData() {
           }
         },
         "announcements": *[_type == "announcement"] | order(date desc) { ..., "slug": slug.current },
-        "sidebar": *[_type == "sidebar"][0]{
-          ...,
-          memberRecruitment{ label, "slug": page->slug }
-        },
+        "sidebar": *[_type == "sidebar"][0]{ ... },
         "homepage": *[_type == "homepage"][0]{ ..., announcementRefs[]-> },
         "pages": *[_type == "page"] | order(_id asc)
-      }`,
-    });
-    return data;
+      }`);
   });
 }
 
 // ── Homepage "About" variant (standalone singleton) ─────────────
 export async function fetchHomepageAbout() {
   return timed("homepageAbout", async () => {
-    const { data } = await sanityFetch({
-      query: `*[_type == "homepageAbout"][0]`,
-    });
-    return data;
+    return client.fetch(`*[_type == "homepageAbout"][0]`);
   });
 }
 
 // ── Single page fetch ───────────────────────────────────────────
 export async function fetchPageBySlug(slug: string) {
-  const { data } = await sanityFetch({
-    query: `*[_type == "page" && slug == $slug][0]`,
-    params: { slug },
-  });
-  return data;
+  return client.fetch(`*[_type == "page" && slug == $slug][0]`, { slug });
 }
 
 export async function fetchAllPageSlugs() {
-  const { data } = await sanityFetch({
-    query: `*[_type == "page"]{ slug }`,
-  });
-  return data;
+  return client.fetch(`*[_type == "page"]{ slug }`);
 }
 
 // Static version for generateStaticParams (no draftMode dependency)
@@ -75,36 +58,34 @@ export async function fetchBlogPosts(page = 1, pageSize = 10) {
   return timed("blogPosts", async () => {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
-    const { data } = await sanityFetch({
-      query: `*[_type == "blogPost"] | order(publishedAt desc) [$start...$end] {
+    return client.fetch(
+      `*[_type == "blogPost"] | order(publishedAt desc) [$start...$end] {
         ...,
         "slug": slug.current
       }`,
-      params: { start, end },
-    });
-    return data;
+      { start, end },
+    );
   });
 }
 
 // Deduped with cache() so generateMetadata + page component share one fetch
 export const fetchBlogPostBySlug = cache(async (slug: string) => {
   return timed(`blogPost[${slug}]`, async () => {
-    const { data } = await sanityFetch({
-      query: `*[_type == "blogPost" && slug.current == $slug][0] {
+    return client.fetch(
+      `*[_type == "blogPost" && slug.current == $slug][0] {
         ...,
         "slug": slug.current,
         relatedPosts[]-> { ..., "slug": slug.current }
       }`,
-      params: { slug },
-    });
-    return data;
+      { slug },
+    );
   });
 });
 
 export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) {
   return timed("adjacentBlogPosts", async () => {
-    const { data } = await sanityFetch({
-      query: `{
+    return (await client.fetch(
+      `{
         "prev": *[_type == "blogPost" && (
           publishedAt > $publishedAt ||
           (publishedAt == $publishedAt && slug.current > $slug)
@@ -118,9 +99,8 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
           title, "slug": slug.current
         }
       }`,
-      params: { publishedAt, slug },
-    });
-    return data as {
+      { publishedAt, slug },
+    )) as {
       prev: { title: { _key: string; value: string }[]; slug: string } | null;
       next: { title: { _key: string; value: string }[]; slug: string } | null;
     };
@@ -129,10 +109,7 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
 
 export async function fetchBlogPostCount() {
   return timed("blogPostCount", async () => {
-    const { data } = await sanityFetch({
-      query: `count(*[_type == "blogPost"])`,
-    });
-    return data;
+    return client.fetch(`count(*[_type == "blogPost"])`);
   });
 }
 
@@ -141,43 +118,37 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
   return timed("announcements", async () => {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
-    const { data } = await sanityFetch({
-      query: `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end] {
+    return client.fetch(
+      `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end] {
         ...,
         "slug": slug.current
       }`,
-      params: { start, end },
-    });
-    return data;
+      { start, end },
+    );
   });
 }
 
 export async function fetchAnnouncementCount() {
   return timed("announcementCount", async () => {
-    const { data } = await sanityFetch({
-      query: `count(*[_type == "announcement"])`,
-    });
-    return data;
+    return client.fetch(`count(*[_type == "announcement"])`);
   });
 }
 
 export async function fetchAnnouncementById(id: string) {
   return timed(`announcement[${id}]`, async () => {
-    const { data } = await sanityFetch({
-      query: `*[_type == "announcement" && _id == $id][0] { ..., "slug": slug.current }`,
-      params: { id },
-    });
-    return data;
+    return client.fetch(
+      `*[_type == "announcement" && _id == $id][0] { ..., "slug": slug.current }`,
+      { id },
+    );
   });
 }
 
 export async function fetchAnnouncementBySlug(slug: string) {
   return timed(`announcement[slug:${slug}]`, async () => {
-    const { data } = await sanityFetch({
-      query: `*[_type == "announcement" && slug.current == $slug][0] { ..., "slug": slug.current }`,
-      params: { slug },
-    });
-    return data;
+    return client.fetch(
+      `*[_type == "announcement" && slug.current == $slug][0] { ..., "slug": slug.current }`,
+      { slug },
+    );
   });
 }
 

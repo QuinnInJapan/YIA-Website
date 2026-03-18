@@ -59,23 +59,10 @@ const schemaFields = {
     "images",
     "sections",
   ],
-  homepage: [
-    "slug",
-    "template",
-    "hero",
-    "activityGrid",
-    "announcementRefs",
-    "eventFlyers",
-  ],
-  siteSettings: [
-    "org",
-    "contact",
-    "businessHours",
-    "copyright",
-    "googleMapsEmbedUrl",
-  ],
+  homepage: ["slug", "template", "hero", "activityGrid", "announcementRefs", "eventFlyers"],
+  siteSettings: ["org", "contact", "businessHours", "copyright", "googleMapsEmbedUrl"],
   navigation: ["categories"],
-  sidebar: ["memberRecruitment", "documents"],
+  sidebar: ["documents"],
   category: ["label", "description", "heroImage"],
 };
 
@@ -142,9 +129,7 @@ if (unknowns.length === 0 && unknownTypesSeen.size === 0) {
   console.log("All documents match their schemas. No unknown fields found.");
 } else {
   if (unknowns.length > 0) {
-    console.log(
-      `\nFound ${unknowns.length} unknown field(s) across documents:\n`,
-    );
+    console.log(`\nFound ${unknowns.length} unknown field(s) across documents:\n`);
     console.log("─".repeat(80));
 
     // Group by type + field for cleaner output
@@ -160,8 +145,7 @@ if (unknowns.length === 0 && unknownTypesSeen.size === 0) {
       console.log(`\nType: "${type}"  Field: "${field}"  (${items.length} doc(s))`);
       for (const item of items) {
         const preview = JSON.stringify(item.value);
-        const truncated =
-          preview.length > 120 ? preview.slice(0, 120) + "..." : preview;
+        const truncated = preview.length > 120 ? preview.slice(0, 120) + "..." : preview;
         console.log(`  _id: ${item._id}`);
         console.log(`  value: ${truncated}`);
         console.log();
