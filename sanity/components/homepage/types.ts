@@ -63,6 +63,24 @@ export interface CategoryData {
   [key: string]: unknown;
 }
 
+export interface NavItemData {
+  title?: I18nString[];
+  slug?: string;
+}
+
+export interface NavCategoryData {
+  categoryId: string;
+  items: NavItemData[];
+}
+
+export interface AnnouncementPreviewData {
+  _id: string;
+  title?: I18nString[];
+  date?: string;
+  slug?: string;
+  pinned?: boolean;
+}
+
 export type DocType = "homepage" | "homepageAbout" | "siteSettings" | "category";
 
 export type UpdateFieldFn = (

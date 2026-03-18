@@ -181,6 +181,33 @@ export function CombinedGalleryPanel({
                         pointerEvents: "none",
                       }}
                     />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        commitImages(images.filter((i) => i._key !== img._key));
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: 2,
+                        right: 2,
+                        width: 18,
+                        height: 18,
+                        borderRadius: 9,
+                        border: "none",
+                        background: "rgba(0,0,0,0.6)",
+                        color: "#fff",
+                        fontSize: 11,
+                        lineHeight: 1,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: 0,
+                      }}
+                    >
+                      ✕
+                    </button>
                   </div>
                 );
               })}

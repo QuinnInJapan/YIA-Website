@@ -4,7 +4,8 @@ import { ja, en } from "@/lib/i18n";
 import { imageUrl, imageLqip } from "@/lib/sanity/image";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 
-export function buildGalleryImages(images: ImageFile[]) {
+export function buildGalleryImages(images: ImageFile[] | undefined | null) {
+  if (!images) return [];
   return images
     .filter((img) => img.file?.asset?._ref)
     .map((img) => ({

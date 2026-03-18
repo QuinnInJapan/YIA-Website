@@ -5,6 +5,7 @@ import { useClient } from "sanity";
 import { Box, Button, Flex, Text } from "@sanity/ui";
 import { PublishIcon } from "@sanity/icons";
 import { LoadingDots } from "../shared/ui";
+import { RawJsonButton } from "../shared/RawJsonViewer";
 import { HeroSection } from "./HeroSection";
 import { ProgramCardsSection } from "./ProgramCardsSection";
 import { AboutSection } from "./AboutSection";
@@ -14,10 +15,13 @@ import type {
   HomepageAboutData,
   SiteSettingsData,
   CategoryData,
+  NavCategoryData,
+  AnnouncementPreviewData,
   DocType,
   OpenPickerFn,
   ShowHotspotCropFn,
 } from "./types";
+import type { HomepageMergedState } from "./HomepagePreview";
 
 // ── Section nav items ───────────────────────────────
 
@@ -41,9 +45,11 @@ interface DocState<T> {
 export function HomepageEditor({
   onOpenImagePicker,
   onShowHotspotCrop,
+  onMergedChange,
 }: {
   onOpenImagePicker: OpenPickerFn;
   onShowHotspotCrop: ShowHotspotCropFn;
+  onMergedChange?: (state: HomepageMergedState | null) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
 
@@ -72,6 +78,8 @@ export function HomepageEditor({
   const [categoriesState, setCategoriesState] = useState<Map<string, DocState<CategoryData>>>(
     new Map(),
   );
+  const [navCategories, setNavCategories] = useState<NavCategoryData[]>([]);
+  const [announcements, setAnnouncements] = useState<AnnouncementPreviewData[]>([]);
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Track pending saves per document
@@ -110,6 +118,15 @@ export function HomepageEditor({
     return (aboutState.draft ?? aboutState.published)?._id?.replace(/^drafts\./, "") ?? "";
   }, [aboutState]);
 
+  // Notify parent of merged state changes for preview
+  useEffect(() => {
+    if (homepage && siteSettings) {
+      onMergedChange?.({ homepage, about, siteSettings, categories, navCategories, announcements });
+    } else {
+      onMergedChange?.(null);
+    }
+  }, [homepage, about, siteSettings, categories, navCategories, announcements, onMergedChange]);
+
   // ── Load all documents ───────────────────────────
 
   useEffect(() => {
@@ -125,38 +142,53 @@ export function HomepageEditor({
       client.fetch<CategoryData[]>(
         `*[_type == "category" && !(_id in path("drafts.**"))] | order(_createdAt asc)`,
       ),
+      client.fetch<NavCategoryData[]>(
+        `*[_type == "navigation"][0].categories[]{
+          "categoryId": categoryRef->_id,
+          "items": items[]{ "title": pageRef->title, "slug": pageRef->slug }
+        }`,
+      ),
+      client.fetch<AnnouncementPreviewData[]>(
+        `*[_type == "announcement" && !(_id in path("drafts.**"))] | order(pinned desc, date desc) [0...5] {
+          _id, title, date, pinned, "slug": slug.current
+        }`,
+      ),
     ])
-      .then(async ([hpPub, hpDraft, aboutPub, settingsPub, settingsDraft, cats]) => {
-        setHomepageState({ published: hpPub, draft: hpDraft, edits: {} });
+      .then(
+        async ([hpPub, hpDraft, aboutPub, settingsPub, settingsDraft, cats, navCats, annList]) => {
+          setHomepageState({ published: hpPub, draft: hpDraft, edits: {} });
 
-        // For homepageAbout, also fetch its draft
-        let aboutDraft: HomepageAboutData | null = null;
-        if (aboutPub) {
-          aboutDraft = await client.fetch<HomepageAboutData | null>(`*[_id == $id][0]`, {
-            id: `drafts.${aboutPub._id}`,
+          // For homepageAbout, also fetch its draft
+          let aboutDraft: HomepageAboutData | null = null;
+          if (aboutPub) {
+            aboutDraft = await client.fetch<HomepageAboutData | null>(`*[_id == $id][0]`, {
+              id: `drafts.${aboutPub._id}`,
+            });
+          }
+          setAboutState({ published: aboutPub, draft: aboutDraft, edits: {} });
+
+          setSettingsState({ published: settingsPub, draft: settingsDraft, edits: {} });
+
+          // Categories: fetch drafts for each
+          const catMap = new Map<string, DocState<CategoryData>>();
+          const draftFetches = cats.map((cat) =>
+            client.fetch<CategoryData | null>(`*[_id == $id][0]`, {
+              id: `drafts.${cat._id}`,
+            }),
+          );
+          const catDrafts = await Promise.all(draftFetches);
+          cats.forEach((cat, i) => {
+            catMap.set(cat._id, {
+              published: cat,
+              draft: catDrafts[i],
+              edits: {},
+            });
           });
-        }
-        setAboutState({ published: aboutPub, draft: aboutDraft, edits: {} });
-
-        setSettingsState({ published: settingsPub, draft: settingsDraft, edits: {} });
-
-        // Categories: fetch drafts for each
-        const catMap = new Map<string, DocState<CategoryData>>();
-        const draftFetches = cats.map((cat) =>
-          client.fetch<CategoryData | null>(`*[_id == $id][0]`, {
-            id: `drafts.${cat._id}`,
-          }),
-        );
-        const catDrafts = await Promise.all(draftFetches);
-        cats.forEach((cat, i) => {
-          catMap.set(cat._id, {
-            published: cat,
-            draft: catDrafts[i],
-            edits: {},
-          });
-        });
-        setCategoriesState(catMap);
-      })
+          setCategoriesState(catMap);
+          setNavCategories(navCats ?? []);
+          setAnnouncements(annList ?? []);
+        },
+      )
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [client]);
@@ -542,7 +574,7 @@ export function HomepageEditor({
 
       {/* Scrollable editor body */}
       <div ref={scrollRef} style={{ flex: 1, overflow: "auto" }}>
-        <div style={{ maxWidth: 720, width: "100%", margin: "0 auto", padding: "16px 24px" }}>
+        <div style={{ maxWidth: 720, width: "100%", margin: "0 auto", padding: "16px 16px" }}>
           <HeroSection
             homepage={homepage}
             siteSettings={siteSettings}
@@ -576,6 +608,14 @@ export function HomepageEditor({
           />
         </div>
       </div>
+
+      <RawJsonButton
+        getDocument={() => ({
+          homepage: homepageState,
+          about: aboutState,
+          settings: settingsState,
+        })}
+      />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import type { PortableTextBlock } from "@portabletext/editor";
 import { HotspotCropTool, DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
+import { RawJsonButton } from "../shared/RawJsonViewer";
 import { BodyEditor } from "./PteEditor";
 import type { GalleryImageItem } from "./GalleryPanel";
 
@@ -31,13 +32,38 @@ export interface BlogPostDoc {
   } | null;
   excerpt: { _key: string; value: string }[] | null;
   body: { _key: string; value: PortableTextBlock[] }[] | null;
+  documents: DocumentLinkItem[] | null;
+  relatedPosts: RelatedPostRef[] | null;
+}
+
+interface DocumentLinkItem {
+  _key: string;
+  _type: "documentLink";
+  label?: { _key: string; value: string }[];
+  file?: { asset: { _ref: string } };
+  url?: string;
+  type?: string;
+  fileType?: string;
+}
+
+interface RelatedPostRef {
+  _key: string;
+  _type: "reference";
+  _ref: string;
+}
+
+interface RelatedPostDisplay {
+  _id: string;
+  titleJa: string | null;
+  slug: string | null;
 }
 
 // ── Constants ────────────────────────────────────────────
 
 export const DOC_PROJECTION = `{
   _id, _rev, _updatedAt, title, slug, author, publishedAt, category,
-  heroImage, excerpt, body
+  heroImage, excerpt, body, documents,
+  "relatedPosts": relatedPosts[] { _key, _type, _ref }
 }`;
 
 // ── Helpers ──────────────────────────────────────────────
@@ -69,6 +95,9 @@ export function PostEditor({
   activeGalleryBlockKey,
   onDeselectGallery,
   onDelete,
+  onMergedChange,
+  onDraftChange,
+  onOpenFilePicker,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -80,6 +109,9 @@ export function PostEditor({
   activeGalleryBlockKey: string | null;
   onDeselectGallery: () => void;
   onDelete: () => void;
+  onMergedChange?: (doc: BlogPostDoc | null) => void;
+  onDraftChange?: () => void;
+  onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
@@ -88,7 +120,9 @@ export function PostEditor({
   const [draftDoc, setDraftDoc] = useState<BlogPostDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"saved" | "dirty" | "saving" | "error">("saved");
+  const [saveStatus, setSaveStatus] = useState<
+    "saved" | "dirty" | "saving" | "discarding" | "error"
+  >("saved");
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
@@ -118,6 +152,11 @@ export function PostEditor({
     if (!doc) return null;
     return { ...doc, ...edits } as BlogPostDoc;
   }, [doc, edits]);
+
+  // Notify parent of merged doc changes for preview
+  useEffect(() => {
+    onMergedChange?.(merged);
+  }, [merged, onMergedChange]);
 
   // ── Load document ──────────────────────────────────────
 
@@ -221,6 +260,7 @@ export function PostEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      onDraftChange?.();
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
@@ -233,14 +273,26 @@ export function PostEditor({
 
   async function handleDiscardDraft() {
     if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
+    setSaving(true);
+    setSaveStatus("discarding");
     const pubId = documentId.replace(/^drafts\./, "");
     const draftId = `drafts.${pubId}`;
     try {
       await client.delete(draftId).catch(() => {});
+      const freshPub = await client.fetch<BlogPostDoc | null>(
+        `*[_id == $id][0] ${DOC_PROJECTION}`,
+        { id: pubId },
+      );
+      setPublishedDoc(freshPub);
       setDraftDoc(null);
       setEdits({});
+      setSaveStatus("saved");
+      onDraftChange?.();
     } catch (err) {
       console.error("Discard draft failed:", err);
+      setSaveStatus("error");
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -271,6 +323,60 @@ export function PostEditor({
     });
   }
 
+  // ── Documents ─────────────────────────────────────────
+
+  function handleRemoveDocument(key: string) {
+    const docs = (merged?.documents ?? []).filter((d) => d._key !== key);
+    updateField("documents", docs);
+  }
+
+  function handleAddUrlDocument(label: string, url: string) {
+    const docs = merged?.documents ?? [];
+    const newDoc: DocumentLinkItem = {
+      _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+      _type: "documentLink",
+      label: [{ _key: "ja", value: label }],
+      url,
+      type: url.includes("youtube") ? "youtube" : "website",
+    };
+    updateField("documents", [...docs, newDoc]);
+  }
+
+  function handleFilePick() {
+    onOpenFilePicker?.((assetId, filename, ext) => {
+      const docs = merged?.documents ?? [];
+      const newDoc: DocumentLinkItem = {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        _type: "documentLink",
+        label: [{ _key: "ja", value: filename }],
+        file: { asset: { _ref: assetId } },
+        type: "document",
+        fileType: ext,
+      };
+      updateField("documents", [...docs, newDoc]);
+    });
+  }
+
+  // ── Related posts ──────────────────────────────────────
+
+  function handleRemoveRelatedPost(ref: string) {
+    const posts = (merged?.relatedPosts ?? []).filter((r) => r._ref !== ref);
+    updateField("relatedPosts", posts);
+  }
+
+  function handleAddRelatedPost(postId: string) {
+    const posts = merged?.relatedPosts ?? [];
+    if (posts.some((r) => r._ref === postId)) return;
+    updateField("relatedPosts", [
+      ...posts,
+      {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        _type: "reference" as const,
+        _ref: postId,
+      },
+    ]);
+  }
+
   // ── Render ─────────────────────────────────────────────
 
   const slug = merged?.slug?.current ?? null;
@@ -280,12 +386,14 @@ export function PostEditor({
     saved: "保存済み",
     dirty: "未保存",
     saving: "保存中…",
+    discarding: "破棄中…",
     error: "保存エラー",
   };
   const statusTone: Record<string, string> = {
     saved: "var(--card-muted-fg-color)",
     dirty: "#b08000",
     saving: "var(--card-muted-fg-color)",
+    discarding: "#b08000",
     error: "#cc3333",
   };
 
@@ -654,6 +762,23 @@ export function PostEditor({
                 onDeselectGallery={onDeselectGallery}
               />
             </div>
+
+            {/* Documents section */}
+            <DocumentsSection
+              documents={merged.documents ?? []}
+              onRemove={handleRemoveDocument}
+              onAddUrl={handleAddUrlDocument}
+              onPickFile={handleFilePick}
+            />
+
+            {/* Related posts section */}
+            <RelatedPostsSection
+              client={client}
+              relatedPosts={merged.relatedPosts ?? []}
+              currentPostId={merged._id}
+              onAdd={handleAddRelatedPost}
+              onRemove={handleRemoveRelatedPost}
+            />
           </div>
         </div>
       )}
@@ -674,6 +799,424 @@ export function PostEditor({
             });
           }}
           onClose={() => setShowHotspotCrop(false)}
+        />
+      )}
+
+      {merged && <RawJsonButton getDocument={() => merged} />}
+    </div>
+  );
+}
+
+// ── Documents Section ───────────────────────────────────
+
+function DocumentsSection({
+  documents,
+  onRemove,
+  onAddUrl,
+  onPickFile,
+}: {
+  documents: DocumentLinkItem[];
+  onRemove: (key: string) => void;
+  onAddUrl: (label: string, url: string) => void;
+  onPickFile: () => void;
+}) {
+  const [showAddUrl, setShowAddUrl] = useState(false);
+  const [urlLabel, setUrlLabel] = useState("");
+  const [urlValue, setUrlValue] = useState("");
+
+  function handleSubmitUrl() {
+    if (!urlLabel.trim() || !urlValue.trim()) return;
+    onAddUrl(urlLabel.trim(), urlValue.trim());
+    setUrlLabel("");
+    setUrlValue("");
+    setShowAddUrl(false);
+  }
+
+  const typeLabels: Record<string, string> = {
+    document: "PDF",
+    youtube: "YouTube",
+    website: "Web",
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        paddingTop: 16,
+        borderTop: "1px solid var(--card-border-color)",
+      }}
+    >
+      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+        添付資料
+      </div>
+
+      {documents.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+          {documents.map((doc) => {
+            const label = doc.label?.find((l) => l._key === "ja")?.value ?? "（無題）";
+            const typeLabel = doc.type ? (typeLabels[doc.type] ?? doc.type) : "";
+            const fileTypeLabel = doc.fileType ?? "";
+            const subtitle = [typeLabel, fileTypeLabel].filter(Boolean).join(" · ");
+
+            return (
+              <div
+                key={doc._key}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "6px 10px",
+                  borderRadius: 4,
+                  border: "1px solid var(--card-border-color)",
+                  fontSize: 13,
+                }}
+              >
+                <span style={{ fontSize: 14 }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {label}
+                  </div>
+                  {subtitle && (
+                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                      {subtitle}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onRemove(doc._key)}
+                  style={{
+                    padding: "2px 6px",
+                    border: "none",
+                    borderRadius: 3,
+                    background: "transparent",
+                    color: "var(--card-muted-fg-color)",
+                    cursor: "pointer",
+                    fontSize: 14,
+                  }}
+                  title="削除"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {showAddUrl ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+            padding: 12,
+            border: "1px solid var(--card-border-color)",
+            borderRadius: 6,
+            marginBottom: 8,
+          }}
+        >
+          <TextInput
+            fontSize={0}
+            placeholder="ラベル（例：申込書）"
+            value={urlLabel}
+            onChange={(e) => setUrlLabel(e.currentTarget.value)}
+          />
+          <TextInput
+            fontSize={0}
+            placeholder="URL（https://...）"
+            value={urlValue}
+            onChange={(e) => setUrlValue(e.currentTarget.value)}
+          />
+          <Flex gap={2}>
+            <Button
+              text="追加"
+              tone="primary"
+              fontSize={0}
+              padding={2}
+              onClick={handleSubmitUrl}
+              disabled={!urlLabel.trim() || !urlValue.trim()}
+            />
+            <Button
+              text="キャンセル"
+              mode="ghost"
+              fontSize={0}
+              padding={2}
+              onClick={() => {
+                setShowAddUrl(false);
+                setUrlLabel("");
+                setUrlValue("");
+              }}
+            />
+          </Flex>
+        </div>
+      ) : (
+        <Flex gap={2}>
+          <Button
+            text="+ URLを追加"
+            mode="ghost"
+            fontSize={0}
+            padding={2}
+            onClick={() => setShowAddUrl(true)}
+          />
+          <Button
+            text="+ ファイルを選択"
+            mode="ghost"
+            fontSize={0}
+            padding={2}
+            onClick={onPickFile}
+          />
+        </Flex>
+      )}
+    </div>
+  );
+}
+
+// ── Related Posts Section ────────────────────────────────
+
+function RelatedPostsSection({
+  client: sanityClient,
+  relatedPosts,
+  currentPostId,
+  onAdd,
+  onRemove,
+}: {
+  client: ReturnType<typeof useClient>;
+  relatedPosts: RelatedPostRef[];
+  currentPostId: string;
+  onAdd: (postId: string) => void;
+  onRemove: (ref: string) => void;
+}) {
+  const [resolvedPosts, setResolvedPosts] = useState<RelatedPostDisplay[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState<RelatedPostDisplay[]>([]);
+  const [showSearch, setShowSearch] = useState(false);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Resolve related post references to display data
+  useEffect(() => {
+    if (relatedPosts.length === 0) {
+      setResolvedPosts([]);
+      return;
+    }
+    const refs = relatedPosts.map((r) => r._ref);
+    sanityClient
+      .fetch<
+        RelatedPostDisplay[]
+      >(`*[_type == "blogPost" && _id in $refs] { _id, "titleJa": title[_key == "ja"][0].value, "slug": slug.current }`, { refs })
+      .then(setResolvedPosts)
+      .catch(console.error);
+  }, [sanityClient, relatedPosts]);
+
+  function handleSearchChange(value: string) {
+    setSearchInput(value);
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    if (!value.trim()) {
+      setSearchResults([]);
+      return;
+    }
+    searchTimerRef.current = setTimeout(() => {
+      setSearching(true);
+      const currentPubId = currentPostId.replace(/^drafts\./, "");
+      const terms = value
+        .trim()
+        .split(/\s+/)
+        .map((t) => `"${t}*"`)
+        .join(", ");
+      sanityClient
+        .fetch<RelatedPostDisplay[]>(
+          `*[_type == "blogPost" && !(_id in path("drafts.**")) && _id != $currentId && (title[_key == "ja"][0].value match [${terms}] || title[_key == "en"][0].value match [${terms}])] | order(publishedAt desc) [0...10] { _id, "titleJa": title[_key == "ja"][0].value, "slug": slug.current }`,
+          { currentId: currentPubId },
+        )
+        .then(setSearchResults)
+        .catch(console.error)
+        .finally(() => setSearching(false));
+    }, 300);
+  }
+
+  const existingRefs = new Set(relatedPosts.map((r) => r._ref));
+
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        paddingTop: 16,
+        borderTop: "1px solid var(--card-border-color)",
+      }}
+    >
+      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+        関連記事
+      </div>
+
+      {resolvedPosts.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+          {relatedPosts.map((ref) => {
+            const resolved = resolvedPosts.find((p) => p._id === ref._ref);
+            return (
+              <div
+                key={ref._key}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "6px 10px",
+                  borderRadius: 4,
+                  border: "1px solid var(--card-border-color)",
+                  fontSize: 13,
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {resolved?.titleJa ?? ref._ref}
+                  </div>
+                  {resolved?.slug && (
+                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                      /blog/{resolved.slug}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onRemove(ref._ref)}
+                  style={{
+                    padding: "2px 6px",
+                    border: "none",
+                    borderRadius: 3,
+                    background: "transparent",
+                    color: "var(--card-muted-fg-color)",
+                    cursor: "pointer",
+                    fontSize: 14,
+                  }}
+                  title="削除"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {showSearch ? (
+        <div
+          style={{
+            border: "1px solid var(--card-border-color)",
+            borderRadius: 6,
+            padding: 12,
+          }}
+        >
+          <TextInput
+            fontSize={0}
+            placeholder="記事を検索…"
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+            autoFocus
+          />
+          <div style={{ marginTop: 8, maxHeight: 200, overflow: "auto" }}>
+            {searching && (
+              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", padding: 4 }}>
+                検索中…
+              </div>
+            )}
+            {!searching && searchInput.trim() && searchResults.length === 0 && (
+              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", padding: 4 }}>
+                見つかりません
+              </div>
+            )}
+            {searchResults.map((post) => {
+              const alreadyAdded = existingRefs.has(post._id);
+              return (
+                <button
+                  key={post._id}
+                  type="button"
+                  disabled={alreadyAdded}
+                  onClick={() => {
+                    onAdd(post._id);
+                    setSearchInput("");
+                    setSearchResults([]);
+                  }}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "6px 8px",
+                    border: "none",
+                    borderRadius: 3,
+                    background: "transparent",
+                    cursor: alreadyAdded ? "default" : "pointer",
+                    opacity: alreadyAdded ? 0.4 : 1,
+                    fontSize: 13,
+                    color: "var(--card-fg-color)",
+                  }}
+                >
+                  {post.titleJa ?? "（タイトルなし）"}
+                  {post.slug && (
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "var(--card-muted-fg-color)",
+                        marginLeft: 8,
+                      }}
+                    >
+                      /blog/{post.slug}
+                    </span>
+                  )}
+                  {alreadyAdded && (
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "var(--card-muted-fg-color)",
+                        marginLeft: 8,
+                      }}
+                    >
+                      追加済み
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setShowSearch(false);
+              setSearchInput("");
+              setSearchResults([]);
+            }}
+            style={{
+              marginTop: 8,
+              padding: "4px 10px",
+              border: "none",
+              borderRadius: 4,
+              background: "transparent",
+              color: "var(--card-muted-fg-color)",
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            閉じる
+          </button>
+        </div>
+      ) : (
+        <Button
+          text="+ 関連記事を追加"
+          mode="ghost"
+          fontSize={0}
+          padding={2}
+          onClick={() => setShowSearch(true)}
         />
       )}
     </div>

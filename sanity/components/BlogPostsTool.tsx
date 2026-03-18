@@ -7,7 +7,11 @@ import { AddIcon, SearchIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import { Pagination } from "./shared/ui";
 import { ImagePickerPanel } from "./shared/ImagePickerPanel";
-import { PostEditor } from "./blog/PostEditor";
+import { PreviewPanel } from "./shared/PreviewPanel";
+import { RightPanel } from "./shared/RightPanel";
+import { FilePickerPanel } from "./shared/FilePickerPanel";
+import { PostEditor, type BlogPostDoc } from "./blog/PostEditor";
+import { BlogPostPreview } from "./blog/BlogPostPreview";
 import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
 
 // ── Types ────────────────────────────────────────────────
@@ -180,6 +184,10 @@ export function BlogPostsTool() {
   // Selection → opens editor
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Preview state
+  const [mergedDoc, setMergedDoc] = useState<BlogPostDoc | null>(null);
+  const [showPreview, setShowPreview] = useState(true);
+
   // Right panel state
   const [rightPanel, setRightPanel] = useState<
     | { type: "imagePicker"; onSelect: (assetId: string) => void }
@@ -189,6 +197,7 @@ export function BlogPostsTool() {
         initialImages: GalleryImageItem[];
         onUpdateImages: (images: GalleryImageItem[]) => void;
       }
+    | { type: "filePicker"; onSelect: (assetId: string, filename: string, ext: string) => void }
     | null
   >(null);
 
@@ -198,6 +207,13 @@ export function BlogPostsTool() {
       onSelect,
     });
   }, []);
+
+  const handleOpenFilePicker = useCallback(
+    (onSelect: (assetId: string, filename: string, ext: string) => void) => {
+      setRightPanel({ type: "filePicker", onSelect });
+    },
+    [],
+  );
 
   const handleOpenGalleryEditor = useCallback(
     (
@@ -419,6 +435,7 @@ export function BlogPostsTool() {
                     onSelect={() => {
                       setEditingId(post._id);
                       setRightPanel(null);
+                      setMergedDoc(null);
                     }}
                     thumbnailUrl={
                       post.heroImage?.asset?._ref
@@ -467,8 +484,12 @@ export function BlogPostsTool() {
             onDelete={() => {
               setEditingId(null);
               setRightPanel(null);
+              setMergedDoc(null);
               fetchPosts(page, searchQuery, activeCategory);
             }}
+            onMergedChange={setMergedDoc}
+            onDraftChange={() => fetchPosts(page, searchQuery, activeCategory)}
+            onOpenFilePicker={handleOpenFilePicker}
           />
         ) : (
           <Flex
@@ -494,20 +515,13 @@ export function BlogPostsTool() {
         )}
       </div>
 
-      {/* ── Right: Contextual panel (only when active) ── */}
-      {rightPanel && (
-        <div
-          style={{
-            width: 420,
-            flexShrink: 0,
-            borderLeft: "1px solid var(--card-border-color)",
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+      {/* ── Right: Image picker / Gallery / Preview ── */}
+      {rightPanel ? (
+        <RightPanel>
           {rightPanel.type === "imagePicker" ? (
             <ImagePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
+          ) : rightPanel.type === "filePicker" ? (
+            <FilePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
           ) : rightPanel.type === "galleryEditor" ? (
             <CombinedGalleryPanel
               key={rightPanel.blockKey}
@@ -516,8 +530,35 @@ export function BlogPostsTool() {
               onClose={() => setRightPanel(null)}
             />
           ) : null}
-        </div>
-      )}
+        </RightPanel>
+      ) : showPreview && mergedDoc ? (
+        <RightPanel>
+          <PreviewPanel onClose={() => setShowPreview(false)}>
+            <BlogPostPreview doc={mergedDoc} />
+          </PreviewPanel>
+        </RightPanel>
+      ) : !showPreview && mergedDoc ? (
+        <button
+          type="button"
+          onClick={() => setShowPreview(true)}
+          style={{
+            position: "absolute",
+            right: 12,
+            bottom: 12,
+            padding: "8px 14px",
+            border: "1px solid var(--card-border-color)",
+            borderRadius: 6,
+            background: "var(--card-bg-color)",
+            color: "var(--card-fg-color)",
+            fontSize: 12,
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+            zIndex: 10,
+          }}
+        >
+          プレビューを表示
+        </button>
+      ) : null}
     </div>
   );
 }

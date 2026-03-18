@@ -7,6 +7,7 @@ import { mediaPlugin } from "./sanity/components/mediaPlugin";
 import { blogPostsPlugin } from "./sanity/components/blogPostsPlugin";
 import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
 import { homepagePlugin } from "./sanity/components/homepagePlugin";
+import { pagesPlugin } from "./sanity/components/pagesPlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { structure } from "./sanity/structure";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
@@ -20,6 +21,7 @@ export default defineConfig({
   plugins: [
     homepagePlugin(),
     announcementsPlugin(),
+    pagesPlugin(),
     blogPostsPlugin(),
     structureTool({ structure, title: "コンテンツ管理" }),
     presentationTool({

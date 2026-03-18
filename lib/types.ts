@@ -305,7 +305,6 @@ export interface Homepage {
     };
   };
   announcementRefs: Announcement[];
-  eventFlyers?: EventFlyer[];
 }
 
 export interface Page {

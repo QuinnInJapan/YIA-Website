@@ -9,6 +9,7 @@ import type { PortableTextBlock } from "@portabletext/editor";
 import { HotspotCropTool, DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
+import { RawJsonButton } from "../shared/RawJsonViewer";
 import { BodyEditor } from "../blog/PteEditor";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
 
@@ -74,6 +75,9 @@ export function AnnouncementEditor({
   activeGalleryBlockKey,
   onDeselectGallery,
   onDelete,
+  onMergedChange,
+  onDraftChange,
+  onOpenFilePicker,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -85,6 +89,9 @@ export function AnnouncementEditor({
   activeGalleryBlockKey: string | null;
   onDeselectGallery: () => void;
   onDelete: () => void;
+  onMergedChange?: (doc: AnnouncementDoc | null) => void;
+  onDraftChange?: () => void;
+  onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
@@ -93,7 +100,9 @@ export function AnnouncementEditor({
   const [draftDoc, setDraftDoc] = useState<AnnouncementDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"saved" | "dirty" | "saving" | "error">("saved");
+  const [saveStatus, setSaveStatus] = useState<
+    "saved" | "dirty" | "saving" | "discarding" | "error"
+  >("saved");
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
@@ -119,6 +128,11 @@ export function AnnouncementEditor({
     if (!doc) return null;
     return { ...doc, ...edits } as AnnouncementDoc;
   }, [doc, edits]);
+
+  // Notify parent of merged doc changes for preview
+  useEffect(() => {
+    onMergedChange?.(merged);
+  }, [merged, onMergedChange]);
 
   // ── Load document ──────────────────────────────────────
 
@@ -217,6 +231,7 @@ export function AnnouncementEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      onDraftChange?.();
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
@@ -229,14 +244,26 @@ export function AnnouncementEditor({
 
   async function handleDiscardDraft() {
     if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
+    setSaving(true);
+    setSaveStatus("discarding");
     const pubId = documentId.replace(/^drafts\./, "");
     const draftId = `drafts.${pubId}`;
     try {
       await client.delete(draftId).catch(() => {});
+      const freshPub = await client.fetch<AnnouncementDoc | null>(
+        `*[_id == $id][0] ${DOC_PROJECTION}`,
+        { id: pubId },
+      );
+      setPublishedDoc(freshPub);
       setDraftDoc(null);
       setEdits({});
+      setSaveStatus("saved");
+      onDraftChange?.();
     } catch (err) {
       console.error("Discard draft failed:", err);
+      setSaveStatus("error");
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -286,23 +313,19 @@ export function AnnouncementEditor({
     updateField("documents", [...docs, newDoc]);
   }
 
-  async function handleFileUpload(file: File) {
-    try {
-      const asset = await client.assets.upload("file", file);
+  function handleFilePick() {
+    onOpenFilePicker?.((assetId, filename, ext) => {
       const docs = merged?.documents ?? [];
-      const ext = file.name.split(".").pop()?.toUpperCase() ?? "";
       const newDoc: DocumentLinkItem = {
         _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
         _type: "documentLink",
-        label: [{ _key: "ja", value: file.name.replace(/\.[^.]+$/, "") }],
-        file: { asset: { _ref: asset._id } },
+        label: [{ _key: "ja", value: filename }],
+        file: { asset: { _ref: assetId } },
         type: "document",
         fileType: ext,
       };
       updateField("documents", [...docs, newDoc]);
-    } catch (err) {
-      console.error("File upload failed:", err);
-    }
+    });
   }
 
   // ── Render ─────────────────────────────────────────────
@@ -311,12 +334,14 @@ export function AnnouncementEditor({
     saved: "保存済み",
     dirty: "未保存",
     saving: "保存中…",
+    discarding: "破棄中…",
     error: "保存エラー",
   };
   const statusTone: Record<string, string> = {
     saved: "var(--card-muted-fg-color)",
     dirty: "#b08000",
     saving: "var(--card-muted-fg-color)",
+    discarding: "#b08000",
     error: "#cc3333",
   };
 
@@ -676,7 +701,7 @@ export function AnnouncementEditor({
               documents={merged.documents ?? []}
               onRemove={handleRemoveDocument}
               onAddUrl={handleAddUrlDocument}
-              onUploadFile={handleFileUpload}
+              onPickFile={handleFilePick}
             />
           </div>
         </div>
@@ -700,6 +725,8 @@ export function AnnouncementEditor({
           onClose={() => setShowHotspotCrop(false)}
         />
       )}
+
+      {merged && <RawJsonButton getDocument={() => merged} />}
     </div>
   );
 }
@@ -710,17 +737,16 @@ function DocumentsSection({
   documents,
   onRemove,
   onAddUrl,
-  onUploadFile,
+  onPickFile,
 }: {
   documents: DocumentLinkItem[];
   onRemove: (key: string) => void;
   onAddUrl: (label: string, url: string) => void;
-  onUploadFile: (file: File) => void;
+  onPickFile: () => void;
 }) {
   const [showAddUrl, setShowAddUrl] = useState(false);
   const [urlLabel, setUrlLabel] = useState("");
   const [urlValue, setUrlValue] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleSubmitUrl() {
     if (!urlLabel.trim() || !urlValue.trim()) return;
@@ -870,21 +896,11 @@ function DocumentsSection({
             onClick={() => setShowAddUrl(true)}
           />
           <Button
-            text="+ ファイルをアップロード"
+            text="+ ファイルを選択"
             mode="ghost"
             fontSize={0}
             padding={2}
-            onClick={() => fileInputRef.current?.click()}
-          />
-          <input
-            ref={fileInputRef}
-            type="file"
-            style={{ display: "none" }}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) onUploadFile(file);
-              e.target.value = "";
-            }}
+            onClick={onPickFile}
           />
         </Flex>
       )}

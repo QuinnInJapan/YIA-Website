@@ -84,14 +84,5 @@ export default defineType({
       description:
         "ホームページに表示するお知らせを選択します。ここで選んだお知らせがトップページに表示されます。",
     }),
-    defineField({
-      name: "eventFlyers",
-      title: "イベントチラシ",
-      type: "array",
-      group: "content",
-      of: [{ type: "eventFlyer" }],
-      description:
-        "ホームページの「イベント」欄に表示するチラシ画像。新しいイベントのチラシに差し替えてください。",
-    }),
   ],
 });

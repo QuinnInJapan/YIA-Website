@@ -6,6 +6,8 @@ export type I18nBlocks = { _key: string; value: PortableTextBlock[] }[];
 /** Extract a language value from an i18n array field. Returns "" for PT block fields. */
 export function i18n(field: I18nString | I18nBlocks | undefined, lang: "ja" | "en"): string {
   if (!field) return "";
+  // Guard: if field isn't an array (e.g. legacy plain string), return it directly or ""
+  if (!Array.isArray(field)) return typeof field === "string" ? field : "";
   const entry = field.find((f) => f._key === lang);
   if (!entry) return "";
   // If value is a string, return it; if it's PT blocks, return "" (use jaBlocks/enBlocks instead)
