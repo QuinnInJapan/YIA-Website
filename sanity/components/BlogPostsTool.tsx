@@ -567,9 +567,21 @@ export function BlogPostsTool() {
       {rightPanel ? (
         <RightPanel>
           {rightPanel.type === "imagePicker" ? (
-            <ImagePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
+            <ImagePickerPanel
+              onSelect={(assetId) => {
+                rightPanel.onSelect(assetId);
+                setRightPanel(null);
+              }}
+              onClose={() => setRightPanel(null)}
+            />
           ) : rightPanel.type === "filePicker" ? (
-            <FilePickerPanel onSelect={rightPanel.onSelect} onClose={() => setRightPanel(null)} />
+            <FilePickerPanel
+              onSelect={(assetId, filename, ext) => {
+                rightPanel.onSelect(assetId, filename, ext);
+                setRightPanel(null);
+              }}
+              onClose={() => setRightPanel(null)}
+            />
           ) : rightPanel.type === "galleryEditor" ? (
             <CombinedGalleryPanel
               key={rightPanel.blockKey}
