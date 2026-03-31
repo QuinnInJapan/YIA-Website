@@ -5,10 +5,11 @@ import { useRef, useState } from "react";
 import { Text } from "@sanity/ui";
 import { RightPanel } from "./shared/RightPanel";
 import { NavigationEditor, type NavigationEditorRef } from "./navigation/NavigationEditor";
+import { EditCategoryPanel } from "./navigation/EditCategoryPanel";
 import { AddPagePanel } from "./navigation/AddPagePanel";
-import { ReorderPagesPanel } from "./navigation/ReorderPagesPanel";
 import { AddCategoryPanel } from "./navigation/AddCategoryPanel";
 import { RenameCategoryPanel } from "./navigation/RenameCategoryPanel";
+import { ImagePickerPanel } from "./shared/ImagePickerPanel";
 import type { RightPanelState } from "./navigation/types";
 
 export function NavigationTool() {
@@ -20,30 +21,42 @@ export function NavigationTool() {
     if (!rightPanel || !editor) return null;
 
     switch (rightPanel.type) {
-      case "addPage":
+      case "editCategory": {
+        const navCat = editor.categories.find((c) => c._key === rightPanel.categoryKey);
+        const catDoc = navCat ? editor.categoryDocs.get(navCat.categoryRef?._ref) : undefined;
+        if (!navCat) return null;
+        return (
+          <EditCategoryPanel
+            navCategory={navCat}
+            categoryDoc={catDoc}
+            pagesMap={editor.pagesMap}
+            onTogglePageHidden={(itemKey) =>
+              editor.togglePageHidden(rightPanel.categoryKey, itemKey)
+            }
+            onRemovePage={(itemKey) => editor.removePage(rightPanel.categoryKey, itemKey)}
+            onReorder={(reordered) => editor.reorderPages(rightPanel.categoryKey, reordered)}
+            onAddPage={() =>
+              setRightPanel({ type: "addPage", categoryKey: rightPanel.categoryKey })
+            }
+            onOpenPanel={setRightPanel}
+            onClose={() => setRightPanel(null)}
+          />
+        );
+      }
+
+      case "addPage": {
+        const addCategoryKey = rightPanel.categoryKey;
         return (
           <AddPagePanel
-            categoryKey={rightPanel.categoryKey}
+            categoryKey={addCategoryKey}
             categories={editor.categories}
             allPages={editor.allPages}
             onAddPage={(catKey, pageId) => {
               editor.addPage(catKey, pageId);
+              // Defer so NavigationEditor re-renders and updates the ref before EditCategoryPanel mounts
+              setTimeout(() => setRightPanel({ type: "editCategory", categoryKey: catKey }), 0);
             }}
-            onClose={() => setRightPanel(null)}
-          />
-        );
-
-      case "reorderPages": {
-        const navCat = editor.categories.find((c) => c._key === rightPanel.categoryKey);
-        if (!navCat) return null;
-        return (
-          <ReorderPagesPanel
-            items={navCat.items ?? []}
-            pagesMap={editor.pagesMap}
-            onReorder={(reordered) => {
-              editor.reorderPages(rightPanel.categoryKey, reordered);
-            }}
-            onClose={() => setRightPanel(null)}
+            onClose={() => setRightPanel({ type: "editCategory", categoryKey: addCategoryKey })}
           />
         );
       }
@@ -69,6 +82,23 @@ export function NavigationTool() {
               editor.handleCategoryRenamed(catId, newLabel);
             }}
             onClose={() => setRightPanel(null)}
+          />
+        );
+      }
+
+      case "changeHeroImage": {
+        const changeCat = editor.categories.find((c) => c._key === rightPanel.categoryKey);
+        const categoryId = changeCat?.categoryRef?._ref;
+        if (!categoryId) return null;
+        return (
+          <ImagePickerPanel
+            onSelect={async (assetRef) => {
+              await editor.onHeroImageChanged(categoryId, assetRef);
+              setRightPanel({ type: "editCategory", categoryKey: rightPanel.categoryKey });
+            }}
+            onClose={() =>
+              setRightPanel({ type: "editCategory", categoryKey: rightPanel.categoryKey })
+            }
           />
         );
       }
