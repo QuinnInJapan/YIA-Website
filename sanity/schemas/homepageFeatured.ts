@@ -21,8 +21,8 @@ function featuredSlot(name: string, title: string) {
         title: "表示ページ",
         type: "array",
         of: [{ type: "reference", to: [{ type: "page" }] }],
-        validation: (Rule) => Rule.max(4),
-        description: "ホームページに表示するページ（最大4件）。",
+        validation: (Rule) => Rule.max(6),
+        description: "ホームページに表示するページ（最大6件）。",
       }),
     ],
   });

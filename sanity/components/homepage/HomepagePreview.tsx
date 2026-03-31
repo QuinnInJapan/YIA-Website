@@ -198,6 +198,12 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
                     ))}
                   </div>
                 )}
+                <span className="program-card__see-all">
+                  <span className="program-card__see-all-ja">すべて見る</span>
+                  <span className="program-card__see-all-en" lang="en" translate="no">
+                    See All →
+                  </span>
+                </span>
               </div>
             </div>
           );
