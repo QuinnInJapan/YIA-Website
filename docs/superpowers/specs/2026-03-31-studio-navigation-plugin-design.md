@@ -22,7 +22,7 @@ Key constraint: **a page belongs to exactly one section.** Adding a page to a se
 1. Standalone navigation tool in the Studio sidebar for managing the navbar
 2. Two-pane layout: bird's-eye overview (left) + contextual workspace (right)
 3. Category CRUD: create, rename, delete — with contextual delete protection if featured on homepage
-4. Move pages between categories (updates both `navigation` array and page's `categoryRef`)
+4. Add/remove pages from categories (remove + add to move between categories; `categoryRef` synced on publish only)
 5. Reorder categories via drag-and-drop (following existing gallery panel pattern)
 6. Reorder pages within categories via the right panel
 7. Toggle page visibility with an explicit labeled button (not an icon)
@@ -95,9 +95,11 @@ Each category row (expanded):
 
 **Add page mode:**
 
-- Shows all page documents not currently in this category
-- Since pages belong to exactly one category, adding a page that's in another category shows a confirmation: "このページは「{other category}」から移動されます。(This page will be moved from '{other category}'.)"
-- Moving a page updates both the `navigation` array (remove from old category, add to new) and the page's `categoryRef` field
+- Shows only **unassigned pages** — pages not currently in any category's navigation items
+- Being unassigned is a valid state (draft pages, intentionally hidden pages, etc.) — not an error
+- Adding a page: inserts into the category's `navigation` items array (draft). The page's `categoryRef` is updated only on publish — not on draft save — so the desk structure isn't affected until the user commits.
+- To move a page between categories: user removes it from the current category first (making it unassigned), then adds it to the new one
+- Removing a page: removes from the category's `navigation` items array. The page's `categoryRef` is cleared only on publish.
 
 **Reorder pages mode:**
 
@@ -121,7 +123,7 @@ Each category row (expanded):
 - Fetches `navigation` document on load (published + draft), plus all `category` and `page` documents
 - Edits go through `pendingEdits` → 1500ms debounced auto-save (existing pattern)
 - Category CRUD operates on `category` documents directly via Sanity client
-- Moving a page between categories: updates `navigation` array (remove from source, add to target), updates page's `categoryRef` field, saves both
+- Page `categoryRef` sync happens only on publish: when publishing, the tool compares the navigation array against each page's `categoryRef` and updates any that are out of sync. This keeps draft edits non-destructive — the desk structure only changes when the user explicitly publishes.
 - On category delete: fetches `homepageFeatured` to check if referenced. If so, shows warning and blocks. Otherwise: flushes pending saves, removes from `navigation` array, saves, then deletes `category` document.
 - Publish via `transaction.createOrReplace()` + delete draft
 
@@ -156,7 +158,6 @@ Replaces current `ProgramCardsSection.tsx`. Shows 4 slot cards:
 - Visibility button: "表示中 (Visible)" / "非表示 (Hidden)"
 - Delete category confirmation: "このセクションを削除しますか？セクション内のページは削除されません。(Delete this section? Pages within it will not be deleted.)"
 - Featured delete blocked: "このカテゴリーはホームページで使用中のため削除できません。(This category is used on the homepage and cannot be deleted.)"
-- Move page confirmation: "このページは「{category}」から移動されます。(This page will be moved from '{category}'.)"
 - Empty right panel: "カテゴリーを選択してページを管理 (Select a section to manage its pages)"
 - Add page button: "ページを追加"
 - Reorder button: "並び替え"
