@@ -32,11 +32,7 @@ export function EditCategoryPanel({
   onReorder: (reordered: NavItemRaw[]) => void;
   onAddPage: () => void;
   onHeroImageChanged: (assetRef: string) => Promise<void>;
-  onShowHotspotCrop: (
-    imageUrl: string,
-    value: HotspotCropValue,
-    onChange: (v: HotspotCropValue) => void,
-  ) => void;
+  onShowHotspotCrop: (imageUrl: string, value: HotspotCropValue) => void;
   onClose: () => void;
 }) {
   const [localItems, setLocalItems] = useState<NavItemRaw[]>(navCategory.items ?? []);
@@ -72,15 +68,16 @@ export function EditCategoryPanel({
   }
 
   function handleCrop() {
-    if (!heroUrl) return;
-    onShowHotspotCrop(
-      heroUrl,
-      {
-        hotspot: categoryDoc?.heroImage?.hotspot ?? { x: 0.5, y: 0.5, width: 0.3, height: 0.3 },
-        crop: categoryDoc?.heroImage?.crop ?? { top: 0, bottom: 0, left: 0, right: 0 },
-      },
-      () => {},
-    );
+    const assetRef = localHeroAssetRef ?? categoryDoc?.heroImage?.asset?._ref;
+    if (!assetRef) return;
+    const imageSource = localHeroAssetRef
+      ? { _type: "image", asset: { _ref: localHeroAssetRef } }
+      : categoryDoc!.heroImage!;
+    const cropUrl = builder.image(imageSource).width(1200).auto("format").url();
+    onShowHotspotCrop(cropUrl, {
+      hotspot: categoryDoc?.heroImage?.hotspot ?? { x: 0.5, y: 0.5, width: 0.3, height: 0.3 },
+      crop: categoryDoc?.heroImage?.crop ?? { top: 0, bottom: 0, left: 0, right: 0 },
+    });
   }
 
   // Page drag-and-drop

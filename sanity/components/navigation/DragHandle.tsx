@@ -5,6 +5,7 @@ export function DragHandle() {
       height="16"
       viewBox="0 0 12 16"
       fill="none"
+      aria-hidden="true"
       style={{ cursor: "grab", flexShrink: 0, color: "var(--card-muted-fg-color)" }}
     >
       <circle cx="3" cy="3" r="1.5" fill="currentColor" />

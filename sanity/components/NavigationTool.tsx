@@ -46,11 +46,12 @@ export function NavigationTool() {
                 asset: { _type: "reference", _ref: assetRef },
               });
             }}
-            onShowHotspotCrop={(imageUrl, value, _onChange) => {
+            onShowHotspotCrop={(imageUrl, value) => {
               const catKey = rightPanel.categoryKey;
               const onChange = (newValue: HotspotCropValue) => {
                 const updatedImage = {
-                  ...catDoc?.heroImage,
+                  _type: "image" as const,
+                  asset: catDoc?.heroImage?.asset,
                   hotspot: {
                     _type: "sanity.imageHotspot" as const,
                     ...newValue.hotspot,
