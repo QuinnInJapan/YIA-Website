@@ -175,9 +175,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           const pageItems =
             slot.pages && slot.pages.length > 0 && navCat
               ? slot.pages
-                  .map((ref) =>
-                    navCat.items.find((ni) => ni.slug === ref._ref.replace(/^page-/, "")),
-                  )
+                  .map((ref) => navCat.items.find((ni) => ni.pageId === ref._ref))
                   .filter(Boolean)
               : (navCat?.items ?? []);
           return (

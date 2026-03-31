@@ -202,7 +202,7 @@ export function HomepageEditor({
       client.fetch<NavCategoryData[]>(
         `*[_type == "navigation"][0].categories[]{
           "categoryId": categoryRef->_id,
-          "items": items[]{ "title": pageRef->title, "slug": pageRef->slug }
+          "items": items[]{ "title": pageRef->title, "slug": pageRef->slug, "pageId": pageRef._ref }
         }`,
       ),
       client.fetch<AnnouncementPreviewData[]>(

@@ -66,6 +66,7 @@ export interface CategoryData {
 export interface NavItemData {
   title?: I18nString[];
   slug?: string;
+  pageId?: string;
 }
 
 export interface NavCategoryData {
