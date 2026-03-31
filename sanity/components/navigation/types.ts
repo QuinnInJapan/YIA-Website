@@ -39,16 +39,18 @@ export interface PageDoc {
   title?: I18nString[];
   slug?: string;
   categoryRef?: { _ref: string };
+  coverImage?: ImageField;
 }
 
 // ── Right panel state machine ───────────────────────
 
 export type RightPanelState =
   | null
+  | { type: "editCategory"; categoryKey: string }
   | { type: "addPage"; categoryKey: string }
-  | { type: "reorderPages"; categoryKey: string }
   | { type: "addCategory" }
-  | { type: "renameCategory"; categoryKey: string };
+  | { type: "renameCategory"; categoryKey: string }
+  | { type: "changeHeroImage"; categoryKey: string };
 
 // ── Callback types ──────────────────────────────────
 
