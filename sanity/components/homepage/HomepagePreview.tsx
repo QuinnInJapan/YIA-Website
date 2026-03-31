@@ -6,6 +6,8 @@ import { formatDateDot } from "@/lib/date-format";
 import type {
   HomepageData,
   HomepageAboutData,
+  HomepageFeaturedData,
+  HomepageFeaturedSlotData,
   SiteSettingsData,
   SidebarData,
   CategoryData,
@@ -21,6 +23,7 @@ export interface HomepageMergedState {
   categories: CategoryData[];
   navCategories: NavCategoryData[];
   announcements: AnnouncementPreviewData[];
+  featured: HomepageFeaturedData | null;
 }
 
 export function HomepagePreview({ state }: { state: HomepageMergedState }) {
@@ -32,6 +35,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
     categories,
     navCategories,
     announcements,
+    featured,
   } = state;
   const contact = siteSettings.contact as any;
   const org = siteSettings.org as any;
@@ -40,9 +44,10 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
   const heroPosition = hotspotPosition(hp.hero?.image as any);
   const aboutImgSrc = about?.image ? imageUrl(about.image as any) : "";
   const aboutImgPos = about?.image ? hotspotPosition(about.image as any) : undefined;
-  const catsWithImage = categories.filter(
-    (cat): cat is CategoryData => !!cat.heroImage?.asset?._ref,
-  );
+  const SLOT_KEYS = ["slot1", "slot2", "slot3", "slot4"] as const;
+  const featuredSlots = SLOT_KEYS.map(
+    (key) => featured?.[key] as HomepageFeaturedSlotData | undefined,
+  ).filter((slot): slot is HomepageFeaturedSlotData => !!slot?.categoryRef?._ref);
   const images = (hp.activityGrid?.images as any[]) ?? [];
   const stat = hp.activityGrid?.stat;
 
@@ -156,14 +161,25 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
   }
 
   function renderProgramGrid() {
-    if (catsWithImage.length === 0) return null;
+    if (featuredSlots.length === 0) return null;
     return (
       <section className="program-grid">
-        {catsWithImage.map((cat, i) => {
-          const catId = (cat._id as string).replace(/^drafts\./, "");
+        {featuredSlots.map((slot, i) => {
+          const catId = slot.categoryRef!._ref;
+          const cat = categories.find((c) => c._id === catId || c._id === `drafts.${catId}`);
+          if (!cat) return null;
           const img = imageUrl(cat.heroImage as any);
           const pos = hotspotPosition(cat.heroImage as any);
           const navCat = navCategories.find((nc) => nc.categoryId === catId);
+          // Show only featured pages if specified, otherwise all nav items
+          const pageItems =
+            slot.pages && slot.pages.length > 0 && navCat
+              ? slot.pages
+                  .map((ref) =>
+                    navCat.items.find((ni) => ni.slug === ref._ref.replace(/^page-/, "")),
+                  )
+                  .filter(Boolean)
+              : (navCat?.items ?? []);
           return (
             <div className="program-card" key={catId || i}>
               {img && (
@@ -186,13 +202,13 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
                 <span className="program-card__title-en" lang="en" translate="no">
                   {en(cat.label)}
                 </span>
-                {navCat && navCat.items.length > 0 && (
+                {pageItems.length > 0 && (
                   <div className="program-card__links">
-                    {navCat.items.map((item, j) => (
+                    {pageItems.map((item, j) => (
                       <span className="program-card__link" key={j}>
-                        <span className="program-card__link-ja">{ja(item.title)}</span>
+                        <span className="program-card__link-ja">{ja(item?.title)}</span>
                         <span className="program-card__link-en" lang="en" translate="no">
-                          {en(item.title)}
+                          {en(item?.title)}
                         </span>
                       </span>
                     ))}

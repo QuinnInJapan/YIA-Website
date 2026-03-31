@@ -1,0 +1,68 @@
+<h2>Manual Generation System — 3 Approaches</h2>
+<p class="subtitle">Pick the architecture that fits best. All produce a Japanese Word document with TOC + automated screenshots.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>YAML + Node.js Script (Recommended)</h3>
+      <p><strong>Stack:</strong> YAML data files → Node.js generation script (docx library) + Playwright for screenshots</p>
+      <p><strong>How it works:</strong> One YAML file defines all manual sections with structured fields (title, intro, steps, screenshot IDs). A single <code>npm run generate-manual</code> command runs Playwright to capture screenshots, then builds the .docx from YAML + images.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Stays in the Node.js ecosystem (no Python dependency)</li>
+          <li>Single command generates everything</li>
+          <li><code>docx</code> npm package gives fine-grained Word formatting control</li>
+          <li>Playwright already available via Next.js ecosystem</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li><code>docx</code> npm library is more verbose than python-docx</li>
+          <li>Japanese font handling needs explicit configuration</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>YAML + Python Script</h3>
+      <p><strong>Stack:</strong> YAML data files → Python generation script (python-docx) + Playwright (Node) for screenshots</p>
+      <p><strong>How it works:</strong> Same YAML data structure, but uses python-docx for Word generation (more mature library for complex documents). Screenshots still captured via Node.js Playwright. Two-step process: capture screenshots, then generate doc.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>python-docx is the gold standard for Word generation</li>
+          <li>Better Japanese typography support out of the box</li>
+          <li>Cleaner API for complex formatting (tables, headers, TOC)</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Adds Python as a dependency to a Node.js project</li>
+          <li>Two separate tools to maintain (Node for screenshots, Python for doc)</li>
+          <li>Need to manage a Python virtualenv</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>YAML + Markdown → Pandoc</h3>
+      <p><strong>Stack:</strong> YAML data → generate Markdown with image refs → Pandoc converts to .docx with a reference template</p>
+      <p><strong>How it works:</strong> A Node script reads YAML and produces a single Markdown file with screenshot image references. Pandoc converts to Word using a custom reference.docx template for Japanese styling. Screenshots via Playwright.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Markdown intermediate is human-readable and debuggable</li>
+          <li>Pandoc handles TOC generation natively</li>
+          <li>Reference template approach = change styles without changing code</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Pandoc is an external system dependency (Homebrew install)</li>
+          <li>Less control over fine-grained Word formatting</li>
+          <li>Pandoc's Japanese support can be quirky with some templates</li>
+          <li>Harder to do custom layouts (callout boxes, annotated screenshots)</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</div>
