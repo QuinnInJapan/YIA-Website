@@ -238,7 +238,7 @@ export const NavigationEditor = forwardRef<
       setCategories(pubNav?.categories ?? []);
 
       const refreshedPages = await client.fetch<PageDoc[]>(
-        `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef }`,
+        `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef, "coverImage": images[0] }`,
       );
       setAllPages(refreshedPages);
 
