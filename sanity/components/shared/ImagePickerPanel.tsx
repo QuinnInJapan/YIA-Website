@@ -366,7 +366,7 @@ export function ImagePickerPanel({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
                 gap: 8,
                 opacity: loading ? 0.5 : 1,
                 transition: "opacity 150ms ease",

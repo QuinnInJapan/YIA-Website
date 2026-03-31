@@ -1,4 +1,5 @@
 import type { I18nString, ImageField } from "../homepage/types";
+import type { HotspotCropValue } from "../shared/HotspotCropTool";
 
 // ── Raw Sanity document shapes ──────────────────────
 
@@ -50,7 +51,13 @@ export type RightPanelState =
   | { type: "addPage"; categoryKey: string }
   | { type: "addCategory" }
   | { type: "renameCategory"; categoryKey: string }
-  | { type: "changeHeroImage"; categoryKey: string };
+  | {
+      type: "hotspotCrop";
+      categoryKey: string;
+      imageUrl: string;
+      value: HotspotCropValue;
+      onChange: (v: HotspotCropValue) => void;
+    };
 
 // ── Callback types ──────────────────────────────────
 

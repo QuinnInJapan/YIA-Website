@@ -9,7 +9,8 @@ import { EditCategoryPanel } from "./navigation/EditCategoryPanel";
 import { AddPagePanel } from "./navigation/AddPagePanel";
 import { AddCategoryPanel } from "./navigation/AddCategoryPanel";
 import { RenameCategoryPanel } from "./navigation/RenameCategoryPanel";
-import { ImagePickerPanel } from "./shared/ImagePickerPanel";
+import { HotspotCropTool } from "./shared/HotspotCropTool";
+import type { HotspotCropValue } from "./shared/HotspotCropTool";
 import type { RightPanelState } from "./navigation/types";
 
 export function NavigationTool() {
@@ -24,7 +25,8 @@ export function NavigationTool() {
       case "editCategory": {
         const navCat = editor.categories.find((c) => c._key === rightPanel.categoryKey);
         const catDoc = navCat ? editor.categoryDocs.get(navCat.categoryRef?._ref) : undefined;
-        if (!navCat) return null;
+        const categoryId = navCat?.categoryRef?._ref;
+        if (!navCat || !categoryId) return null;
         return (
           <EditCategoryPanel
             navCategory={navCat}
@@ -38,7 +40,36 @@ export function NavigationTool() {
             onAddPage={() =>
               setRightPanel({ type: "addPage", categoryKey: rightPanel.categoryKey })
             }
-            onOpenPanel={setRightPanel}
+            onHeroImageChanged={async (assetRef) => {
+              await editor.onHeroImageChanged(categoryId, {
+                _type: "image",
+                asset: { _type: "reference", _ref: assetRef },
+              });
+            }}
+            onShowHotspotCrop={(imageUrl, value, _onChange) => {
+              const catKey = rightPanel.categoryKey;
+              const onChange = (newValue: HotspotCropValue) => {
+                const updatedImage = {
+                  ...catDoc?.heroImage,
+                  hotspot: {
+                    _type: "sanity.imageHotspot" as const,
+                    ...newValue.hotspot,
+                  },
+                  crop: {
+                    _type: "sanity.imageCrop" as const,
+                    ...newValue.crop,
+                  },
+                };
+                editor.onHeroImageChanged(categoryId, updatedImage);
+              };
+              setRightPanel({
+                type: "hotspotCrop",
+                categoryKey: catKey,
+                imageUrl,
+                value,
+                onChange,
+              });
+            }}
             onClose={() => setRightPanel(null)}
           />
         );
@@ -86,22 +117,19 @@ export function NavigationTool() {
         );
       }
 
-      case "changeHeroImage": {
-        const changeCat = editor.categories.find((c) => c._key === rightPanel.categoryKey);
-        const categoryId = changeCat?.categoryRef?._ref;
-        if (!categoryId) return null;
+      case "hotspotCrop":
         return (
-          <ImagePickerPanel
-            onSelect={async (assetRef) => {
-              await editor.onHeroImageChanged(categoryId, assetRef);
-              setRightPanel({ type: "editCategory", categoryKey: rightPanel.categoryKey });
+          <HotspotCropTool
+            imageUrl={rightPanel.imageUrl}
+            value={rightPanel.value}
+            onChange={(value) => {
+              rightPanel.onChange(value);
             }}
             onClose={() =>
               setRightPanel({ type: "editCategory", categoryKey: rightPanel.categoryKey })
             }
           />
         );
-      }
 
       default:
         return null;

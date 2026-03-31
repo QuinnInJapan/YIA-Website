@@ -6,6 +6,7 @@ import { useClient } from "sanity";
 import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet } from "../shared/i18n";
 import type { NavCategoryRaw, CategoryDoc, PageDoc, RightPanelState } from "./types";
+import { DragHandle } from "./DragHandle";
 
 export function CategoryItem({
   navCategory,
@@ -112,6 +113,7 @@ export function CategoryItem({
           gap: 8,
         }}
       >
+        <DragHandle />
         <span
           style={{
             flex: 1,

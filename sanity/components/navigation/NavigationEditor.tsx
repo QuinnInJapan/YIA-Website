@@ -15,6 +15,7 @@ import { Box, Button, Flex, Text } from "@sanity/ui";
 import { PublishIcon } from "@sanity/icons";
 import { LoadingDots } from "../shared/ui";
 import { CategoryItem } from "./CategoryItem";
+import type { ImageField } from "../homepage/types";
 import type {
   NavigationDoc,
   NavCategoryRaw,
@@ -37,7 +38,7 @@ export type NavigationEditorRef = {
   removePage: (categoryKey: string, itemKey: string) => void;
   addCategoryToNav: (categoryId: string) => void;
   handleCategoryRenamed: (categoryId: string, newLabel: { _key: string; value: string }[]) => void;
-  onHeroImageChanged: (categoryId: string, assetRef: string) => Promise<void>;
+  onHeroImageChanged: (categoryId: string, image: ImageField) => Promise<void>;
 };
 
 // ── NavigationEditor ────────────────────────────────
@@ -352,22 +353,14 @@ export const NavigationEditor = forwardRef<
   );
 
   const onHeroImageChanged = useCallback(
-    async (categoryId: string, assetRef: string) => {
-      await client
-        .patch(categoryId)
-        .set({
-          heroImage: { _type: "image", asset: { _type: "reference", _ref: assetRef } },
-        })
-        .commit();
+    async (categoryId: string, image: ImageField) => {
+      await client.patch(categoryId).set({ heroImage: image }).commit();
 
       setCategoryDocs((prev) => {
         const next = new Map(prev);
         const existing = next.get(categoryId);
         if (existing) {
-          next.set(categoryId, {
-            ...existing,
-            heroImage: { _type: "image", asset: { _type: "reference", _ref: assetRef } },
-          });
+          next.set(categoryId, { ...existing, heroImage: image });
         }
         return next;
       });
