@@ -1,0 +1,120 @@
+<h2>YAML Format — Before vs After (Japanese Manual Conventions)</h2>
+<p class="subtitle">Left: original Western-style. Right: revised for Japanese 操作マニュアル format.</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">❌ Before — Western Style</div>
+    <div class="mockup-body" style="font-family: monospace; font-size: 12px; white-space: pre-wrap; line-height: 1.6; color: #666;">sections:
+  - id: homepage
+    title: "ホームページの編集"
+    intro: "ホームページツールでは..."
+    subsections:
+      - id: homepage-hero
+        title: "ヒーロー画像を変更する"
+        screenshot: "homepage-hero-section"
+        steps:
+          - text: "左サイドバーから..."
+          - text: "画像をクリック..."
+        tips:
+          - "推奨サイズ: 1920x1080"
+        warnings:
+          - "公開ボタンを押さないと..."</div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">✅ After — Japanese 操作マニュアル Style</div>
+    <div class="mockup-body" style="font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.6; color: #e0e0e0;">sections:
+  - id: homepage
+    title: "第1章 ホームページの編集"
+    can_do:  <span style="color:#8be9fd;">← この章でできること</span>
+      - "トップページの画像を変更できます"
+      - "お知らせの表示を管理できます"
+
+    screen_overview:  <span style="color:#8be9fd;">← 画面の説明</span>
+      screenshot: "homepage-overview"
+      regions:
+        - label: "①サイドバー"
+          description: "各ツールへの..."
+        - label: "②編集エリア"
+          description: "コンテンツを..."
+        - label: "③プレビュー"
+          description: "変更の確認..."
+
+    subsections:
+      - id: homepage-hero
+        title: "1.1 ヒーロー画像を変更する"
+        procedure:  <span style="color:#8be9fd;">← 操作手順</span>
+          screenshot: "homepage-hero"
+          steps:
+            - text: "【ホームページ】をクリック"
+              callout: 1  <span style="color:#8be9fd;">← ①赤丸</span>
+            - text: "【ヒーロー画像】をクリック"
+              callout: 2
+        notes:  <span style="color:#8be9fd;">← 補足</span>
+          - "推奨サイズ: 1920×1080px以上"
+        warnings:  <span style="color:#8be9fd;">← 注意</span>
+          - "【公開】を押さないと反映なし"
+        faq:  <span style="color:#8be9fd;">← よくある質問</span>
+          - q: "画像が表示されません"
+            a: "ファイル形式をご確認..."
+        troubleshooting:  <span style="color:#8be9fd;">← 困ったときは</span>
+          - symptom: "画像がぼやける"
+            solution: "1920px以上の画像を..."</div>
+  </div>
+</div>
+
+<h3 style="margin-top: 2rem;">New Additions Summary</h3>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="front" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>Front Matter</h3>
+      <p>はじめに (purpose) ・ 本マニュアルの使い方 (icon legend) ・ 改訂履歴 (revision table)</p>
+    </div>
+  </div>
+  <div class="option" data-choice="screen" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>Screen Overview per Section</h3>
+      <p>画面の説明 — annotated screenshot with numbered regions (①②③) explaining what each area IS before showing how to use it</p>
+    </div>
+  </div>
+  <div class="option" data-choice="cando" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>「この章でできること」per Section</h3>
+      <p>Bullet list at the top of each chapter: what you'll be able to do after reading this</p>
+    </div>
+  </div>
+  <div class="option" data-choice="callouts" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>Screenshot Callouts (①②③)</h3>
+      <p>Each step can reference a numbered red circle on the screenshot. Generation script overlays these on the captured image.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="faq" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>FAQ + Troubleshooting per Subsection</h3>
+      <p>よくある質問 and 困ったときは — answers common issues right where users encounter them</p>
+    </div>
+  </div>
+  <div class="option" data-choice="glossary" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>Glossary (用語集)</h3>
+      <p>Back matter explaining CMS terms: 下書き, 公開, ホットスポット, スラッグ, etc.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="brackets" onclick="toggleSelect(this)">
+    <div class="letter">+</div>
+    <div class="content">
+      <h3>【Bracket】Convention for UI Labels</h3>
+      <p>Every clickable element wrapped in【】brackets — standard in Japanese software manuals</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top: 1rem;">Click any additions you want to <strong>remove</strong>. All are included by default.</p>

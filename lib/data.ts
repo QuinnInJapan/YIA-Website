@@ -234,7 +234,7 @@ export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
       label: cat.label ?? [],
       heroImage: cat.heroImage,
       categoryUrl: `/${catId}`,
-      pages: (slot.pages ?? []).slice(0, 4).map((pg) => {
+      pages: (slot.pages ?? []).slice(0, 6).map((pg) => {
         const pgSlug = pg ? stegaClean(pg.slug) : "";
         return {
           id: pg ? shortId(pg._id) : "",
