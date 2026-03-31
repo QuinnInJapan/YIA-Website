@@ -5,6 +5,7 @@ import { mediaPlugin } from "./sanity/components/mediaPlugin";
 import { blogPostsPlugin } from "./sanity/components/blogPostsPlugin";
 import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
 import { homepagePlugin } from "./sanity/components/homepagePlugin";
+import { navigationPlugin } from "./sanity/components/navigationPlugin";
 import { pagesPlugin } from "./sanity/components/pagesPlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
@@ -17,6 +18,7 @@ export default defineConfig({
   basePath: "/studio",
   plugins: [
     homepagePlugin(),
+    navigationPlugin(),
     announcementsPlugin(),
     pagesPlugin(),
     blogPostsPlugin(),
