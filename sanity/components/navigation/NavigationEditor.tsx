@@ -33,8 +33,11 @@ export type NavigationEditorRef = {
   allPages: PageDoc[];
   addPage: (categoryKey: string, pageId: string) => void;
   reorderPages: (categoryKey: string, reordered: NavItemRaw[]) => void;
+  togglePageHidden: (categoryKey: string, itemKey: string) => void;
+  removePage: (categoryKey: string, itemKey: string) => void;
   addCategoryToNav: (categoryId: string) => void;
   handleCategoryRenamed: (categoryId: string, newLabel: { _key: string; value: string }[]) => void;
+  onHeroImageChanged: (categoryId: string, assetRef: string) => Promise<void>;
 };
 
 // ── NavigationEditor ────────────────────────────────
@@ -68,7 +71,6 @@ export const NavigationEditor = forwardRef<
   categoriesRef.current = categories;
 
   // UI state
-  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const dragIdxRef = useRef<number | null>(null);
   const [draggingKey, setDraggingKey] = useState<string | null>(null);
 
@@ -99,7 +101,7 @@ export const NavigationEditor = forwardRef<
           `*[_type == "category" && !(_id in path("drafts.**"))] | order(_createdAt asc) { _id, _type, label, description, heroImage }`,
         ),
         client.fetch<PageDoc[]>(
-          `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef }`,
+          `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef, "coverImage": images[0] }`,
         ),
       ]);
 
@@ -349,6 +351,30 @@ export const NavigationEditor = forwardRef<
     [onOpenPanel],
   );
 
+  const onHeroImageChanged = useCallback(
+    async (categoryId: string, assetRef: string) => {
+      await client
+        .patch(categoryId)
+        .set({
+          heroImage: { _type: "image", asset: { _type: "reference", _ref: assetRef } },
+        })
+        .commit();
+
+      setCategoryDocs((prev) => {
+        const next = new Map(prev);
+        const existing = next.get(categoryId);
+        if (existing) {
+          next.set(categoryId, {
+            ...existing,
+            heroImage: { _type: "image", asset: { _type: "reference", _ref: assetRef } },
+          });
+        }
+        return next;
+      });
+    },
+    [client],
+  );
+
   const deleteCategory = useCallback(
     async (categoryKey: string) => {
       // Read from ref to avoid stale closure
@@ -412,8 +438,11 @@ export const NavigationEditor = forwardRef<
       allPages,
       addPage,
       reorderPages,
+      togglePageHidden,
+      removePage,
       addCategoryToNav,
       handleCategoryRenamed,
+      onHeroImageChanged,
     }),
     [
       categories,
@@ -422,8 +451,11 @@ export const NavigationEditor = forwardRef<
       allPages,
       addPage,
       reorderPages,
+      togglePageHidden,
+      removePage,
       addCategoryToNav,
       handleCategoryRenamed,
+      onHeroImageChanged,
     ],
   );
 
@@ -521,17 +553,11 @@ export const NavigationEditor = forwardRef<
             navCategory={navCat}
             categoryDoc={categoryDocs.get(navCat.categoryRef?._ref)}
             pagesMap={pagesMap}
-            expanded={expandedKeys.has(navCat._key)}
-            onToggleExpand={() => {
-              setExpandedKeys((prev) => {
-                const next = new Set(prev);
-                if (next.has(navCat._key)) next.delete(navCat._key);
-                else next.add(navCat._key);
-                return next;
-              });
-            }}
-            onTogglePageHidden={(itemKey) => togglePageHidden(navCat._key, itemKey)}
-            onRemovePage={(itemKey) => removePage(navCat._key, itemKey)}
+            isActive={
+              rightPanel !== null &&
+              "categoryKey" in rightPanel &&
+              rightPanel.categoryKey === navCat._key
+            }
             onOpenPanel={onOpenPanel}
             onDeleteCategory={() => deleteCategory(navCat._key)}
             draggable
