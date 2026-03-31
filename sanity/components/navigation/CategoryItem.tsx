@@ -1,19 +1,17 @@
 // sanity/components/navigation/CategoryItem.tsx
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useClient } from "sanity";
+import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet } from "../shared/i18n";
-import { PageItem } from "./PageItem";
-import type { NavCategoryRaw, NavItemRaw, CategoryDoc, PageDoc, RightPanelState } from "./types";
+import type { NavCategoryRaw, CategoryDoc, PageDoc, RightPanelState } from "./types";
 
 export function CategoryItem({
   navCategory,
   categoryDoc,
   pagesMap,
-  expanded,
-  onToggleExpand,
-  onTogglePageHidden,
-  onRemovePage,
+  isActive,
   onOpenPanel,
   onDeleteCategory,
   // Drag props
@@ -26,10 +24,7 @@ export function CategoryItem({
   navCategory: NavCategoryRaw;
   categoryDoc: CategoryDoc | undefined;
   pagesMap: Map<string, PageDoc>;
-  expanded: boolean;
-  onToggleExpand: () => void;
-  onTogglePageHidden: (itemKey: string) => void;
-  onRemovePage: (itemKey: string) => void;
+  isActive: boolean;
   onOpenPanel: (panel: RightPanelState) => void;
   onDeleteCategory: () => void;
   draggable: boolean;
@@ -44,6 +39,20 @@ export function CategoryItem({
   const labelJa = i18nGet(categoryDoc?.label, "ja") || "Untitled";
   const labelEn = i18nGet(categoryDoc?.label, "en");
   const pageCount = navCategory.items?.length ?? 0;
+
+  const client = useClient({ apiVersion: "2024-01-01" });
+  const builder = useMemo(() => createImageUrlBuilder(client), [client]);
+
+  const thumbUrl = useMemo(() => {
+    if (!categoryDoc?.heroImage?.asset?._ref) return null;
+    return builder
+      .image(categoryDoc.heroImage)
+      .width(96)
+      .height(56)
+      .fit("crop")
+      .auto("format")
+      .url();
+  }, [categoryDoc, builder]);
 
   // Close menu on outside click
   useEffect(() => {
@@ -84,12 +93,16 @@ export function CategoryItem({
       style={{
         borderBottom: "1px solid var(--card-border-color)",
         opacity: isDragging ? 0.4 : 1,
-        background: isDragging ? "var(--card-bg2-color, #f5f5f5)" : undefined,
+        background: isActive
+          ? "var(--card-bg2-color, #f5f5f5)"
+          : isDragging
+            ? "var(--card-bg2-color, #f5f5f5)"
+            : undefined,
       }}
     >
       {/* Category header row */}
       <div
-        onClick={onToggleExpand}
+        onClick={() => onOpenPanel({ type: "editCategory", categoryKey: navCategory._key })}
         style={{
           display: "flex",
           alignItems: "center",
@@ -99,18 +112,6 @@ export function CategoryItem({
           gap: 8,
         }}
       >
-        <span
-          style={{
-            fontSize: 11,
-            color: "var(--card-muted-fg-color)",
-            width: 16,
-            textAlign: "center",
-            flexShrink: 0,
-          }}
-        >
-          {expanded ? "▼" : "▶"}
-        </span>
-
         <span
           style={{
             flex: 1,
@@ -137,8 +138,28 @@ export function CategoryItem({
         </span>
 
         <span style={{ fontSize: 11, color: "var(--card-muted-fg-color)", flexShrink: 0 }}>
-          {pageCount} {pageCount === 1 ? "page" : "pages"}
+          {pageCount}ページ
         </span>
+
+        {/* Thumbnail accent */}
+        <div
+          style={{
+            width: 48,
+            height: 28,
+            borderRadius: 3,
+            overflow: "hidden",
+            flexShrink: 0,
+            background: "var(--card-muted-bg-color, #eee)",
+          }}
+        >
+          {thumbUrl && (
+            <img
+              src={thumbUrl}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+          )}
+        </div>
 
         <div style={{ position: "relative", flexShrink: 0 }} ref={menuRef}>
           <button
@@ -230,76 +251,6 @@ export function CategoryItem({
           )}
         </div>
       </div>
-
-      {/* Expanded page list */}
-      {expanded && (
-        <div style={{ padding: "0 12px 10px" }}>
-          {(navCategory.items ?? []).map((item) => {
-            const pageDoc = pagesMap.get(item.pageRef?._ref);
-            return (
-              <div key={item._key} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <PageItem
-                    title={pageDoc?.title}
-                    hidden={!!item.hidden}
-                    onToggleHidden={() => onTogglePageHidden(item._key)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onRemovePage(item._key)}
-                  title="このページを削除"
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    fontSize: 14,
-                    color: "var(--card-muted-fg-color)",
-                    padding: "2px 4px",
-                    flexShrink: 0,
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-            );
-          })}
-
-          {/* Action buttons */}
-          <div style={{ display: "flex", gap: 8, marginTop: 8, paddingLeft: 24 }}>
-            <button
-              type="button"
-              onClick={() => onOpenPanel({ type: "addPage", categoryKey: navCategory._key })}
-              style={{
-                fontSize: 12,
-                padding: "4px 10px",
-                border: "1px solid var(--card-border-color)",
-                borderRadius: 4,
-                background: "var(--card-bg-color)",
-                cursor: "pointer",
-                color: "var(--card-fg-color)",
-              }}
-            >
-              + ページを追加
-            </button>
-            <button
-              type="button"
-              onClick={() => onOpenPanel({ type: "reorderPages", categoryKey: navCategory._key })}
-              style={{
-                fontSize: 12,
-                padding: "4px 10px",
-                border: "1px solid var(--card-border-color)",
-                borderRadius: 4,
-                background: "var(--card-bg-color)",
-                cursor: "pointer",
-                color: "var(--card-fg-color)",
-              }}
-            >
-              並び替え
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
