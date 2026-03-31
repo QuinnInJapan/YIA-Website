@@ -46,7 +46,7 @@ async function main() {
   }
 
   // Build the document
-  const doc: Record<string, unknown> = {
+  const doc: { _id: string; _type: string; [key: string]: unknown } = {
     _id: "homepageFeatured",
     _type: "homepageFeatured",
   };
