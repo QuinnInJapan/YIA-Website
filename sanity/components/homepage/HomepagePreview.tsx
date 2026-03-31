@@ -160,7 +160,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
     return (
       <section className="program-grid">
         {catsWithImage.map((cat, i) => {
-          const catId = cat._id as string;
+          const catId = (cat._id as string).replace(/^drafts\./, "");
           const img = imageUrl(cat.heroImage as any);
           const pos = hotspotPosition(cat.heroImage as any);
           const navCat = navCategories.find((nc) => nc.categoryId === catId);
