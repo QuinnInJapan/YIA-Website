@@ -15,6 +15,22 @@ export default defineType({
       title: "カテゴリー",
       type: "array",
       description: "サイトのメインナビゲーション。カテゴリーごとにページを整理します。",
+      validation: (Rule) =>
+        Rule.custom((categories: any[] | undefined) => {
+          if (!categories) return true;
+          const emptyCategories = categories.filter((cat) => {
+            const visibleItems = (cat.items ?? []).filter((item: any) => !item.hidden);
+            return visibleItems.length === 0;
+          });
+          if (emptyCategories.length > 0) {
+            return {
+              message:
+                "表示可能なページがないカテゴリーがあります。(A category has no visible pages.)",
+              level: "warning" as const,
+            };
+          }
+          return true;
+        }),
       of: [
         {
           type: "object",
@@ -41,11 +57,25 @@ export default defineType({
                       type: "reference",
                       to: [{ type: "page" }],
                     }),
+                    defineField({
+                      name: "hidden",
+                      title: "非表示",
+                      type: "boolean",
+                      initialValue: false,
+                      description: "ナビゲーションに表示しない場合はオンにします。",
+                    }),
                   ],
                   preview: {
-                    select: { title: "pageRef.title" },
-                    prepare: ({ title }: { title?: { _key: string; value: string }[] }) => ({
+                    select: { title: "pageRef.title", hidden: "hidden" },
+                    prepare: ({
+                      title,
+                      hidden,
+                    }: {
+                      title?: { _key: string; value: string }[];
+                      hidden?: boolean;
+                    }) => ({
                       title: title?.find((t) => t._key === "ja")?.value || "Untitled",
+                      subtitle: hidden ? "🚫 非表示" : undefined,
                     }),
                   },
                 },
