@@ -213,7 +213,7 @@ export function HomepageEditor({
       client.fetch<HomepageFeaturedData | null>(`*[_id == "homepageFeatured"][0]`),
       client.fetch<HomepageFeaturedData | null>(`*[_id == "drafts.homepageFeatured"][0]`),
       client.fetch<PageData[]>(
-        `*[_type == "page" && !(_id in path("drafts.**"))]{ _id, title, slug } | order(title asc)`,
+        `*[_type == "page" && !(_id in path("drafts.**"))]{ _id, title, "slug": slug.current } | order(title asc)`,
       ),
     ])
       .then(

@@ -102,17 +102,10 @@ function SlotCard({
       .url();
   }, [selectedCat, builder]);
 
-  // Resolve page titles from navCategories or allPages
+  // Resolve page titles from allPages
   const resolvedPages = useMemo(() => {
     return selectedPageRefs.map((ref) => {
       const pageId = ref._ref;
-      // Try navCategories first
-      for (const nc of navCategories) {
-        for (const item of nc.items) {
-          // navCategories items don't have _id, so match via allPages
-        }
-      }
-      // Fall back to allPages
       const page = allPages.find((p) => p._id === pageId);
       return {
         _ref: pageId,
@@ -120,7 +113,7 @@ function SlotCard({
         titleEn: page ? `${i18nGet(page.title, "en")}` : "",
       };
     });
-  }, [selectedPageRefs, allPages, navCategories]);
+  }, [selectedPageRefs, allPages]);
 
   // Get pages available for the selected category (from navCategories)
   const availablePages = useMemo(() => {
