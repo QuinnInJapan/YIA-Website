@@ -57,15 +57,17 @@ slot3: { categoryRef (required, reference to category), pages[] (max 4, referenc
 slot4: { categoryRef (required, reference to category), pages[] (max 4, references to page) }
 ```
 
-Each slot requires a category reference. The `pages` array within each slot allows the admin to pick up to 4 pages to showcase.
+Each slot requires a category reference. The `pages` array within each slot is a plain array of references to `page` documents (not wrapped in objects), max length 4.
 
 ### Category schema (`sanity/schemas/category.ts`)
 
-No structural changes. Labels are already editable (bilingual via `internationalizedArrayString`). Deletion protection is handled automatically by Sanity's reference integrity — a category referenced by `homepageFeatured` or `navigation` cannot be deleted.
+Add `required()` validation to the `heroImage` field. Every category must have a hero image — this eliminates the need for heroImage-based filtering anywhere in the codebase and ensures homepage cards always have a background.
+
+Labels are already editable (bilingual via `internationalizedArrayString`). Deletion protection is handled by Sanity's reference integrity — a category referenced by `homepageFeatured` or `navigation` cannot be deleted. Note: this relies on Sanity's default delete behavior. The project has a custom `cleanDeleteAction` in `sanity/actions/cleanDeleteAction.ts` but it currently only applies to `blogPost` (configured in `sanity.config.ts`). Do not extend it to categories or pages without adding reference checks.
 
 ### Page schema (`sanity/schemas/page.ts`)
 
-No structural changes. Deletion protection is handled by Sanity's reference integrity — a page referenced in the navigation document cannot be deleted.
+No structural changes. Deletion protection is handled by Sanity's reference integrity — a page referenced in the navigation document cannot be deleted (same caveat about custom delete actions as above).
 
 ## Data Flow Changes
 
@@ -75,10 +77,10 @@ Add `homepageFeatured` to the composite `fetchSiteData` query:
 
 ```groq
 "homepageFeatured": *[_type == "homepageFeatured"][0]{
-  slot1{ categoryRef->, pages[]{ pageRef-> } },
-  slot2{ categoryRef->, pages[]{ pageRef-> } },
-  slot3{ categoryRef->, pages[]{ pageRef-> } },
-  slot4{ categoryRef->, pages[]{ pageRef-> } }
+  slot1{ categoryRef->, pages[]-> },
+  slot2{ categoryRef->, pages[]-> },
+  slot3{ categoryRef->, pages[]-> },
+  slot4{ categoryRef->, pages[]-> }
 }
 ```
 
@@ -115,7 +117,14 @@ If a slot has fewer than 4 pages, it shows what's there. CSS grid stays `repeat(
 
 ## Migration
 
-Seed the `homepageFeatured` document with the current 4 categories (those with hero images) to avoid breaking the live site during deployment. This can be done as a Sanity migration script or manually in the Studio after deployment.
+Seed the `homepageFeatured` document to avoid breaking the live site during deployment:
+
+1. Query current categories in navigation order: `*[_type == "category"] | order(_id asc)`
+2. Populate the 4 slots with the first 4 categories
+3. For each slot, populate `pages` with up to 4 pages from the corresponding navigation category's items (preserving current order)
+4. Add `hidden: false` (or omit, since default) to all existing navigation items
+
+This can be a Sanity CLI migration script or done manually in the Studio after deployment. Pre-populating `pages` is important — leaving them empty would cause the homepage to lose its page links until an admin fills them in.
 
 ## Files Affected
 
@@ -123,13 +132,20 @@ Seed the `homepageFeatured` document with the current 4 categories (those with h
 | ------------------------------------------------ | --------------------------------------------------------------- |
 | `sanity/schemas/navigation.ts`                   | Add `hidden` field to page items, add empty-category validation |
 | `sanity/schemas/homepageFeatured.ts`             | New singleton schema                                            |
+| `sanity/schemas/category.ts`                     | Add `required()` validation to `heroImage`                      |
 | `sanity/schemas/index.ts`                        | Register `homepageFeatured` schema                              |
+| `sanity/structure.ts`                            | Add `homepageFeatured` singleton to admin section               |
+| `sanity.config.ts`                               | Add `homepageFeatured` to `newDocumentOptions` filter           |
 | `lib/sanity/queries.ts`                          | Add `homepageFeatured` to composite query                       |
+| `lib/types.ts`                                   | Add `hidden` to nav item type, add `HomepageFeatured` type      |
 | `lib/data.ts`                                    | Filter hidden nav items, add `getHomepageFeatured` helper       |
 | `components/templates/HomepageTemplateAbout.tsx` | Consume featured data instead of filtering by hero image        |
+| `e2e/homepage.spec.ts`                           | Update program card assertions if needed                        |
 
 ## Out of Scope (Wave 2)
 
 - Custom Sanity Studio plugin for drag-and-drop navigation management
 - Visual slot assignment UI for homepage featured
 - Toggle switches and polished editing interface
+- Updating Studio preview/editor components (`HomepagePreview.tsx`, `ProgramCardsSection.tsx`, `HomepageEditor.tsx`) — these will be replaced by the Wave 2 plugin
+- Removing `HomepageTemplateAlt.tsx` (inactive template that uses the old heroImage filter pattern)
