@@ -1,70 +1,129 @@
 # Custom Sanity Studio Navigation & Featured Plugin — Wave 2
 
-**Date:** 2026-03-31
+**Date:** 2026-03-31 (revised)
 **Scope:** Custom Sanity Studio plugin for navigation management + updated homepage editor Programs section. Builds on Wave 1 schemas (`navigation`, `homepageFeatured`, `category`).
 
 ## Problem
 
-Wave 1 created the data model for flexible navigation and homepage featured categories, but admins currently edit these through Sanity's raw auto-generated forms. Non-technical users need a purpose-built interface that makes the mental model clear (what's a category vs. a page) and lets them see the consequences of their changes in real time.
+Wave 1 created the data model for flexible navigation and homepage featured categories, but admins currently edit these through Sanity's raw auto-generated forms. Non-technical users need a purpose-built interface that makes the mental model clear (what's a category vs. a page) and lets them see the consequences of their changes.
+
+## Mental Model
+
+The tool communicates three concepts:
+
+- **Sections** = the top-level groups in the website menu (currently called "categories" in the data model, but presented to users as "sections" for clarity)
+- **Pages** = content pages that belong to exactly one section
+- **Visibility** = whether a page appears in the nav menu (hidden pages still exist, just aren't shown)
+
+Key constraint: **a page belongs to exactly one section.** Adding a page to a section means moving it from its current section. The tool must handle this as a move operation, not a copy.
 
 ## Requirements
 
 1. Standalone navigation tool in the Studio sidebar for managing the navbar
-2. Two-pane layout: structural editor (left) + live nav preview (right)
+2. Two-pane layout: bird's-eye overview (left) + contextual workspace (right)
 3. Category CRUD: create, rename, delete — with contextual delete protection if featured on homepage
-4. Assign existing pages to categories (no page creation from this tool)
-5. Reorder categories and pages within categories via up/down arrow buttons (no drag-and-drop)
-6. Toggle page visibility (hidden/shown) with immediate preview feedback
-7. Updated Programs section in the homepage editor for `homepageFeatured` slot management
-8. Cross-document awareness is contextual only — navigation data fetched when opening a page picker in the homepage editor, `homepageFeatured` checked only on category delete in the nav tool
-9. Clear UX copy that reinforces the mental model for non-technical users
+4. Move pages between categories (updates both `navigation` array and page's `categoryRef`)
+5. Reorder categories via drag-and-drop (following existing gallery panel pattern)
+6. Reorder pages within categories via the right panel
+7. Toggle page visibility with an explicit labeled button (not an icon)
+8. Updated Programs section in the homepage editor for `homepageFeatured` slot management
+9. Cross-document awareness is contextual only
 10. Follow existing plugin patterns: tool-based, `useClient`, auto-save with debounce, bilingual support, draft/publish workflow
 
 ## Architecture
 
 Two independent editing surfaces with lazy cross-references:
 
-- **Navigation tool** (new standalone plugin): manages the `navigation` document and `category` documents. Two-pane layout with structural editor and live navbar preview.
-- **Homepage editor** (existing, modified): the Programs section is rewritten to manage the `homepageFeatured` document instead of filtering by hero image. Category/page pickers fetch navigation data only when opened.
+- **Navigation tool** (new standalone plugin): manages the `navigation` document and `category` documents. Two-pane layout with overview and contextual workspace.
+- **Homepage editor** (existing, modified): the Programs section is rewritten to manage the `homepageFeatured` document. Category/page pickers fetch navigation data only when opened.
 
 Both follow the established plugin pattern from `HomepageTool.tsx` / `HomepageEditor.tsx`.
 
 ## Navigation Tool
 
-### Left Pane — Structural Editor
+### Design Principles
 
-Top bar with tool title and save/publish button.
+- **Left panel = bird's-eye view.** Quick scanning, small inline actions (visibility toggle). No complex forms or multi-step operations.
+- **Right panel = contextual workspace.** Opens for complex operations (reorder pages, move page, add page, add category). Returns to empty state when done.
+- **If an operation is small, keep it on the left** (avoids forcing the user to look away from context).
+- **If an operation is large, use the right panel** (avoids blowing out the left panel with forms).
 
-**Category list:**
+### Left Pane — Overview
 
-- Each category is a collapsible row showing:
-  - Up/down arrow buttons for reordering
-  - Category label (Japanese, English subtitle)
-  - "Rename" action — inline edit of bilingual labels using the existing `BilingualInput` component
-  - "Delete" action — two-step: first removes the category from the `navigation` document's array, then deletes the `category` document. Before starting, checks `homepageFeatured` contextually; blocks with message if referenced.
-  - Expand/collapse to reveal page list
-- "Add category" button at the bottom — opens inline form for bilingual label + hero image upload. Hero image uses the existing `ImagePickerPanel` in the right pane (right pane toggles between preview and picker, following the `HomepageTool.tsx` pattern). Creates a new `category` document (auto-generated ID), publishes it immediately, and adds a reference to the `navigation` document.
+Top bar with tool title ("ナビゲーション") and save/publish button.
 
-**Page items within each category:**
+**Category list (drag-and-drop reorder):**
 
-- Page title (Japanese + English)
-- Visibility toggle (eye icon — on/off for `hidden` field)
-- Up/down arrow buttons for reordering within the category
-- Remove button (removes page from this category's nav items; does not delete the page document)
-- "Add page" button at the bottom of each category — opens a picker of all existing page documents, filtered to exclude pages already in this category (a page may appear in multiple categories; the page's `categoryRef` field controls desk structure/URL routing, while the navigation array controls navbar display — these are intentionally independent)
+Categories are reorderable via drag-and-drop, following the native HTML5 drag pattern from the existing gallery panel (`GalleryPanel.tsx`).
 
-### Right Pane — Live Nav Preview
+Each category row (collapsed):
 
-A cosmetic preview component that visually represents the navbar layout. Not functional — no working links or dropdown interactions. Shows category names and visible page titles in the same visual structure as the site navbar. Updates reactively as the user makes changes in the left pane. Hidden pages are omitted so the user sees the actual nav result. Uses the existing `PreviewPanel` wrapper from shared components.
+```
+▶ イベント / Events                              3 pages    ⋯
+```
+
+- Click/tap anywhere on the row to expand (entire div is the hit target)
+- Page count shown as metadata
+- ⋯ menu for rare actions: Rename, Delete
+
+Each category row (expanded):
+
+```
+▼ イベント / Events                              3 pages    ⋯
+    日本語教室                                    表示中
+    国際交流パーティー                             表示中
+    ボランティア募集                               非表示     (dimmed)
+    [+ ページを追加]   [並び替え]
+```
+
+- Japanese title only per page (clean, scannable)
+- Visibility: explicit labeled button ("表示中" / "非表示") — not an icon
+- Hidden pages are dimmed
+- "ページを追加" button → opens right panel with page picker
+- "並び替え" button → opens right panel with reorder UI
+
+**Category ⋯ menu actions:**
+
+- **Rename:** Opens right panel with `BilingualInput` for label editing
+- **Delete:** Two-step — checks `homepageFeatured`, blocks if referenced, otherwise confirms then removes from navigation array, flushes save, then deletes category document
+
+**"+ セクションを追加" button** at the bottom of the category list → opens right panel with add-category form.
+
+### Right Pane — Contextual Workspace
+
+**Default state:** Empty with hint text ("カテゴリーを選択してページを管理 / Select a section to manage its pages").
+
+**Add page mode:**
+
+- Shows all page documents not currently in this category
+- Since pages belong to exactly one category, adding a page that's in another category shows a confirmation: "このページは「{other category}」から移動されます。(This page will be moved from '{other category}'.)"
+- Moving a page updates both the `navigation` array (remove from old category, add to new) and the page's `categoryRef` field
+
+**Reorder pages mode:**
+
+- Shows all pages in the selected category
+- Arrow buttons (up/down) to reorder
+- Changes apply immediately to the left panel overview
+
+**Add category mode:**
+
+- `BilingualInput` for label (Japanese + English)
+- Image picker for hero image (required)
+- Creates `category` document (auto-generated ID), publishes immediately, adds reference to `navigation` array
+
+**Rename category mode:**
+
+- `BilingualInput` pre-filled with current label
+- Save button applies change
 
 ### Data Flow
 
-- Fetches `navigation` document on load (published + draft)
+- Fetches `navigation` document on load (published + draft), plus all `category` and `page` documents
 - Edits go through `pendingEdits` → 1500ms debounced auto-save (existing pattern)
 - Category CRUD operates on `category` documents directly via Sanity client
-- On category delete: fetches `homepageFeatured` to check if referenced. If so, shows warning and blocks. Otherwise: (1) removes category from `navigation` array and saves, (2) deletes the `category` document. Two-step because Sanity's reference integrity blocks deletion of referenced documents.
+- Moving a page between categories: updates `navigation` array (remove from source, add to target), updates page's `categoryRef` field, saves both
+- On category delete: fetches `homepageFeatured` to check if referenced. If so, shows warning and blocks. Otherwise: flushes pending saves, removes from `navigation` array, saves, then deletes `category` document.
 - Publish via `transaction.createOrReplace()` + delete draft
-- Right pane toggles between nav preview (default) and image picker (when adding a category), following the state machine pattern from `HomepageTool.tsx`
 
 ## Homepage Editor — Updated Programs Section
 
@@ -91,12 +150,17 @@ Replaces current `ProgramCardsSection.tsx`. Shows 4 slot cards:
 
 **Navigation tool:**
 
-- Tool title: "ナビゲーション" / "サイトのメニューを管理します (Manage the site menu)"
-- Categories: "メニューグループ (Menu groups)"
-- Pages: "ページ (Pages)"
-- Visibility toggle: "ナビに表示 (Show in nav)"
-- Delete category confirmation: "このメニューグループを削除しますか？グループ内のページは削除されません。(Delete this menu group? Pages within it will not be deleted.)"
+- Tool title: "ナビゲーション"
+- Tool subtitle: "サイトのメニューを管理します (Manage the site menu)"
+- Category label: section name (Japanese / English)
+- Visibility button: "表示中 (Visible)" / "非表示 (Hidden)"
+- Delete category confirmation: "このセクションを削除しますか？セクション内のページは削除されません。(Delete this section? Pages within it will not be deleted.)"
 - Featured delete blocked: "このカテゴリーはホームページで使用中のため削除できません。(This category is used on the homepage and cannot be deleted.)"
+- Move page confirmation: "このページは「{category}」から移動されます。(This page will be moved from '{category}'.)"
+- Empty right panel: "カテゴリーを選択してページを管理 (Select a section to manage its pages)"
+- Add page button: "ページを追加"
+- Reorder button: "並び替え"
+- Add section button: "セクションを追加"
 
 **Homepage Programs section:**
 
@@ -110,15 +174,18 @@ Copy can be refined after initial implementation.
 
 ### Navigation tool (new)
 
-| File                                                | Responsibility                                                      |
-| --------------------------------------------------- | ------------------------------------------------------------------- |
-| `sanity/components/navigationPlugin.ts`             | Plugin definition                                                   |
-| `sanity/components/NavigationTool.tsx`              | Two-pane wrapper (editor + preview)                                 |
-| `sanity/components/navigation/NavigationEditor.tsx` | Category list, page items, CRUD operations                          |
-| `sanity/components/navigation/NavPreview.tsx`       | Live navbar preview                                                 |
-| `sanity/components/navigation/CategoryItem.tsx`     | Single category row: expand/collapse, rename, delete, arrow reorder |
-| `sanity/components/navigation/PageItem.tsx`         | Single page row: visibility toggle, arrow reorder                   |
-| `sanity/components/navigation/types.ts`             | TypeScript interfaces                                               |
+| File                                                   | Responsibility                                                            |
+| ------------------------------------------------------ | ------------------------------------------------------------------------- |
+| `sanity/components/navigationPlugin.ts`                | Plugin definition                                                         |
+| `sanity/components/NavigationTool.tsx`                 | Two-pane wrapper with right-panel state machine                           |
+| `sanity/components/navigation/NavigationEditor.tsx`    | Left pane: category list with drag reorder, page rows, visibility toggles |
+| `sanity/components/navigation/CategoryItem.tsx`        | Category row: expand/collapse, page list, ⋯ menu                          |
+| `sanity/components/navigation/PageItem.tsx`            | Page row: title, visibility button                                        |
+| `sanity/components/navigation/AddPagePanel.tsx`        | Right pane: page picker with move confirmation                            |
+| `sanity/components/navigation/ReorderPagesPanel.tsx`   | Right pane: arrow-based page reorder                                      |
+| `sanity/components/navigation/AddCategoryPanel.tsx`    | Right pane: bilingual label + hero image form                             |
+| `sanity/components/navigation/RenameCategoryPanel.tsx` | Right pane: bilingual label edit                                          |
+| `sanity/components/navigation/types.ts`                | TypeScript interfaces                                                     |
 
 ### Homepage editor (modified)
 
@@ -137,18 +204,15 @@ Copy can be refined after initial implementation.
 
 ## Shared Components to Reuse
 
-These existing components from `sanity/components/shared/` should be reused:
-
 - `BilingualInput` — for category rename and creation forms
 - `ImagePickerPanel` — for hero image upload when creating categories
 - `RightPanel` — right pane layout container
-- `PreviewPanel` — preview pane wrapper
 - `i18n.ts` (`i18nGet`, `i18nSet`) — for bilingual data manipulation
+- Gallery panel's native HTML5 drag pattern — for category drag-and-drop reorder
 
 ## Out of Scope
 
 - Page creation from the navigation tool
-- Drag-and-drop reordering (using arrow buttons instead)
-- Moving pages between categories via drag (remove + add is sufficient)
+- Nav preview panel (removed — left panel overview is sufficient)
 - Undo/redo
-- Functional nav preview (preview is cosmetic only — shows layout, doesn't need working links or dropdowns)
+- Keyboard-only drag-and-drop accessibility (can be added later)
