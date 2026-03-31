@@ -59,6 +59,14 @@ export const NavigationEditor = forwardRef<
   const [categoryDocs, setCategoryDocs] = useState<Map<string, CategoryDoc>>(new Map());
   const [allPages, setAllPages] = useState<PageDoc[]>([]);
 
+  // Refs to avoid stale closures in async callbacks (saveToSanity, deleteCategory)
+  const publishedNavRef = useRef(publishedNav);
+  publishedNavRef.current = publishedNav;
+  const draftNavRef = useRef(draftNav);
+  draftNavRef.current = draftNav;
+  const categoriesRef = useRef(categories);
+  categoriesRef.current = categories;
+
   // UI state
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const dragIdxRef = useRef<number | null>(null);
@@ -128,7 +136,8 @@ export const NavigationEditor = forwardRef<
     setSaveStatus("saving");
 
     try {
-      const baseDoc = draftNav ?? publishedNav;
+      // Read from refs to avoid stale closures
+      const baseDoc = draftNavRef.current ?? publishedNavRef.current;
       if (!baseDoc) return;
 
       const draftId = "drafts.navigation";
@@ -152,7 +161,7 @@ export const NavigationEditor = forwardRef<
     } finally {
       setSaving(false);
     }
-  }, [client, publishedNav, draftNav]);
+  }, [client]);
 
   const updateCategories = useCallback(
     (next: NavCategoryRaw[]) => {
@@ -342,7 +351,9 @@ export const NavigationEditor = forwardRef<
 
   const deleteCategory = useCallback(
     async (categoryKey: string) => {
-      const navCat = categories.find((c) => c._key === categoryKey);
+      // Read from ref to avoid stale closure
+      const currentCategories = categoriesRef.current;
+      const navCat = currentCategories.find((c) => c._key === categoryKey);
       if (!navCat) return;
       const catRef = navCat.categoryRef?._ref;
       if (!catRef) return;
@@ -368,7 +379,8 @@ export const NavigationEditor = forwardRef<
 
       await flushSave();
 
-      const next = categories.filter((c) => c._key !== categoryKey);
+      // Re-read from ref after flush (flush may have updated state)
+      const next = categoriesRef.current.filter((c) => c._key !== categoryKey);
       pendingCategoriesRef.current = next;
       setCategories(next);
       await saveToSanity();
@@ -386,7 +398,7 @@ export const NavigationEditor = forwardRef<
         return newMap;
       });
     },
-    [client, categories, flushSave, saveToSanity],
+    [client, flushSave, saveToSanity],
   );
 
   // ── Expose ref for parent ─────────────────────────
@@ -439,10 +451,8 @@ export const NavigationEditor = forwardRef<
   const handleDragEnd = useCallback(() => {
     dragIdxRef.current = null;
     setDraggingKey(null);
-    setCategories((current) => {
-      updateCategories(current);
-      return current;
-    });
+    // Read current categories from ref (avoids side effect in state updater)
+    updateCategories(categoriesRef.current);
   }, [updateCategories]);
 
   // ── Status labels ─────────────────────────────────

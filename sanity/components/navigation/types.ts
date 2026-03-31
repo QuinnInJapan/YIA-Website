@@ -53,5 +53,3 @@ export type RightPanelState =
 // ── Callback types ──────────────────────────────────
 
 export type OnOpenRightPanel = (panel: RightPanelState) => void;
-
-export type OnUpdateCategories = (categories: NavCategoryRaw[]) => void;
