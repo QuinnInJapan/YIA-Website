@@ -14,11 +14,13 @@ import { SettingsSection } from "./SettingsSection";
 import type {
   HomepageData,
   HomepageAboutData,
+  HomepageFeaturedData,
   SiteSettingsData,
   SidebarData,
   CategoryData,
   NavCategoryData,
   AnnouncementPreviewData,
+  PageData,
   DocType,
   OpenPickerFn,
   ShowHotspotCropFn,
@@ -94,6 +96,12 @@ export function HomepageEditor({
   const [categoriesState, setCategoriesState] = useState<Map<string, DocState<CategoryData>>>(
     new Map(),
   );
+  const [featuredState, setFeaturedState] = useState<DocState<HomepageFeaturedData>>({
+    published: null,
+    draft: null,
+    edits: {},
+  });
+  const [allPages, setAllPages] = useState<PageData[]>([]);
   const [navCategories, setNavCategories] = useState<NavCategoryData[]>([]);
   const [announcements, setAnnouncements] = useState<AnnouncementPreviewData[]>([]);
 
@@ -136,6 +144,12 @@ export function HomepageEditor({
     return result;
   }, [categoriesState]);
 
+  const featured = useMemo<HomepageFeaturedData | null>(() => {
+    const base = featuredState.draft ?? featuredState.published;
+    if (!base) return null;
+    return { ...base, ...featuredState.edits } as HomepageFeaturedData;
+  }, [featuredState]);
+
   const aboutId = useMemo(() => {
     return (aboutState.draft ?? aboutState.published)?._id?.replace(/^drafts\./, "") ?? "";
   }, [aboutState]);
@@ -151,6 +165,7 @@ export function HomepageEditor({
         categories,
         navCategories,
         announcements,
+        featured,
       });
     } else {
       onMergedChange?.(null);
@@ -163,6 +178,7 @@ export function HomepageEditor({
     categories,
     navCategories,
     announcements,
+    featured,
     onMergedChange,
   ]);
 
@@ -194,6 +210,11 @@ export function HomepageEditor({
           _id, title, date, pinned, "slug": slug.current
         }`,
       ),
+      client.fetch<HomepageFeaturedData | null>(`*[_id == "homepageFeatured"][0]`),
+      client.fetch<HomepageFeaturedData | null>(`*[_id == "drafts.homepageFeatured"][0]`),
+      client.fetch<PageData[]>(
+        `*[_type == "page" && !(_id in path("drafts.**"))]{ _id, title, slug } | order(title asc)`,
+      ),
     ])
       .then(
         async ([
@@ -207,6 +228,9 @@ export function HomepageEditor({
           cats,
           navCats,
           annList,
+          featuredPub,
+          featuredDraft,
+          pages,
         ]) => {
           setHomepageState({ published: hpPub, draft: hpDraft, edits: {} });
 
@@ -238,6 +262,8 @@ export function HomepageEditor({
             });
           });
           setCategoriesState(catMap);
+          setFeaturedState({ published: featuredPub, draft: featuredDraft, edits: {} });
+          setAllPages(pages ?? []);
           setNavCategories(navCats ?? []);
           setAnnouncements(annList ?? []);
         },
@@ -323,6 +349,8 @@ export function HomepageEditor({
           baseDoc = settingsState.draft ?? settingsState.published;
         } else if (docType === "sidebar") {
           baseDoc = sidebarState.draft ?? sidebarState.published;
+        } else if (docType === "homepageFeatured") {
+          baseDoc = featuredState.draft ?? featuredState.published;
         } else if (docType === "category") {
           const catState = categoriesState.get(pubId);
           baseDoc = catState?.draft ?? catState?.published ?? null;
@@ -333,7 +361,7 @@ export function HomepageEditor({
         transaction.createIfNotExists({
           ...baseDoc,
           _id: draftId,
-          _type: docType === "category" ? "category" : docType,
+          _type: baseDoc._type ?? docType,
         } as any);
         transaction.patch(draftId, (p) => p.set(edits));
       }
@@ -375,6 +403,14 @@ export function HomepageEditor({
               setSidebarState((prev) => ({ ...prev, draft, edits: {} }));
             }),
           );
+        } else if (docType === "homepageFeatured") {
+          refreshes.push(
+            client
+              .fetch<HomepageFeaturedData | null>(`*[_id == $id][0]`, { id: draftId })
+              .then((draft) => {
+                setFeaturedState((prev) => ({ ...prev, draft, edits: {} }));
+              }),
+          );
         } else if (docType === "category") {
           refreshes.push(
             client.fetch<CategoryData | null>(`*[_id == $id][0]`, { id: draftId }).then((draft) => {
@@ -396,7 +432,15 @@ export function HomepageEditor({
     } finally {
       setSaving(false);
     }
-  }, [client, homepageState, aboutState, settingsState, sidebarState, categoriesState]);
+  }, [
+    client,
+    homepageState,
+    aboutState,
+    settingsState,
+    sidebarState,
+    featuredState,
+    categoriesState,
+  ]);
 
   // ── updateField — routes edits to correct doc ────
 
@@ -414,6 +458,8 @@ export function HomepageEditor({
         setSettingsState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
       } else if (docType === "sidebar") {
         setSidebarState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
+      } else if (docType === "homepageFeatured") {
+        setFeaturedState((prev) => ({ ...prev, edits: { ...prev.edits, [field]: value } }));
       } else if (docType === "category") {
         setCategoriesState((prev) => {
           const next = new Map(prev);
@@ -466,6 +512,7 @@ export function HomepageEditor({
 
       queuePublish("homepage", homepageState.published, homepageState.draft);
       queuePublish("homepageAbout", aboutState.published, aboutState.draft);
+      queuePublish("homepageFeatured", featuredState.published, featuredState.draft);
       queuePublish("siteSettings", settingsState.published, settingsState.draft);
       queuePublish("sidebar", sidebarState.published, sidebarState.draft);
       for (const [pubId, catState] of categoriesState) {
@@ -498,6 +545,11 @@ export function HomepageEditor({
         } else if (type === "sidebar") {
           const pub = await client.fetch<SidebarData | null>(`*[_id == $id][0]`, { id: pubId });
           setSidebarState({ published: pub, draft: null, edits: {} });
+        } else if (type === "homepageFeatured") {
+          const pub = await client.fetch<HomepageFeaturedData | null>(`*[_id == $id][0]`, {
+            id: pubId,
+          });
+          setFeaturedState({ published: pub, draft: null, edits: {} });
         } else if (type === "category") {
           const pub = await client.fetch<CategoryData | null>(`*[_id == $id][0]`, { id: pubId });
           setCategoriesState((prev) => {
@@ -522,13 +574,14 @@ export function HomepageEditor({
   const hasAnyDrafts = useMemo(() => {
     if (homepageState.draft) return true;
     if (aboutState.draft) return true;
+    if (featuredState.draft) return true;
     if (settingsState.draft) return true;
     if (sidebarState.draft) return true;
     for (const [, state] of categoriesState) {
       if (state.draft) return true;
     }
     return false;
-  }, [homepageState, aboutState, settingsState, sidebarState, categoriesState]);
+  }, [homepageState, aboutState, featuredState, settingsState, sidebarState, categoriesState]);
 
   // ── Status labels ────────────────────────────────
 
@@ -645,10 +698,11 @@ export function HomepageEditor({
           />
 
           <ProgramCardsSection
+            featured={featured}
             categories={categories}
+            navCategories={navCategories}
+            allPages={allPages}
             updateField={updateField}
-            onOpenImagePicker={onOpenImagePicker}
-            onShowHotspotCrop={onShowHotspotCrop}
           />
 
           {about && (
@@ -682,6 +736,7 @@ export function HomepageEditor({
         getDocument={() => ({
           homepage: homepageState,
           about: aboutState,
+          featured: featuredState,
           settings: settingsState,
           sidebar: sidebarState,
         })}
