@@ -67,7 +67,7 @@ function isPdf(asset: AssetItem): boolean {
 export function FilePickerPanel({
   onSelect,
   onClose,
-  defaultFilter = "images",
+  defaultFilter = "all",
 }: {
   onSelect: (assetId: string, filename: string, ext: string) => void;
   onClose: () => void;
