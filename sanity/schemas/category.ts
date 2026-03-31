@@ -32,7 +32,8 @@ export default defineType({
       title: "ヒーロー画像",
       type: "image",
       options: { hotspot: true },
-      description: "カテゴリーページ上部の背景画像。",
+      description: "カテゴリーページ上部の背景画像。ホームページの注目カードにも使用されます。",
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });

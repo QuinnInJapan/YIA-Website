@@ -27,6 +27,12 @@ export async function fetchSiteData() {
         "announcements": *[_type == "announcement"] | order(date desc) { ..., "slug": slug.current },
         "sidebar": *[_type == "sidebar"][0]{ ... },
         "homepage": *[_type == "homepage"][0]{ ..., announcementRefs[]-> },
+        "homepageFeatured": *[_type == "homepageFeatured"][0]{
+          slot1{ categoryRef->, pages[]-> },
+          slot2{ categoryRef->, pages[]-> },
+          slot3{ categoryRef->, pages[]-> },
+          slot4{ categoryRef->, pages[]-> }
+        },
         "pages": *[_type == "page"] | order(_id asc)
       }`);
   });

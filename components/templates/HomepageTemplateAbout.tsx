@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteData, getEnrichedNavigation } from "@/lib/data";
+import { getSiteData, getHomepageFeatured } from "@/lib/data";
 import { fetchHomepageAbout } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -19,7 +19,7 @@ import HomepageActivityGrid from "./HomepageActivityGrid";
 export default async function HomepageTemplateAbout() {
   const data = await getSiteData();
   const hp = data.homepage;
-  const nav = await getEnrichedNavigation();
+  const featured = await getHomepageFeatured();
   const sidebar = data.sidebar;
   const heroImage = imageUrl(hp.hero.image);
   const heroPosition = hotspotPosition(hp.hero.image);
@@ -129,49 +129,53 @@ export default async function HomepageTemplateAbout() {
           </div>
         </section>
 
-        {/* Program card grid — same as current */}
+        {/* Program card grid — driven by homepageFeatured slots */}
         <section className="program-grid reveal-stagger">
-          {nav.categories
-            .filter((cat) => cat.heroImage?.asset?._ref)
-            .map((cat, i) => {
-              const img = imageUrl(cat.heroImage);
-              const pos = hotspotPosition(cat.heroImage);
-              return (
-                <div
-                  className="program-card reveal"
-                  style={{ "--reveal-i": i } as React.CSSProperties}
-                  key={cat.id}
-                >
-                  {img && (
-                    <LazyImage
-                      src={img}
-                      alt=""
-                      className="program-card__img"
-                      fill
-                      style={pos ? { objectPosition: pos } : undefined}
-                    />
-                  )}
-                  <div className="program-card__overlay">
-                    <Link href={`/${cat.categoryId}`} className="program-card__heading-link">
-                      <h3 className="program-card__title">{ja(cat.label)}</h3>
-                      <span className="program-card__title-en" lang="en" translate="no">
-                        {en(cat.label)}
-                      </span>
-                    </Link>
-                    <div className="program-card__links">
-                      {cat.items.map((it) => (
-                        <Link href={it.url} className="program-card__link" key={it.id}>
-                          <span className="program-card__link-ja">{ja(it.title)}</span>
-                          <span className="program-card__link-en" lang="en" translate="no">
-                            {en(it.title)}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
+          {featured.map((card, i) => {
+            const img = imageUrl(card.heroImage);
+            const pos = hotspotPosition(card.heroImage);
+            return (
+              <div
+                className="program-card reveal"
+                style={{ "--reveal-i": i } as React.CSSProperties}
+                key={card.categoryId}
+              >
+                {img && (
+                  <LazyImage
+                    src={img}
+                    alt=""
+                    className="program-card__img"
+                    fill
+                    style={pos ? { objectPosition: pos } : undefined}
+                  />
+                )}
+                <div className="program-card__overlay">
+                  <Link href={card.categoryUrl} className="program-card__heading-link">
+                    <h3 className="program-card__title">{ja(card.label)}</h3>
+                    <span className="program-card__title-en" lang="en" translate="no">
+                      {en(card.label)}
+                    </span>
+                  </Link>
+                  <div className="program-card__links">
+                    {card.pages.map((pg) => (
+                      <Link href={pg.url} className="program-card__link" key={pg.id}>
+                        <span className="program-card__link-ja">{ja(pg.title)}</span>
+                        <span className="program-card__link-en" lang="en" translate="no">
+                          {en(pg.title)}
+                        </span>
+                      </Link>
+                    ))}
                   </div>
+                  <Link href={card.categoryUrl} className="program-card__see-all">
+                    <span className="program-card__see-all-ja">すべて見る</span>
+                    <span className="program-card__see-all-en" lang="en" translate="no">
+                      See All &rarr;
+                    </span>
+                  </Link>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </section>
 
         {/* About YIA — replaces event flyers */}

@@ -148,9 +148,14 @@ export default defineConfig({
     newDocumentOptions: (prev) =>
       prev.filter(
         (item) =>
-          !["siteSettings", "homepage", "navigation", "sidebar", "category"].includes(
-            item.templateId,
-          ),
+          ![
+            "siteSettings",
+            "homepage",
+            "navigation",
+            "homepageFeatured",
+            "sidebar",
+            "category",
+          ].includes(item.templateId),
       ),
     actions: (prev, context) => {
       if (context.schemaType === "blogPost") {

@@ -8,6 +8,7 @@ import {
   BookIcon,
   CalendarIcon,
   EarthGlobeIcon,
+  StarIcon,
 } from "@sanity/icons";
 
 // Singleton helper: opens directly to the document editor
@@ -69,6 +70,7 @@ export function structure(S: StructureBuilder) {
             .items([
               singleton(S, "siteSettings", "サイト設定", CogIcon),
               singleton(S, "navigation", "ナビゲーション", MenuIcon),
+              singleton(S, "homepageFeatured", "ホームページ注目カテゴリー", StarIcon),
               singleton(S, "sidebar", "サイドバー・フッター", ComponentIcon),
             ]),
         ),
