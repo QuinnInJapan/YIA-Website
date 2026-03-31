@@ -250,7 +250,7 @@ export interface Category {
   _id: string;
   label: I18nString;
   description?: I18nString;
-  heroImage?: SanityImage;
+  heroImage: SanityImage;
 }
 
 export interface Navigation {
@@ -259,8 +259,22 @@ export interface Navigation {
     categoryRef: Category;
     items: {
       pageRef: Page;
+      hidden?: boolean;
     }[];
   }[];
+}
+
+export interface HomepageFeaturedSlot {
+  categoryRef: Category;
+  pages: Page[];
+}
+
+export interface HomepageFeatured {
+  _type: "homepageFeatured";
+  slot1: HomepageFeaturedSlot;
+  slot2: HomepageFeaturedSlot;
+  slot3: HomepageFeaturedSlot;
+  slot4: HomepageFeaturedSlot;
 }
 
 export interface Announcement {
@@ -342,5 +356,6 @@ export interface SiteData {
   announcements: Announcement[];
   sidebar: Sidebar;
   homepage: Homepage;
+  homepageFeatured: HomepageFeatured;
   pages: Page[];
 }
