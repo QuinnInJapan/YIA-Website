@@ -75,6 +75,45 @@ const emptySiteData: SiteData = {
     announcementRefs: [],
   },
   pages: [],
+  homepageFeatured: {
+    _type: "homepageFeatured" as const,
+    slot1: {
+      categoryRef: {
+        _type: "category" as const,
+        _id: "",
+        label: [],
+        heroImage: { asset: { _ref: "" } },
+      },
+      pages: [],
+    },
+    slot2: {
+      categoryRef: {
+        _type: "category" as const,
+        _id: "",
+        label: [],
+        heroImage: { asset: { _ref: "" } },
+      },
+      pages: [],
+    },
+    slot3: {
+      categoryRef: {
+        _type: "category" as const,
+        _id: "",
+        label: [],
+        heroImage: { asset: { _ref: "" } },
+      },
+      pages: [],
+    },
+    slot4: {
+      categoryRef: {
+        _type: "category" as const,
+        _id: "",
+        label: [],
+        heroImage: { asset: { _ref: "" } },
+      },
+      pages: [],
+    },
+  },
 };
 
 /**
@@ -100,6 +139,7 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
     navigation: raw.navigation || emptySiteData.navigation,
     sidebar: raw.sidebar || emptySiteData.sidebar,
     homepage: raw.homepage || emptySiteData.homepage,
+    homepageFeatured: raw.homepageFeatured || emptySiteData.homepageFeatured,
   } as SiteData;
 });
 
@@ -148,20 +188,59 @@ export const getEnrichedNavigation = cache(async (): Promise<EnrichedNavigation>
       label: cat?.label ?? [],
       description: cat?.description,
       heroImage: cat?.heroImage,
-      items: (navCat.items ?? []).map((item) => {
-        const pg = item.pageRef;
-        const pgSlug = pg ? stegaClean(pg.slug) : "";
-        return {
-          id: pg ? shortId(pg._id) : "",
-          slug: pgSlug,
-          title: pg?.title ?? [],
-          url: pgSlug ? `/${catId}/${pgSlug}` : "",
-        };
-      }),
+      items: (navCat.items ?? [])
+        .filter((item) => !item.hidden)
+        .map((item) => {
+          const pg = item.pageRef;
+          const pgSlug = pg ? stegaClean(pg.slug) : "";
+          return {
+            id: pg ? shortId(pg._id) : "",
+            slug: pgSlug,
+            title: pg?.title ?? [],
+            url: pgSlug ? `/${catId}/${pgSlug}` : "",
+          };
+        }),
     };
   });
 
   return { categories };
+});
+
+// ── Homepage featured categories ────────────────────────────────
+
+export interface FeaturedCard {
+  categoryId: string;
+  label: I18nString;
+  heroImage: SanityImage;
+  categoryUrl: string;
+  pages: { id: string; title: I18nString; url: string }[];
+}
+
+export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
+  const data = await getSiteData();
+  const featured = data.homepageFeatured;
+  const slots = [featured.slot1, featured.slot2, featured.slot3, featured.slot4];
+
+  return slots
+    .filter((slot) => slot?.categoryRef?._id)
+    .map((slot) => {
+      const cat = slot.categoryRef;
+      const catId = shortId(cat._id);
+      return {
+        categoryId: catId,
+        label: cat.label ?? [],
+        heroImage: cat.heroImage,
+        categoryUrl: `/${catId}`,
+        pages: (slot.pages ?? []).slice(0, 4).map((pg) => {
+          const pgSlug = pg ? stegaClean(pg.slug) : "";
+          return {
+            id: pg ? shortId(pg._id) : "",
+            title: pg?.title ?? [],
+            url: pgSlug ? `/${catId}/${pgSlug}` : "",
+          };
+        }),
+      };
+    });
 });
 
 // ── Category IDs from navigation ─────────────────────────────────
