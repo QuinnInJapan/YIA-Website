@@ -44,7 +44,7 @@ Array order determines display order (Sanity arrays are drag-sortable). No other
 
 **Validation:**
 
-- Warning (not error) if a category has 0 visible items: "このカテゴリーにはページがありません (This category has no pages)"
+- Warning (not error) if a category has 0 visible items: "表示可能なページがないカテゴリーがあります。(A category has no visible pages.)"
 
 ### New `homepageFeatured` schema (`sanity/schemas/homepageFeatured.ts`)
 

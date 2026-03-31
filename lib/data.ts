@@ -221,26 +221,29 @@ export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
   const featured = data.homepageFeatured;
   const slots = [featured.slot1, featured.slot2, featured.slot3, featured.slot4];
 
-  return slots
-    .filter((slot) => slot?.categoryRef?._id)
-    .map((slot) => {
-      const cat = slot.categoryRef;
-      const catId = shortId(cat._id);
-      return {
-        categoryId: catId,
-        label: cat.label ?? [],
-        heroImage: cat.heroImage,
-        categoryUrl: `/${catId}`,
-        pages: (slot.pages ?? []).slice(0, 4).map((pg) => {
-          const pgSlug = pg ? stegaClean(pg.slug) : "";
-          return {
-            id: pg ? shortId(pg._id) : "",
-            title: pg?.title ?? [],
-            url: pgSlug ? `/${catId}/${pgSlug}` : "",
-          };
-        }),
-      };
-    });
+  const valid = slots.filter((slot) => slot?.categoryRef?._id);
+  if (valid.length < 4) {
+    console.warn(`⚠ [data] homepageFeatured has only ${valid.length}/4 valid slots`);
+  }
+
+  return valid.map((slot) => {
+    const cat = slot.categoryRef;
+    const catId = shortId(cat._id);
+    return {
+      categoryId: catId,
+      label: cat.label ?? [],
+      heroImage: cat.heroImage,
+      categoryUrl: `/${catId}`,
+      pages: (slot.pages ?? []).slice(0, 4).map((pg) => {
+        const pgSlug = pg ? stegaClean(pg.slug) : "";
+        return {
+          id: pg ? shortId(pg._id) : "",
+          title: pg?.title ?? [],
+          url: pgSlug ? `/${catId}/${pgSlug}` : "",
+        };
+      }),
+    };
+  });
 });
 
 // ── Category IDs from navigation ─────────────────────────────────
