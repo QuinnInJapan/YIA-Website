@@ -57,10 +57,13 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   warnings: {
     _type: "warnings",
     items: [
-      i18n(
-        "参加には事前申し込みが必要です。定員になり次第締め切ります。",
-        "Pre-registration is required. Registration closes when capacity is reached.",
-      ),
+      {
+        _key: "sample0",
+        value: i18n(
+          "参加には事前申し込みが必要です。定員になり次第締め切ります。",
+          "Pre-registration is required. Registration closes when capacity is reached.",
+        ),
+      },
     ],
   },
 
