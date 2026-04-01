@@ -21,6 +21,7 @@ import { CategoryManagement } from "./unified-pages/CategoryManagement";
 import { PageCreationForm } from "./unified-pages/PageCreationForm";
 import { CategoryCreationForm } from "./unified-pages/CategoryCreationForm";
 import { SystemPageNotice } from "./unified-pages/SystemPageNotice";
+import { CategoryPreview } from "./unified-pages/CategoryPreview";
 import { useNavData } from "./unified-pages/useNavData";
 import { shortId } from "./unified-pages/types";
 import type { MiddlePanelState } from "./unified-pages/types";
@@ -283,6 +284,17 @@ export function UnifiedPagesTool() {
           </RightPanel>
         );
       }
+      // Show category page list preview when a category is selected
+      if (middlePanel?.type === "category") {
+        const navCat = navData.categories.find((c) => c._key === middlePanel.key);
+        if (navCat) {
+          return (
+            <RightPanel>
+              <CategoryPreview navCat={navCat} pagesMap={navData.pagesMap} />
+            </RightPanel>
+          );
+        }
+      }
       return null;
     }
 
@@ -392,7 +404,7 @@ export function UnifiedPagesTool() {
       {/* ── Center: Middle panel ── */}
       <div
         style={{
-          flex: 1,
+          flex: middlePanel?.type === "system" ? "0 0 480px" : 1,
           minWidth: 0,
           overflow: "hidden",
           opacity: isReorderMode ? 0.3 : 1,
