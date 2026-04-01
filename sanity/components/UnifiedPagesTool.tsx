@@ -385,7 +385,7 @@ export function UnifiedPagesTool() {
       {/* ── Left: Category tree ── */}
       <div
         style={{
-          width: 280,
+          width: 340,
           flexShrink: 0,
           borderRight: "1px solid var(--card-border-color)",
           display: "flex",
@@ -425,23 +425,7 @@ export function UnifiedPagesTool() {
       </div>
 
       {/* ── Right: Section tools or preview ── */}
-      {(() => {
-        const panel = renderRightPanel();
-        if (!panel) return null;
-        return (
-          <div
-            style={{
-              opacity: isReorderMode ? 0.3 : 1,
-              pointerEvents: isReorderMode ? "none" : "auto",
-              display: "flex",
-              flexShrink: 0,
-              transition: "opacity 0.15s",
-            }}
-          >
-            {panel}
-          </div>
-        );
-      })()}
+      {renderRightPanel()}
     </div>
   );
 }
