@@ -45,6 +45,8 @@ export function useNavData() {
   draftNavRef.current = draftNav;
   const categoriesRef = useRef(categories);
   categoriesRef.current = categories;
+  const allPagesRef = useRef(allPages);
+  allPagesRef.current = allPages;
 
   // Auto-save timer
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -97,7 +99,11 @@ export function useNavData() {
     setSaveStatus("saving");
     try {
       const baseDoc = draftNavRef.current ?? publishedNavRef.current;
-      if (!baseDoc) return;
+      if (!baseDoc) {
+        setSaving(false);
+        setSaveStatus("saved");
+        return;
+      }
       const draftId = "drafts.navigation";
       const tx = client.transaction();
       tx.createIfNotExists({ ...baseDoc, _id: draftId, _type: "navigation" });
@@ -162,7 +168,7 @@ export function useNavData() {
           tx.patch(pageRef, (p) => p.set({ categoryRef: { _type: "reference", _ref: catRef } }));
         }
       }
-      for (const page of allPages) {
+      for (const page of allPagesRef.current) {
         if (page.categoryRef?._ref && !assignedPageIds.has(page._id)) {
           tx.patch(page._id, (p) => p.unset(["categoryRef"]));
         }
@@ -183,7 +189,7 @@ export function useNavData() {
     } finally {
       setSaving(false);
     }
-  }, [client, allPages, flushSave]);
+  }, [client, flushSave]);
 
   // ── Reorder (publish immediately) ────────────────────
 
@@ -360,8 +366,12 @@ export function useNavData() {
   );
 
   const refreshPages = useCallback(async () => {
-    const pages = await client.fetch<NavPageDoc[]>(PAGES_QUERY);
-    setAllPages(pages);
+    try {
+      const pages = await client.fetch<NavPageDoc[]>(PAGES_QUERY);
+      setAllPages(pages);
+    } catch (err) {
+      console.error("Failed to refresh pages:", err);
+    }
   }, [client]);
 
   return {
