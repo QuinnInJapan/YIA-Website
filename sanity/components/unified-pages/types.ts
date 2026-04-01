@@ -62,6 +62,8 @@ export interface NavPageDoc {
   title?: I18nString[];
   slug?: string;
   categoryRef?: { _ref: string };
+  firstImage?: ImageField;
+  description?: I18nString[];
 }
 
 // ── Middle panel state ──────────────────────────────────────

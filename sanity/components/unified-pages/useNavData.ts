@@ -19,7 +19,7 @@ const NAV_PROJECTION = `{ _id, _type, _rev, categories[]{ _key, _type, categoryR
 const PUB_NAV_QUERY = `*[_id == "navigation"][0]${NAV_PROJECTION}`;
 const DRAFT_NAV_QUERY = `*[_id == "drafts.navigation"][0]${NAV_PROJECTION}`;
 const CAT_DOCS_QUERY = `*[_type == "category" && !(_id in path("drafts.**"))] | order(_createdAt asc) { _id, _type, label, description, heroImage }`;
-const PAGES_QUERY = `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef }`;
+const PAGES_QUERY = `*[_type == "page" && !(_id in path("drafts.**"))] | order(_id asc) { _id, _type, title, slug, categoryRef, "firstImage": images[0].file, description[]{ _key, value } }`;
 
 // ── Hook ─────────────────────────────────────────────────
 
