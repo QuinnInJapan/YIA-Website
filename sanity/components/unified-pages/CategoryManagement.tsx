@@ -59,6 +59,7 @@ export function CategoryManagement({
 
   const displayItems = isReorderMode ? localItems : (navCat.items ?? []);
   const label = categoryDoc?.label?.find((l) => l._key === "ja")?.value ?? "（カテゴリ名なし）";
+  const labelEn = categoryDoc?.label?.find((l) => l._key === "en")?.value;
   const heroImage = categoryDoc?.heroImage;
   const heroUrl = heroImage?.asset?._ref
     ? builder.image(heroImage.asset._ref).width(400).height(225).fit("crop").auto("format").url()
@@ -150,9 +151,66 @@ export function CategoryManagement({
         padding={3}
         style={{ borderBottom: "1px solid var(--card-border-color)", flexShrink: 0 }}
       >
-        <Text size={1} weight="semibold">
-          {label}
-        </Text>
+        {isRenaming ? (
+          <div>
+            <BilingualInput label="カテゴリ名" value={renameLabel} onChange={setRenameLabel} />
+            <Flex gap={2} style={{ marginTop: 8 }}>
+              <Button
+                text={renameSaving ? "保存中…" : "保存"}
+                tone="positive"
+                fontSize={1}
+                padding={2}
+                onClick={handleSaveRename}
+                disabled={renameSaving}
+              />
+              <Button
+                text="キャンセル"
+                mode="ghost"
+                fontSize={1}
+                padding={2}
+                onClick={() => {
+                  setIsRenaming(false);
+                  setRenameLabel(categoryDoc?.label ?? []);
+                }}
+              />
+            </Flex>
+          </div>
+        ) : (
+          <Flex align="flex-start" justify="space-between" gap={2}>
+            <div>
+              <Text size={1} weight="semibold">
+                {label}
+              </Text>
+              {labelEn && (
+                <Text size={0} muted style={{ marginTop: 3, display: "block" }}>
+                  {labelEn}
+                </Text>
+              )}
+            </div>
+            <button
+              type="button"
+              disabled={!categoryDoc}
+              onClick={() => {
+                setRenameLabel(categoryDoc?.label ?? []);
+                setIsRenaming(true);
+              }}
+              title="カテゴリ名を変更"
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: !categoryDoc ? "default" : "pointer",
+                padding: "2px 4px",
+                fontSize: 14,
+                color: "var(--card-muted-fg-color)",
+                flexShrink: 0,
+                lineHeight: 1,
+                opacity: !categoryDoc ? 0.3 : 1,
+              }}
+            >
+              ✎
+            </button>
+          </Flex>
+        )}
       </Box>
 
       <div style={{ flex: 1, overflow: "auto", padding: 16 }}>
@@ -352,7 +410,7 @@ export function CategoryManagement({
           + ページを追加
         </button>
 
-        {/* Rename */}
+        {/* Danger zone */}
         <div
           style={{
             borderTop: "1px solid var(--card-border-color)",
@@ -360,50 +418,17 @@ export function CategoryManagement({
             marginBottom: 16,
           }}
         >
-          {isRenaming ? (
-            <div>
-              <BilingualInput label="カテゴリ名" value={renameLabel} onChange={setRenameLabel} />
-              <Flex gap={2} style={{ marginTop: 8 }}>
-                <Button
-                  text={renameSaving ? "保存中…" : "保存"}
-                  tone="positive"
-                  fontSize={1}
-                  padding={2}
-                  onClick={handleSaveRename}
-                  disabled={renameSaving}
-                />
-                <Button
-                  text="キャンセル"
-                  mode="ghost"
-                  fontSize={1}
-                  padding={2}
-                  onClick={() => {
-                    setIsRenaming(false);
-                    setRenameLabel(categoryDoc?.label ?? []);
-                  }}
-                />
-              </Flex>
-            </div>
-          ) : (
-            <Flex align="center" justify="space-between">
-              <Button
-                text="カテゴリ名を変更"
-                mode="ghost"
-                fontSize={1}
-                padding={2}
-                onClick={() => setIsRenaming(true)}
-              />
-              <Button
-                icon={TrashIcon}
-                text="削除"
-                tone="critical"
-                mode="ghost"
-                fontSize={1}
-                padding={2}
-                onClick={onDeleteCategory}
-              />
-            </Flex>
-          )}
+          <Flex align="center" justify="flex-end">
+            <Button
+              icon={TrashIcon}
+              text="削除"
+              tone="critical"
+              mode="ghost"
+              fontSize={1}
+              padding={2}
+              onClick={onDeleteCategory}
+            />
+          </Flex>
         </div>
       </div>
     </div>
