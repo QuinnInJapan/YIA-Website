@@ -58,7 +58,7 @@ A collapsible tree of all categories and their pages.
 
 **Interactions:**
 
-- **`[ナビの順番を変更]`** — toggles category drag mode. While active, category rows become draggable and the button label changes to `[完了]`. Clicking `[完了]` exits drag mode. Reorder changes save to the navigation document as a draft (published separately).
+- **`[ナビの順番を変更]`** — toggles category drag mode. While active, category rows become draggable and the button label changes to `[完了]`. Clicking `[完了]` exits drag mode and **immediately publishes** the new category order to the navigation document (no separate publish step required).
 - **Click a category header** — opens Category Management in the middle panel. Right panel becomes empty.
 - **Click a page** — opens the page in the middle panel editor. Right panel shows section tools.
 - **表示中/非表示 toggle** — inline on each page row. Immediately saves to navigation draft.
@@ -118,7 +118,7 @@ Opens when a category is selected in the left panel.
 [カテゴリ名を変更]                           [削除]
 ```
 
-- **`[並び替え]`** — toggles page drag mode within this category. While active, the button label changes to `[完了]`. Clicking `[完了]` exits drag mode. Changes save to navigation draft.
+- **`[並び替え]`** — toggles page drag mode within this category. While active, the button label changes to `[完了]`. Clicking `[完了]` exits drag mode and **immediately publishes** the new page order to the navigation document (no separate publish step required).
 - **Show/hide toggles** — mirrored from the left panel. Changes saved to navigation draft.
 - **`[+ ページを追加]`** — swaps this panel to the Page Creation form (see below).
 - **`[カテゴリ名を変更]`** — inline rename. Updates both draft and published category document.
@@ -216,9 +216,20 @@ Triggered by `[+ カテゴリを追加]` at the bottom of the left panel. Right 
 
 ## Navigation Draft/Publish
 
-Navigation structure changes (page order, show/hide, category order, page assignments) are changes to the `navigation` singleton document. They save as drafts and must be published explicitly.
+Not all navigation changes follow the same publish flow:
 
-A persistent publish bar should appear at the bottom of the left panel when there are unpublished navigation changes:
+**Immediately published (no draft step):**
+
+- Category reorder (via `[完了]` in drag mode)
+- Page reorder within a category (via `[完了]` in drag mode)
+
+**Saved as draft, require explicit publish:**
+
+- Show/hide toggle (表示中/非表示) on a page
+- Adding a page to a category (created as 非表示 by default)
+- Removing a page from a category
+
+A persistent publish bar appears at the bottom of the left panel when there are unpublished navigation changes:
 
 ```
 [ ナビの変更があります ]          [公開する]
