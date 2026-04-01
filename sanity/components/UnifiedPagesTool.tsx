@@ -293,11 +293,13 @@ export function UnifiedPagesTool() {
             : undefined;
           return (
             <RightPanel>
-              <CategoryPreview
-                navCat={navCat}
-                categoryDoc={categoryDoc}
-                pagesMap={navData.pagesMap}
-              />
+              <PreviewPanel>
+                <CategoryPreview
+                  navCat={navCat}
+                  categoryDoc={categoryDoc}
+                  pagesMap={navData.pagesMap}
+                />
+              </PreviewPanel>
             </RightPanel>
           );
         }
