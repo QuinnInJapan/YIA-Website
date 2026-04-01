@@ -15,7 +15,6 @@ function PageRow({
   hidden,
   isSelected,
   onSelect,
-  onToggleHidden,
 }: {
   pageId: string;
   title: string;
@@ -23,7 +22,6 @@ function PageRow({
   hidden: boolean;
   isSelected: boolean;
   onSelect: () => void;
-  onToggleHidden: () => void;
 }) {
   return (
     <div
@@ -34,22 +32,17 @@ function PageRow({
         padding: "6px 8px 6px 28px",
         borderRadius: 4,
         background: isSelected ? "var(--card-border-color)" : "transparent",
+        opacity: hidden ? 0.45 : 1,
         cursor: "pointer",
       }}
+      onClick={onSelect}
     >
-      <button
-        type="button"
-        onClick={onSelect}
+      <span
         style={{
           flex: 1,
           minWidth: 0,
-          textAlign: "left",
-          border: "none",
-          background: "transparent",
-          cursor: "pointer",
-          padding: 0,
           fontSize: 13,
-          color: "var(--card-fg-color)",
+          color: hidden ? "var(--card-muted-fg-color)" : "var(--card-fg-color)",
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
@@ -57,7 +50,7 @@ function PageRow({
         }}
       >
         {title}
-      </button>
+      </span>
       {hasDraft && (
         <span
           title="未公開の変更あり"
@@ -71,26 +64,6 @@ function PageRow({
           }}
         />
       )}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleHidden();
-        }}
-        title={hidden ? "非表示（クリックで表示）" : "表示中（クリックで非表示）"}
-        style={{
-          border: "none",
-          background: "transparent",
-          cursor: "pointer",
-          padding: "2px 4px",
-          fontSize: 11,
-          borderRadius: 3,
-          color: hidden ? "var(--card-muted-fg-color)" : "var(--green-600, #16a34a)",
-          flexShrink: 0,
-        }}
-      >
-        {hidden ? "○ 非表示" : "● 表示中"}
-      </button>
     </div>
   );
 }
@@ -105,7 +78,6 @@ function CategoryRow({
   totalCount,
   onSelectCategory,
   onSelectPage,
-  onTogglePageHidden,
   onMoveUp,
   onMoveDown,
 }: {
@@ -118,7 +90,6 @@ function CategoryRow({
   totalCount: number;
   onSelectCategory: (key: string) => void;
   onSelectPage: (id: string) => void;
-  onTogglePageHidden: (categoryKey: string, itemKey: string) => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
 }) {
@@ -233,7 +204,6 @@ function CategoryRow({
                   selectedMiddle?.type === "page" && selectedMiddle.id === item.pageRef._ref
                 }
                 onSelect={() => onSelectPage(item.pageRef._ref)}
-                onToggleHidden={() => onTogglePageHidden(navCat._key, item._key)}
               />
             );
           })}
@@ -255,7 +225,6 @@ export function LeftPanel({
   onSelectPage,
   onSelectSystemPage,
   onCreateCategory,
-  onTogglePageHidden,
   onReorderCategories,
   onReorderModeChange,
 }: {
@@ -270,7 +239,6 @@ export function LeftPanel({
   onSelectPage: (id: string) => void;
   onSelectSystemPage: (name: "blog" | "announcements") => void;
   onCreateCategory: () => void;
-  onTogglePageHidden: (categoryKey: string, itemKey: string) => void;
   onReorderCategories: (newCategories: NavCategoryRaw[]) => void;
   onReorderModeChange?: (active: boolean) => void;
 }) {
@@ -411,7 +379,6 @@ export function LeftPanel({
               totalCount={displayCategories.length}
               onSelectCategory={onSelectCategory}
               onSelectPage={onSelectPage}
-              onTogglePageHidden={onTogglePageHidden}
               onMoveUp={() => handleMoveCategory(idx, "up")}
               onMoveDown={() => handleMoveCategory(idx, "down")}
             />

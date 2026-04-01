@@ -384,7 +384,6 @@ export function UnifiedPagesTool() {
           onSelectPage={handleSelectPage}
           onSelectSystemPage={handleSelectSystemPage}
           onCreateCategory={handleCreateCategory}
-          onTogglePageHidden={navData.togglePageHidden}
           onReorderCategories={navData.publishCategoryReorder}
           onReorderModeChange={setIsReorderMode}
         />
