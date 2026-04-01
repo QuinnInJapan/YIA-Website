@@ -23,9 +23,15 @@ From the user's perspective:
 ## Layout: 3 Panels
 
 ```
-[ Left Panel ]  [ Middle Panel ]  [ Right Panel ]
-  Tree nav        Page editor      Contextual
+[ Left Panel ]  [ Middle Panel ]       [ Right Panel ]
+  Tree nav        Page editor            Section tools
+                  or Category mgmt       (page selected only)
 ```
+
+The middle panel is always the primary work area and is never empty when something is selected:
+
+- **Category selected** → middle panel shows category management
+- **Page selected** → middle panel shows the page editor
 
 ---
 
@@ -53,7 +59,7 @@ A collapsible tree of all categories and their pages.
 **Interactions:**
 
 - **`[ナビの順番を変更]`** — toggles category drag mode. While active, category rows become draggable and the button label changes to `[完了]`. Clicking `[完了]` exits drag mode. Reorder changes save to the navigation document as a draft (published separately).
-- **Click a category header** — opens Category Workspace in the right panel. Middle panel shows empty state (deselects any active page).
+- **Click a category header** — opens Category Management in the middle panel. Right panel becomes empty.
 - **Click a page** — opens the page in the middle panel editor. Right panel shows section tools.
 - **表示中/非表示 toggle** — inline on each page row. Immediately saves to navigation draft.
 - **Draft indicator dot** — shown on page rows that have unpublished content changes.
@@ -92,11 +98,9 @@ Opens when a page is selected in the left panel. Largely unchanged from the curr
 
 ---
 
-## Right Panel — Contextual Workspace
+## Middle Panel — Category Management
 
-The right panel responds to what is selected in the left panel.
-
-### When a category is selected — Category Workspace
+Opens when a category is selected in the left panel.
 
 ```
 ── サービス ──────────────────────────────────────
@@ -116,15 +120,25 @@ The right panel responds to what is selected in the left panel.
 
 - **`[並び替え]`** — toggles page drag mode within this category. While active, the button label changes to `[完了]`. Clicking `[完了]` exits drag mode. Changes save to navigation draft.
 - **Show/hide toggles** — mirrored from the left panel. Changes saved to navigation draft.
-- **`[+ ページを追加]`** — swaps right panel to the Page Creation form (see below).
+- **`[+ ページを追加]`** — swaps this panel to the Page Creation form (see below).
 - **`[カテゴリ名を変更]`** — inline rename. Updates both draft and published category document.
 - **`[削除]`** — checks for references (homepageFeatured, etc.) before allowing deletion. Flushes pending saves before deleting the category document and removing from navigation.
 
-### When a page is selected — Section Tools
+When a category is selected, the right panel is empty.
 
-Same contextual tools as the current ページ管理 right panel: image picker, file picker, gallery editor, section picker, document detail panel, live preview.
+---
 
-### When a system page is clicked — Read-only Notice
+## Right Panel — Section Tools
+
+Active only when a page is selected. Same contextual tools as the current ページ管理 right panel: image picker, file picker, gallery editor, section picker, document detail panel, live preview.
+
+When nothing is selected, the right panel is empty.
+
+---
+
+## Middle Panel — System Page Notice
+
+When a system page (ブログ, お知らせ) is clicked in the left panel, the middle panel shows:
 
 ```
 ── ブログ ────────────────────────────────────────
@@ -137,15 +151,17 @@ Same contextual tools as the current ページ管理 right panel: image picker, 
 
 Links directly to the relevant studio tool. Same pattern for お知らせ.
 
-### When nothing is selected — empty state
+---
 
-Prompt: "左のパネルからページまたはカテゴリを選択してください。"
+## Middle Panel — Empty State
+
+When nothing is selected: "左のパネルからページまたはカテゴリを選択してください。"
 
 ---
 
 ## Page Creation Flow
 
-Triggered by `[+ ページを追加]` in the Category Workspace. The right panel swaps to:
+Triggered by `[+ ページを追加]` in the Category Management panel. The middle panel swaps to:
 
 ```
 ── 新しいページを作成 ────────────────────────────
@@ -244,10 +260,10 @@ The existing schemas (`page`, `category`, `navigation`) are unchanged. The `slug
 - `sanity/components/unified-pages/LeftPanel.tsx` — category tree
 - `sanity/components/unified-pages/CategoryTree.tsx` — tree rendering
 - `sanity/components/unified-pages/PageRow.tsx` — page row with draft indicator + show/hide
-- `sanity/components/unified-pages/CategoryWorkspace.tsx` — right panel: category selected
-- `sanity/components/unified-pages/PageCreationForm.tsx` — right panel: create page
-- `sanity/components/unified-pages/CategoryCreationForm.tsx` — right panel: create category
-- `sanity/components/unified-pages/SystemPageNotice.tsx` — right panel: system page clicked
+- `sanity/components/unified-pages/CategoryManagement.tsx` — middle panel: category selected
+- `sanity/components/unified-pages/PageCreationForm.tsx` — middle panel: create page
+- `sanity/components/unified-pages/CategoryCreationForm.tsx` — middle panel: create category (right panel of left panel)
+- `sanity/components/unified-pages/SystemPageNotice.tsx` — middle panel: system page clicked
 - `sanity/components/unified-pages/NavPublishBar.tsx` — pending nav changes banner
 - `sanity/components/unified-pages/PageEditor.tsx` — middle panel (refactored from existing)
 - `sanity/components/unified-pages/types.ts` — shared types
