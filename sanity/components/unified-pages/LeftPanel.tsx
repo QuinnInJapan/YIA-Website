@@ -4,7 +4,7 @@
 import { useCallback, useRef, useState } from "react";
 import { Flex, Stack, Text } from "@sanity/ui";
 import { LoadingDots } from "../shared/ui";
-import { SYSTEM_PAGES, shortId } from "./types";
+import { SYSTEM_PAGES } from "./types";
 import type { NavCategoryRaw, NavPageDoc, CategoryDoc, MiddlePanelState } from "./types";
 import type { NavSaveStatus } from "./useNavData";
 
@@ -14,26 +14,16 @@ function PageRow({
   hasDraft,
   hidden,
   isSelected,
-  isDragging,
-  draggable,
   onSelect,
   onToggleHidden,
-  onDragStart,
-  onDragOver,
-  onDragEnd,
 }: {
   pageId: string;
   title: string;
   hasDraft: boolean;
   hidden: boolean;
   isSelected: boolean;
-  isDragging?: boolean;
-  draggable?: boolean;
   onSelect: () => void;
   onToggleHidden: () => void;
-  onDragStart?: () => void;
-  onDragOver?: (e: React.DragEvent) => void;
-  onDragEnd?: () => void;
 }) {
   return (
     <div
@@ -44,13 +34,8 @@ function PageRow({
         padding: "6px 8px 6px 28px",
         borderRadius: 4,
         background: isSelected ? "var(--card-border-color)" : "transparent",
-        opacity: isDragging ? 0.4 : 1,
-        cursor: draggable ? "grab" : "pointer",
+        cursor: "pointer",
       }}
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDragEnd={onDragEnd}
     >
       <button
         type="button"
@@ -116,78 +101,133 @@ function CategoryRow({
   pagesMap,
   selectedMiddle,
   isReorderMode,
-  isDragging,
+  idx,
+  totalCount,
   onSelectCategory,
   onSelectPage,
   onTogglePageHidden,
-  onDragStart,
-  onDragOver,
-  onDragEnd,
+  onMoveUp,
+  onMoveDown,
 }: {
   navCat: NavCategoryRaw;
   categoryDoc: CategoryDoc | undefined;
   pagesMap: Map<string, NavPageDoc>;
   selectedMiddle: MiddlePanelState;
   isReorderMode: boolean;
-  isDragging: boolean;
+  idx: number;
+  totalCount: number;
   onSelectCategory: (key: string) => void;
   onSelectPage: (id: string) => void;
   onTogglePageHidden: (categoryKey: string, itemKey: string) => void;
-  onDragStart: () => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragEnd: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
 }) {
   const [expanded, setExpanded] = useState(true);
   const label = categoryDoc?.label?.find((l) => l._key === "ja")?.value ?? "（カテゴリ名なし）";
   const isCategorySelected =
     selectedMiddle?.type === "category" && selectedMiddle.key === navCat._key;
+  const showItems = !isReorderMode && expanded;
 
   return (
-    <div
-      style={{ opacity: isDragging ? 0.4 : 1 }}
-      draggable={isReorderMode}
-      onDragStart={isReorderMode ? onDragStart : undefined}
-      onDragOver={isReorderMode ? onDragOver : undefined}
-      onDragEnd={isReorderMode ? onDragEnd : undefined}
-    >
-      <button
-        type="button"
-        onClick={() => {
-          if (!isReorderMode) onSelectCategory(navCat._key);
-          setExpanded((v) => !v);
-        }}
+    <div>
+      <div
         style={{
           display: "flex",
           alignItems: "center",
-          width: "100%",
-          textAlign: "left",
+          gap: 4,
           padding: "8px 8px",
-          border: "none",
           borderRadius: 4,
           background: isCategorySelected ? "var(--card-border-color)" : "transparent",
-          cursor: isReorderMode ? "grab" : "pointer",
-          fontSize: 12,
-          fontWeight: 600,
-          color: "var(--card-fg-color)",
-          gap: 4,
         }}
       >
-        <span style={{ fontSize: 10, opacity: 0.5 }}>{expanded ? "▼" : "▶"}</span>
-        {label}
-      </button>
-      {expanded && (
+        {!isReorderMode && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              fontSize: 10,
+              opacity: 0.5,
+              padding: 0,
+              color: "var(--card-fg-color)",
+              flexShrink: 0,
+            }}
+          >
+            {expanded ? "▼" : "▶"}
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            if (!isReorderMode) onSelectCategory(navCat._key);
+          }}
+          style={{
+            flex: 1,
+            textAlign: "left",
+            border: "none",
+            background: "transparent",
+            cursor: isReorderMode ? "default" : "pointer",
+            fontSize: 12,
+            fontWeight: 600,
+            color: "var(--card-fg-color)",
+            padding: 0,
+          }}
+        >
+          {label}
+        </button>
+        {isReorderMode && (
+          <div style={{ display: "flex", gap: 2, flexShrink: 0 }}>
+            <button
+              type="button"
+              onClick={onMoveUp}
+              disabled={idx === 0}
+              style={{
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 3,
+                background: "transparent",
+                cursor: idx === 0 ? "default" : "pointer",
+                fontSize: 11,
+                padding: "2px 6px",
+                color: "var(--card-fg-color)",
+                opacity: idx === 0 ? 0.25 : 1,
+              }}
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              onClick={onMoveDown}
+              disabled={idx === totalCount - 1}
+              style={{
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 3,
+                background: "transparent",
+                cursor: idx === totalCount - 1 ? "default" : "pointer",
+                fontSize: 11,
+                padding: "2px 6px",
+                color: "var(--card-fg-color)",
+                opacity: idx === totalCount - 1 ? 0.25 : 1,
+              }}
+            >
+              ↓
+            </button>
+          </div>
+        )}
+      </div>
+      {showItems && (
         <div>
           {(navCat.items ?? []).map((item) => {
             const page = pagesMap.get(item.pageRef._ref);
             if (!page) return null;
             const titleJa = page.title?.find((t) => t._key === "ja")?.value ?? "（タイトルなし）";
-            const hasDraft = false; // will be set by subscription in parent
             return (
               <PageRow
                 key={item._key}
                 pageId={item.pageRef._ref}
                 title={titleJa}
-                hasDraft={hasDraft}
+                hasDraft={false}
                 hidden={!!item.hidden}
                 isSelected={
                   selectedMiddle?.type === "page" && selectedMiddle.id === item.pageRef._ref
@@ -217,6 +257,7 @@ export function LeftPanel({
   onCreateCategory,
   onTogglePageHidden,
   onReorderCategories,
+  onReorderModeChange,
 }: {
   loading: boolean;
   saveStatus: NavSaveStatus;
@@ -231,11 +272,11 @@ export function LeftPanel({
   onCreateCategory: () => void;
   onTogglePageHidden: (categoryKey: string, itemKey: string) => void;
   onReorderCategories: (newCategories: NavCategoryRaw[]) => void;
+  onReorderModeChange?: (active: boolean) => void;
 }) {
   const [isReorderMode, setIsReorderMode] = useState(false);
   const [localCategories, setLocalCategories] = useState<NavCategoryRaw[]>(categories);
-  const dragIdxRef = useRef<number | null>(null);
-  const [draggingKey, setDraggingKey] = useState<string | null>(null);
+  const preEditSnapshotRef = useRef<NavCategoryRaw[]>([]);
 
   // Keep localCategories in sync when categories prop changes (and not in reorder mode)
   const prevCategoriesRef = useRef(categories);
@@ -246,34 +287,37 @@ export function LeftPanel({
 
   const displayCategories = isReorderMode ? localCategories : categories;
 
-  const handleDragStart = useCallback((idx: number, key: string) => {
-    dragIdxRef.current = idx;
-    setDraggingKey(key);
-  }, []);
+  const enterReorderMode = useCallback(() => {
+    preEditSnapshotRef.current = [...categories];
+    setLocalCategories([...categories]);
+    setIsReorderMode(true);
+    onReorderModeChange?.(true);
+  }, [categories, onReorderModeChange]);
 
-  const handleDragOver = useCallback(
-    (e: React.DragEvent, idx: number) => {
-      e.preventDefault();
-      const fromIdx = dragIdxRef.current;
-      if (fromIdx === null || fromIdx === idx) return;
-      const next = [...localCategories];
-      const [moved] = next.splice(fromIdx, 1);
-      next.splice(idx, 0, moved);
-      setLocalCategories(next);
-      dragIdxRef.current = idx;
-    },
-    [localCategories],
-  );
-
-  const handleDragEnd = useCallback(() => {
-    dragIdxRef.current = null;
-    setDraggingKey(null);
+  const handleMoveCategory = useCallback((idx: number, direction: "up" | "down") => {
+    setLocalCategories((prev) => {
+      const next = [...prev];
+      const newIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (newIdx < 0 || newIdx >= next.length) return prev;
+      [next[idx], next[newIdx]] = [next[newIdx], next[idx]];
+      return next;
+    });
   }, []);
 
   const handleCompleteReorder = useCallback(() => {
+    setLocalCategories((current) => {
+      onReorderCategories(current);
+      return current;
+    });
     setIsReorderMode(false);
-    onReorderCategories(localCategories);
-  }, [localCategories, onReorderCategories]);
+    onReorderModeChange?.(false);
+  }, [onReorderCategories, onReorderModeChange]);
+
+  const handleCancelReorder = useCallback(() => {
+    setLocalCategories(preEditSnapshotRef.current);
+    setIsReorderMode(false);
+    onReorderModeChange?.(false);
+  }, [onReorderModeChange]);
 
   if (loading) {
     return (
@@ -297,21 +341,58 @@ export function LeftPanel({
           <Text size={1} weight="semibold">
             ページ管理
           </Text>
-          <button
-            type="button"
-            onClick={isReorderMode ? handleCompleteReorder : () => setIsReorderMode(true)}
-            style={{
-              fontSize: 11,
-              padding: "4px 8px",
-              border: "1px solid var(--card-border-color)",
-              borderRadius: 4,
-              background: isReorderMode ? "var(--blue-500, #2563eb)" : "transparent",
-              color: isReorderMode ? "#fff" : "var(--card-muted-fg-color)",
-              cursor: "pointer",
-            }}
-          >
-            {isReorderMode ? "完了" : "ナビの順番を変更"}
-          </button>
+          {isReorderMode ? (
+            <Flex align="center" gap={2}>
+              <button
+                type="button"
+                onClick={handleCompleteReorder}
+                disabled={saveStatus !== "saved"}
+                style={{
+                  fontSize: 11,
+                  padding: "4px 8px",
+                  border: "1px solid var(--card-border-color)",
+                  borderRadius: 4,
+                  background: saveStatus === "saved" ? "var(--blue-500, #2563eb)" : "transparent",
+                  color: saveStatus === "saved" ? "#fff" : "var(--card-muted-fg-color)",
+                  cursor: saveStatus === "saved" ? "pointer" : "not-allowed",
+                  opacity: saveStatus === "saved" ? 1 : 0.5,
+                }}
+              >
+                完了
+              </button>
+              <button
+                type="button"
+                onClick={handleCancelReorder}
+                style={{
+                  fontSize: 11,
+                  padding: "4px 8px",
+                  border: "1px solid var(--card-border-color)",
+                  borderRadius: 4,
+                  background: "transparent",
+                  color: "var(--card-muted-fg-color)",
+                  cursor: "pointer",
+                }}
+              >
+                キャンセル
+              </button>
+            </Flex>
+          ) : (
+            <button
+              type="button"
+              onClick={enterReorderMode}
+              style={{
+                fontSize: 11,
+                padding: "4px 8px",
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 4,
+                background: "transparent",
+                color: "var(--card-muted-fg-color)",
+                cursor: "pointer",
+              }}
+            >
+              ナビの順番を変更
+            </button>
+          )}
         </Flex>
       </div>
 
@@ -326,20 +407,26 @@ export function LeftPanel({
               pagesMap={pagesMap}
               selectedMiddle={selectedMiddle}
               isReorderMode={isReorderMode}
-              isDragging={draggingKey === navCat._key}
+              idx={idx}
+              totalCount={displayCategories.length}
               onSelectCategory={onSelectCategory}
               onSelectPage={onSelectPage}
               onTogglePageHidden={onTogglePageHidden}
-              onDragStart={() => handleDragStart(idx, navCat._key)}
-              onDragOver={(e) => handleDragOver(e, idx)}
-              onDragEnd={handleDragEnd}
+              onMoveUp={() => handleMoveCategory(idx, "up")}
+              onMoveDown={() => handleMoveCategory(idx, "down")}
             />
           ))}
         </Stack>
 
         {/* System pages */}
         <div
-          style={{ marginTop: 16, paddingTop: 12, borderTop: "1px solid var(--card-border-color)" }}
+          style={{
+            marginTop: 16,
+            paddingTop: 12,
+            borderTop: "1px solid var(--card-border-color)",
+            opacity: isReorderMode ? 0.3 : 1,
+            pointerEvents: isReorderMode ? "none" : "auto",
+          }}
         >
           {SYSTEM_PAGES.map((sp) => (
             <button
@@ -369,7 +456,13 @@ export function LeftPanel({
         </div>
 
         {/* Add category */}
-        <div style={{ padding: "12px 0 4px" }}>
+        <div
+          style={{
+            padding: "12px 0 4px",
+            opacity: isReorderMode ? 0.3 : 1,
+            pointerEvents: isReorderMode ? "none" : "auto",
+          }}
+        >
           <button
             type="button"
             onClick={onCreateCategory}

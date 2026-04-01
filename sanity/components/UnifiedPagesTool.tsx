@@ -57,6 +57,7 @@ export function UnifiedPagesTool() {
   }, [client]);
 
   const navData = useNavData();
+  const [isReorderMode, setIsReorderMode] = useState(false);
 
   // Right panel state (section tools)
   const [rightPanel, setRightPanel] = useState<
@@ -385,14 +386,42 @@ export function UnifiedPagesTool() {
           onCreateCategory={handleCreateCategory}
           onTogglePageHidden={navData.togglePageHidden}
           onReorderCategories={navData.publishCategoryReorder}
+          onReorderModeChange={setIsReorderMode}
         />
       </div>
 
       {/* ── Center: Middle panel ── */}
-      <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>{renderMiddlePanel()}</div>
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          overflow: "hidden",
+          opacity: isReorderMode ? 0.3 : 1,
+          pointerEvents: isReorderMode ? "none" : "auto",
+          transition: "opacity 0.15s",
+        }}
+      >
+        {renderMiddlePanel()}
+      </div>
 
       {/* ── Right: Section tools or preview ── */}
-      {renderRightPanel()}
+      {(() => {
+        const panel = renderRightPanel();
+        if (!panel) return null;
+        return (
+          <div
+            style={{
+              opacity: isReorderMode ? 0.3 : 1,
+              pointerEvents: isReorderMode ? "none" : "auto",
+              display: "flex",
+              flexShrink: 0,
+              transition: "opacity 0.15s",
+            }}
+          >
+            {panel}
+          </div>
+        );
+      })()}
     </div>
   );
 }
