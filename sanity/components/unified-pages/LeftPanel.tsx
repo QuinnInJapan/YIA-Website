@@ -273,13 +273,10 @@ export function LeftPanel({
   }, []);
 
   const handleCompleteReorder = useCallback(() => {
-    setLocalCategories((current) => {
-      onReorderCategories(current);
-      return current;
-    });
+    onReorderCategories(localCategories);
     setIsReorderMode(false);
     onReorderModeChange?.(false);
-  }, [onReorderCategories, onReorderModeChange]);
+  }, [localCategories, onReorderCategories, onReorderModeChange]);
 
   const handleCancelReorder = useCallback(() => {
     setLocalCategories(preEditSnapshotRef.current);

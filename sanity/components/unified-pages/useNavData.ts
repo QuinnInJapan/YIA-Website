@@ -155,7 +155,6 @@ export function useNavData() {
       await tx.commit();
       const refreshed = await client.fetch<NavigationDoc | null>(DRAFT_NAV_QUERY);
       setDraftNav(refreshed);
-      setSaveStatus("saved");
       // Auto-publish: draft is an invisible implementation detail
       if (refreshed) await publishNavDirectly(refreshed);
     } catch (err) {
