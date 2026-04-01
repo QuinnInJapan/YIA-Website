@@ -87,7 +87,7 @@ export interface BoardMember {
 
 export interface WarningsSection {
   _type: "warnings";
-  items: I18nString[];
+  items: { _key: string; value: I18nString }[];
 }
 
 export interface ContentSection {

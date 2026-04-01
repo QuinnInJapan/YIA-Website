@@ -14,6 +14,7 @@ import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { SectionBar } from "../pages/SectionBar";
 import { SectionEditor } from "../pages/SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "../pages/types";
+import { sectionDefaults } from "../pages/sectionDefaults";
 
 // ── Constants ────────────────────────────────────────────
 
@@ -57,6 +58,7 @@ export function PageEditor({
   onDraftChange,
   onOpenFilePicker,
   onOpenDocumentDetail,
+  onCloseRightPanel,
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -74,6 +76,7 @@ export function PageEditor({
     onUpdate: (doc: SharedDocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
+  onCloseRightPanel?: () => void;
   onSave?: () => void;
   onMergedChange?: (doc: PageDoc | null) => void;
   onDraftChange?: () => void;
@@ -207,6 +210,7 @@ export function PageEditor({
         { _key: "ja", value: "" },
         { _key: "en", value: "" },
       ],
+      ...(sectionDefaults[type] ?? {}),
     };
     sections.push(newSection);
     updateField("sections", sections);
@@ -574,6 +578,7 @@ export function PageEditor({
                       if (activeGallerySectionKey === section._key) {
                         onDeselectGallery?.();
                       } else {
+                        setExpandedSection(null);
                         onOpenGalleryEditor(
                           section._key,
                           (section.images as GalleryImageItem[]) ?? [],
@@ -581,6 +586,7 @@ export function PageEditor({
                         );
                       }
                     } else {
+                      onCloseRightPanel?.();
                       setExpandedSection(expandedSection === section._key ? null : section._key);
                     }
                   }

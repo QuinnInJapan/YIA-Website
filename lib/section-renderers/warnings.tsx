@@ -8,7 +8,7 @@ export const warnings: SectionHandler<WarningsSection> = (s, ctx) => {
     return;
   }
   for (const w of s.items) {
-    ctx.push(<Callout field={w} variant="warning" />);
+    ctx.push(<Callout field={w.value} variant="warning" />);
   }
   ctx.flush();
 };

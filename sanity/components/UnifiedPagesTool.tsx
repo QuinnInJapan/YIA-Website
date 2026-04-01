@@ -207,6 +207,7 @@ export function UnifiedPagesTool() {
               rightPanel?.type === "galleryEditor" ? rightPanel.sectionKey : null
             }
             onDeselectGallery={() => setRightPanel(null)}
+            onCloseRightPanel={() => setRightPanel(null)}
             onMergedChange={setMergedDoc}
             onDraftChange={() => sidebarRefreshRef.current?.()}
           />
