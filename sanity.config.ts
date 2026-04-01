@@ -5,8 +5,7 @@ import { mediaPlugin } from "./sanity/components/mediaPlugin";
 import { blogPostsPlugin } from "./sanity/components/blogPostsPlugin";
 import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
 import { homepagePlugin } from "./sanity/components/homepagePlugin";
-import { navigationPlugin } from "./sanity/components/navigationPlugin";
-import { pagesPlugin } from "./sanity/components/pagesPlugin";
+import { unifiedPagesPlugin } from "./sanity/components/unifiedPagesPlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 
@@ -18,9 +17,8 @@ export default defineConfig({
   basePath: "/studio",
   plugins: [
     homepagePlugin(),
-    navigationPlugin(),
+    unifiedPagesPlugin(),
     announcementsPlugin(),
-    pagesPlugin(),
     blogPostsPlugin(),
     mediaPlugin(),
     jaJPLocale(),
@@ -157,6 +155,7 @@ export default defineConfig({
             "homepageFeatured",
             "sidebar",
             "category",
+            "page",
           ].includes(item.templateId),
       ),
     actions: (prev, context) => {
