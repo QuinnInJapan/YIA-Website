@@ -91,6 +91,51 @@ export function useNavData() {
 
   // ── Save to draft (debounced) ─────────────────────────
 
+  const publishNavDirectly = useCallback(
+    async (draft: NavigationDoc) => {
+      setSaving(true);
+      setSaveStatus("saving");
+      try {
+        const { _rev, ...rest } = draft;
+        const tx = client.transaction();
+        tx.createOrReplace({ ...rest, _id: "navigation", _type: "navigation" });
+        tx.delete("drafts.navigation");
+        const assignedPageIds = new Set<string>();
+        for (const navCat of draft.categories ?? []) {
+          const catRef = navCat.categoryRef?._ref;
+          if (!catRef) continue;
+          for (const item of navCat.items ?? []) {
+            const pageRef = item.pageRef?._ref;
+            if (!pageRef) continue;
+            assignedPageIds.add(pageRef);
+            tx.patch(pageRef, (p) => p.set({ categoryRef: { _type: "reference", _ref: catRef } }));
+          }
+        }
+        for (const page of allPagesRef.current) {
+          if (page.categoryRef?._ref && !assignedPageIds.has(page._id)) {
+            tx.patch(page._id, (p) => p.unset(["categoryRef"]));
+          }
+        }
+        await tx.commit();
+        const [pubNav, refreshedPages] = await Promise.all([
+          client.fetch<NavigationDoc | null>(PUB_NAV_QUERY),
+          client.fetch<NavPageDoc[]>(PAGES_QUERY),
+        ]);
+        setPublishedNav(pubNav);
+        setDraftNav(null);
+        setCategories(pubNav?.categories ?? []);
+        setAllPages(refreshedPages);
+        setSaveStatus("saved");
+      } catch (err) {
+        console.error("Publish failed:", err);
+        setSaveStatus("error");
+      } finally {
+        setSaving(false);
+      }
+    },
+    [client],
+  );
+
   const saveToSanity = useCallback(async () => {
     const pending = pendingCategoriesRef.current;
     if (!pending) return;
@@ -100,7 +145,6 @@ export function useNavData() {
     try {
       const baseDoc = draftNavRef.current ?? publishedNavRef.current;
       if (!baseDoc) {
-        setSaving(false);
         setSaveStatus("saved");
         return;
       }
@@ -112,13 +156,15 @@ export function useNavData() {
       const refreshed = await client.fetch<NavigationDoc | null>(DRAFT_NAV_QUERY);
       setDraftNav(refreshed);
       setSaveStatus("saved");
+      // Auto-publish: draft is an invisible implementation detail
+      if (refreshed) await publishNavDirectly(refreshed);
     } catch (err) {
       console.error("Save failed:", err);
       setSaveStatus("error");
     } finally {
       setSaving(false);
     }
-  }, [client]);
+  }, [client, publishNavDirectly]);
 
   const saveToDraft = useCallback(
     (next: NavCategoryRaw[]) => {
@@ -143,53 +189,14 @@ export function useNavData() {
 
   const publishNav = useCallback(async () => {
     await flushSave();
-    setSaving(true);
-    setSaveStatus("saving");
-    try {
-      const draft = draftNavRef.current;
-      if (!draft) {
-        setSaveStatus("saved");
-        setSaving(false);
-        return;
-      }
-      const { _rev, ...rest } = draft;
-      const tx = client.transaction();
-      tx.createOrReplace({ ...rest, _id: "navigation", _type: "navigation" });
-      tx.delete("drafts.navigation");
-      // Sync categoryRef on pages
-      const assignedPageIds = new Set<string>();
-      for (const navCat of draft.categories ?? []) {
-        const catRef = navCat.categoryRef?._ref;
-        if (!catRef) continue;
-        for (const item of navCat.items ?? []) {
-          const pageRef = item.pageRef?._ref;
-          if (!pageRef) continue;
-          assignedPageIds.add(pageRef);
-          tx.patch(pageRef, (p) => p.set({ categoryRef: { _type: "reference", _ref: catRef } }));
-        }
-      }
-      for (const page of allPagesRef.current) {
-        if (page.categoryRef?._ref && !assignedPageIds.has(page._id)) {
-          tx.patch(page._id, (p) => p.unset(["categoryRef"]));
-        }
-      }
-      await tx.commit();
-      const [pubNav, refreshedPages] = await Promise.all([
-        client.fetch<NavigationDoc | null>(PUB_NAV_QUERY),
-        client.fetch<NavPageDoc[]>(PAGES_QUERY),
-      ]);
-      setPublishedNav(pubNav);
-      setDraftNav(null);
-      setCategories(pubNav?.categories ?? []);
-      setAllPages(refreshedPages);
+    const draft = draftNavRef.current;
+    if (!draft) {
       setSaveStatus("saved");
-    } catch (err) {
-      console.error("Publish failed:", err);
-      setSaveStatus("error");
-    } finally {
       setSaving(false);
+      return;
     }
-  }, [client, flushSave]);
+    await publishNavDirectly(draft);
+  }, [flushSave, publishNavDirectly]);
 
   // ── Reorder (publish immediately) ────────────────────
 
