@@ -288,9 +288,16 @@ export function UnifiedPagesTool() {
       if (middlePanel?.type === "category") {
         const navCat = navData.categories.find((c) => c._key === middlePanel.key);
         if (navCat) {
+          const categoryDoc = navCat.categoryRef?._ref
+            ? navData.categoryDocs.get(navCat.categoryRef._ref)
+            : undefined;
           return (
             <RightPanel>
-              <CategoryPreview navCat={navCat} pagesMap={navData.pagesMap} />
+              <CategoryPreview
+                navCat={navCat}
+                categoryDoc={categoryDoc}
+                pagesMap={navData.pagesMap}
+              />
             </RightPanel>
           );
         }
