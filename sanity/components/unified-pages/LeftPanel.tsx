@@ -4,7 +4,6 @@
 import { useCallback, useRef, useState } from "react";
 import { Flex, Stack, Text } from "@sanity/ui";
 import { LoadingDots } from "../shared/ui";
-import { NavPublishBar } from "./NavPublishBar";
 import { SYSTEM_PAGES, shortId } from "./types";
 import type { NavCategoryRaw, NavPageDoc, CategoryDoc, MiddlePanelState } from "./types";
 import type { NavSaveStatus } from "./useNavData";
@@ -206,9 +205,7 @@ function CategoryRow({
 
 export function LeftPanel({
   loading,
-  saving,
   saveStatus,
-  hasDraft,
   categories,
   categoryDocs,
   pagesMap,
@@ -219,13 +216,10 @@ export function LeftPanel({
   onSelectSystemPage,
   onCreateCategory,
   onTogglePageHidden,
-  onPublishNav,
   onReorderCategories,
 }: {
   loading: boolean;
-  saving: boolean;
   saveStatus: NavSaveStatus;
-  hasDraft: boolean;
   categories: NavCategoryRaw[];
   categoryDocs: Map<string, CategoryDoc>;
   pagesMap: Map<string, NavPageDoc>;
@@ -236,7 +230,6 @@ export function LeftPanel({
   onSelectSystemPage: (name: "blog" | "announcements") => void;
   onCreateCategory: () => void;
   onTogglePageHidden: (categoryKey: string, itemKey: string) => void;
-  onPublishNav: () => void;
   onReorderCategories: (newCategories: NavCategoryRaw[]) => void;
 }) {
   const [isReorderMode, setIsReorderMode] = useState(false);
@@ -395,14 +388,6 @@ export function LeftPanel({
           </button>
         </div>
       </div>
-
-      {/* Publish bar */}
-      <NavPublishBar
-        saveStatus={saveStatus}
-        hasDraft={hasDraft}
-        saving={saving}
-        onPublish={onPublishNav}
-      />
     </div>
   );
 }

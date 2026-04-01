@@ -373,9 +373,7 @@ export function UnifiedPagesTool() {
       >
         <LeftPanel
           loading={navData.loading}
-          saving={navData.saving}
           saveStatus={navData.saveStatus}
-          hasDraft={navData.hasDraft}
           categories={navData.categories}
           categoryDocs={navData.categoryDocs}
           pagesMap={navData.pagesMap}
@@ -386,7 +384,6 @@ export function UnifiedPagesTool() {
           onSelectSystemPage={handleSelectSystemPage}
           onCreateCategory={handleCreateCategory}
           onTogglePageHidden={navData.togglePageHidden}
-          onPublishNav={navData.publishNav}
           onReorderCategories={navData.publishCategoryReorder}
         />
       </div>
