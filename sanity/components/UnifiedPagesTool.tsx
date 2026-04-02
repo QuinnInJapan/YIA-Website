@@ -28,6 +28,7 @@ import type { MiddlePanelState } from "./unified-pages/types";
 import type { SectionTypeName } from "./pages/types";
 import type { PageDoc } from "./unified-pages/types";
 import { useClient } from "sanity";
+import { FocusProvider } from "./shared/FocusContext";
 
 // Draft page IDs subscription query
 const DRAFT_PAGE_IDS_QUERY = `*[_id in path("drafts.page-*")]._id`;
@@ -382,51 +383,53 @@ export function UnifiedPagesTool() {
   }
 
   return (
-    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
-      {/* ── Left: Category tree ── */}
-      <div
-        style={{
-          width: 340,
-          flexShrink: 0,
-          borderRight: "1px solid var(--card-border-color)",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
-        <LeftPanel
-          loading={navData.loading}
-          saveStatus={navData.saveStatus}
-          categories={navData.categories}
-          categoryDocs={navData.categoryDocs}
-          pagesMap={navData.pagesMap}
-          draftPageIds={draftPageIds}
-          selectedMiddle={middlePanel}
-          onSelectCategory={handleSelectCategory}
-          onSelectPage={handleSelectPage}
-          onSelectSystemPage={handleSelectSystemPage}
-          onCreateCategory={handleCreateCategory}
-          onReorderCategories={navData.publishCategoryReorder}
-          onReorderModeChange={setIsReorderMode}
-        />
-      </div>
+    <FocusProvider>
+      <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+        {/* ── Left: Category tree ── */}
+        <div
+          style={{
+            width: 340,
+            flexShrink: 0,
+            borderRight: "1px solid var(--card-border-color)",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          <LeftPanel
+            loading={navData.loading}
+            saveStatus={navData.saveStatus}
+            categories={navData.categories}
+            categoryDocs={navData.categoryDocs}
+            pagesMap={navData.pagesMap}
+            draftPageIds={draftPageIds}
+            selectedMiddle={middlePanel}
+            onSelectCategory={handleSelectCategory}
+            onSelectPage={handleSelectPage}
+            onSelectSystemPage={handleSelectSystemPage}
+            onCreateCategory={handleCreateCategory}
+            onReorderCategories={navData.publishCategoryReorder}
+            onReorderModeChange={setIsReorderMode}
+          />
+        </div>
 
-      {/* ── Center: Middle panel ── */}
-      <div
-        style={{
-          flex: middlePanel?.type === "system" ? "0 0 480px" : 1,
-          minWidth: 0,
-          overflow: "hidden",
-          opacity: isReorderMode ? 0.3 : 1,
-          pointerEvents: isReorderMode ? "none" : "auto",
-          transition: "opacity 0.15s",
-        }}
-      >
-        {renderMiddlePanel()}
-      </div>
+        {/* ── Center: Middle panel ── */}
+        <div
+          style={{
+            flex: middlePanel?.type === "system" ? "0 0 480px" : 1,
+            minWidth: 0,
+            overflow: "hidden",
+            opacity: isReorderMode ? 0.3 : 1,
+            pointerEvents: isReorderMode ? "none" : "auto",
+            transition: "opacity 0.15s",
+          }}
+        >
+          {renderMiddlePanel()}
+        </div>
 
-      {/* ── Right: Section tools or preview ── */}
-      {renderRightPanel()}
-    </div>
+        {/* ── Right: Section tools or preview ── */}
+        {renderRightPanel()}
+      </div>
+    </FocusProvider>
   );
 }
