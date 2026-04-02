@@ -28,10 +28,7 @@ export async function fetchSiteData() {
         "sidebar": *[_type == "sidebar"][0]{ ... },
         "homepage": *[_type == "homepage"][0]{ ..., announcementRefs[]-> },
         "homepageFeatured": *[_type == "homepageFeatured"][0]{
-          slot1{ categoryRef->, pages[]-> },
-          slot2{ categoryRef->, pages[]-> },
-          slot3{ categoryRef->, pages[]-> },
-          slot4{ categoryRef->, pages[]-> }
+          categories[]->
         },
         "pages": *[_type == "page"] | order(_id asc)
       }`);

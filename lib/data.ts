@@ -77,42 +77,7 @@ const emptySiteData: SiteData = {
   pages: [],
   homepageFeatured: {
     _type: "homepageFeatured" as const,
-    slot1: {
-      categoryRef: {
-        _type: "category" as const,
-        _id: "",
-        label: [],
-        heroImage: { asset: { _ref: "" } },
-      },
-      pages: [],
-    },
-    slot2: {
-      categoryRef: {
-        _type: "category" as const,
-        _id: "",
-        label: [],
-        heroImage: { asset: { _ref: "" } },
-      },
-      pages: [],
-    },
-    slot3: {
-      categoryRef: {
-        _type: "category" as const,
-        _id: "",
-        label: [],
-        heroImage: { asset: { _ref: "" } },
-      },
-      pages: [],
-    },
-    slot4: {
-      categoryRef: {
-        _type: "category" as const,
-        _id: "",
-        label: [],
-        heroImage: { asset: { _ref: "" } },
-      },
-      pages: [],
-    },
+    categories: [],
   },
 };
 
@@ -218,30 +183,22 @@ export interface FeaturedCard {
 
 export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
   const data = await getSiteData();
-  const featured = data.homepageFeatured;
-  const slots = [featured.slot1, featured.slot2, featured.slot3, featured.slot4];
+  const nav = await getEnrichedNavigation();
+  const categories = data.homepageFeatured.categories ?? [];
 
-  const valid = slots.filter((slot) => slot?.categoryRef?._id);
-  if (valid.length < 4) {
-    console.warn(`⚠ [data] homepageFeatured has only ${valid.length}/4 valid slots`);
-  }
-
-  return valid.map((slot) => {
-    const cat = slot.categoryRef;
+  return categories.map((cat) => {
     const catId = shortId(cat._id);
+    const navCat = nav.categories.find((c) => c.categoryId === catId);
     return {
       categoryId: catId,
       label: cat.label ?? [],
       heroImage: cat.heroImage,
       categoryUrl: `/${catId}`,
-      pages: (slot.pages ?? []).slice(0, 6).map((pg) => {
-        const pgSlug = pg ? stegaClean(pg.slug) : "";
-        return {
-          id: pg ? shortId(pg._id) : "",
-          title: pg?.title ?? [],
-          url: pgSlug ? `/${catId}/${pgSlug}` : "",
-        };
-      }),
+      pages: (navCat?.items ?? []).map((item) => ({
+        id: item.id,
+        title: item.title,
+        url: item.url,
+      })),
     };
   });
 });
