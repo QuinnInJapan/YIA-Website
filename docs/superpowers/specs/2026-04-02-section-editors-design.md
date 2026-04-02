@@ -28,6 +28,16 @@ Four section types currently hit the "未対応" fallback in the custom Studio a
 
 `sisterCity.note` is currently `type: "string"` (single language). This violates the hard requirement. Change to `internationalizedArrayString` and migrate the 1 production instance by wrapping the existing string into `[{_key:"ja", value:"<existing>"}, {_key:"en", value:""}]`.
 
+## Schema Cleanup: Remove `hideTitle`
+
+Remove `hideTitle` from all section schemas, TypeScript types, and renderer guards:
+
+- **Schemas:** remove `hideTitle` field from `contentSection`, `labelTableSection`, `tableSection`, `infoCardsSection`, `imageCardsSection`, `linksSection`, `warningsSection`, `gallerySection` (any schema that has it)
+- **Types:** remove `hideTitle?` from all section interfaces in `lib/types.ts`
+- **Renderers:** change `if (s.title && !s.hideTitle)` → `if (s.title)` in all section renderers
+
+**Pre-implementation check required:** Query production data for any section document with `hideTitle: true` AND a non-empty `title`. Those titles would become visible on the frontend after this change. Confirm with the user before deploying if any are found.
+
 ---
 
 ## Architecture
@@ -64,7 +74,7 @@ fieldNames?: {
 
 ### Title Handling (All Four Types)
 
-No `hideTitle` checkbox in any editor. Each editor shows a `BilingualInput` for title labeled "タイトル（任意）". If the editor leaves it blank, the frontend renderer's existing `if (s.title && !s.hideTitle)` guard means nothing renders. Editors never touch the `hideTitle` field.
+Each editor shows a `BilingualInput` for title labeled "タイトル（任意）". If left blank, nothing renders. The `hideTitle` field is removed entirely (see Schema Cleanup above).
 
 ### Column Types (`table` only)
 
@@ -215,7 +225,6 @@ No drag-to-reorder or up/down buttons anywhere. Editors add/delete to reorganize
 
 ## Out of Scope
 
-- `hideTitle` field — not exposed in any editor; title left blank = no title rendered
 - Column `type` field — not exposed in editor; existing migrated values preserved but untouched
 - Hotspot/crop editing for `imageCards` images
 - `gallery` section editor (already handled via right panel)
