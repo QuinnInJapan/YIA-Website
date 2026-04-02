@@ -200,7 +200,7 @@ export interface DirectoryListSection {
   entries: { nameJa: string; tel: string; url?: string }[];
 }
 
-export type PageSection =
+type PageSectionShape =
   | WarningsSection
   | ContentSection
   | InfoTableSection
@@ -217,6 +217,8 @@ export type PageSection =
   | BoardMembersSection
   | FeeTableSection
   | DirectoryListSection;
+
+export type PageSection = PageSectionShape & { _key?: string };
 
 // ─── Document Types (top-level keys in site-data.json) ─────────────
 
