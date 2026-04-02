@@ -33,6 +33,8 @@ export function StudioRegion<T extends ElementType = "div">({
 
   const ref = useRef<HTMLElement>(null);
 
+  // Runs only on focus enter (false→true). Re-renders while focused don't re-trigger
+  // because isDirectFocus stays true and the dep array doesn't change.
   useEffect(() => {
     if (isDirectFocus) {
       ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
