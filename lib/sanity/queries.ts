@@ -30,6 +30,7 @@ export async function fetchSiteData() {
         "homepageFeatured": *[_type == "homepageFeatured"][0]{
           categories[]->
         },
+        // NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
         "pages": *[_type == "page"] | order(_id asc)
       }`);
   });
