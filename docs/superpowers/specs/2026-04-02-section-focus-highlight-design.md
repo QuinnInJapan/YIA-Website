@@ -131,7 +131,7 @@ interface FocusContextValue {
 
 - `setFocus` cancels any pending `clearFocus` timer before setting the new ID (prevents flicker when moving between inputs or sections)
 - `clearFocus` is debounced 50ms — stored in a `useRef<ReturnType<typeof setTimeout>>`
-- `FocusProvider` renders both a `FocusContext.Provider` and a `StudioContext.Provider` (from `@/lib/studio-context.tsx`) with the same values
+- `FocusProvider` renders both a `FocusContext.Provider` (full value) and a `StudioContext.Provider` (from `@/lib/studio-context.tsx`) — the studio context receives only `{ focusedId }`, not `setFocus`/`clearFocus`
 
 **Provided at:** `HomepageTool.tsx` and `UnifiedPagesTool.tsx`
 
