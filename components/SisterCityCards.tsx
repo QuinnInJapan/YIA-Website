@@ -32,9 +32,7 @@ export default function SisterCityCards({ cities }: SisterCityCardsProps) {
               </div>
               <div className="sister-city-row__name">{en(c.name)}</div>
               <div className="sister-city-row__name-ja">{ja(c.name)}</div>
-              {c.note && (
-                <div className="sister-city-row__note">{c.note}</div>
-              )}
+              {c.note && <div className="sister-city-row__note">{ja(c.note) || en(c.note)}</div>}
             </div>
           </div>
         );

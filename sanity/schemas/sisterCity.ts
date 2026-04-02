@@ -12,8 +12,11 @@ export default defineType({
       media: "image",
     },
     prepare: ({ name, country, media }) => ({
-      title: name?.find((n: { _key: string; value: string }) => n._key === "ja")?.value || "姉妹都市",
-      subtitle: country?.find((c: { _key: string; value: string }) => c._key === "en")?.value || country?.find((c: { _key: string; value: string }) => c._key === "ja")?.value,
+      title:
+        name?.find((n: { _key: string; value: string }) => n._key === "ja")?.value || "姉妹都市",
+      subtitle:
+        country?.find((c: { _key: string; value: string }) => c._key === "en")?.value ||
+        country?.find((c: { _key: string; value: string }) => c._key === "ja")?.value,
       media,
     }),
   },
@@ -41,7 +44,7 @@ export default defineType({
     defineField({
       name: "note",
       title: "備考",
-      type: "string",
+      type: "internationalizedArrayString",
       description: "提携年など補足情報（任意）。",
     }),
   ],

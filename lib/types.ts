@@ -50,7 +50,7 @@ export interface SisterCity {
   name: I18nString;
   country: I18nString;
   image?: SanityImage;
-  note?: string;
+  note?: I18nString;
 }
 
 // ─── Section Types (page.sections[]) ────────────────────────────────
