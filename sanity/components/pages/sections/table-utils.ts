@@ -37,14 +37,3 @@ export function trimRowsForRemovedColumn(rows: TableRowDraft[], colIndex: number
     return { ...row, cells };
   });
 }
-
-/** When toggling a row from data → group header: clear cells, initialise groupLabel. */
-export function convertToGroupHeader(row: TableRowDraft): TableRowDraft {
-  return { _key: row._key, groupLabel: emptyBilingual(), cells: [] };
-}
-
-/** When toggling a row from group header → data: clear groupLabel, pad cells to match column count. */
-export function convertToDataRow(row: TableRowDraft, columnCount: number): TableRowDraft {
-  const cells = Array.from({ length: columnCount }, () => emptyBilingual());
-  return { _key: row._key, groupLabel: null, cells };
-}

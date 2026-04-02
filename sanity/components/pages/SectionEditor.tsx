@@ -58,7 +58,7 @@ export function SectionEditor({
       case "table":
         return <TableSectionEditor section={section} onUpdateField={onUpdateField} />;
       default:
-        // warnings, gallery, infoCards, imageCards
+        // warnings, gallery, and any unknown future types
         return <GenericSectionEditor section={section} onUpdateField={onUpdateField} />;
     }
   }

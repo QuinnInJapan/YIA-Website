@@ -25,7 +25,7 @@ const DOC_PROJECTION = `{
   "categoryRef": categoryRef,
   images,
   sections[] {
-    _key, _type, title, hideTitle,
+    _key, _type, title,
     ...
   }
 }`;
