@@ -1,7 +1,15 @@
 import dynamic from "next/dynamic";
 import { imageUrl } from "@/lib/sanity/image";
 import { ja, en } from "@/lib/i18n";
-import type { EventFlyer } from "@/lib/types";
+import type { SanityImage } from "@/lib/types";
+import type { I18nString } from "@/lib/i18n";
+
+interface EventFlyer {
+  image?: SanityImage;
+  imageJa?: SanityImage;
+  imageEn?: SanityImage;
+  alt?: I18nString;
+}
 
 const EventFlyerPair = dynamic(() => import("./EventFlyerPair"));
 
@@ -10,9 +18,7 @@ interface EventFlyerPairWrapperProps {
 }
 
 // Server component that resolves image paths and prepares data for the client component
-export default function EventFlyerPairWrapper({
-  flyers,
-}: EventFlyerPairWrapperProps) {
+export default function EventFlyerPairWrapper({ flyers }: EventFlyerPairWrapperProps) {
   // Flatten flyers into individual items with resolved src/alt/caption
   const items: { src: string; alt: string; caption: string }[] = [];
 

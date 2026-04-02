@@ -41,13 +41,6 @@ export interface ImageFile {
   caption?: I18nString;
 }
 
-export interface EventFlyer {
-  image?: SanityImage;
-  imageJa?: SanityImage;
-  imageEn?: SanityImage;
-  alt?: I18nString;
-}
-
 export interface Definition {
   term: I18nString;
   definition: I18nString;
@@ -58,29 +51,6 @@ export interface SisterCity {
   country: I18nString;
   image?: SanityImage;
   note?: string;
-}
-
-export interface GroupScheduleRow {
-  name: I18nString;
-  day: string;
-  time: string;
-  location: string;
-  timeSlot?: "morning" | "afternoon" | "evening" | "weekend";
-  schedulePdf?: SanityFile;
-  photosPdf?: SanityFile;
-  website?: string;
-}
-
-export interface ScheduleDateEntry {
-  date: string;
-  time?: string;
-  location?: I18nString;
-  description?: I18nString;
-}
-
-export interface BoardMember {
-  name: string;
-  role: I18nString;
 }
 
 // ─── Section Types (page.sections[]) ────────────────────────────────
@@ -137,68 +107,11 @@ export interface ContentSection {
   id?: string;
   title?: I18nString;
   description?: I18nString;
-  /** @deprecated Sub-fields removed from schema in Task 3; kept here until Task 18 cleanup completes */
-  infoTable?: InfoRow[];
-  /** @deprecated */
-  checklist?: { label: I18nString; note?: I18nString }[];
-  /** @deprecated */
-  documents?: Document[];
-  /** @deprecated */
-  note?: I18nString;
-  /** @deprecated */
-  images?: ImageFile[];
-  /** @deprecated */
-  schedule?: { city: string; period: string }[];
-}
-
-export interface InfoTableSection {
-  _type: "infoTable";
-  title: I18nString;
-  rows: InfoRow[];
-  appointmentNote?: I18nString;
-  additionalLanguageNote?: I18nString;
-  otherNotes?: I18nString;
-}
-
-export interface TableScheduleSection {
-  _type: "tableSchedule";
-  title: I18nString;
-  columns?: string[];
-  columnsEn?: string[];
-  rows?: { cells: ({ text: I18nString } | I18nString | string)[] }[] | string[][] | string;
-}
-
-export interface GroupScheduleSection {
-  _type: "groupSchedule";
-  title: I18nString;
-  columns?: string[];
-  columnsEn?: string[];
-  groups?: GroupScheduleRow[];
-}
-
-export interface EventScheduleSection {
-  _type: "eventSchedule";
-  title: I18nString;
-  entries?: ScheduleDateEntry[];
-  entry?: { date: string; time?: string };
-  venue?: { location: I18nString };
 }
 
 export interface GallerySection {
   _type: "gallery";
   images: ImageFile[];
-}
-
-export interface SisterCitiesSection {
-  _type: "sisterCities";
-  title: I18nString;
-  cities: SisterCity[];
-}
-
-export interface DefinitionsSection {
-  _type: "definitions";
-  title: I18nString;
-  items: Definition[];
 }
 
 export interface LinksSection {
@@ -207,64 +120,11 @@ export interface LinksSection {
   items: Document[];
 }
 
-export interface HistorySection {
-  _type: "history";
-  title: I18nString;
-  intro?: I18nString;
-  columns?: string[];
-  columnsEn?: string[];
-  years?: { year: string; cuisines: string }[];
-}
-
-export interface FairTradeSection {
-  _type: "fairTrade";
-  title: I18nString;
-  description?: I18nString;
-  priceList?: { type: I18nString; weight: I18nString; price: I18nString }[];
-  delivery?: I18nString;
-}
-
-export interface FlyersSection {
-  _type: "flyers";
-  items: EventFlyer[];
-}
-
-export interface BoardMembersSection {
-  _type: "boardMembers";
-  title: I18nString;
-  asOf?: string;
-  members: BoardMember[];
-}
-
-export interface FeeTableSection {
-  _type: "feeTable";
-  title: I18nString;
-  rows: { memberType: I18nString; fee: I18nString; description?: I18nString }[];
-}
-
-export interface DirectoryListSection {
-  _type: "directoryList";
-  title: I18nString;
-  entries: { nameJa: string; tel: string; url?: string }[];
-}
-
 type PageSectionShape =
   | WarningsSection
   | ContentSection
-  | InfoTableSection
-  | TableScheduleSection
-  | GroupScheduleSection
-  | EventScheduleSection
   | GallerySection
-  | SisterCitiesSection
-  | DefinitionsSection
   | LinksSection
-  | HistorySection
-  | FairTradeSection
-  | FlyersSection
-  | BoardMembersSection
-  | FeeTableSection
-  | DirectoryListSection
   | TableSection
   | LabelTableSection
   | InfoCardsSection

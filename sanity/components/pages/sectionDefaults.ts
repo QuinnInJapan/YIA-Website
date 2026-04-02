@@ -12,49 +12,23 @@ export const sectionDefaults: Partial<Record<SectionTypeName, Record<string, unk
     items: [],
   },
   content: {},
-  infoTable: {
-    rows: [],
-  },
   links: {
     items: [],
   },
   gallery: {
     images: [],
   },
-  flyers: {
-    items: [],
-  },
-  eventSchedule: {
-    entries: [],
-  },
-  groupSchedule: {
-    groups: [],
-  },
-  tableSchedule: {
-    columns: ["時間", "月", "火", "水", "木", "金"],
-    columnsEn: ["Time", "Mon", "Tue", "Wed", "Thu", "Fri"],
+  table: {
+    columns: [],
     rows: [],
   },
-  definitions: {
-    items: [],
-  },
-  feeTable: {
+  labelTable: {
     rows: [],
   },
-  directoryList: {
-    entries: [],
+  infoCards: {
+    items: [],
   },
-  boardMembers: {
-    members: [],
-    asOf: new Date().toISOString().slice(0, 10),
-  },
-  fairTrade: {
-    priceList: [],
-  },
-  sisterCities: {
-    cities: [],
-  },
-  history: {
-    years: [],
+  imageCards: {
+    items: [],
   },
 };

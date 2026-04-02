@@ -1,16 +1,7 @@
 "use client";
 
 import { ContentSectionEditor } from "./sections/ContentSectionEditor";
-import { InfoTableSectionEditor } from "./sections/InfoTableSectionEditor";
 import { LinksSectionEditor } from "./sections/LinksSectionEditor";
-
-import { EventScheduleSectionEditor } from "./sections/EventScheduleSectionEditor";
-import { GroupScheduleSectionEditor } from "./sections/GroupScheduleSectionEditor";
-import { TableScheduleSectionEditor } from "./sections/TableScheduleSectionEditor";
-import { HistorySectionEditor } from "./sections/HistorySectionEditor";
-import { DefinitionsSectionEditor } from "./sections/DefinitionsSectionEditor";
-import { BoardMembersSectionEditor } from "./sections/BoardMembersSectionEditor";
-import { FeeTableSectionEditor } from "./sections/FeeTableSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
@@ -39,8 +30,6 @@ export function SectionEditor({
     switch (section._type) {
       case "content":
         return <ContentSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "infoTable":
-        return <InfoTableSectionEditor section={section} onUpdateField={onUpdateField} />;
       case "links":
         return (
           <LinksSectionEditor
@@ -50,22 +39,8 @@ export function SectionEditor({
             onOpenDocumentDetail={onOpenDocumentDetail}
           />
         );
-      case "eventSchedule":
-        return <EventScheduleSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "groupSchedule":
-        return <GroupScheduleSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "tableSchedule":
-        return <TableScheduleSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "history":
-        return <HistorySectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "definitions":
-        return <DefinitionsSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "boardMembers":
-        return <BoardMembersSectionEditor section={section} onUpdateField={onUpdateField} />;
-      case "feeTable":
-        return <FeeTableSectionEditor section={section} onUpdateField={onUpdateField} />;
       default:
-        // warnings, directoryList, sisterCities, fairTrade, flyers
+        // warnings, gallery, table, labelTable, infoCards, imageCards
         return <GenericSectionEditor section={section} onUpdateField={onUpdateField} />;
     }
   }
