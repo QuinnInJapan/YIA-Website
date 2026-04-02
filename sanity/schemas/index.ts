@@ -1,31 +1,20 @@
+// sanity/schemas/index.ts
 // Object types
 import infoRow from "./infoRow";
 import imageFile from "./imageFile";
 import documentLink from "./documentLink";
-import eventFlyer from "./eventFlyer";
-import definition from "./definition";
-import sisterCity from "./sisterCity";
-import groupScheduleRow from "./groupScheduleRow";
-import scheduleDateEntry from "./scheduleDateEntry";
-import boardMember from "./boardMember";
+import definition from "./definition"; // still used by infoCardsSection
+import sisterCity from "./sisterCity"; // still used by imageCardsSection
 
 // Section types
+import tableSection from "./tableSection";
+import labelTableSection from "./labelTableSection";
+import infoCardsSection from "./infoCardsSection";
+import imageCardsSection from "./imageCardsSection";
 import warningsSection from "./warningsSection";
 import contentSection from "./contentSection";
-import infoTableSection from "./infoTableSection";
-import tableScheduleSection from "./tableScheduleSection";
-import groupScheduleSection from "./groupScheduleSection";
-import eventScheduleSection from "./eventScheduleSection";
 import gallerySection from "./gallerySection";
-import sisterCitiesSection from "./sisterCitiesSection";
-import definitionsSection from "./definitionsSection";
 import linksSection from "./linksSection";
-import historySection from "./historySection";
-import fairTradeSection from "./fairTradeSection";
-import flyersSection from "./flyersSection";
-import boardMembersSection from "./boardMembersSection";
-import feeTableSection from "./feeTableSection";
-import directoryListSection from "./directoryListSection";
 
 // Document types
 import siteSettings from "./siteSettings";
@@ -40,33 +29,21 @@ import homepageFeatured from "./homepageFeatured";
 import page from "./page";
 
 export const schemaTypes = [
-  // Object types (must be registered before document types that reference them)
+  // Object types
   infoRow,
   imageFile,
   documentLink,
-  eventFlyer,
   definition,
   sisterCity,
-  groupScheduleRow,
-  scheduleDateEntry,
-  boardMember,
   // Section types
+  tableSection,
+  labelTableSection,
+  infoCardsSection,
+  imageCardsSection,
   warningsSection,
   contentSection,
-  infoTableSection,
-  tableScheduleSection,
-  groupScheduleSection,
-  eventScheduleSection,
   gallerySection,
-  sisterCitiesSection,
-  definitionsSection,
   linksSection,
-  historySection,
-  fairTradeSection,
-  flyersSection,
-  boardMembersSection,
-  feeTableSection,
-  directoryListSection,
   // Document types
   siteSettings,
   category,

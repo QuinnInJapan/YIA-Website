@@ -4,8 +4,20 @@ import React from "react";
 import { stegaClean } from "next-sanity";
 import { ja, en } from "@/lib/i18n";
 import { fileUrl } from "@/lib/sanity/image";
-import type { GroupScheduleRow } from "@/lib/types";
+import type { SanityFile } from "@/lib/types";
+import type { I18nString } from "@/lib/i18n";
 import PdfLink from "./PdfLink";
+
+interface GroupScheduleRow {
+  name: I18nString;
+  day: string;
+  time: string;
+  location: string;
+  timeSlot?: "morning" | "afternoon" | "evening" | "weekend";
+  schedulePdf?: SanityFile;
+  photosPdf?: SanityFile;
+  website?: string;
+}
 
 const slotLabels: Record<string, string> = {
   morning: "午前 Morning",
@@ -41,7 +53,11 @@ function GroupEntry({ group }: { group: GroupScheduleRow }) {
       {(scheduleUrl || websiteUrl || photosUrl) && (
         <div className="group-list__links">
           {scheduleUrl && (
-            <PdfLink href={scheduleUrl} title={`${ja(group.name)} スケジュール`} className="group-list__link">
+            <PdfLink
+              href={scheduleUrl}
+              title={`${ja(group.name)} スケジュール`}
+              className="group-list__link"
+            >
               📄 予定表
             </PdfLink>
           )}
@@ -96,14 +112,12 @@ export default function GroupList({ groups }: GroupListProps) {
       {slotOrder.map((slot) =>
         grouped[slot] ? (
           <React.Fragment key={slot}>
-            <div className="group-list__slot-header">
-              {slotLabels[slot] || slot}
-            </div>
+            <div className="group-list__slot-header">{slotLabels[slot] || slot}</div>
             {grouped[slot].map((g, i) => (
               <GroupEntry group={g} key={`${slot}-${i}`} />
             ))}
           </React.Fragment>
-        ) : null
+        ) : null,
       )}
       {grouped._none?.map((g, i) => (
         <GroupEntry group={g} key={`none-${i}`} />

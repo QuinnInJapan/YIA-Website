@@ -1,6 +1,11 @@
-import type { BoardMember } from "@/lib/types";
 import { ja, en } from "@/lib/i18n";
 import { formatDateJa } from "@/lib/date-format";
+import type { I18nString } from "@/lib/i18n";
+
+interface BoardMember {
+  name: string;
+  role: I18nString;
+}
 
 interface BoardMembersProps {
   board: {
@@ -14,9 +19,7 @@ export default function BoardMembers({ board }: BoardMembersProps) {
     <>
       {board.asOf && (
         <p className="section-note">
-          {/^\d{4}-\d{2}-\d{2}$/.test(board.asOf)
-            ? `${formatDateJa(board.asOf)}現在`
-            : board.asOf}
+          {/^\d{4}-\d{2}-\d{2}$/.test(board.asOf) ? `${formatDateJa(board.asOf)}現在` : board.asOf}
         </p>
       )}
       <div className="board-grid">
