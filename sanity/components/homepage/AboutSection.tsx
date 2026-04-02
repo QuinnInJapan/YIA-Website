@@ -56,8 +56,8 @@ export function AboutSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("about")} onBlurCapture={clearFocus} onClick={() => setFocus("about")}>
-      <SectionWrapper id="section-about" title="YIAについて">
+    <div onFocusCapture={() => setFocus("about")} onBlurCapture={clearFocus}>
+      <SectionWrapper id="section-about" title="YIAについて" onExpand={() => setFocus("about")}>
         {/* Title fields */}
         <FieldLabel label="タイトル（日本語）">
           <TextInput

@@ -12,6 +12,7 @@ import type { GalleryImageItem } from "../blog/GalleryPanel";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { SectionBar } from "../pages/SectionBar";
+import { useFocusContext } from "../shared/FocusContext";
 import { SectionEditor } from "../pages/SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "../pages/types";
 import { sectionDefaults } from "../pages/sectionDefaults";
@@ -110,6 +111,7 @@ export function PageEditor({
 
   // Section accordion state
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const { setFocus, clearFocus } = useFocusContext();
 
   // ── Load document ──────────────────────────────────────
 
@@ -587,7 +589,10 @@ export function PageEditor({
                       }
                     } else {
                       onCloseRightPanel?.();
-                      setExpandedSection(expandedSection === section._key ? null : section._key);
+                      const next = expandedSection === section._key ? null : section._key;
+                      setExpandedSection(next);
+                      if (next !== null) setFocus(next);
+                      else clearFocus();
                     }
                   }
 

@@ -128,8 +128,8 @@ export function SettingsSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("settings")} onBlurCapture={clearFocus} onClick={() => setFocus("settings")}>
-      <SectionWrapper id="section-settings" title="サイト設定">
+    <div onFocusCapture={() => setFocus("settings")} onBlurCapture={clearFocus}>
+      <SectionWrapper id="section-settings" title="サイト設定" onExpand={() => setFocus("settings")}>
         {/* ── Organization ── */}
         <h4
           style={{

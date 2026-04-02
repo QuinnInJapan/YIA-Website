@@ -65,8 +65,8 @@ export function ProgramCardsSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("programCards")} onBlurCapture={clearFocus} onClick={() => setFocus("programCards")}>
-      <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)">
+    <div onFocusCapture={() => setFocus("programCards")} onBlurCapture={clearFocus}>
+      <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)" onExpand={() => setFocus("programCards")}>
         <Stack space={2}>
           <Text size={0} muted>
             表示するカテゴリーを選択（ちょうど{MAX_FEATURED}

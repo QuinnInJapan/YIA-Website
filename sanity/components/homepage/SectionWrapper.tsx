@@ -6,18 +6,25 @@ export function SectionWrapper({
   id,
   title,
   children,
+  onExpand,
 }: {
   id: string;
   title: string;
   children: React.ReactNode;
+  onExpand?: () => void;
 }) {
   const [collapsed, setCollapsed] = useState(false);
+
+  function handleToggle() {
+    if (collapsed) onExpand?.();
+    setCollapsed(!collapsed);
+  }
 
   return (
     <section id={id} style={{ marginBottom: 24 }}>
       <button
         type="button"
-        onClick={() => setCollapsed(!collapsed)}
+        onClick={handleToggle}
         style={{
           display: "flex",
           alignItems: "center",

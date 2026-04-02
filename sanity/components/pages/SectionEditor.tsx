@@ -71,7 +71,7 @@ export function SectionEditor({
   }
 
   return (
-    <div onFocusCapture={() => setFocus(section._key)} onBlurCapture={clearFocus} onClick={() => setFocus(section._key)}>
+    <div onFocusCapture={() => setFocus(section._key)} onBlurCapture={clearFocus}>
       <div
         style={{
           padding: "12px 16px",
