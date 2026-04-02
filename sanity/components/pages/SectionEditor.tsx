@@ -4,6 +4,7 @@ import { ContentSectionEditor } from "./sections/ContentSectionEditor";
 import { LinksSectionEditor } from "./sections/LinksSectionEditor";
 import { LabelTableSectionEditor } from "./sections/LabelTableSectionEditor";
 import { InfoCardsSectionEditor } from "./sections/InfoCardsSectionEditor";
+import { ImageCardsSectionEditor } from "./sections/ImageCardsSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
@@ -45,6 +46,14 @@ export function SectionEditor({
         return <LabelTableSectionEditor section={section} onUpdateField={onUpdateField} />;
       case "infoCards":
         return <InfoCardsSectionEditor section={section} onUpdateField={onUpdateField} />;
+      case "imageCards":
+        return (
+          <ImageCardsSectionEditor
+            section={section}
+            onUpdateField={onUpdateField}
+            onOpenImagePicker={onOpenImagePicker}
+          />
+        );
       default:
         // warnings, gallery, table, infoCards, imageCards
         return <GenericSectionEditor section={section} onUpdateField={onUpdateField} />;
