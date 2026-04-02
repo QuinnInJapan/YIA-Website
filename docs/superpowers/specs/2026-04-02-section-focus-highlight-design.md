@@ -29,7 +29,7 @@ interface FocusContextValue {
 ```
 
 - `FocusProvider` wraps tool-level components
-- Internal debounce (50ms) on `clearFocus` to prevent flicker when focus moves between inputs within the same section — cancelled if a new `setFocus` fires before the timeout
+- Internal debounce (50ms) on `clearFocus` — a pending clear timer is stored in a `useRef`. **`setFocus` always cancels any pending timer before setting the new section**, so moving focus between sections (or within a section) never produces a flicker.
 - `useFocusContext()` hook for consumer components
 
 **Provided at:** `HomepageTool.tsx` and `UnifiedPagesTool.tsx`
@@ -76,7 +76,7 @@ const { focusedSection } = useFocusContext()
 </div>
 ```
 
-Sections to wrap: `"hero"`, `"about"`, `"activityGrid"`, `"programCards"`, `"settings"` (announcements band, footer if applicable)
+Sections to wrap: only the sections that have a corresponding editor section — `"hero"`, `"about"`, `"activityGrid"`, `"programCards"`, `"settings"`. The announcements band and footer render in the preview but have no editor section wrappers, so they are not wrapped.
 
 **PagePreview.tsx:** Sections are rendered via `renderSections()`. If it returns a per-section array, wrap each element directly. If it returns a single root node, switch to iterating `sections` and calling a single-section render helper per item. The implementor should verify the actual return shape of `renderSections()` before writing this code. Each wrapper is keyed by `section._key`:
 
@@ -114,6 +114,11 @@ User moves focus to another input in same section
   → onBlurCapture fires, schedules clearFocus (50ms)
   → onFocusCapture fires, calls setFocus again, cancels pending clear
   → No flicker
+
+User moves focus from one section directly to another
+  → onBlurCapture on old section fires, schedules clearFocus (50ms)
+  → onFocusCapture on new section fires, setFocus cancels pending clear, sets new section
+  → Outline transitions immediately from old to new section, no flicker
 
 User moves focus outside section or blurs entirely
   → onBlurCapture fires, clearFocus runs after 50ms
