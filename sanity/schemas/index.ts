@@ -9,7 +9,13 @@ import groupScheduleRow from "./groupScheduleRow";
 import scheduleDateEntry from "./scheduleDateEntry";
 import boardMember from "./boardMember";
 
-// Section types
+// Section types — NEW
+import tableSection from "./tableSection";
+import labelTableSection from "./labelTableSection";
+import infoCardsSection from "./infoCardsSection";
+import imageCardsSection from "./imageCardsSection";
+
+// Section types — LEGACY (kept until migrations complete, removed in Task 18)
 import warningsSection from "./warningsSection";
 import contentSection from "./contentSection";
 import infoTableSection from "./infoTableSection";
@@ -40,7 +46,7 @@ import homepageFeatured from "./homepageFeatured";
 import page from "./page";
 
 export const schemaTypes = [
-  // Object types (must be registered before document types that reference them)
+  // Object types
   infoRow,
   imageFile,
   documentLink,
@@ -50,7 +56,12 @@ export const schemaTypes = [
   groupScheduleRow,
   scheduleDateEntry,
   boardMember,
-  // Section types
+  // Section types — NEW
+  tableSection,
+  labelTableSection,
+  infoCardsSection,
+  imageCardsSection,
+  // Section types — LEGACY
   warningsSection,
   contentSection,
   infoTableSection,

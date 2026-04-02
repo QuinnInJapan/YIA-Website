@@ -16,7 +16,15 @@ export default defineType({
   ],
   preview: {
     select: { title: "title", catLabel: "categoryRef.label", slug: "slug" },
-    prepare: ({ title, catLabel, slug }: { title?: { _key: string; value: string }[]; catLabel?: { _key: string; value: string }[]; slug?: string }) => {
+    prepare: ({
+      title,
+      catLabel,
+      slug,
+    }: {
+      title?: { _key: string; value: string }[];
+      catLabel?: { _key: string; value: string }[];
+      slug?: string;
+    }) => {
       const catJa = catLabel?.find((t) => t._key === "ja")?.value;
       const parts = [catJa, slug ? `/${slug}` : undefined].filter(Boolean);
       return {
@@ -74,7 +82,8 @@ export default defineType({
 
       of: [{ type: "imageFile" }],
       options: { layout: "grid" },
-      description: "ページ上部に表示する画像（任意）。1枚目がヒーロー画像として大きく表示されます。",
+      description:
+        "ページ上部に表示する画像（任意）。1枚目がヒーロー画像として大きく表示されます。",
       components: { field: HeroImageField },
     }),
     defineField({
@@ -84,6 +93,12 @@ export default defineType({
 
       description: "ページの各セクション。追加・編集・並び替えができます。",
       of: [
+        // New types (use these for new sections)
+        "table",
+        "labelTable",
+        "infoCards",
+        "imageCards",
+        // Existing types (kept until migrations complete)
         "content",
         "infoTable",
         "links",
