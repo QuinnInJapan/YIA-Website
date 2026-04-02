@@ -8,7 +8,7 @@ export const imageCards: SectionHandler<ImageCardsSection> = (s, ctx) => {
     ctx.flush();
     return;
   }
-  if (!s.hideTitle) {
+  if (s.title && !s.hideTitle) {
     ctx.addTocHeader(ja(s.title), en(s.title));
   }
   ctx.push(<SisterCityCards cities={s.items} />);

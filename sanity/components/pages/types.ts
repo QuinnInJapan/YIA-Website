@@ -25,18 +25,15 @@ export const SECTION_TYPE_LABELS: Record<SectionTypeName, string> = {
 };
 
 // Metadata for section picker UI
-export const SECTION_TYPE_META: Record<
-  SectionTypeName,
-  { description: string; category: "common" | "oneoff" }
-> = {
-  content: { description: "テキストコンテンツを表示", category: "common" },
-  links: { description: "資料やリンクの一覧", category: "common" },
-  warnings: { description: "注意書きや警告メッセージ", category: "common" },
-  gallery: { description: "写真をグリッドで表示", category: "common" },
-  table: { description: "カラムと行のデータテーブル", category: "common" },
-  labelTable: { description: "ラベルと値のペアで情報を整理", category: "common" },
-  infoCards: { description: "用語と定義のカード", category: "common" },
-  imageCards: { description: "画像付きカードの一覧", category: "common" },
+export const SECTION_TYPE_META: Record<SectionTypeName, { description: string }> = {
+  content: { description: "テキストコンテンツを表示" },
+  links: { description: "資料やリンクの一覧" },
+  warnings: { description: "注意書きや警告メッセージ" },
+  gallery: { description: "写真をグリッドで表示" },
+  table: { description: "カラムと行のデータテーブル" },
+  labelTable: { description: "ラベルと値のペアで情報を整理" },
+  infoCards: { description: "用語と定義のカード" },
+  imageCards: { description: "画像付きカードの一覧" },
 };
 
 // A section item as stored in Sanity (generic shape)

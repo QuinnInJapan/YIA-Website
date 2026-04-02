@@ -26,7 +26,7 @@ export function SectionBar({
 }) {
   const typeLabel = SECTION_TYPE_LABELS[section._type as SectionTypeName] ?? section._type;
   const title = i18nGet(section.title, "ja");
-  const titleless = ["gallery", "flyers", "warnings"].includes(section._type);
+  const titleless = ["gallery", "warnings"].includes(section._type);
 
   return (
     <div
