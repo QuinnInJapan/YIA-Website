@@ -1,3 +1,4 @@
+// sanity/schemas/contentSection.ts
 import { defineType, defineField } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
 
@@ -5,17 +6,11 @@ export default defineType({
   name: "content",
   title: "コンテンツセクション",
   type: "object",
-  description: "汎用コンテンツブロック（説明文、情報テーブル、チェックリスト、資料リンクなど）",
+  description: "汎用コンテンツブロック（説明文）",
   fieldsets: [
     {
       name: "advanced",
       title: "詳細設定",
-      options: { collapsible: true, collapsed: true },
-    },
-    {
-      name: "extras",
-      title: "追加コンテンツ",
-      description: "テーブル、チェックリスト、資料、画像など（任意）",
       options: { collapsible: true, collapsed: true },
     },
   ],
@@ -46,8 +41,11 @@ export default defineType({
         Rule.custom((value, context) => {
           const parent = context.parent as { hideTitle?: boolean } | undefined;
           if (parent?.hideTitle) return true;
-          const hasValue = Array.isArray(value) && value.some((v: { value?: string }) => v.value?.trim());
-          return hasValue ? true : "タイトルが未入力です。省略する場合は「タイトルなし」にチェックしてください。";
+          const hasValue =
+            Array.isArray(value) && value.some((v: { value?: string }) => v.value?.trim());
+          return hasValue
+            ? true
+            : "タイトルが未入力です。省略する場合は「タイトルなし」にチェックしてください。";
         }),
     }),
     defineField({
@@ -63,69 +61,6 @@ export default defineType({
       title: "説明",
       type: "internationalizedArrayText",
       description: "セクションの本文。",
-    }),
-    defineField({
-      name: "infoTable",
-      title: "情報テーブル",
-      type: "array",
-      fieldset: "extras",
-      of: [{ type: "infoRow" }],
-      description: "ラベルと値のペアで情報を表示（例：日時、場所、対象者など）。",
-    }),
-    defineField({
-      name: "checklist",
-      title: "チェックリスト",
-      type: "array",
-      fieldset: "extras",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "label", title: "ラベル", type: "internationalizedArrayString", validation: (Rule) => Rule.required() }),
-            defineField({ name: "note", title: "備考", type: "internationalizedArrayString" }),
-          ],
-        },
-      ],
-      description: "チェックマーク付きの項目一覧（例：持ち物リスト、必要書類など）。",
-    }),
-    defineField({
-      name: "documents",
-      title: "資料",
-      type: "array",
-      fieldset: "extras",
-      of: [{ type: "documentLink" }],
-      description: "ダウンロード用のPDFファイルや外部リンク。",
-    }),
-    defineField({
-      name: "note",
-      title: "備考",
-      type: "internationalizedArrayText",
-      fieldset: "extras",
-      description: "セクション下部に小さく表示される補足情報。",
-    }),
-    defineField({
-      name: "images",
-      title: "画像",
-      type: "array",
-      fieldset: "extras",
-      of: [{ type: "imageFile" }],
-      description: "セクション内に表示する画像。",
-    }),
-    defineField({
-      name: "schedule",
-      title: "スケジュール",
-      type: "array",
-      fieldset: "extras",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "city", title: "都市", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "period", title: "期間", type: "string", validation: (Rule) => Rule.required() }),
-          ],
-        },
-      ],
-      description: "都市ごとの派遣スケジュール（姉妹都市交流など）。",
     }),
   ],
 });
