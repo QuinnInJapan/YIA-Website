@@ -150,6 +150,8 @@ export function HomepageEditor({
     return { ...base, ...featuredState.edits } as HomepageFeaturedData;
   }, [featuredState]);
 
+  const featuredValid = (featured?.categories?.length ?? 0) === 4;
+
   const aboutId = useMemo(() => {
     return (aboutState.draft ?? aboutState.published)?._id?.replace(/^drafts\./, "") ?? "";
   }, [aboutState]);
@@ -641,7 +643,7 @@ export function HomepageEditor({
             fontSize={1}
             padding={2}
             onClick={handlePublish}
-            disabled={saving || !hasAnyDrafts}
+            disabled={saving || !hasAnyDrafts || !featuredValid}
           />
         </Flex>
       </Box>

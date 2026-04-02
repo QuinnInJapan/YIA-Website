@@ -2848,7 +2848,6 @@ html:has(:target) {
 .program-card__links {
   display: flex;
   flex-direction: column;
-  margin-top: auto;
 }
 
 .program-card__link {

@@ -66,7 +66,7 @@ export function ProgramCardsSection({
     <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)">
       <Stack space={2}>
         <Text size={0} muted>
-          表示するカテゴリーを選択（最大{MAX_FEATURED}件）。順序はナビゲーションに従います。
+          表示するカテゴリーを選択（ちょうど{MAX_FEATURED}件必要）。順序はナビゲーションに従います。
         </Text>
         <Card border radius={2} padding={1}>
           <Stack space={0}>
@@ -154,9 +154,16 @@ export function ProgramCardsSection({
             })}
           </Stack>
         </Card>
-        <Text size={0} muted>
-          {selectedRefs.size}/{MAX_FEATURED} 選択中
-        </Text>
+        {selectedRefs.size !== MAX_FEATURED ? (
+          <Text size={0} style={{ color: "var(--card-badge-caution-fg-color, #b06800)" }}>
+            ⚠ {selectedRefs.size}/{MAX_FEATURED} 選択中 — ちょうど{MAX_FEATURED}
+            件選択してから公開してください
+          </Text>
+        ) : (
+          <Text size={0} muted>
+            {selectedRefs.size}/{MAX_FEATURED} 選択中
+          </Text>
+        )}
       </Stack>
     </SectionWrapper>
   );

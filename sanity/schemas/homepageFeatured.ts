@@ -15,9 +15,9 @@ export default defineType({
       title: "注目カテゴリー",
       type: "array",
       of: [{ type: "reference", to: [{ type: "category" }] }],
-      validation: (Rule) => Rule.max(4),
+      validation: (Rule) => Rule.min(4).max(4),
       description:
-        "ホームページに表示するカテゴリー（最大4件）。ナビゲーションの順序で表示されます。",
+        "ホームページに表示するカテゴリー（ちょうど4件）。ナビゲーションの順序で表示されます。",
     }),
   ],
 });
