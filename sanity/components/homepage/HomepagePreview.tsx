@@ -7,7 +7,6 @@ import type {
   HomepageData,
   HomepageAboutData,
   HomepageFeaturedData,
-  HomepageFeaturedSlotData,
   SiteSettingsData,
   SidebarData,
   CategoryData,
@@ -44,10 +43,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
   const heroPosition = hotspotPosition(hp.hero?.image as any);
   const aboutImgSrc = about?.image ? imageUrl(about.image as any) : "";
   const aboutImgPos = about?.image ? hotspotPosition(about.image as any) : undefined;
-  const SLOT_KEYS = ["slot1", "slot2", "slot3", "slot4"] as const;
-  const featuredSlots = SLOT_KEYS.map(
-    (key) => featured?.[key] as HomepageFeaturedSlotData | undefined,
-  ).filter((slot): slot is HomepageFeaturedSlotData => !!slot?.categoryRef?._ref);
+  const featuredCategoryRefs = featured?.categories ?? [];
   const images = (hp.activityGrid?.images as any[]) ?? [];
   const stat = hp.activityGrid?.stat;
 
@@ -161,23 +157,17 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
   }
 
   function renderProgramGrid() {
-    if (featuredSlots.length === 0) return null;
+    if (featuredCategoryRefs.length === 0) return null;
     return (
       <section className="program-grid">
-        {featuredSlots.map((slot, i) => {
-          const catId = slot.categoryRef!._ref;
+        {featuredCategoryRefs.map((ref, i) => {
+          const catId = ref._ref;
           const cat = categories.find((c) => c._id === catId || c._id === `drafts.${catId}`);
           if (!cat) return null;
           const img = imageUrl(cat.heroImage as any);
           const pos = hotspotPosition(cat.heroImage as any);
           const navCat = navCategories.find((nc) => nc.categoryId === catId);
-          // Show only featured pages if specified, otherwise all nav items
-          const pageItems =
-            slot.pages && slot.pages.length > 0 && navCat
-              ? slot.pages
-                  .map((ref) => navCat.items.find((ni) => ni.pageId === ref._ref))
-                  .filter(Boolean)
-              : (navCat?.items ?? []);
+          const pageItems = navCat?.items ?? [];
           return (
             <div className="program-card" key={catId || i}>
               {img && (
