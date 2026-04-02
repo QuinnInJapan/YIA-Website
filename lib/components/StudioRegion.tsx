@@ -41,16 +41,20 @@ export function StudioRegion<T extends ElementType = "div">({
     }
   }, [isDirectFocus]);
 
-  const outlineStyle: CSSProperties | undefined = isDirectFocus
-    ? { outline: "2px solid var(--card-focus-ring-color, #1e3a5f)" }
+  const highlightStyle: CSSProperties | undefined = isDirectFocus
+    ? { backgroundColor: "rgba(59, 130, 246, 0.10)" }
     : isAncestorFocus
-      ? { outline: "1px dashed var(--card-focus-ring-color, #1e3a5f)" }
+      ? { backgroundColor: "rgba(59, 130, 246, 0.05)" }
       : undefined;
 
   return (
     <ParentIdContext.Provider value={fullId}>
       {/* `as any` needed: TypeScript can't narrow ElementType to a specific ref type in this generic context */}
-      <Tag ref={ref as any} style={outlineStyle ? { ...style, ...outlineStyle } : style} {...props}>
+      <Tag
+        ref={ref as any}
+        style={highlightStyle ? { ...style, ...highlightStyle } : style}
+        {...props}
+      >
         {children}
       </Tag>
     </ParentIdContext.Provider>
