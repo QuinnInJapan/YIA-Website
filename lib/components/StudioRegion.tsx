@@ -47,6 +47,7 @@ export function StudioRegion<T extends ElementType = "div">({
 
   return (
     <ParentIdContext.Provider value={fullId}>
+      {/* `as any` needed: TypeScript can't narrow ElementType to a specific ref type in this generic context */}
       <Tag ref={ref as any} style={outlineStyle ? { ...style, ...outlineStyle } : style} {...props}>
         {children}
       </Tag>
