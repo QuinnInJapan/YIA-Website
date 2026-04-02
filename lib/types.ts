@@ -75,7 +75,6 @@ export interface TableRow {
 export interface TableSection {
   _type: "table";
   title?: I18nString;
-  hideTitle?: boolean;
   caption?: I18nString;
   columns: TableColumn[];
   rows: TableRow[];
@@ -84,21 +83,18 @@ export interface TableSection {
 export interface LabelTableSection {
   _type: "labelTable";
   title?: I18nString;
-  hideTitle?: boolean;
   rows: InfoRow[];
 }
 
 export interface InfoCardsSection {
   _type: "infoCards";
   title?: I18nString;
-  hideTitle?: boolean;
   items: Definition[];
 }
 
 export interface ImageCardsSection {
   _type: "imageCards";
   title?: I18nString;
-  hideTitle?: boolean;
   items: SisterCity[];
 }
 

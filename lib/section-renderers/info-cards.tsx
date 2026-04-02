@@ -8,7 +8,7 @@ export const infoCards: SectionHandler<InfoCardsSection> = (s, ctx) => {
     ctx.flush();
     return;
   }
-  if (s.title && !s.hideTitle) {
+  if (s.title) {
     ctx.addTocHeader(ja(s.title), en(s.title));
   }
   for (const def of s.items) {

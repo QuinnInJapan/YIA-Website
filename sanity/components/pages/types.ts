@@ -41,7 +41,6 @@ export interface SectionItem {
   _key: string;
   _type: SectionTypeName;
   title?: { _key: string; value: string }[] | null;
-  hideTitle?: boolean;
   [key: string]: unknown;
 }
 

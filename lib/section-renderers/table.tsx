@@ -9,7 +9,7 @@ export const table: SectionHandler<TableSection> = (s, ctx) => {
     ctx.flush();
     return;
   }
-  if (s.title && !s.hideTitle) {
+  if (s.title) {
     ctx.addTocHeader(ja(s.title), en(s.title));
   }
   if (s.caption) {
