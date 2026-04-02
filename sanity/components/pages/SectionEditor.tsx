@@ -2,6 +2,7 @@
 
 import { ContentSectionEditor } from "./sections/ContentSectionEditor";
 import { LinksSectionEditor } from "./sections/LinksSectionEditor";
+import { LabelTableSectionEditor } from "./sections/LabelTableSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
@@ -39,8 +40,10 @@ export function SectionEditor({
             onOpenDocumentDetail={onOpenDocumentDetail}
           />
         );
+      case "labelTable":
+        return <LabelTableSectionEditor section={section} onUpdateField={onUpdateField} />;
       default:
-        // warnings, gallery, table, labelTable, infoCards, imageCards
+        // warnings, gallery, table, infoCards, imageCards
         return <GenericSectionEditor section={section} onUpdateField={onUpdateField} />;
     }
   }
