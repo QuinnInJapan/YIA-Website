@@ -14,6 +14,7 @@ import { FeeTableSectionEditor } from "./sections/FeeTableSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
+import { useFocusContext } from "../shared/FocusContext";
 
 export function SectionEditor({
   section,
@@ -32,6 +33,8 @@ export function SectionEditor({
     onRemove: () => void,
   ) => void;
 }) {
+  const { setFocus, clearFocus } = useFocusContext();
+
   function renderEditor() {
     switch (section._type) {
       case "content":
@@ -68,16 +71,18 @@ export function SectionEditor({
   }
 
   return (
-    <div
-      style={{
-        padding: "12px 16px",
-        border: "1px solid var(--card-border-color)",
-        borderTop: "none",
-        borderRadius: "0 0 4px 4px",
-        background: "var(--card-bg-color)",
-      }}
-    >
-      {renderEditor()}
+    <div onFocusCapture={() => setFocus(section._key)} onBlurCapture={clearFocus}>
+      <div
+        style={{
+          padding: "12px 16px",
+          border: "1px solid var(--card-border-color)",
+          borderTop: "none",
+          borderRadius: "0 0 4px 4px",
+          background: "var(--card-bg-color)",
+        }}
+      >
+        {renderEditor()}
+      </div>
     </div>
   );
 }

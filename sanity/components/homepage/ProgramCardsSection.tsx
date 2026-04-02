@@ -6,6 +6,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 import { Card, Stack, Flex, Text, Checkbox } from "@sanity/ui";
 import { i18nGet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
+import { useFocusContext } from "../shared/FocusContext";
 import type { HomepageFeaturedData, CategoryData, NavCategoryData, UpdateFieldFn } from "./types";
 
 const MAX_FEATURED = 4;
@@ -23,6 +24,7 @@ export function ProgramCardsSection({
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = useMemo(() => createImageUrlBuilder(client), [client]);
+  const { setFocus, clearFocus } = useFocusContext();
 
   // Nav-ordered list of available categories (excluding "about")
   const orderedCategories = useMemo(() => {
@@ -63,108 +65,117 @@ export function ProgramCardsSection({
   }
 
   return (
-    <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)">
-      <Stack space={2}>
-        <Text size={0} muted>
-          表示するカテゴリーを選択（ちょうど{MAX_FEATURED}件必要）。順序はナビゲーションに従います。
-        </Text>
-        <Card border radius={2} padding={1}>
-          <Stack space={0}>
-            {orderedCategories.map((cat, i) => {
-              const catId = cat._id.replace(/^drafts\./, "");
-              const isSelected = selectedRefs.has(catId) || selectedRefs.has(cat._id);
-              const isDisabled = !isSelected && selectedRefs.size >= MAX_FEATURED;
-              const imgUrl = cat.heroImage?.asset?._ref
-                ? builder.image(cat.heroImage).width(80).height(45).fit("crop").auto("format").url()
-                : null;
+    <div onFocusCapture={() => setFocus("programCards")} onBlurCapture={clearFocus}>
+      <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)" onExpand={() => setFocus("programCards")}>
+        <Stack space={2}>
+          <Text size={0} muted>
+            表示するカテゴリーを選択（ちょうど{MAX_FEATURED}
+            件必要）。順序はナビゲーションに従います。
+          </Text>
+          <Card border radius={2} padding={1}>
+            <Stack space={0}>
+              {orderedCategories.map((cat, i) => {
+                const catId = cat._id.replace(/^drafts\./, "");
+                const isSelected = selectedRefs.has(catId) || selectedRefs.has(cat._id);
+                const isDisabled = !isSelected && selectedRefs.size >= MAX_FEATURED;
+                const imgUrl = cat.heroImage?.asset?._ref
+                  ? builder
+                      .image(cat.heroImage)
+                      .width(80)
+                      .height(45)
+                      .fit("crop")
+                      .auto("format")
+                      .url()
+                  : null;
 
-              return (
-                <Card
-                  key={cat._id}
-                  padding={2}
-                  radius={1}
-                  tone={isSelected ? "primary" : "default"}
-                  style={{
-                    cursor: isDisabled ? "not-allowed" : "pointer",
-                    opacity: isDisabled ? 0.45 : 1,
-                    borderTop: i > 0 ? "1px solid var(--card-border-color)" : undefined,
-                  }}
-                  onClick={() => !isDisabled && handleToggle(catId)}
-                >
-                  <Flex align="center" gap={3}>
-                    <Checkbox
-                      checked={isSelected}
-                      readOnly
-                      style={{ pointerEvents: "none", flexShrink: 0 }}
-                    />
-                    {imgUrl ? (
-                      <div
-                        style={{
-                          width: 60,
-                          height: 34,
-                          borderRadius: 3,
-                          overflow: "hidden",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <img
-                          src={imgUrl}
-                          alt=""
+                return (
+                  <Card
+                    key={cat._id}
+                    padding={2}
+                    radius={1}
+                    tone={isSelected ? "primary" : "default"}
+                    style={{
+                      cursor: isDisabled ? "not-allowed" : "pointer",
+                      opacity: isDisabled ? 0.45 : 1,
+                      borderTop: i > 0 ? "1px solid var(--card-border-color)" : undefined,
+                    }}
+                    onClick={() => !isDisabled && handleToggle(catId)}
+                  >
+                    <Flex align="center" gap={3}>
+                      <Checkbox
+                        checked={isSelected}
+                        readOnly
+                        style={{ pointerEvents: "none", flexShrink: 0 }}
+                      />
+                      {imgUrl ? (
+                        <div
                           style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
+                            width: 60,
+                            height: 34,
+                            borderRadius: 3,
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <img
+                            src={imgUrl}
+                            alt=""
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              display: "block",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            width: 60,
+                            height: 34,
+                            borderRadius: 3,
+                            background: "var(--card-muted-bg-color, #eee)",
+                            flexShrink: 0,
                           }}
                         />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          width: 60,
-                          height: 34,
-                          borderRadius: 3,
-                          background: "var(--card-muted-bg-color, #eee)",
-                          flexShrink: 0,
-                        }}
-                      />
-                    )}
-                    <Stack space={1} style={{ flex: 1 }}>
-                      <Text size={1} weight={isSelected ? "semibold" : "regular"}>
-                        {i18nGet(cat.label, "ja")}
-                      </Text>
-                      <Text size={0} muted>
-                        {i18nGet(cat.label, "en")}
-                      </Text>
-                    </Stack>
-                    {isSelected && (
-                      <Text size={0} muted>
-                        #
-                        {orderedCategories
-                          .filter((c) => {
-                            const id = c._id.replace(/^drafts\./, "");
-                            return selectedRefs.has(id) || selectedRefs.has(c._id);
-                          })
-                          .findIndex((c) => c._id.replace(/^drafts\./, "") === catId) + 1}
-                      </Text>
-                    )}
-                  </Flex>
-                </Card>
-              );
-            })}
-          </Stack>
-        </Card>
-        {selectedRefs.size !== MAX_FEATURED ? (
-          <Text size={0} style={{ color: "var(--card-badge-caution-fg-color, #b06800)" }}>
-            ⚠ {selectedRefs.size}/{MAX_FEATURED} 選択中 — ちょうど{MAX_FEATURED}
-            件選択してから公開してください
-          </Text>
-        ) : (
-          <Text size={0} muted>
-            {selectedRefs.size}/{MAX_FEATURED} 選択中
-          </Text>
-        )}
-      </Stack>
-    </SectionWrapper>
+                      )}
+                      <Stack space={1} style={{ flex: 1 }}>
+                        <Text size={1} weight={isSelected ? "semibold" : "regular"}>
+                          {i18nGet(cat.label, "ja")}
+                        </Text>
+                        <Text size={0} muted>
+                          {i18nGet(cat.label, "en")}
+                        </Text>
+                      </Stack>
+                      {isSelected && (
+                        <Text size={0} muted>
+                          #
+                          {orderedCategories
+                            .filter((c) => {
+                              const id = c._id.replace(/^drafts\./, "");
+                              return selectedRefs.has(id) || selectedRefs.has(c._id);
+                            })
+                            .findIndex((c) => c._id.replace(/^drafts\./, "") === catId) + 1}
+                        </Text>
+                      )}
+                    </Flex>
+                  </Card>
+                );
+              })}
+            </Stack>
+          </Card>
+          {selectedRefs.size !== MAX_FEATURED ? (
+            <Text size={0} style={{ color: "var(--card-badge-caution-fg-color, #b06800)" }}>
+              ⚠ {selectedRefs.size}/{MAX_FEATURED} 選択中 — ちょうど{MAX_FEATURED}
+              件選択してから公開してください
+            </Text>
+          ) : (
+            <Text size={0} muted>
+              {selectedRefs.size}/{MAX_FEATURED} 選択中
+            </Text>
+          )}
+        </Stack>
+      </SectionWrapper>
+    </div>
   );
 }

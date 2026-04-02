@@ -13,6 +13,7 @@ import type {
   NavCategoryData,
   AnnouncementPreviewData,
 } from "./types";
+import { StudioRegion } from "@/lib/components/StudioRegion";
 
 export interface HomepageMergedState {
   homepage: HomepageData;
@@ -74,7 +75,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
       );
     }
     return (
-      <section className="activity-grid-wrap">
+      <StudioRegion as="section" className="activity-grid-wrap" studioId="activityGrid">
         <div
           style={{
             display: "grid",
@@ -152,14 +153,14 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           <GridImage index={4} area="h" />
           <GridImage index={5} area="i" />
         </div>
-      </section>
+      </StudioRegion>
     );
   }
 
   function renderProgramGrid() {
     if (featuredCategoryRefs.length === 0) return null;
     return (
-      <section className="program-grid">
+      <StudioRegion as="section" className="program-grid" studioId="programCards">
         {featuredCategoryRefs.map((ref, i) => {
           const catId = ref._ref;
           const cat = categories.find((c) => c._id === catId || c._id === `drafts.${catId}`);
@@ -212,7 +213,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
             </div>
           );
         })}
-      </section>
+      </StudioRegion>
     );
   }
 
@@ -229,7 +230,12 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
       }}
     >
       {/* Hero section */}
-      <section className="hero-viewport" style={{ position: "relative", minHeight: 300 }}>
+      <StudioRegion
+        as="section"
+        className="hero-viewport"
+        style={{ position: "relative", minHeight: 300 }}
+        studioId="hero"
+      >
         {heroSrc && (
           <img
             src={heroSrc}
@@ -254,7 +260,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
             {en(hp.hero?.tagline)}
           </p>
         </div>
-      </section>
+      </StudioRegion>
 
       <main id="preview-main">
         {/* Announcements band */}
@@ -295,7 +301,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
 
         {/* About section */}
         {about && (
-          <section className="home-section home-section--about">
+          <StudioRegion as="section" className="home-section home-section--about" studioId="about">
             <h2 className="home-section__heading">
               {about.titleJa || "YIAとは"}
               <small lang="en" translate="no">
@@ -326,14 +332,18 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
                 )}
               </div>
             </div>
-          </section>
+          </StudioRegion>
         )}
 
         {/* Activity grid */}
         {renderActivityGrid()}
 
         {/* Access section */}
-        <section className="home-section home-section--tinted">
+        <StudioRegion
+          as="section"
+          className="home-section home-section--tinted"
+          studioId="settings"
+        >
           <h2 className="home-section__heading">
             アクセス
             <small lang="en" translate="no">
@@ -394,7 +404,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
               </div>
             </div>
           </div>
-        </section>
+        </StudioRegion>
       </main>
 
       {/* Footer */}
