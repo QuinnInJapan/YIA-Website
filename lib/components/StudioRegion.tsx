@@ -42,9 +42,9 @@ export function StudioRegion<T extends ElementType = "div">({
   }, [isDirectFocus]);
 
   const outlineStyle: CSSProperties | undefined = isDirectFocus
-    ? { outline: "2px solid var(--card-focus-ring-color)" }
+    ? { outline: "2px solid var(--card-focus-ring-color, #1e3a5f)" }
     : isAncestorFocus
-      ? { outline: "1px dashed var(--card-focus-ring-color)" }
+      ? { outline: "1px dashed var(--card-focus-ring-color, #1e3a5f)" }
       : undefined;
 
   return (
