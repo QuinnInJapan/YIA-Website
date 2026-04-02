@@ -264,17 +264,9 @@ export interface Navigation {
   }[];
 }
 
-export interface HomepageFeaturedSlot {
-  categoryRef: Category;
-  pages: Page[];
-}
-
 export interface HomepageFeatured {
   _type: "homepageFeatured";
-  slot1: HomepageFeaturedSlot;
-  slot2: HomepageFeaturedSlot;
-  slot3: HomepageFeaturedSlot;
-  slot4: HomepageFeaturedSlot;
+  categories: Category[];
 }
 
 export interface Announcement {

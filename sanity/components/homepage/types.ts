@@ -99,19 +99,11 @@ export interface SidebarData {
   [key: string]: unknown;
 }
 
-export interface HomepageFeaturedSlotData {
-  categoryRef?: { _type?: string; _ref: string };
-  pages?: { _type?: string; _ref: string; _key?: string }[];
-}
-
 export interface HomepageFeaturedData {
   _id: string;
   _type: string;
   _rev?: string;
-  slot1?: HomepageFeaturedSlotData;
-  slot2?: HomepageFeaturedSlotData;
-  slot3?: HomepageFeaturedSlotData;
-  slot4?: HomepageFeaturedSlotData;
+  categories?: { _type?: string; _ref: string; _key?: string }[];
   [key: string]: unknown;
 }
 
