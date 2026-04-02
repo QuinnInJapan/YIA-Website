@@ -90,6 +90,48 @@ export interface WarningsSection {
   items: { _key: string; value: I18nString }[];
 }
 
+export interface TableColumn {
+  _key: string;
+  label: I18nString;
+  type?: "text" | "date" | "phone" | "url" | "currency" | "name";
+}
+
+export interface TableRow {
+  _key: string;
+  groupLabel?: I18nString;
+  cells: I18nString[];
+}
+
+export interface TableSection {
+  _type: "table";
+  title?: I18nString;
+  hideTitle?: boolean;
+  caption?: I18nString;
+  columns: TableColumn[];
+  rows: TableRow[];
+}
+
+export interface LabelTableSection {
+  _type: "labelTable";
+  title?: I18nString;
+  hideTitle?: boolean;
+  rows: InfoRow[];
+}
+
+export interface InfoCardsSection {
+  _type: "infoCards";
+  title?: I18nString;
+  hideTitle?: boolean;
+  items: Definition[];
+}
+
+export interface ImageCardsSection {
+  _type: "imageCards";
+  title?: I18nString;
+  hideTitle?: boolean;
+  items: SisterCity[];
+}
+
 export interface ContentSection {
   _type: "content";
   id?: string;
@@ -216,7 +258,11 @@ type PageSectionShape =
   | FlyersSection
   | BoardMembersSection
   | FeeTableSection
-  | DirectoryListSection;
+  | DirectoryListSection
+  | TableSection
+  | LabelTableSection
+  | InfoCardsSection
+  | ImageCardsSection;
 
 export type PageSection = PageSectionShape & { _key: string };
 
