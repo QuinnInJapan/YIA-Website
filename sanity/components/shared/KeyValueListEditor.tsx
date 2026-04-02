@@ -8,10 +8,12 @@ import { i18nGet, i18nSet } from "./i18n";
 function AutoTextarea({
   value,
   onChange,
+  placeholder,
   style,
 }: {
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -30,6 +32,7 @@ function AutoTextarea({
       ref={ref}
       rows={1}
       value={value}
+      placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
       onInput={resize}
       style={{
@@ -52,8 +55,6 @@ function AutoTextarea({
 
 interface KeyValueItem {
   _key: string;
-  label?: { _key: string; value: string }[] | null;
-  value?: { _key: string; value: string }[] | null;
   [key: string]: unknown;
 }
 
@@ -61,24 +62,38 @@ export function KeyValueListEditor({
   label,
   labelHeader = "ラベル",
   valueHeader = "値",
+  fieldNames = { label: "label", value: "value" },
+  placeholders,
+  addLabel = "+ 行を追加",
   items,
   onChange,
 }: {
   label: string;
   labelHeader?: string;
   valueHeader?: string;
+  fieldNames?: { label: string; value: string };
+  placeholders?: {
+    labelJa?: string;
+    labelEn?: string;
+    valueJa?: string;
+    valueEn?: string;
+  };
+  addLabel?: string;
   items: KeyValueItem[];
   onChange: (items: KeyValueItem[]) => void;
 }) {
-  function updateItem(index: number, field: "label" | "value", lang: string, text: string) {
+  const labelField = fieldNames.label;
+  const valueField = fieldNames.value;
+
+  function getI18n(item: KeyValueItem, field: string) {
+    return item[field] as { _key: string; value: string }[] | null | undefined;
+  }
+
+  function updateItem(index: number, field: string, lang: string, text: string) {
     const updated = [...items];
     updated[index] = {
       ...updated[index],
-      [field]: i18nSet(
-        updated[index][field] as { _key: string; value: string }[] | null,
-        lang,
-        text,
-      ),
+      [field]: i18nSet(getI18n(updated[index], field) ?? null, lang, text),
     };
     onChange(updated);
   }
@@ -92,11 +107,11 @@ export function KeyValueListEditor({
       ...items,
       {
         _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
-        label: [
+        [labelField]: [
           { _key: "ja", value: "" },
           { _key: "en", value: "" },
         ],
-        value: [
+        [valueField]: [
           { _key: "ja", value: "" },
           { _key: "en", value: "" },
         ],
@@ -114,7 +129,7 @@ export function KeyValueListEditor({
         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
           {items.map((item, index) => (
             <div
-              key={item._key}
+              key={item._key as string}
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr auto",
@@ -131,14 +146,16 @@ export function KeyValueListEditor({
                 </div>
                 <TextInput
                   fontSize={0}
-                  value={i18nGet(item.label, "ja")}
-                  onChange={(e) => updateItem(index, "label", "ja", e.currentTarget.value)}
+                  value={i18nGet(getI18n(item, labelField), "ja")}
+                  placeholder={placeholders?.labelJa}
+                  onChange={(e) => updateItem(index, labelField, "ja", e.currentTarget.value)}
                   style={{ marginBottom: 4 }}
                 />
                 <TextInput
                   fontSize={0}
-                  value={i18nGet(item.label, "en")}
-                  onChange={(e) => updateItem(index, "label", "en", e.currentTarget.value)}
+                  value={i18nGet(getI18n(item, labelField), "en")}
+                  placeholder={placeholders?.labelEn}
+                  onChange={(e) => updateItem(index, labelField, "en", e.currentTarget.value)}
                 />
               </div>
               <div>
@@ -146,13 +163,15 @@ export function KeyValueListEditor({
                   {valueHeader}（日/EN）
                 </div>
                 <AutoTextarea
-                  value={i18nGet(item.value, "ja")}
-                  onChange={(text) => updateItem(index, "value", "ja", text)}
+                  value={i18nGet(getI18n(item, valueField), "ja")}
+                  placeholder={placeholders?.valueJa}
+                  onChange={(text) => updateItem(index, valueField, "ja", text)}
                   style={{ marginBottom: 4 }}
                 />
                 <AutoTextarea
-                  value={i18nGet(item.value, "en")}
-                  onChange={(text) => updateItem(index, "value", "en", text)}
+                  value={i18nGet(getI18n(item, valueField), "en")}
+                  placeholder={placeholders?.valueEn}
+                  onChange={(text) => updateItem(index, valueField, "en", text)}
                 />
               </div>
               <button
@@ -189,7 +208,7 @@ export function KeyValueListEditor({
           cursor: "pointer",
         }}
       >
-        + 行を追加
+        {addLabel}
       </button>
     </div>
   );
