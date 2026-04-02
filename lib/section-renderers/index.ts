@@ -1,4 +1,10 @@
 import type { SectionHandler } from "./types";
+// New handlers
+import { table } from "./table";
+import { labelTable } from "./label-table";
+import { infoCards } from "./info-cards";
+import { imageCards } from "./image-cards";
+// Legacy handlers (removed in Task 18 after migrations)
 import { warnings } from "./warnings";
 import { content } from "./content";
 import { infoTable } from "./info-table";
@@ -15,6 +21,12 @@ import { feeTable } from "./fee-table";
 import { directoryList } from "./directory-list";
 
 export const sectionHandlers: Record<string, SectionHandler> = {
+  // New
+  table,
+  labelTable,
+  infoCards,
+  imageCards,
+  // Legacy
   warnings,
   content,
   infoTable,
