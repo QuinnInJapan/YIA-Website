@@ -62,6 +62,14 @@ fieldNames?: {
 }
 ```
 
+### Title Handling (All Four Types)
+
+No `hideTitle` checkbox in any editor. Each editor shows a `BilingualInput` for title labeled "タイトル（任意）". If the editor leaves it blank, the frontend renderer's existing `if (s.title && !s.hideTitle)` guard means nothing renders. Editors never touch the `hideTitle` field.
+
+### Column Types (`table` only)
+
+The type dropdown is removed from the column form. All columns are treated as plain text. The `type` field remains in the schema (existing migrated data has types set) but is not exposed in the editor.
+
 ### Props Threading
 
 `ImageCardsSectionEditor` receives `onOpenImagePicker` from `SectionEditor`. The callback is closed over with item index when calling it per-item.
@@ -76,8 +84,7 @@ fieldNames?: {
 
 **UI:**
 
-- `BilingualInput` for title (hidden when `hideTitle` is true)
-- `hideTitle` checkbox labeled "タイトルなし"
+- `BilingualInput` for title, labeled "タイトル（任意）"
 - `KeyValueListEditor` with:
   - `labelHeader="ラベル"`, `valueHeader="値"`
   - `fieldNames={{ label: "label", value: "value" }}`
@@ -93,8 +100,7 @@ fieldNames?: {
 
 **UI:**
 
-- `BilingualInput` for title (hidden when `hideTitle` is true)
-- `hideTitle` checkbox labeled "タイトルなし"
+- `BilingualInput` for title, labeled "タイトル（任意）"
 - `KeyValueListEditor` with:
   - `labelHeader="タイトル"`, `valueHeader="文章"`
   - `fieldNames={{ label: "term", value: "definition" }}`
@@ -110,8 +116,7 @@ fieldNames?: {
 
 **UI:**
 
-- `BilingualInput` for title (hidden when `hideTitle` is true)
-- `hideTitle` checkbox labeled "タイトルなし"
+- `BilingualInput` for title, labeled "タイトル（任意）"
 - Vertical list of item cards. Each card shows:
   - Small image thumbnail (or gray placeholder "画像なし")
   - Japanese name text
@@ -159,7 +164,6 @@ Vertical list of column cards. Each card shows: Japanese label + type badge (e.g
 "＋ 列を追加" opens inline form:
 
 - `BilingualInput` for column label, placeholders "例：氏名" / "e.g., Name"
-- Dropdown for type: テキスト (default) / 日付 / 電話番号 / URL / 金額 / 氏名
 - "追加" + "キャンセル"
 
 **Column deletion safety:**
@@ -198,9 +202,8 @@ Clicking a row opens its inline edit form (same as add form, pre-populated).
 
 **Title and caption:**
 
-- `BilingualInput` for title (hidden when `hideTitle` is true)
-- `hideTitle` checkbox labeled "タイトルなし"
-- `BilingualInput` for caption (always optional), placeholder "例：2026年3月現在" / "e.g., As of March 2026"
+- `BilingualInput` for title, labeled "タイトル（任意）"
+- `BilingualInput` for caption, labeled "キャプション（任意）", placeholder "例：2026年3月現在" / "e.g., As of March 2026"
 
 ---
 
@@ -212,7 +215,7 @@ No drag-to-reorder or up/down buttons anywhere. Editors add/delete to reorganize
 
 ## Out of Scope
 
-- `hideTitle` validation is schema-level only; editors do not replicate it
-- Column type field is metadata only; no format validation on cell input
+- `hideTitle` field — not exposed in any editor; title left blank = no title rendered
+- Column `type` field — not exposed in editor; existing migrated values preserved but untouched
 - Hotspot/crop editing for `imageCards` images
 - `gallery` section editor (already handled via right panel)
