@@ -44,6 +44,7 @@ export async function fetchHomepageAbout() {
 }
 
 // ── Single page fetch ───────────────────────────────────────────
+// NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
 export async function fetchPageBySlug(slug: string) {
   return client.fetch(`*[_type == "page" && slug == $slug][0]`, { slug });
 }

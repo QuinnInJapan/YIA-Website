@@ -218,7 +218,7 @@ type PageSectionShape =
   | FeeTableSection
   | DirectoryListSection;
 
-export type PageSection = PageSectionShape & { _key?: string };
+export type PageSection = PageSectionShape & { _key: string };
 
 // ─── Document Types (top-level keys in site-data.json) ─────────────
 

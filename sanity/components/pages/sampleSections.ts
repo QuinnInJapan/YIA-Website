@@ -20,7 +20,7 @@ function i18n(ja: string, en: string) {
  */
 export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   content: {
-    _type: "content",
+    _type: "content", _key: "sample-content",
     title: i18n("活動について", "About Activities"),
     description: i18n(
       "国際交流協会は、地域に住む外国人住民と日本人住民が共に暮らしやすいまちづくりを目指して活動しています。",
@@ -29,7 +29,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   infoTable: {
-    _type: "infoTable",
+    _type: "infoTable", _key: "sample-infoTable",
     title: i18n("教室情報", "Class Information"),
     rows: [
       {
@@ -45,7 +45,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   links: {
-    _type: "links",
+    _type: "links", _key: "sample-links",
     title: i18n("資料ダウンロード", "Downloads"),
     items: [
       { label: i18n("申込書", "Application Form"), url: "#", type: "PDF" },
@@ -55,7 +55,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   warnings: {
-    _type: "warnings",
+    _type: "warnings", _key: "sample-warnings",
     items: [
       {
         _key: "sample0",
@@ -68,7 +68,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   eventSchedule: {
-    _type: "eventSchedule",
+    _type: "eventSchedule", _key: "sample-eventSchedule",
     title: i18n("イベント日程", "Event Schedule"),
     entries: [
       { date: "2025-04-12", time: "10:00", description: i18n("開会式", "Opening Ceremony") },
@@ -78,7 +78,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   groupSchedule: {
-    _type: "groupSchedule",
+    _type: "groupSchedule", _key: "sample-groupSchedule",
     title: i18n("教室スケジュール", "Class Schedule"),
     groups: [
       {
@@ -106,7 +106,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   tableSchedule: {
-    _type: "tableSchedule",
+    _type: "tableSchedule", _key: "sample-tableSchedule",
     title: i18n("時間割", "Timetable"),
     columns: ["時間", "月", "火", "水"],
     rows: [
@@ -117,7 +117,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   definitions: {
-    _type: "definitions",
+    _type: "definitions", _key: "sample-definitions",
     title: i18n("用語集", "Glossary"),
     items: [
       {
@@ -135,7 +135,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   feeTable: {
-    _type: "feeTable",
+    _type: "feeTable", _key: "sample-feeTable",
     title: i18n("会費", "Membership Fees"),
     rows: [
       { memberType: i18n("個人会員", "Individual"), fee: i18n("3,000円", "¥3,000") },
@@ -145,7 +145,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   directoryList: {
-    _type: "directoryList",
+    _type: "directoryList", _key: "sample-directoryList",
     title: i18n("連絡先一覧", "Contact Directory"),
     entries: [
       { nameJa: "市民交流センター", tel: "0123-45-6789" },
@@ -155,7 +155,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   boardMembers: {
-    _type: "boardMembers",
+    _type: "boardMembers", _key: "sample-boardMembers",
     title: i18n("役員一覧", "Board Members"),
     asOf: "2025-04-01",
     members: [
@@ -167,7 +167,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   fairTrade: {
-    _type: "fairTrade",
+    _type: "fairTrade", _key: "sample-fairTrade",
     title: i18n("フェアトレード", "Fair Trade"),
     description: i18n(
       "フェアトレード商品を販売しています。途上国の生産者を支援する取り組みです。",
@@ -184,7 +184,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
   },
 
   history: {
-    _type: "history",
+    _type: "history", _key: "sample-history",
     title: i18n("沿革", "History"),
     years: [
       { year: "1990", cuisines: "国際交流協会設立" },
