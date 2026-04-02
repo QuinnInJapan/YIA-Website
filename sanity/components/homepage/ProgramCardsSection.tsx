@@ -25,7 +25,6 @@ export function ProgramCardsSection({
   featured: HomepageFeaturedData | null;
   categories: CategoryData[];
   navCategories: NavCategoryData[];
-  allPages: PageData[];
   updateField: UpdateFieldFn;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
@@ -57,7 +56,7 @@ export function ProgramCardsSection({
     }
 
     // Maintain nav order
-    const navOrder = orderedCategories.map((c) => c._id);
+    const navOrder = orderedCategories.map((c) => c._id.replace(/^drafts\./, ""));
     newRefs.sort((a, b) => navOrder.indexOf(a) - navOrder.indexOf(b));
 
     const newCategories = newRefs.map((ref) => ({
@@ -146,7 +145,13 @@ export function ProgramCardsSection({
                     </Stack>
                     {isSelected && (
                       <Text size={0} muted>
-                        #{Array.from(selectedRefs).indexOf(catId) + 1}
+                        #
+                        {orderedCategories
+                          .filter((c) => {
+                            const id = c._id.replace(/^drafts\./, "");
+                            return selectedRefs.has(id) || selectedRefs.has(c._id);
+                          })
+                          .findIndex((c) => c._id.replace(/^drafts\./, "") === catId) + 1}
                       </Text>
                     )}
                   </Flex>

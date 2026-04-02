@@ -701,7 +701,6 @@ export function HomepageEditor({
             featured={featured}
             categories={categories}
             navCategories={navCategories}
-            allPages={allPages}
             updateField={updateField}
           />
 
