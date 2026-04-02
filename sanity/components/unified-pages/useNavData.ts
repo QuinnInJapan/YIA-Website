@@ -338,7 +338,7 @@ export function useNavData() {
       // Check homepageFeatured references
       const featured = await client.fetch<{ refs: string[] } | null>(
         `*[_type == "homepageFeatured"][0]{
-          "refs": [slot1.categoryRef._ref, slot2.categoryRef._ref, slot3.categoryRef._ref, slot4.categoryRef._ref]
+          "refs": categories[]._ref
         }`,
       );
       if ((featured?.refs ?? []).includes(catRef)) {
