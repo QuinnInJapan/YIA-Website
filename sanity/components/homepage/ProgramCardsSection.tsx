@@ -6,13 +6,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 import { Card, Stack, Flex, Text, Checkbox } from "@sanity/ui";
 import { i18nGet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
-import type {
-  HomepageFeaturedData,
-  CategoryData,
-  NavCategoryData,
-  PageData,
-  UpdateFieldFn,
-} from "./types";
+import type { HomepageFeaturedData, CategoryData, NavCategoryData, UpdateFieldFn } from "./types";
 
 const MAX_FEATURED = 4;
 
