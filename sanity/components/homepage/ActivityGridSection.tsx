@@ -126,7 +126,7 @@ export function ActivityGridSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("activityGrid")} onBlurCapture={clearFocus}>
+    <div onFocusCapture={() => setFocus("activityGrid")} onBlurCapture={clearFocus} onClick={() => setFocus("activityGrid")}>
       <SectionWrapper id="section-activity" title="活動グリッド">
         {/* High-fidelity grid matching the actual homepage layout:
           4 equal columns, 3 rows

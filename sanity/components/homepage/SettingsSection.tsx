@@ -128,7 +128,7 @@ export function SettingsSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("settings")} onBlurCapture={clearFocus}>
+    <div onFocusCapture={() => setFocus("settings")} onBlurCapture={clearFocus} onClick={() => setFocus("settings")}>
       <SectionWrapper id="section-settings" title="サイト設定">
         {/* ── Organization ── */}
         <h4

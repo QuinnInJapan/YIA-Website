@@ -63,7 +63,7 @@ export function HeroSection({
   }
 
   return (
-    <div onFocusCapture={() => setFocus("hero")} onBlurCapture={clearFocus}>
+    <div onFocusCapture={() => setFocus("hero")} onBlurCapture={clearFocus} onClick={() => setFocus("hero")}>
       <SectionWrapper id="section-hero" title="ヒーロー">
         {/* Hero image */}
         <div style={{ marginBottom: 16 }}>
