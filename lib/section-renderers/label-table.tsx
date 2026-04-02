@@ -8,7 +8,9 @@ export const labelTable: SectionHandler<LabelTableSection> = (s, ctx) => {
     ctx.flush();
     return;
   }
-  ctx.addTocHeader(ja(s.title), en(s.title));
+  if (!s.hideTitle) {
+    ctx.addTocHeader(ja(s.title), en(s.title));
+  }
   ctx.push(<InfoTable rows={s.rows} />);
   ctx.flush();
 };

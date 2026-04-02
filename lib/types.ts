@@ -137,11 +137,17 @@ export interface ContentSection {
   id?: string;
   title?: I18nString;
   description?: I18nString;
+  /** @deprecated Sub-fields removed from schema in Task 3; kept here until Task 18 cleanup completes */
   infoTable?: InfoRow[];
+  /** @deprecated */
   checklist?: { label: I18nString; note?: I18nString }[];
+  /** @deprecated */
   documents?: Document[];
+  /** @deprecated */
   note?: I18nString;
+  /** @deprecated */
   images?: ImageFile[];
+  /** @deprecated */
   schedule?: { city: string; period: string }[];
 }
 

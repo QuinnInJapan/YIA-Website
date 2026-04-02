@@ -8,7 +8,9 @@ export const infoCards: SectionHandler<InfoCardsSection> = (s, ctx) => {
     ctx.flush();
     return;
   }
-  ctx.addTocHeader(ja(s.title), en(s.title));
+  if (!s.hideTitle) {
+    ctx.addTocHeader(ja(s.title), en(s.title));
+  }
   for (const def of s.items) {
     ctx.push(<DefinitionCard term={def.term} definition={def.definition} />);
   }
