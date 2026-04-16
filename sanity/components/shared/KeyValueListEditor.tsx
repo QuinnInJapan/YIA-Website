@@ -68,7 +68,7 @@ export function KeyValueListEditor({
   items,
   onChange,
 }: {
-  label: string;
+  label?: string;
   labelHeader?: string;
   valueHeader?: string;
   fieldNames?: { label: string; value: string };
@@ -121,36 +121,147 @@ export function KeyValueListEditor({
 
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
-        {label}
-      </div>
-
       {items.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
+        <div
+          style={{
+            border: "1px solid var(--card-border-color)",
+            borderRadius: 4,
+            overflow: "hidden",
+            marginBottom: 8,
+          }}
+        >
+          {/* Header row */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1.6fr 24px",
+              gridTemplateRows: "auto auto",
+              background: "var(--card-bg2-color, var(--card-border-color))",
+              borderBottom: "1px solid var(--card-border-color)",
+            }}
+          >
+            <div
+              style={{
+                gridColumn: 1,
+                gridRow: 1,
+                padding: "5px 8px",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "var(--card-fg-color)",
+                borderRight: "1px solid var(--card-border-color)",
+                borderBottom: "1px solid var(--card-border-color)",
+              }}
+            >
+              {labelHeader}
+            </div>
+            <div
+              style={{
+                gridColumn: 2,
+                gridRow: 1,
+                padding: "5px 8px",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "var(--card-fg-color)",
+                borderBottom: "1px solid var(--card-border-color)",
+              }}
+            >
+              {valueHeader}
+            </div>
+            <div style={{ gridColumn: 3, gridRow: "1 / span 2" }} />
+            <div
+              style={{
+                gridColumn: 1,
+                gridRow: 2,
+                padding: "5px 8px",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "var(--card-muted-fg-color)",
+                borderRight: "1px solid var(--card-border-color)",
+              }}
+            >
+              {labelHeader === "ラベル" ? "Label" : labelHeader}
+            </div>
+            <div
+              style={{
+                gridColumn: 2,
+                gridRow: 2,
+                padding: "5px 8px",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "var(--card-muted-fg-color)",
+              }}
+            >
+              {valueHeader === "値" ? "Value" : valueHeader}
+            </div>
+          </div>
+
+          {/* Data rows */}
           {items.map((item, index) => (
             <div
               key={item._key as string}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr auto",
-                gap: 6,
-                padding: "8px 10px",
-                border: "1px solid var(--card-border-color)",
-                borderRadius: 4,
-                alignItems: "start",
+                gridTemplateColumns: "1fr 1.6fr 24px",
+                gridTemplateRows: "auto auto",
+                borderBottom:
+                  index < items.length - 1 ? "1px solid var(--card-border-color)" : undefined,
               }}
             >
-              <div>
-                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 2 }}>
-                  {labelHeader}（日/EN）
-                </div>
+              {/* Japanese label input */}
+              <div
+                style={{
+                  gridColumn: 1,
+                  gridRow: 1,
+                  padding: "6px 8px 3px",
+                  borderRight: "1px solid var(--card-border-color)",
+                }}
+              >
                 <TextInput
                   fontSize={0}
                   value={i18nGet(getI18n(item, labelField), "ja")}
                   placeholder={placeholders?.labelJa}
                   onChange={(e) => updateItem(index, labelField, "ja", e.currentTarget.value)}
-                  style={{ marginBottom: 4 }}
                 />
+              </div>
+
+              {/* Japanese value textarea */}
+              <div style={{ gridColumn: 2, gridRow: 1, padding: "6px 8px 3px" }}>
+                <AutoTextarea
+                  value={i18nGet(getI18n(item, valueField), "ja")}
+                  placeholder={placeholders?.valueJa}
+                  onChange={(text) => updateItem(index, valueField, "ja", text)}
+                />
+              </div>
+
+              {/* Delete button — spans both rows */}
+              <button
+                type="button"
+                onClick={() => removeItem(index)}
+                title="削除"
+                style={{
+                  gridColumn: 3,
+                  gridRow: "1 / span 2",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "none",
+                  background: "transparent",
+                  color: "var(--card-muted-fg-color)",
+                  cursor: "pointer",
+                }}
+              >
+                <TrashIcon />
+              </button>
+
+              {/* English label input */}
+              <div
+                style={{
+                  gridColumn: 1,
+                  gridRow: 2,
+                  padding: "3px 8px 6px",
+                  borderRight: "1px solid var(--card-border-color)",
+                }}
+              >
                 <TextInput
                   fontSize={0}
                   value={i18nGet(getI18n(item, labelField), "en")}
@@ -158,38 +269,15 @@ export function KeyValueListEditor({
                   onChange={(e) => updateItem(index, labelField, "en", e.currentTarget.value)}
                 />
               </div>
-              <div>
-                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 2 }}>
-                  {valueHeader}（日/EN）
-                </div>
-                <AutoTextarea
-                  value={i18nGet(getI18n(item, valueField), "ja")}
-                  placeholder={placeholders?.valueJa}
-                  onChange={(text) => updateItem(index, valueField, "ja", text)}
-                  style={{ marginBottom: 4 }}
-                />
+
+              {/* English value textarea */}
+              <div style={{ gridColumn: 2, gridRow: 2, padding: "3px 8px 6px" }}>
                 <AutoTextarea
                   value={i18nGet(getI18n(item, valueField), "en")}
                   placeholder={placeholders?.valueEn}
                   onChange={(text) => updateItem(index, valueField, "en", text)}
                 />
               </div>
-              <button
-                type="button"
-                onClick={() => removeItem(index)}
-                title="削除"
-                style={{
-                  padding: "4px",
-                  border: "none",
-                  borderRadius: 3,
-                  background: "transparent",
-                  color: "var(--card-muted-fg-color)",
-                  cursor: "pointer",
-                  marginTop: 16,
-                }}
-              >
-                <TrashIcon />
-              </button>
             </div>
           ))}
         </div>
