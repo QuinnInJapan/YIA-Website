@@ -93,7 +93,7 @@ function TablePreview({
     >
       {titleJa && <div style={{ fontWeight: 700, marginBottom: 6, fontSize: 15 }}>{titleJa}</div>}
       <SectionTable
-        columns={columns as unknown as TableColumn[]}
+        columns={columns.filter((c) => c.label != null) as unknown as TableColumn[]}
         rows={rows as unknown as TableRow[]}
       />
     </div>
@@ -590,7 +590,7 @@ export function TableEditorPanel({
                         cursor: "pointer",
                       }}
                     >
-                      ×
+                      <TrashIcon style={{ fontSize: 10 }} />
                     </button>
                   </div>
                 );
