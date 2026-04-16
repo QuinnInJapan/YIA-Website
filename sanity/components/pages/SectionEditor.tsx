@@ -5,7 +5,6 @@ import { LinksSectionEditor } from "./sections/LinksSectionEditor";
 import { LabelTableSectionEditor } from "./sections/LabelTableSectionEditor";
 import { InfoCardsSectionEditor } from "./sections/InfoCardsSectionEditor";
 import { ImageCardsSectionEditor } from "./sections/ImageCardsSectionEditor";
-import { TableSectionEditor } from "./sections/TableSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
@@ -55,8 +54,6 @@ export function SectionEditor({
             onOpenImagePicker={onOpenImagePicker}
           />
         );
-      case "table":
-        return <TableSectionEditor section={section} onUpdateField={onUpdateField} />;
       default:
         // warnings, gallery, and any unknown future types
         return <GenericSectionEditor section={section} onUpdateField={onUpdateField} />;
