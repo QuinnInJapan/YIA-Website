@@ -2,8 +2,11 @@
 
 export type I18nArr = { _key: string; value: string }[];
 
+export type TableColumnType = "text" | "date" | "phone" | "url" | "currency" | "name";
+
 export interface TableColumnDraft {
   _key: string;
+  type?: TableColumnType;
   label?: I18nArr | null;
 }
 

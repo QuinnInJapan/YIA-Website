@@ -274,6 +274,7 @@ export function TableEditorPanel({
   function saveNewColumn(ja: string, en: string) {
     const newCol: TableColumnDraft = {
       _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+      type: "text",
       label: [
         { _key: "ja", value: ja },
         { _key: "en", value: en },
