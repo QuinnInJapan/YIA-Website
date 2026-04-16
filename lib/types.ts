@@ -226,7 +226,6 @@ export interface Page {
   template?: string;
   categoryRef?: { _ref: string };
   title: I18nString;
-  subtitle?: I18nString;
   description?: I18nString;
   images?: ImageFile[];
   sections: PageSection[];

@@ -22,7 +22,7 @@ import { sectionDefaults } from "../pages/sectionDefaults";
 
 const DOC_PROJECTION = `{
   _id, _rev, _updatedAt,
-  title, subtitle, description, slug, template,
+  title, description, slug, template,
   "categoryRef": categoryRef,
   images,
   sections[] {
@@ -473,32 +473,6 @@ export function PageEditor({
                 value={i18nGet(merged.title, "en")}
                 onChange={(e) =>
                   updateField("title", i18nSet(merged.title, "en", e.currentTarget.value))
-                }
-              />
-            </div>
-
-            {/* Subtitle */}
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                サブタイトル（日本語）
-              </div>
-              <TextInput
-                fontSize={1}
-                value={i18nGet(merged.subtitle, "ja")}
-                onChange={(e) =>
-                  updateField("subtitle", i18nSet(merged.subtitle, "ja", e.currentTarget.value))
-                }
-              />
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                サブタイトル（English）
-              </div>
-              <TextInput
-                fontSize={1}
-                value={i18nGet(merged.subtitle, "en")}
-                onChange={(e) =>
-                  updateField("subtitle", i18nSet(merged.subtitle, "en", e.currentTarget.value))
                 }
               />
             </div>

@@ -62,13 +62,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "subtitle",
-      title: "サブタイトル",
-      type: "internationalizedArrayString",
-
-      description: "タイトルの下に小さく表示される補足テキスト（任意）。",
-    }),
-    defineField({
       name: "description",
       title: "説明",
       type: "internationalizedArrayText",
