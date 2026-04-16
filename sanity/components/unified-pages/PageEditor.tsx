@@ -555,7 +555,6 @@ export function PageEditor({
                         onDeselectTable?.();
                       } else {
                         setExpandedSection(null);
-                        onCloseRightPanel?.();
                         onOpenTableEditor(section._key, section, (field, value) =>
                           updateSection(index, field, value),
                         );
