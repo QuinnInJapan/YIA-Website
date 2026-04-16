@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useClient } from "sanity";
 import { TextInput } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
-import { i18nGet, i18nSet } from "../shared/i18n";
+import { AutoTextarea } from "../shared/BilingualTextarea";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
 import { FieldLabel, OverlayButton, ImageOverlayActions, EmptyImageSlot } from "./HeroSection";
@@ -111,42 +111,11 @@ export function AboutSection({
           )}
         </div>
 
-        {/* Alt text */}
-        <FieldLabel label="代替テキスト（日本語）">
-          <TextInput
-            fontSize={1}
-            value={i18nGet(about.imageAlt, "ja")}
-            onChange={(e) =>
-              updateField(
-                "homepageAbout",
-                aboutId,
-                "imageAlt",
-                i18nSet(about.imageAlt, "ja", e.currentTarget.value),
-              )
-            }
-          />
-        </FieldLabel>
-        <FieldLabel label="代替テキスト（English）">
-          <TextInput
-            fontSize={1}
-            value={i18nGet(about.imageAlt, "en")}
-            onChange={(e) =>
-              updateField(
-                "homepageAbout",
-                aboutId,
-                "imageAlt",
-                i18nSet(about.imageAlt, "en", e.currentTarget.value),
-              )
-            }
-          />
-        </FieldLabel>
-
         {/* Body fields */}
         <FieldLabel label="本文（日本語）">
-          <textarea
-            rows={5}
+          <AutoTextarea
             value={about.bodyJa ?? ""}
-            onChange={(e) => updateField("homepageAbout", aboutId, "bodyJa", e.target.value)}
+            onChange={(v) => updateField("homepageAbout", aboutId, "bodyJa", v)}
             style={{
               width: "100%",
               padding: "8px 10px",
@@ -154,17 +123,15 @@ export function AboutSection({
               borderRadius: 4,
               fontSize: 13,
               fontFamily: "inherit",
-              resize: "vertical",
               background: "transparent",
               color: "inherit",
             }}
           />
         </FieldLabel>
         <FieldLabel label="本文（English）">
-          <textarea
-            rows={5}
+          <AutoTextarea
             value={about.bodyEn ?? ""}
-            onChange={(e) => updateField("homepageAbout", aboutId, "bodyEn", e.target.value)}
+            onChange={(v) => updateField("homepageAbout", aboutId, "bodyEn", v)}
             style={{
               width: "100%",
               padding: "8px 10px",
@@ -172,7 +139,6 @@ export function AboutSection({
               borderRadius: 4,
               fontSize: 13,
               fontFamily: "inherit",
-              resize: "vertical",
               background: "transparent",
               color: "inherit",
             }}

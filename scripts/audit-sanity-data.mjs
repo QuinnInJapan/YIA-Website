@@ -113,7 +113,6 @@ function auditAnnouncement(doc) {
 
   // Optional i18n
   checkI18nField(doc, "excerpt", doc.excerpt);
-  if (doc.heroImage?.alt) checkI18nField(doc, "heroImage.alt", doc.heroImage.alt);
 }
 
 function auditPage(doc) {
@@ -167,7 +166,6 @@ function auditBlogPost(doc) {
   checkI18nField(doc, "category", doc.category);
   if (!doc.slug?.current && !doc.slug) warn(doc._type, doc._id, "Missing slug");
   if (!doc.publishedAt) warn(doc._type, doc._id, "Missing publishedAt");
-  if (doc.heroImage?.alt) checkI18nField(doc, "heroImage.alt", doc.heroImage.alt);
   if (doc.relatedPosts) {
     for (const ref of doc.relatedPosts) checkRef(doc, "relatedPosts", ref);
   }

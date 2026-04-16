@@ -57,7 +57,7 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
                       <div className="cat-item__img-wrap">
                         <LazyImage
                           src={heroSrc}
-                          alt={ja(post.heroImage?.alt) || ja(post.title)}
+                          alt={ja(post.title)}
                           fill
                           className="cat-item__img"
                         />

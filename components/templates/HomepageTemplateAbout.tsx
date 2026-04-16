@@ -36,7 +36,7 @@ export default async function HomepageTemplateAbout() {
   const about = await fetchHomepageAbout();
   const aboutImage = about?.image ? imageUrl(about.image) : null;
   const aboutImagePos = about?.image ? hotspotPosition(about.image) : null;
-  const aboutAlt = about?.imageAlt ? ja(about.imageAlt) : "YIA活動の様子";
+  const aboutAlt = "YIA活動の様子";
   // Fallback to activity grid image if no dedicated photo uploaded yet
   const framedPhoto =
     aboutImage ?? (hp.activityGrid?.images?.[0] ? imageUrl(hp.activityGrid.images[0]) : null);
@@ -205,9 +205,9 @@ export default async function HomepageTemplateAbout() {
             )}
             <div className="mission-block">
               <h2 className="home-section__heading">
-                {about?.titleJa ?? "YIAについて"}
+                {about?.titleJa}
                 <small lang="en" translate="no">
-                  {about?.titleEn ?? "About Us"}
+                  {about?.titleEn}
                 </small>
               </h2>
               <p className="mission-block__ja">{bodyJa}</p>

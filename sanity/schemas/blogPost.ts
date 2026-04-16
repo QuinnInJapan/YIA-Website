@@ -36,11 +36,8 @@ export default defineType({
       date?: string;
       image?: unknown;
     }) => ({
-      title:
-        title?.find((t) => t._key === "ja")?.value || "Untitled",
-      subtitle: date
-        ? new Date(date).toLocaleDateString("ja-JP")
-        : "下書き",
+      title: title?.find((t) => t._key === "ja")?.value || "Untitled",
+      subtitle: date ? new Date(date).toLocaleDateString("ja-JP") : "下書き",
       media: image as React.ReactElement | undefined,
     }),
   },
@@ -56,12 +53,15 @@ export default defineType({
       name: "slug",
       title: "スラッグ",
       type: "slug",
-      description:
-        "URLに使用されるスラッグ。タイトルから自動生成できます。",
+      description: "URLに使用されるスラッグ。タイトルから自動生成できます。",
       options: {
         source: (doc: Record<string, unknown>) => {
           const title = doc.title as { _key: string; value: string }[] | undefined;
-          return title?.find((t) => t._key === "en")?.value || title?.find((t) => t._key === "ja")?.value || "";
+          return (
+            title?.find((t) => t._key === "en")?.value ||
+            title?.find((t) => t._key === "ja")?.value ||
+            ""
+          );
         },
         slugify: (input: string) =>
           input
@@ -100,21 +100,12 @@ export default defineType({
       type: "image",
       description: "記事の上部とカードに表示される画像。",
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: "alt",
-          type: "internationalizedArrayString",
-          title: "代替テキスト",
-          description: "画像の説明（アクセシビリティ用）。",
-        }),
-      ],
     }),
     defineField({
       name: "excerpt",
       title: "抜粋",
       type: "internationalizedArrayText",
-      description:
-        "一覧カードに表示される短い要約。省略時は本文から自動生成。",
+      description: "一覧カードに表示される短い要約。省略時は本文から自動生成。",
     }),
     defineField({
       name: "body",

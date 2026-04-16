@@ -73,13 +73,6 @@ export default defineType({
       title: "ヒーロー画像",
       type: "image",
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: "alt",
-          type: "internationalizedArrayString",
-          title: "代替テキスト",
-        }),
-      ],
     }),
     defineField({
       name: "excerpt",

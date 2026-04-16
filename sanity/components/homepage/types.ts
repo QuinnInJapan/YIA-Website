@@ -36,7 +36,6 @@ export interface HomepageAboutData {
   titleJa?: string;
   titleEn?: string;
   image?: ImageField;
-  imageAlt?: I18nString[];
   bodyJa?: string;
   bodyEn?: string;
   [key: string]: unknown;

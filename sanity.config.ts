@@ -65,14 +65,6 @@ export default defineConfig({
             {
               type: "image",
               options: { hotspot: true, accept: "image/*" },
-              fields: [
-                defineField({
-                  name: "alt",
-                  type: "string",
-                  title: "代替テキスト",
-                  description: "画像の説明（アクセシビリティ用）",
-                }),
-              ],
             },
             {
               type: "object",

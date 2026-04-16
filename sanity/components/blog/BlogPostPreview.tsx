@@ -80,7 +80,7 @@ export function BlogPostPreview({ doc }: { doc: BlogPostDoc }) {
         {heroSrc && (
           <img
             src={heroSrc}
-            alt={ja(doc.heroImage?.alt ?? undefined) || ja(doc.title ?? undefined)}
+            alt={ja(doc.title ?? undefined)}
             className="blog-post__hero-img"
             style={{
               position: "absolute",

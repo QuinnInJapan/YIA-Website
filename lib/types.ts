@@ -186,7 +186,7 @@ export interface Announcement {
   date?: string;
   pinned?: boolean;
   title: I18nString;
-  heroImage?: SanityImage & { alt?: I18nString };
+  heroImage?: SanityImage;
   excerpt?: I18nString;
   body: I18nBlocks;
   documents?: Document[];
@@ -242,7 +242,7 @@ export interface BlogPost {
   author?: string;
   publishedAt: string;
   category?: I18nString;
-  heroImage?: SanityImage & { alt?: I18nString };
+  heroImage?: SanityImage;
   excerpt?: I18nString;
   body: I18nBlocks;
   relatedPosts?: BlogPost[];

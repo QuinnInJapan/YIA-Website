@@ -21,7 +21,7 @@ export const ptComponents: PortableTextComponents = {
         <figure style={{ margin: "1em 0" }}>
           <img
             src={src}
-            alt={value.alt || ""}
+            alt="[記事内の画像]"
             style={{ maxWidth: "100%", height: "auto", borderRadius: 4 }}
           />
         </figure>

@@ -36,12 +36,6 @@ export default defineType({
       validation: (Rule) => Rule.required().error("写真は必須です"),
     }),
     defineField({
-      name: "imageAlt",
-      title: "写真の代替テキスト",
-      type: "internationalizedArrayString",
-      description: "写真の説明（アクセシビリティ用）。",
-    }),
-    defineField({
       name: "bodyJa",
       title: "本文（日本語）",
       type: "text",

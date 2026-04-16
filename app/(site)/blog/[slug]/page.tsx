@@ -4,10 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import {
-  fetchBlogPostBySlug,
-  fetchAllBlogSlugsStatic,
-} from "@/lib/sanity/queries";
+import { fetchBlogPostBySlug, fetchAllBlogSlugsStatic } from "@/lib/sanity/queries";
 import { ja, en, jaBlocks, enBlocks } from "@/lib/i18n";
 import { imageUrl, hotspotPosition, resolveDocs } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
@@ -19,7 +16,6 @@ import BlogPostNavAsync from "@/components/BlogPostNavAsync";
 import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
-
 
 export async function generateStaticParams() {
   const slugs = await fetchAllBlogSlugsStatic();
@@ -42,22 +38,13 @@ export async function generateMetadata({
 
 function hasContent(blocks: unknown[]): boolean {
   if (blocks.length === 0) return false;
-  return blocks.some(
-    (b: unknown) => {
-      const block = b as { _type?: string; children?: { text?: string }[] };
-      return (
-        block._type !== "block" ||
-        block.children?.some((c) => c.text?.trim())
-      );
-    },
-  );
+  return blocks.some((b: unknown) => {
+    const block = b as { _type?: string; children?: { text?: string }[] };
+    return block._type !== "block" || block.children?.some((c) => c.text?.trim());
+  });
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const maybePost = (await fetchBlogPostBySlug(slug)) as BlogPost | null;
   if (!maybePost) notFound();
@@ -65,9 +52,7 @@ export default async function BlogPostPage({
 
   const heroSrc = imageUrl(post.heroImage);
   const heroPosition = hotspotPosition(post.heroImage);
-  const dateStr = post.publishedAt
-    ? formatDateDot(post.publishedAt.slice(0, 10))
-    : "";
+  const dateStr = post.publishedAt ? formatDateDot(post.publishedAt.slice(0, 10)) : "";
   const catLabel = ja(post.category) || null;
 
   const jaB = jaBlocks(post.body as I18nBlocks);
@@ -91,7 +76,7 @@ export default async function BlogPostPage({
       {heroSrc && (
         <Image
           src={heroSrc}
-          alt={ja(post.heroImage?.alt) || ja(post.title)}
+          alt={ja(post.title)}
           fill
           sizes="100vw"
           className="blog-post__hero-img"
@@ -100,14 +85,12 @@ export default async function BlogPostPage({
         />
       )}
       <div className="blog-post__hero-overlay">
-        {catLabel && (
-          <span className="blog-post__category">
-            {catLabel}
-          </span>
-        )}
+        {catLabel && <span className="blog-post__category">{catLabel}</span>}
         <h1 className="blog-post__title">{ja(post.title)}</h1>
         {en(post.title) && (
-          <p className="blog-post__title-en" lang="en" translate="no">{en(post.title)}</p>
+          <p className="blog-post__title-en" lang="en" translate="no">
+            {en(post.title)}
+          </p>
         )}
         <div className="blog-post__meta">
           {dateStr && <time>{dateStr}</time>}
@@ -135,10 +118,7 @@ export default async function BlogPostPage({
     <article className="blog-post__body">
       <BlogLanguageProvider hasEn={hasEn}>
         <BlogTocWrapper jaEntries={jaTocEntries} enEntries={enTocEntries} />
-        <BlogLanguageTabs
-          jaContent={jaBody}
-          enContent={enBody}
-        />
+        <BlogLanguageTabs jaContent={jaBody} enContent={enBody} />
 
         {post.documents && post.documents.length > 0 && (
           <div className="blog-post__docs">
@@ -147,14 +127,17 @@ export default async function BlogPostPage({
         )}
 
         <Suspense>
-          {post.publishedAt && (
-            <BlogPostNavAsync publishedAt={post.publishedAt} slug={post.slug} />
-          )}
+          {post.publishedAt && <BlogPostNavAsync publishedAt={post.publishedAt} slug={post.slug} />}
         </Suspense>
 
         {post.relatedPosts && post.relatedPosts.length > 0 && (
           <section className="blog-post__related">
-            <h2>関連記事 <span lang="en" translate="no">Related Posts</span></h2>
+            <h2>
+              関連記事{" "}
+              <span lang="en" translate="no">
+                Related Posts
+              </span>
+            </h2>
             <div className="blog-related-list">
               {post.relatedPosts.map((related) => {
                 const thumb = imageUrl(related.heroImage);
@@ -169,12 +152,7 @@ export default async function BlogPostPage({
                   >
                     <div className="blog-related-item__image">
                       {thumb ? (
-                        <Image
-                          src={thumb}
-                          alt={ja(related.heroImage?.alt) || ja(related.title)}
-                          fill
-                          sizes="120px"
-                        />
+                        <Image src={thumb} alt={ja(related.title)} fill sizes="120px" />
                       ) : (
                         <div className="blog-related-item__placeholder" />
                       )}
@@ -188,7 +166,9 @@ export default async function BlogPostPage({
                       )}
                       <div className="blog-related-item__meta">
                         {ja(related.category) && (
-                          <span className="blog-related-item__category">{ja(related.category)}</span>
+                          <span className="blog-related-item__category">
+                            {ja(related.category)}
+                          </span>
                         )}
                         {relDateStr && <time>{relDateStr}</time>}
                       </div>
