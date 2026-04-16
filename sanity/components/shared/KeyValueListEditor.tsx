@@ -216,6 +216,9 @@ export function KeyValueListEditor({
                   borderRight: "1px solid var(--card-border-color)",
                 }}
               >
+                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+                  日本語
+                </div>
                 <TextInput
                   fontSize={0}
                   value={i18nGet(getI18n(item, labelField), "ja")}
@@ -226,6 +229,9 @@ export function KeyValueListEditor({
 
               {/* Japanese value textarea */}
               <div style={{ gridColumn: 2, gridRow: 1, padding: "6px 8px 3px" }}>
+                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+                  日本語
+                </div>
                 <AutoTextarea
                   value={i18nGet(getI18n(item, valueField), "ja")}
                   placeholder={placeholders?.valueJa}
@@ -262,6 +268,9 @@ export function KeyValueListEditor({
                   borderRight: "1px solid var(--card-border-color)",
                 }}
               >
+                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+                  English
+                </div>
                 <TextInput
                   fontSize={0}
                   value={i18nGet(getI18n(item, labelField), "en")}
@@ -272,6 +281,9 @@ export function KeyValueListEditor({
 
               {/* English value textarea */}
               <div style={{ gridColumn: 2, gridRow: 2, padding: "3px 8px 6px" }}>
+                <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+                  English
+                </div>
                 <AutoTextarea
                   value={i18nGet(getI18n(item, valueField), "en")}
                   placeholder={placeholders?.valueEn}
