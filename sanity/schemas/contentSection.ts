@@ -30,10 +30,10 @@ export default defineType({
       description: "セクションの見出し。ページ上で太字の見出しとして表示されます。",
     }),
     defineField({
-      name: "description",
-      title: "説明",
-      type: "internationalizedArrayText",
-      description: "セクションの本文。",
+      name: "body",
+      title: "本文",
+      type: "internationalizedArrayBlockContent",
+      description: "セクションの本文。リッチテキストで書式設定できます。",
     }),
   ],
 });

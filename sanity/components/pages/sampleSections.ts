@@ -23,10 +23,46 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
     _type: "content",
     _key: "sample-content",
     title: i18n("活動について", "About Activities"),
-    description: i18n(
-      "国際交流協会は、地域に住む外国人住民と日本人住民が共に暮らしやすいまちづくりを目指して活動しています。",
-      "The International Association works to build a community where foreign and Japanese residents can live together comfortably.",
-    ),
+    body: [
+      {
+        _key: "ja",
+        value: [
+          {
+            _type: "block",
+            _key: "sample-ja-1",
+            style: "normal",
+            children: [
+              {
+                _type: "span",
+                _key: "sample-ja-1s",
+                text: "国際交流協会は、地域に住む外国人住民と日本人住民が共に暮らしやすいまちづくりを目指して活動しています。",
+                marks: [],
+              },
+            ],
+            markDefs: [],
+          },
+        ],
+      },
+      {
+        _key: "en",
+        value: [
+          {
+            _type: "block",
+            _key: "sample-en-1",
+            style: "normal",
+            children: [
+              {
+                _type: "span",
+                _key: "sample-en-1s",
+                text: "The International Association works to build a community where foreign and Japanese residents can live together comfortably.",
+                marks: [],
+              },
+            ],
+            markDefs: [],
+          },
+        ],
+      },
+    ],
   },
 
   links: {

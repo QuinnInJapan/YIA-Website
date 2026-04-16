@@ -102,7 +102,7 @@ export interface ContentSection {
   _type: "content";
   id?: string;
   title?: I18nString;
-  description?: I18nString;
+  body?: I18nBlocks;
 }
 
 export interface GallerySection {

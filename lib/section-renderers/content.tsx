@@ -7,8 +7,8 @@ export const content: SectionHandler<ContentSection> = (s, ctx) => {
   if (ja(s.title)) {
     ctx.addTocHeader(ja(s.title), en(s.title));
   }
-  if (s.description) {
-    ctx.push(<BilingualPortableText field={s.description} />);
+  if (s.body) {
+    ctx.push(<BilingualPortableText field={s.body} />);
   }
   ctx.flush();
 };
