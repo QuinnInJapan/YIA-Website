@@ -17,6 +17,7 @@ import { SectionPickerPanel } from "./pages/SectionPickerPanel";
 import { PagePreview } from "./pages/PagePreview";
 import { LeftPanel } from "./unified-pages/LeftPanel";
 import { PageEditor } from "./unified-pages/PageEditor";
+import { TableEditorPanel } from "./pages/sections/TableEditorPanel";
 import { CategoryManagement } from "./unified-pages/CategoryManagement";
 import { PageCreationForm } from "./unified-pages/PageCreationForm";
 import { CategoryCreationForm } from "./unified-pages/CategoryCreationForm";
@@ -25,7 +26,7 @@ import { CategoryPreview } from "./unified-pages/CategoryPreview";
 import { useNavData } from "./unified-pages/useNavData";
 import { shortId } from "./unified-pages/types";
 import type { MiddlePanelState, NavItemRaw, PageDoc } from "./unified-pages/types";
-import type { SectionTypeName } from "./pages/types";
+import type { SectionTypeName, SectionItem } from "./pages/types";
 import { useClient } from "sanity";
 import { FocusProvider } from "./shared/FocusContext";
 
@@ -81,6 +82,12 @@ export function UnifiedPagesTool() {
         onUpdate: (doc: SharedDocumentLinkItem) => void;
         onRemove: () => void;
       }
+    | {
+        type: "tableEditor";
+        sectionKey: string;
+        section: SectionItem;
+        onUpdateField: (field: string, value: unknown) => void;
+      }
     | null
   >(null);
 
@@ -108,6 +115,16 @@ export function UnifiedPagesTool() {
         initialImages: images,
         onUpdateImages: onUpdate,
       });
+    },
+    [],
+  );
+  const handleOpenTableEditor = useCallback(
+    (
+      sectionKey: string,
+      section: SectionItem,
+      onUpdateField: (field: string, value: unknown) => void,
+    ) => {
+      setRightPanel({ type: "tableEditor", sectionKey, section, onUpdateField });
     },
     [],
   );
@@ -211,6 +228,11 @@ export function UnifiedPagesTool() {
               rightPanel?.type === "galleryEditor" ? rightPanel.sectionKey : null
             }
             onDeselectGallery={() => setRightPanel(null)}
+            onOpenTableEditor={handleOpenTableEditor}
+            activeTableSectionKey={
+              rightPanel?.type === "tableEditor" ? rightPanel.sectionKey : null
+            }
+            onDeselectTable={() => setRightPanel(null)}
             onCloseRightPanel={() => setRightPanel(null)}
             onMergedChange={setMergedDoc}
             onDraftChange={() => sidebarRefreshRef.current?.()}
@@ -387,6 +409,12 @@ export function UnifiedPagesTool() {
                 },
               });
             }}
+            onClose={() => setRightPanel(null)}
+          />
+        ) : rightPanel.type === "tableEditor" ? (
+          <TableEditorPanel
+            section={rightPanel.section}
+            onUpdateField={rightPanel.onUpdateField}
             onClose={() => setRightPanel(null)}
           />
         ) : null}

@@ -55,6 +55,9 @@ export function PageEditor({
   onOpenGalleryEditor,
   activeGallerySectionKey,
   onDeselectGallery,
+  onOpenTableEditor,
+  activeTableSectionKey,
+  onDeselectTable,
   onSave,
   onMergedChange,
   onDraftChange,
@@ -72,6 +75,13 @@ export function PageEditor({
   ) => void;
   activeGallerySectionKey?: string | null;
   onDeselectGallery?: () => void;
+  onOpenTableEditor?: (
+    sectionKey: string,
+    section: SectionItem,
+    onUpdateField: (field: string, value: unknown) => void,
+  ) => void;
+  activeTableSectionKey?: string | null;
+  onDeselectTable?: () => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
   onOpenDocumentDetail?: (
     doc: SharedDocumentLinkItem,
@@ -521,9 +531,12 @@ export function PageEditor({
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {(merged.sections ?? []).map((section, index) => {
                   const isGallery = section._type === "gallery";
+                  const isTable = section._type === "table";
                   const isActive = isGallery
                     ? activeGallerySectionKey === section._key
-                    : expandedSection === section._key;
+                    : isTable
+                      ? activeTableSectionKey === section._key
+                      : expandedSection === section._key;
 
                   function handleToggle() {
                     if (isGallery && onOpenGalleryEditor) {
@@ -535,6 +548,16 @@ export function PageEditor({
                           section._key,
                           (section.images as GalleryImageItem[]) ?? [],
                           (images) => updateSection(index, "images", images),
+                        );
+                      }
+                    } else if (isTable && onOpenTableEditor) {
+                      if (activeTableSectionKey === section._key) {
+                        onDeselectTable?.();
+                      } else {
+                        setExpandedSection(null);
+                        onCloseRightPanel?.();
+                        onOpenTableEditor(section._key, section, (field, value) =>
+                          updateSection(index, field, value),
                         );
                       }
                     } else {
@@ -558,7 +581,7 @@ export function PageEditor({
                         onMoveDown={() => moveSection(index, 1)}
                         onRemove={() => removeSection(index)}
                       />
-                      {expandedSection === section._key && !isGallery && (
+                      {expandedSection === section._key && !isGallery && !isTable && (
                         <SectionEditor
                           section={section}
                           onUpdateField={(field, value) => updateSection(index, field, value)}
