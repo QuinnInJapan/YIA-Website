@@ -19,7 +19,7 @@ export function BilingualInput({
       <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
         {label}
       </div>
-      <div style={{ display: "flex", gap: 8 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
             日本語
