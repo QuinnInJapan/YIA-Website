@@ -21,7 +21,6 @@ export function LabelTableSectionEditor({
         onChange={(val) => onUpdateField("title", val)}
       />
       <KeyValueListEditor
-        label="行"
         labelHeader="ラベル"
         valueHeader="値"
         fieldNames={{ label: "label", value: "value" }}

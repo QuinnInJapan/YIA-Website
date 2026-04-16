@@ -21,7 +21,6 @@ export function InfoCardsSectionEditor({
         onChange={(val) => onUpdateField("title", val)}
       />
       <KeyValueListEditor
-        label="項目"
         labelHeader="タイトル"
         valueHeader="文章"
         fieldNames={{ label: "term", value: "definition" }}
