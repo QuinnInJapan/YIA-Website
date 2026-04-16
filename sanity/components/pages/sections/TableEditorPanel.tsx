@@ -3,6 +3,23 @@
 import { useState } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { DragHandleIcon } from "@sanity/icons";
+import { FilePickerPanel } from "../../shared/FilePickerPanel";
 import SectionTable from "@/components/SectionTable";
 import { i18nGet, i18nSet } from "../../shared/i18n";
 import {
@@ -11,7 +28,9 @@ import {
   trimRowsForRemovedColumn,
   type I18nArr,
   type TableColumnDraft,
+  type TableColumnType,
   type TableRowDraft,
+  type FileCellDraft,
 } from "./table-utils";
 import type { TableColumn, TableRow } from "@/lib/types";
 import type { SectionItem } from "../types";
@@ -105,18 +124,21 @@ function TablePreview({
 function ColumnForm({
   initialJa,
   initialEn,
+  initialType,
   mode,
   onSave,
   onCancel,
 }: {
   initialJa: string;
   initialEn: string;
+  initialType: TableColumnType;
   mode: "add" | "edit";
-  onSave: (ja: string, en: string) => void;
+  onSave: (ja: string, en: string, type: TableColumnType) => void;
   onCancel: () => void;
 }) {
   const [ja, setJa] = useState(initialJa);
   const [en, setEn] = useState(initialEn);
+  const [type, setType] = useState<TableColumnType>(initialType);
 
   return (
     <div
@@ -130,6 +152,28 @@ function ColumnForm({
         gap: 6,
       }}
     >
+      {/* Type selector */}
+      <div style={{ display: "flex", gap: 4 }}>
+        {(["text", "file"] as TableColumnType[]).map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setType(t)}
+            style={{
+              padding: "2px 10px",
+              border: `1px solid ${type === t ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+              borderRadius: 3,
+              background: type === t ? "var(--card-focus-ring-color, #5b9cf6)" : "transparent",
+              color: type === t ? "#fff" : "var(--card-muted-fg-color)",
+              fontSize: 10,
+              cursor: "pointer",
+            }}
+          >
+            {t === "text" ? "テキスト" : "ファイル"}
+          </button>
+        ))}
+      </div>
+
       <div>
         <div style={subLabelStyle}>日本語</div>
         <TextInput autoFocus value={ja} onChange={(e) => setJa(e.currentTarget.value)} />
@@ -138,10 +182,11 @@ function ColumnForm({
         <div style={subLabelStyle}>English</div>
         <TextInput value={en} onChange={(e) => setEn(e.currentTarget.value)} />
       </div>
+
       <div style={{ display: "flex", gap: 6 }}>
         <button
           type="button"
-          onClick={() => onSave(ja.trim(), en.trim())}
+          onClick={() => onSave(ja.trim(), en.trim(), type)}
           disabled={!ja.trim()}
           style={{
             padding: "4px 12px",
@@ -268,13 +313,15 @@ export function TableEditorPanel({
   );
   const [rows, setRows] = useState<TableRowDraft[]>((section.rows as TableRowDraft[]) ?? []);
   const [colForm, setColForm] = useState<ColFormState>(null);
+  const sensors = useSensors(useSensor(PointerSensor));
+  const [filePicking, setFilePicking] = useState<{ rowIndex: number; colKey: string } | null>(null);
 
   // ── Column operations ──────────────────────────────────────
 
-  function saveNewColumn(ja: string, en: string) {
+  function saveNewColumn(ja: string, en: string, type: TableColumnType) {
     const newCol: TableColumnDraft = {
       _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
-      type: "text",
+      type,
       label: [
         { _key: "ja", value: ja },
         { _key: "en", value: en },
@@ -289,12 +336,13 @@ export function TableEditorPanel({
     setColForm(null);
   }
 
-  function saveEditColumn(index: number, ja: string, en: string) {
+  function saveEditColumn(index: number, ja: string, en: string, type: TableColumnType) {
     const nextCols = columns.map((col, i) =>
       i !== index
         ? col
         : {
             ...col,
+            type,
             label: [
               { _key: "ja", value: ja },
               { _key: "en", value: en },
@@ -307,12 +355,17 @@ export function TableEditorPanel({
   }
 
   function requestDeleteColumn(index: number) {
+    const col = columns[index];
     const hasData = rows.some(
-      (row) => !row.groupLabel && (row.cells?.[index] ?? []).some((c) => c.value !== ""),
+      (row) =>
+        !row.groupLabel &&
+        ((col.type !== "file" && (row.cells?.[index] ?? []).some((c) => c.value !== "")) ||
+          (col.type === "file" &&
+            (row.fileCells ?? []).some((fc) => fc.colKey === col._key && fc.assetRef))),
     );
     if (!hasData) {
       const nextCols = columns.filter((_, i) => i !== index);
-      const nextRows = trimRowsForRemovedColumn(rows, index);
+      const nextRows = trimRowsForRemovedColumn(rows, index, col._key);
       setColumns(nextCols);
       setRows(nextRows);
       onUpdateField("columns", nextCols);
@@ -324,8 +377,9 @@ export function TableEditorPanel({
   }
 
   function confirmDeleteColumn(index: number) {
+    const col = columns[index];
     const nextCols = columns.filter((_, i) => i !== index);
-    const nextRows = trimRowsForRemovedColumn(rows, index);
+    const nextRows = trimRowsForRemovedColumn(rows, index, col._key);
     setColumns(nextCols);
     setRows(nextRows);
     onUpdateField("columns", nextCols);
@@ -391,6 +445,293 @@ export function TableEditorPanel({
     onUpdateField("rows", nextRows);
   }
 
+  // ── File cell operations ───────────────────────────────────
+
+  function updateFileCell(
+    rowIndex: number,
+    colKey: string,
+    assetRef: string,
+    fileType: string,
+    filename: string,
+  ) {
+    const nextRows = rows.map((row, ri) => {
+      if (ri !== rowIndex) return row;
+      const existing = row.fileCells ?? [];
+      const filtered = existing.filter((fc) => fc.colKey !== colKey);
+      const newCell: FileCellDraft = {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        colKey,
+        assetRef,
+        fileType,
+        filename,
+      };
+      return { ...row, fileCells: [...filtered, newCell] };
+    });
+    setRows(nextRows);
+    onUpdateField("rows", nextRows);
+  }
+
+  function clearFileCell(rowIndex: number, colKey: string) {
+    const nextRows = rows.map((row, ri) => {
+      if (ri !== rowIndex) return row;
+      return { ...row, fileCells: (row.fileCells ?? []).filter((fc) => fc.colKey !== colKey) };
+    });
+    setRows(nextRows);
+    onUpdateField("rows", nextRows);
+  }
+
+  // ── Drag-and-drop handler ──────────────────────────────────
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = rows.findIndex((r) => r._key === active.id);
+      const newIndex = rows.findIndex((r) => r._key === over.id);
+      const nextRows = arrayMove(rows, oldIndex, newIndex);
+      setRows(nextRows);
+      onUpdateField("rows", nextRows);
+    }
+  }
+
+  // ── SortableRow ────────────────────────────────────────────
+
+  function SortableRow({ row, rowIndex }: { row: TableRowDraft; rowIndex: number }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+      id: row._key,
+    });
+
+    const rowStyle: React.CSSProperties = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+      opacity: isDragging ? 0.5 : 1,
+    };
+
+    const dragHandleCell = (
+      <td
+        style={{
+          border: "1px solid var(--card-border-color)",
+          width: 24,
+          padding: 0,
+          textAlign: "center",
+          verticalAlign: "middle",
+          background: "var(--card-code-bg-color)",
+        }}
+      >
+        <button
+          type="button"
+          {...attributes}
+          {...listeners}
+          style={{
+            padding: 3,
+            border: "none",
+            background: "transparent",
+            color: "var(--card-muted-fg-color)",
+            cursor: "grab",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: 0,
+            touchAction: "none",
+          }}
+          title="ドラッグして並び替え"
+        >
+          <DragHandleIcon />
+        </button>
+      </td>
+    );
+
+    if (row.groupLabel != null) {
+      return (
+        <tr ref={setNodeRef} style={{ ...rowStyle, background: "rgba(200, 168, 75, 0.12)" }}>
+          {dragHandleCell}
+          <td
+            colSpan={columns.length}
+            style={{ border: "1px solid var(--card-border-color)", padding: 0 }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  border: "1px solid #c8a84b",
+                  color: "#7a5800",
+                  borderRadius: 2,
+                  padding: "0 3px",
+                  flexShrink: 0,
+                }}
+              >
+                見出し
+              </span>
+              <input
+                type="text"
+                value={i18nGet(row.groupLabel, "ja")}
+                onChange={(e) => updateGroupLabel(rowIndex, "ja", e.target.value)}
+                placeholder="グループ名（日本語）"
+                style={cellInputStyle}
+              />
+              <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
+                /
+              </span>
+              <input
+                type="text"
+                value={i18nGet(row.groupLabel, "en")}
+                onChange={(e) => updateGroupLabel(rowIndex, "en", e.target.value)}
+                placeholder="Group name (English)"
+                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+              />
+            </div>
+          </td>
+          <td
+            style={{
+              border: "1px solid var(--card-border-color)",
+              textAlign: "center",
+              width: 28,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => deleteRow(rowIndex)}
+              style={deleteButtonStyle}
+              title="行を削除"
+            >
+              <TrashIcon />
+            </button>
+          </td>
+        </tr>
+      );
+    }
+
+    // Data row
+    return (
+      <tr ref={setNodeRef} style={rowStyle}>
+        {dragHandleCell}
+        {columns.map((col, colIndex) => {
+          if (col.type === "file") {
+            const fileCell = (row.fileCells ?? []).find((fc) => fc.colKey === col._key);
+            return (
+              <td
+                key={col._key}
+                style={{
+                  border: "1px solid var(--card-border-color)",
+                  padding: "4px 6px",
+                  verticalAlign: "middle",
+                }}
+              >
+                {fileCell?.assetRef ? (
+                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        flex: 1,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        color: "var(--card-muted-fg-color)",
+                      }}
+                      title={fileCell.filename ?? undefined}
+                    >
+                      {fileCell.filename ?? fileCell.assetRef}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setFilePicking({ rowIndex, colKey: col._key })}
+                      style={{
+                        padding: "2px 6px",
+                        border: "1px solid var(--card-border-color)",
+                        borderRadius: 3,
+                        background: "transparent",
+                        fontSize: 9,
+                        cursor: "pointer",
+                        flexShrink: 0,
+                        color: "var(--card-muted-fg-color)",
+                      }}
+                    >
+                      変更
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => clearFileCell(rowIndex, col._key)}
+                      style={{
+                        padding: 2,
+                        border: "none",
+                        background: "transparent",
+                        color: "var(--card-muted-fg-color)",
+                        cursor: "pointer",
+                        lineHeight: 0,
+                      }}
+                    >
+                      <TrashIcon style={{ fontSize: 12 }} />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setFilePicking({ rowIndex, colKey: col._key })}
+                    style={{
+                      padding: "3px 8px",
+                      border: "1px dashed var(--card-border-color)",
+                      borderRadius: 3,
+                      background: "transparent",
+                      fontSize: 10,
+                      cursor: "pointer",
+                      color: "var(--card-muted-fg-color)",
+                      width: "100%",
+                    }}
+                  >
+                    ファイルを選択
+                  </button>
+                )}
+              </td>
+            );
+          }
+
+          // Text cell
+          const cell = row.cells?.[colIndex] ?? emptyBilingual();
+          return (
+            <td
+              key={col._key}
+              style={{
+                border: "1px solid var(--card-border-color)",
+                padding: 0,
+                verticalAlign: "top",
+              }}
+            >
+              <input
+                type="text"
+                value={i18nGet(cell, "ja")}
+                onChange={(e) => updateCell(rowIndex, colIndex, "ja", e.target.value)}
+                style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
+              />
+              <input
+                type="text"
+                value={i18nGet(cell, "en")}
+                onChange={(e) => updateCell(rowIndex, colIndex, "en", e.target.value)}
+                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+              />
+            </td>
+          );
+        })}
+        <td
+          style={{
+            border: "1px solid var(--card-border-color)",
+            textAlign: "center",
+            verticalAlign: "middle",
+            width: 28,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => deleteRow(rowIndex)}
+            style={deleteButtonStyle}
+            title="行を削除"
+          >
+            <TrashIcon />
+          </button>
+        </td>
+      </tr>
+    );
+  }
+
   // ── Render ─────────────────────────────────────────────────
 
   return (
@@ -400,6 +741,7 @@ export function TableEditorPanel({
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
+        position: "relative",
       }}
     >
       {/* Header */}
@@ -471,7 +813,6 @@ export function TableEditorPanel({
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
                 overflow: "auto",
-                maxHeight: 220,
               }}
             >
               <TablePreview title={title} columns={columns} rows={rows} />
@@ -571,6 +912,18 @@ export function TableEditorPanel({
                         {labelEn}
                       </span>
                     )}
+                    {col.type === "file" && (
+                      <span
+                        style={{
+                          fontSize: 8,
+                          color: "#5b9cf6",
+                          fontWeight: 700,
+                          letterSpacing: 0,
+                        }}
+                      >
+                        ファイル
+                      </span>
+                    )}
                     <button
                       type="button"
                       title="列を削除"
@@ -626,6 +979,7 @@ export function TableEditorPanel({
               <ColumnForm
                 initialJa=""
                 initialEn=""
+                initialType="text"
                 mode="add"
                 onSave={saveNewColumn}
                 onCancel={() => setColForm(null)}
@@ -636,8 +990,9 @@ export function TableEditorPanel({
                 key={colForm.index}
                 initialJa={i18nGet(columns[colForm.index]?.label, "ja")}
                 initialEn={i18nGet(columns[colForm.index]?.label, "en")}
+                initialType={(columns[colForm.index]?.type as TableColumnType) ?? "text"}
                 mode="edit"
-                onSave={(ja, en) => saveEditColumn(colForm.index, ja, en)}
+                onSave={(ja, en, type) => saveEditColumn(colForm.index, ja, en, type)}
                 onCancel={() => setColForm(null)}
               />
             )}
@@ -665,189 +1020,81 @@ export function TableEditorPanel({
             <div>
               <div style={sectionLabelStyle}>行</div>
               <div style={{ overflowX: "auto" }}>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    fontSize: 12,
-                    tableLayout: "fixed",
-                    minWidth: columns.length * 100,
-                  }}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
                 >
-                  <thead>
-                    <tr>
-                      {columns.map((col) => (
+                  <table
+                    style={{
+                      width: "100%",
+                      borderCollapse: "collapse",
+                      fontSize: 12,
+                      tableLayout: "fixed",
+                      minWidth: columns.length * 100 + 52,
+                    }}
+                  >
+                    <thead>
+                      <tr>
                         <th
-                          key={col._key}
                           style={{
-                            padding: "4px 6px",
+                            width: 24,
                             border: "1px solid var(--card-border-color)",
-                            textAlign: "left",
-                            fontSize: 10,
-                            fontWeight: 600,
-                            color: "var(--card-muted-fg-color)",
                             background: "var(--card-code-bg-color)",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
                           }}
-                        >
-                          {i18nGet(col.label, "ja") || "—"}
-                        </th>
-                      ))}
-                      <th
-                        style={{
-                          width: 28,
-                          border: "1px solid var(--card-border-color)",
-                          background: "var(--card-code-bg-color)",
-                        }}
-                      />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((row, rowIndex) =>
-                      row.groupLabel != null ? (
-                        /* Group header row */
-                        <tr
-                          key={row._key}
-                          style={{
-                            background: "rgba(200, 168, 75, 0.12)",
-                          }}
-                        >
-                          <td
-                            colSpan={columns.length}
+                        />
+                        {columns.map((col) => (
+                          <th
+                            key={col._key}
                             style={{
+                              padding: "4px 6px",
                               border: "1px solid var(--card-border-color)",
-                              padding: 0,
+                              textAlign: "left",
+                              fontSize: 10,
+                              fontWeight: 600,
+                              color: "var(--card-muted-fg-color)",
+                              background: "var(--card-code-bg-color)",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
                             }}
                           >
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 5,
-                                padding: "3px 5px",
-                              }}
-                            >
+                            {i18nGet(col.label, "ja") || "—"}
+                            {col.type === "file" && (
                               <span
                                 style={{
-                                  fontSize: 9,
+                                  marginLeft: 4,
+                                  fontSize: 8,
+                                  color: "#5b9cf6",
                                   fontWeight: 700,
-                                  border: "1px solid #c8a84b",
-                                  color: "#7a5800",
-                                  borderRadius: 2,
-                                  padding: "0 3px",
-                                  flexShrink: 0,
                                 }}
                               >
-                                見出し
+                                F
                               </span>
-                              <input
-                                type="text"
-                                value={i18nGet(row.groupLabel, "ja")}
-                                onChange={(e) => updateGroupLabel(rowIndex, "ja", e.target.value)}
-                                placeholder="グループ名（日本語）"
-                                style={cellInputStyle}
-                              />
-                              <span
-                                style={{
-                                  color: "var(--card-muted-fg-color)",
-                                  fontSize: 10,
-                                  flexShrink: 0,
-                                }}
-                              >
-                                /
-                              </span>
-                              <input
-                                type="text"
-                                value={i18nGet(row.groupLabel, "en")}
-                                onChange={(e) => updateGroupLabel(rowIndex, "en", e.target.value)}
-                                placeholder="Group name (English)"
-                                style={{
-                                  ...cellInputStyle,
-                                  color: "var(--card-muted-fg-color)",
-                                }}
-                              />
-                            </div>
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid var(--card-border-color)",
-                              textAlign: "center",
-                              width: 28,
-                            }}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => deleteRow(rowIndex)}
-                              style={deleteButtonStyle}
-                              title="行を削除"
-                            >
-                              <TrashIcon />
-                            </button>
-                          </td>
-                        </tr>
-                      ) : (
-                        /* Data row */
-                        <tr key={row._key}>
-                          {columns.map((col, colIndex) => {
-                            const cell = row.cells?.[colIndex] ?? emptyBilingual();
-                            return (
-                              <td
-                                key={col._key}
-                                style={{
-                                  border: "1px solid var(--card-border-color)",
-                                  padding: 0,
-                                  verticalAlign: "top",
-                                }}
-                              >
-                                <input
-                                  type="text"
-                                  value={i18nGet(cell, "ja")}
-                                  onChange={(e) =>
-                                    updateCell(rowIndex, colIndex, "ja", e.target.value)
-                                  }
-                                  style={{
-                                    ...cellInputStyle,
-                                    borderBottom: "1px solid var(--card-border-color)",
-                                  }}
-                                />
-                                <input
-                                  type="text"
-                                  value={i18nGet(cell, "en")}
-                                  onChange={(e) =>
-                                    updateCell(rowIndex, colIndex, "en", e.target.value)
-                                  }
-                                  style={{
-                                    ...cellInputStyle,
-                                    color: "var(--card-muted-fg-color)",
-                                  }}
-                                />
-                              </td>
-                            );
-                          })}
-                          <td
-                            style={{
-                              border: "1px solid var(--card-border-color)",
-                              textAlign: "center",
-                              verticalAlign: "middle",
-                              width: 28,
-                            }}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => deleteRow(rowIndex)}
-                              style={deleteButtonStyle}
-                              title="行を削除"
-                            >
-                              <TrashIcon />
-                            </button>
-                          </td>
-                        </tr>
-                      ),
-                    )}
-                  </tbody>
-                </table>
+                            )}
+                          </th>
+                        ))}
+                        <th
+                          style={{
+                            width: 28,
+                            border: "1px solid var(--card-border-color)",
+                            background: "var(--card-code-bg-color)",
+                          }}
+                        />
+                      </tr>
+                    </thead>
+                    <SortableContext
+                      items={rows.map((r) => r._key)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      <tbody>
+                        {rows.map((row, rowIndex) => (
+                          <SortableRow key={row._key} row={row} rowIndex={rowIndex} />
+                        ))}
+                      </tbody>
+                    </SortableContext>
+                  </table>
+                </DndContext>
               </div>
 
               {/* Add row buttons */}
@@ -871,6 +1118,28 @@ export function TableEditorPanel({
           )}
         </div>
       </div>
+
+      {/* File picker overlay */}
+      {filePicking !== null && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 10,
+            background: "var(--card-bg-color)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <FilePickerPanel
+            onSelect={(assetId, filename, ext) => {
+              updateFileCell(filePicking.rowIndex, filePicking.colKey, assetId, filename, ext);
+              setFilePicking(null);
+            }}
+            onClose={() => setFilePicking(null)}
+          />
+        </div>
+      )}
     </div>
   );
 }

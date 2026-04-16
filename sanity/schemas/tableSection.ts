@@ -43,11 +43,7 @@ export default defineType({
               options: {
                 list: [
                   { title: "テキスト (text)", value: "text" },
-                  { title: "日付 (date)", value: "date" },
-                  { title: "電話番号 (phone)", value: "phone" },
-                  { title: "URL (url)", value: "url" },
-                  { title: "金額 (currency)", value: "currency" },
-                  { title: "氏名 (name)", value: "name" },
+                  { title: "ファイル (file)", value: "file" },
                 ],
               },
               initialValue: "text",
@@ -91,6 +87,22 @@ export default defineType({
               type: "array",
               of: [{ type: "internationalizedArrayString" }],
               description: "各列に対応するセルの値。グループ見出し行では省略可。",
+            }),
+            defineField({
+              name: "fileCells",
+              title: "ファイルセル",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    defineField({ name: "colKey", title: "列キー", type: "string" }),
+                    defineField({ name: "assetRef", title: "アセット参照", type: "string" }),
+                    defineField({ name: "fileType", title: "ファイル種別", type: "string" }),
+                    defineField({ name: "filename", title: "ファイル名", type: "string" }),
+                  ],
+                },
+              ],
             }),
           ],
           preview: {

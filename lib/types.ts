@@ -63,13 +63,22 @@ export interface WarningsSection {
 export interface TableColumn {
   _key: string;
   label: I18nString;
-  type?: "text" | "date" | "phone" | "url" | "currency" | "name";
+  type?: "text" | "file";
+}
+
+export interface FileCellItem {
+  _key: string;
+  colKey: string;
+  assetRef?: string | null;
+  fileType?: string | null;
+  filename?: string | null;
 }
 
 export interface TableRow {
   _key: string;
   groupLabel?: I18nString;
   cells: I18nString[];
+  fileCells?: FileCellItem[];
 }
 
 export interface TableSection {

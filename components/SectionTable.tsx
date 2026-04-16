@@ -1,6 +1,7 @@
 import React from "react";
 import { ja, en } from "@/lib/i18n";
-import type { TableColumn, TableRow } from "@/lib/types";
+import { fileUrl } from "@/lib/sanity/image";
+import type { TableColumn, TableRow, FileCellItem } from "@/lib/types";
 
 interface SectionTableProps {
   columns: TableColumn[];
@@ -48,6 +49,29 @@ export default function SectionTable({ columns, rows }: SectionTableProps) {
           ) : (
             <tr key={row._key}>
               {columns.map((col, j) => {
+                if (col.type === "file") {
+                  const fileCell = row.fileCells?.find(
+                    (fc: FileCellItem) => fc.colKey === col._key,
+                  );
+                  const url = fileCell?.assetRef
+                    ? fileUrl({ asset: { _ref: fileCell.assetRef } })
+                    : null;
+                  return (
+                    <td key={col._key} data-type="file">
+                      {url ? (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ wordBreak: "break-word" }}
+                        >
+                          {fileCell?.filename ?? "ファイルを開く"}
+                        </a>
+                      ) : null}
+                    </td>
+                  );
+                }
+
                 const cell = row.cells?.[j];
                 return (
                   <td key={col._key} data-type={col.type ?? "text"}>

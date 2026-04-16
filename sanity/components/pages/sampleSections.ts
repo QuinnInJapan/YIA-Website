@@ -95,7 +95,7 @@ export const sampleSections: Partial<Record<SectionTypeName, PageSection>> = {
     _key: "sample-table",
     title: i18n("スケジュール一覧", "Schedule List"),
     columns: [
-      { _key: "col1", label: i18n("日時", "Date"), type: "date" },
+      { _key: "col1", label: i18n("日時", "Date"), type: "text" },
       { _key: "col2", label: i18n("場所", "Location") },
       { _key: "col3", label: i18n("内容", "Content") },
     ],
