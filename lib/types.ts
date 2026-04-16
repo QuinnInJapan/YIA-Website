@@ -75,7 +75,6 @@ export interface TableRow {
 export interface TableSection {
   _type: "table";
   title?: I18nString;
-  caption?: I18nString;
   columns: TableColumn[];
   rows: TableRow[];
 }

@@ -23,12 +23,6 @@ export default defineType({
       description: "セクションの見出し。省略可。",
     }),
     defineField({
-      name: "caption",
-      title: "キャプション",
-      type: "internationalizedArrayString",
-      description: "タイトル下に小さく表示する補足（例：「〇〇年〇月現在」）。任意。",
-    }),
-    defineField({
       name: "columns",
       title: "列定義",
       type: "array",
