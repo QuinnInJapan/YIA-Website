@@ -24,9 +24,8 @@ import { SystemPageNotice } from "./unified-pages/SystemPageNotice";
 import { CategoryPreview } from "./unified-pages/CategoryPreview";
 import { useNavData } from "./unified-pages/useNavData";
 import { shortId } from "./unified-pages/types";
-import type { MiddlePanelState } from "./unified-pages/types";
+import type { MiddlePanelState, NavItemRaw, PageDoc } from "./unified-pages/types";
 import type { SectionTypeName } from "./pages/types";
-import type { PageDoc } from "./unified-pages/types";
 import { useClient } from "sanity";
 import { FocusProvider } from "./shared/FocusContext";
 
@@ -40,6 +39,10 @@ export function UnifiedPagesTool() {
   );
   const [mergedDoc, setMergedDoc] = useState<PageDoc | null>(null);
   const [draftPageIds, setDraftPageIds] = useState<Set<string>>(new Set());
+  const [livePreviewItems, setLivePreviewItems] = useState<{
+    key: string;
+    items: NavItemRaw[];
+  } | null>(null);
 
   const client = useClient({ apiVersion: "2024-01-01" });
   const sidebarRefreshRef = useRef<(() => void) | null>(null);
@@ -239,6 +242,11 @@ export function UnifiedPagesTool() {
               navData.deleteCategory(middlePanel.key);
               setMiddlePanel(null);
             }}
+            onLiveItemsChange={(items) =>
+              items
+                ? setLivePreviewItems({ key: middlePanel.key, items })
+                : setLivePreviewItems(null)
+            }
           />
         );
       }
@@ -293,11 +301,15 @@ export function UnifiedPagesTool() {
           const categoryDoc = navCat.categoryRef?._ref
             ? navData.categoryDocs.get(navCat.categoryRef._ref)
             : undefined;
+          const previewNavCat =
+            livePreviewItems?.key === middlePanel.key
+              ? { ...navCat, items: livePreviewItems.items }
+              : navCat;
           return (
             <RightPanel>
               <PreviewPanel>
                 <CategoryPreview
-                  navCat={navCat}
+                  navCat={previewNavCat}
                   categoryDoc={categoryDoc}
                   pagesMap={navData.pagesMap}
                 />

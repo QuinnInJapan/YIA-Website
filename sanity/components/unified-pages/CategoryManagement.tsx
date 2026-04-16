@@ -23,6 +23,7 @@ export function CategoryManagement({
   onHeroImageChanged,
   onCategoryRenamed,
   onDeleteCategory,
+  onLiveItemsChange,
 }: {
   navCat: NavCategoryRaw;
   categoryDoc: CategoryDoc | undefined;
@@ -34,6 +35,7 @@ export function CategoryManagement({
   onHeroImageChanged: (categoryId: string, image: ImageField) => Promise<void>;
   onCategoryRenamed: (categoryId: string, newLabel: { _key: string; value: string }[]) => void;
   onDeleteCategory: () => void;
+  onLiveItemsChange?: (items: NavItemRaw[] | null) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client as Parameters<typeof createImageUrlBuilder>[0]);
@@ -77,6 +79,7 @@ export function CategoryManagement({
     const [moved] = next.splice(fromIdx, 1);
     next.splice(idx, 0, moved);
     setLocalItems(next);
+    onLiveItemsChange?.(next);
     dragIdxRef.current = idx;
   }
   function handleDragEnd() {
@@ -85,6 +88,7 @@ export function CategoryManagement({
   }
   function handleCompleteReorder() {
     setIsReorderMode(false);
+    onLiveItemsChange?.(null);
     onReorderPages(localItems);
   }
 

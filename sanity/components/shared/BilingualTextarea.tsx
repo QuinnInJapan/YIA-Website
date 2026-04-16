@@ -1,17 +1,48 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { i18nGet, i18nSet } from "./i18n";
+
+export function AutoTextarea({
+  value,
+  onChange,
+  style,
+  placeholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  style: React.CSSProperties;
+  placeholder?: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }, [value]);
+
+  return (
+    <textarea
+      ref={ref}
+      rows={1}
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+      style={{ ...style, overflow: "hidden", resize: "none" }}
+    />
+  );
+}
 
 export function BilingualTextarea({
   label,
   value,
   onChange,
-  rows = 3,
 }: {
   label: string;
   value: { _key: string; value: string }[] | null | undefined;
   onChange: (value: { _key: string; value: string }[]) => void;
-  rows?: number;
 }) {
   const textareaStyle: React.CSSProperties = {
     width: "100%",
@@ -20,7 +51,6 @@ export function BilingualTextarea({
     borderRadius: 4,
     fontSize: 13,
     fontFamily: "inherit",
-    resize: "vertical",
     background: "transparent",
     color: "inherit",
   };
@@ -35,10 +65,9 @@ export function BilingualTextarea({
           <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
             日本語
           </div>
-          <textarea
-            rows={rows}
+          <AutoTextarea
             value={i18nGet(value, "ja")}
-            onChange={(e) => onChange(i18nSet(value, "ja", e.target.value))}
+            onChange={(v) => onChange(i18nSet(value, "ja", v))}
             style={textareaStyle}
           />
         </div>
@@ -46,10 +75,9 @@ export function BilingualTextarea({
           <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
             English
           </div>
-          <textarea
-            rows={rows}
+          <AutoTextarea
             value={i18nGet(value, "en")}
-            onChange={(e) => onChange(i18nSet(value, "en", e.target.value))}
+            onChange={(v) => onChange(i18nSet(value, "en", v))}
             style={textareaStyle}
           />
         </div>

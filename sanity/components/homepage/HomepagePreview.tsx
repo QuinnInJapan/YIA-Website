@@ -303,9 +303,9 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
         {about && (
           <StudioRegion as="section" className="home-section home-section--about" studioId="about">
             <h2 className="home-section__heading">
-              {about.titleJa || "YIAとは"}
+              {about.titleJa}
               <small lang="en" translate="no">
-                {about.titleEn || "About YIA"}
+                {about.titleEn}
               </small>
             </h2>
             <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>

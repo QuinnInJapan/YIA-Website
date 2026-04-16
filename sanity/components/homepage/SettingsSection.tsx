@@ -1,7 +1,7 @@
 "use client";
 
-import { TextArea } from "@sanity/ui";
 import { i18nGet, i18nSet } from "../shared/i18n";
+import { AutoTextarea } from "../shared/BilingualTextarea";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
 import type { SiteSettingsData, SidebarData, DocumentLinkItem, UpdateFieldFn } from "./types";
@@ -32,14 +32,20 @@ function Field({
       >
         {label}
       </label>
-      <TextArea
+      <AutoTextarea
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChange={onChange}
         placeholder={placeholder}
-        fontSize={1}
-        padding={2}
-        rows={1}
-        style={{ resize: "vertical" }}
+        style={{
+          width: "100%",
+          padding: "6px 10px",
+          border: "1px solid var(--card-border-color)",
+          borderRadius: 4,
+          fontSize: 13,
+          fontFamily: "inherit",
+          background: "transparent",
+          color: "inherit",
+        }}
       />
     </div>
   );
@@ -68,28 +74,25 @@ function I18nField({
         {label}
       </label>
       <div style={{ display: "flex", gap: 8 }}>
-        <div style={{ flex: 1 }}>
-          <TextArea
-            value={i18nGet(arr, "ja")}
-            onChange={(e) => onChange(i18nSet(arr, "ja", e.currentTarget.value))}
-            placeholder="日本語"
-            fontSize={1}
-            padding={2}
-            rows={1}
-            style={{ resize: "vertical" }}
-          />
-        </div>
-        <div style={{ flex: 1 }}>
-          <TextArea
-            value={i18nGet(arr, "en")}
-            onChange={(e) => onChange(i18nSet(arr, "en", e.currentTarget.value))}
-            placeholder="English"
-            fontSize={1}
-            padding={2}
-            rows={1}
-            style={{ resize: "vertical" }}
-          />
-        </div>
+        {(["ja", "en"] as const).map((lang) => (
+          <div key={lang} style={{ flex: 1 }}>
+            <AutoTextarea
+              value={i18nGet(arr, lang)}
+              onChange={(v) => onChange(i18nSet(arr, lang, v))}
+              placeholder={lang === "ja" ? "日本語" : "English"}
+              style={{
+                width: "100%",
+                padding: "6px 10px",
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 4,
+                fontSize: 13,
+                fontFamily: "inherit",
+                background: "transparent",
+                color: "inherit",
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -129,7 +132,11 @@ export function SettingsSection({
 
   return (
     <div onFocusCapture={() => setFocus("settings")} onBlurCapture={clearFocus}>
-      <SectionWrapper id="section-settings" title="サイト設定" onExpand={() => setFocus("settings")}>
+      <SectionWrapper
+        id="section-settings"
+        title="サイト設定"
+        onExpand={() => setFocus("settings")}
+      >
         {/* ── Organization ── */}
         <h4
           style={{

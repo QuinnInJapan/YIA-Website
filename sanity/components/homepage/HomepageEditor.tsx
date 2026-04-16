@@ -27,16 +27,6 @@ import type {
 } from "./types";
 import type { HomepageMergedState } from "./HomepagePreview";
 
-// ── Section nav items ───────────────────────────────
-
-const SECTIONS = [
-  { id: "section-hero", label: "ヒーロー" },
-  { id: "section-programs", label: "プログラム" },
-  { id: "section-about", label: "YIA" },
-  { id: "section-activity", label: "活動" },
-  { id: "section-settings", label: "設定" },
-] as const;
-
 // ── Document state tracker ──────────────────────────
 
 interface DocState<T> {
@@ -69,7 +59,6 @@ export function HomepageEditor({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"saved" | "dirty" | "saving" | "error">("saved");
-  const [activeSection, setActiveSection] = useState("section-hero");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Document states
@@ -273,55 +262,6 @@ export function HomepageEditor({
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [client]);
-
-  // ── Scroll spy for active section ────────────────
-
-  const clickedSectionRef = useRef<string | null>(null);
-  const lastScrollTopRef = useRef<number>(0);
-  const scrollSettledRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    const scrollEl = scrollRef.current;
-    if (!scrollEl) return;
-
-    function handleScroll() {
-      // While a click-initiated scroll is in progress, wait for it to settle
-      if (clickedSectionRef.current) {
-        if (scrollSettledRef.current) clearTimeout(scrollSettledRef.current);
-        scrollSettledRef.current = setTimeout(() => {
-          // Scroll stopped — lock the clicked section until user scrolls manually
-          lastScrollTopRef.current = scrollEl!.scrollTop;
-          scrollSettledRef.current = null;
-        }, 100);
-        return;
-      }
-
-      const scrollTop = scrollEl!.scrollTop + 80;
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const sectionEl = scrollEl!.querySelector(`#${SECTIONS[i].id}`) as HTMLElement | null;
-        if (sectionEl && sectionEl.offsetTop <= scrollTop) {
-          setActiveSection(SECTIONS[i].id);
-          break;
-        }
-      }
-    }
-
-    // Detect user-initiated scroll via wheel/touch to clear the override
-    function handleUserScroll() {
-      if (clickedSectionRef.current) {
-        clickedSectionRef.current = null;
-      }
-    }
-
-    scrollEl.addEventListener("scroll", handleScroll, { passive: true });
-    scrollEl.addEventListener("wheel", handleUserScroll, { passive: true });
-    scrollEl.addEventListener("touchmove", handleUserScroll, { passive: true });
-    return () => {
-      scrollEl.removeEventListener("scroll", handleScroll);
-      scrollEl.removeEventListener("wheel", handleUserScroll);
-      scrollEl.removeEventListener("touchmove", handleUserScroll);
-    };
-  }, [loading]);
 
   // ── Auto-save logic ──────────────────────────────
 
@@ -647,46 +587,6 @@ export function HomepageEditor({
           />
         </Flex>
       </Box>
-
-      {/* Section nav (sticky) */}
-      <div
-        style={{
-          display: "flex",
-          gap: 0,
-          borderBottom: "1px solid var(--card-border-color)",
-          background: "var(--card-bg-color)",
-          flexShrink: 0,
-        }}
-      >
-        {SECTIONS.map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => {
-              setActiveSection(id);
-              clickedSectionRef.current = id;
-              const el = document.getElementById(id);
-              el?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            style={{
-              flex: 1,
-              padding: "8px 0",
-              border: "none",
-              borderBottom:
-                activeSection === id
-                  ? "2px solid var(--card-focus-ring-color, #4a90d9)"
-                  : "2px solid transparent",
-              background: "transparent",
-              cursor: "pointer",
-              fontSize: 12,
-              fontWeight: activeSection === id ? 600 : 400,
-              color: activeSection === id ? "var(--card-fg-color)" : "var(--card-muted-fg-color)",
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
 
       {/* Scrollable editor body */}
       <div ref={scrollRef} style={{ flex: 1, overflow: "auto" }}>

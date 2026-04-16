@@ -6,6 +6,7 @@ import { Box, Button, Flex, Text, TextInput } from "@sanity/ui";
 import { PublishIcon, RevertIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet, i18nSet } from "../shared/i18n";
+import { AutoTextarea } from "../shared/BilingualTextarea";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
@@ -503,52 +504,27 @@ export function PageEditor({
             </div>
 
             {/* Description */}
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                説明（日本語）
+            {(["ja", "en"] as const).map((lang) => (
+              <div key={lang} style={{ marginBottom: lang === "ja" ? 16 : 20 }}>
+                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                  {lang === "ja" ? "説明（日本語）" : "説明（English）"}
+                </div>
+                <AutoTextarea
+                  value={i18nGet(merged.description, lang)}
+                  onChange={(v) => updateField("description", i18nSet(merged.description, lang, v))}
+                  style={{
+                    width: "100%",
+                    padding: "6px 10px",
+                    border: "1px solid var(--card-border-color)",
+                    borderRadius: 4,
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    background: "transparent",
+                    color: "inherit",
+                  }}
+                />
               </div>
-              <textarea
-                rows={3}
-                value={i18nGet(merged.description, "ja")}
-                onChange={(e) =>
-                  updateField("description", i18nSet(merged.description, "ja", e.target.value))
-                }
-                style={{
-                  width: "100%",
-                  padding: "6px 10px",
-                  border: "1px solid var(--card-border-color)",
-                  borderRadius: 4,
-                  fontSize: 13,
-                  fontFamily: "inherit",
-                  resize: "vertical",
-                  background: "transparent",
-                  color: "inherit",
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-                説明（English）
-              </div>
-              <textarea
-                rows={3}
-                value={i18nGet(merged.description, "en")}
-                onChange={(e) =>
-                  updateField("description", i18nSet(merged.description, "en", e.target.value))
-                }
-                style={{
-                  width: "100%",
-                  padding: "6px 10px",
-                  border: "1px solid var(--card-border-color)",
-                  borderRadius: 4,
-                  fontSize: 13,
-                  fontFamily: "inherit",
-                  resize: "vertical",
-                  background: "transparent",
-                  color: "inherit",
-                }}
-              />
-            </div>
+            ))}
 
             {/* Sections */}
             <div

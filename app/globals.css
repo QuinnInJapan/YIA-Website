@@ -1768,6 +1768,10 @@ html:has(:target) {
   font-size: var(--font-size-xs);
 }
 
+.data-table thead th .data-table__en {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* -- Group List -- */
 
 .group-list {
