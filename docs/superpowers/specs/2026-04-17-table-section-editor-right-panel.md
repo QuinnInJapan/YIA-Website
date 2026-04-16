@@ -116,9 +116,25 @@ Remove the `table` case from the switch statement. It was never reached after th
 
 Delete the file. It is fully superseded by `TableEditorPanel.tsx`.
 
-### Caption field
+### Caption field removal (full migration)
 
-The `caption` field is removed from the editor UI. Existing `caption` data already stored in documents is preserved in Sanity and continues to render on the frontend — it is simply no longer editable via the studio after this change.
+The `caption` field is removed entirely — from the schema, the TypeScript types, the frontend renderer, and existing documents.
+
+**Files to change:**
+
+- `sanity/schemas/tableSection.ts` — remove the `caption` `defineField` block
+- `lib/types.ts` — remove `caption?: I18nString` from the `TableSection` interface
+- `lib/section-renderers/table.tsx` — remove the `if (s.caption)` block
+
+**Sanity document migration:**
+
+Write a one-off migration script that unsets `caption` on all documents containing a `table` section with a non-null `caption` value. The script should:
+
+1. Fetch all page documents where any section has `_type == "table"` and a non-null `caption`
+2. For each matching document, patch the sections array to unset `caption` on each table section
+3. Log a count of patched documents on completion
+
+The script lives at `scripts/migrate-remove-table-caption.ts` and is run once manually before deploying.
 
 ## Verification
 
@@ -136,3 +152,5 @@ The `caption` field is removed from the editor UI. Existing `caption` data alrea
 12. Click ✕ → panel closes, page preview returns.
 13. Open another right panel (e.g., image picker) while table editor is open → table editor closes gracefully.
 14. No regressions in other section types.
+15. Run `scripts/migrate-remove-table-caption.ts` against the dataset → script logs patched document count, no errors.
+16. After migration, no `table` section documents in Sanity have a `caption` field.
