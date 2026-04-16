@@ -50,7 +50,6 @@ export interface PageDoc {
   _rev?: string;
   _updatedAt?: string;
   title: { _key: string; value: string }[] | null;
-  subtitle: { _key: string; value: string }[] | null;
   description: { _key: string; value: string }[] | null;
   slug: string | null;
   template: string | null;

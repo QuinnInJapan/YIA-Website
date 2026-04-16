@@ -1595,18 +1595,6 @@ html:has(:target) {
   letter-spacing: 0.05em;
 }
 
-/* -- Page Subtitle -- */
-
-.page-subtitle {
-  font-style: italic;
-  color: var(--color-text-muted);
-  margin: var(--spacing-sm) 0 var(--spacing-md);
-}
-
-.page-subtitle__en {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-faint);
-}
 
 /* -- Section Divider -- */
 

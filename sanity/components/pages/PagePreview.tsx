@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { ja, en } from "@/lib/i18n";
 import { renderSections } from "@/lib/section-renderer";
 import PageHero from "@/components/PageHero";
-import PageSubtitle from "@/components/PageSubtitle";
 import type { PageDoc } from "./types";
 import type { Page, PageSection } from "@/lib/types";
 
@@ -13,13 +12,6 @@ export function PagePreview({ page }: { page: PageDoc }) {
     () => renderSections((page.sections ?? []) as PageSection[]),
     [page.sections],
   );
-
-  const subtitle = page.subtitle ?? undefined;
-  const subtitleNode = ja(subtitle) ? (
-    <div className="page-section">
-      <PageSubtitle ja={ja(subtitle)} en={en(subtitle)} />
-    </div>
-  ) : null;
 
   return (
     <div
@@ -40,7 +32,6 @@ export function PagePreview({ page }: { page: PageDoc }) {
         images={(page.images as Page["images"]) ?? undefined}
       />
       <main className="layout-program" id="preview-main">
-        {subtitleNode}
         {groups}
         <div style={{ height: 200 }} />
       </main>
