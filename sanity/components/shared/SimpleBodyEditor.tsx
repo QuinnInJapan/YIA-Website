@@ -34,7 +34,9 @@ const renderStyle: RenderStyleFunction = (props) => (
 );
 
 const renderListItem: RenderListItemFunction = (props) => (
-  <li style={{ margin: "0.3em 0", paddingLeft: "0.25em" }}>{props.children}</li>
+  <li style={{ margin: "0.3em 0", marginLeft: "1.4em", listStylePosition: "outside" }}>
+    {props.children}
+  </li>
 );
 
 // ── Toolbar icons ────────────────────────────────────────

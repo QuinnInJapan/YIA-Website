@@ -1150,22 +1150,31 @@ h3.section-header {
 
 /* -- Rich text editor (SimpleBodyEditor) -- */
 
-.simple-body-editor ul,
-.simple-body-editor ol {
-  margin: 0.4em 0;
-  padding-left: 1.5em;
+/* @portabletext/editor never renders <ul>/<ol> — list items are bare <li>
+   inside .pt-list-item-bullet / .pt-list-item-number wrapper divs */
+
+.simple-body-editor [data-list-item="bullet"] li {
+  list-style-type: disc;
 }
 
-.simple-body-editor ul {
-  list-style: disc;
+/* Numbered lists: use CSS counter since there is no <ol> parent */
+.simple-body-editor [data-list-item="number"][data-list-index="0"] {
+  counter-reset: pt-list-number 0;
 }
 
-.simple-body-editor ol {
-  list-style: decimal;
+.simple-body-editor [data-list-item="number"] {
+  counter-increment: pt-list-number;
 }
 
-.simple-body-editor li {
-  margin-bottom: 0.2em;
+.simple-body-editor [data-list-item="number"] li {
+  list-style: none;
+  position: relative;
+}
+
+.simple-body-editor [data-list-item="number"] li::before {
+  content: counter(pt-list-number) ".";
+  position: absolute;
+  left: -1.4em;
 }
 
 /* -- Governance List -- */
