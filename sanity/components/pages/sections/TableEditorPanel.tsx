@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
 import {
@@ -297,10 +297,12 @@ function ColumnDeleteWarning({
 function AutoTextarea({
   value,
   onChange,
+  placeholder,
   style,
 }: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder?: string;
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -312,7 +314,16 @@ function AutoTextarea({
       ref.current.style.height = ref.current.scrollHeight + "px";
     }
   });
-  return <textarea ref={ref} value={value} rows={1} onChange={onChange} style={style} />;
+  return (
+    <textarea
+      ref={ref}
+      value={value}
+      rows={1}
+      onChange={onChange}
+      placeholder={placeholder}
+      style={style}
+    />
+  );
 }
 
 // ─── SortableRow ──────────────────────────────────────────────────────────────
@@ -561,6 +572,7 @@ function SortableRow({
               <AutoTextarea
                 value={i18nGet(cell, "ja")}
                 onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
+                placeholder="日本語"
                 style={cellInputStyle}
               />
             </td>
@@ -588,6 +600,7 @@ function SortableRow({
               <AutoTextarea
                 value={i18nGet(cell, "en")}
                 onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
+                placeholder="English"
                 style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
               />
             </td>
@@ -616,10 +629,45 @@ export function TableEditorPanel({
   onClose: () => void;
 }) {
   const [title, setTitle] = useState<I18nArr>((section.title as I18nArr) ?? emptyBilingual());
-  const [columns, setColumns] = useState<TableColumnDraft[]>(
-    (section.columns as TableColumnDraft[]) ?? [],
-  );
-  const [rows, setRows] = useState<TableRowDraft[]>((section.rows as TableRowDraft[]) ?? []);
+
+  const hasExistingColumns = !!(section.columns as TableColumnDraft[])?.length;
+
+  const [columns, setColumns] = useState<TableColumnDraft[]>(() => {
+    if (hasExistingColumns) return section.columns as TableColumnDraft[];
+    return [
+      {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        type: "text" as TableColumnType,
+        label: [
+          { _key: "ja", value: "項目" },
+          { _key: "en", value: "Item" },
+        ],
+      },
+    ];
+  });
+
+  const [rows, setRows] = useState<TableRowDraft[]>(() => {
+    if (hasExistingColumns) return (section.rows as TableRowDraft[]) ?? [];
+    return [
+      {
+        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        groupLabel: null,
+        cells: [emptyBilingual()],
+      },
+    ];
+  });
+
+  // Persist defaults on mount when section had no columns yet
+  const persistedDefaultRef = useRef(false);
+  useEffect(() => {
+    if (!hasExistingColumns && !persistedDefaultRef.current) {
+      persistedDefaultRef.current = true;
+      onUpdateField("columns", columns);
+      onUpdateField("rows", rows);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [colForm, setColForm] = useState<ColFormState>(null);
   const sensors = useSensors(useSensor(PointerSensor));
   const [filePicking, setFilePicking] = useState<{ rowIndex: number; colKey: string } | null>(null);
