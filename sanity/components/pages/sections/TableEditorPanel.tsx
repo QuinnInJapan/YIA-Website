@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
 import {
@@ -54,7 +54,7 @@ const subLabelStyle: React.CSSProperties = {
 const cellInputStyle: React.CSSProperties = {
   display: "block",
   width: "100%",
-  padding: "3px 6px",
+  padding: "8px 6px",
   border: "none",
   background: "transparent",
   fontSize: 14,
@@ -292,6 +292,29 @@ function ColumnDeleteWarning({
   );
 }
 
+// ─── AutoTextarea ─────────────────────────────────────────────────────────────
+
+function AutoTextarea({
+  value,
+  onChange,
+  style,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  // No dep array — re-runs after every render so height always matches content,
+  // including initial mount and external value changes.
+  useLayoutEffect(() => {
+    if (ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = ref.current.scrollHeight + "px";
+    }
+  });
+  return <textarea ref={ref} value={value} rows={1} onChange={onChange} style={style} />;
+}
+
 // ─── SortableRow ──────────────────────────────────────────────────────────────
 
 interface SortableRowProps {
@@ -318,6 +341,7 @@ function SortableRow({
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: row._key,
   });
+  const [focusedCol, setFocusedCol] = useState<string | null>(null);
 
   const rowStyle: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -430,10 +454,13 @@ function SortableRow({
           return (
             <td
               key={col._key}
+              onFocus={() => setFocusedCol(col._key)}
+              onBlur={() => setFocusedCol(null)}
               style={{
-                border: "1px solid var(--card-border-color)",
-                padding: "4px 6px",
+                border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+                padding: "8px 6px",
                 verticalAlign: "middle",
+                background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
               }}
             >
               {fileCell?.assetRef ? (
@@ -509,32 +536,23 @@ function SortableRow({
         return (
           <td
             key={col._key}
+            onFocus={() => setFocusedCol(col._key)}
+            onBlur={() => setFocusedCol(null)}
             style={{
-              border: "1px solid var(--card-border-color)",
+              border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
               padding: 0,
               verticalAlign: "top",
+              background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
             }}
           >
-            <textarea
+            <AutoTextarea
               value={i18nGet(cell, "ja")}
-              rows={1}
               onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
-              onInput={(e) => {
-                const el = e.currentTarget;
-                el.style.height = "auto";
-                el.style.height = el.scrollHeight + "px";
-              }}
               style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
             />
-            <textarea
+            <AutoTextarea
               value={i18nGet(cell, "en")}
-              rows={1}
               onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
-              onInput={(e) => {
-                const el = e.currentTarget;
-                el.style.height = "auto";
-                el.style.height = el.scrollHeight + "px";
-              }}
               style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
             />
           </td>
@@ -837,21 +855,7 @@ export function TableEditorPanel({
             padding: "12px 14px 40px",
           }}
         >
-          {/* ① Live preview */}
-          <div>
-            <div style={sectionLabelStyle}>プレビュー</div>
-            <div
-              style={{
-                border: "1px solid var(--card-border-color)",
-                borderRadius: 4,
-                overflow: "auto",
-              }}
-            >
-              <TablePreview title={title} columns={columns} rows={rows} />
-            </div>
-          </div>
-
-          {/* ② Title */}
+          {/* ① Title */}
           <div>
             <div style={sectionLabelStyle}>タイトル（任意）</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -1158,6 +1162,20 @@ export function TableEditorPanel({
               </div>
             </div>
           )}
+
+          {/* ④ Live preview */}
+          <div>
+            <div style={sectionLabelStyle}>プレビュー</div>
+            <div
+              style={{
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 4,
+                overflow: "auto",
+              }}
+            >
+              <TablePreview title={title} columns={columns} rows={rows} />
+            </div>
+          </div>
         </div>
       </div>
 
