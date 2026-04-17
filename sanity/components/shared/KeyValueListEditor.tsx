@@ -216,7 +216,14 @@ export function KeyValueListEditor({
                   borderRight: "1px solid var(--card-border-color)",
                 }}
               >
-                <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--card-fg-color)",
+                    marginBottom: 3,
+                  }}
+                >
                   日本語
                 </div>
                 <TextInput
@@ -229,7 +236,14 @@ export function KeyValueListEditor({
 
               {/* Japanese value textarea */}
               <div style={{ gridColumn: 2, gridRow: 1, padding: "6px 8px 3px" }}>
-                <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--card-fg-color)",
+                    marginBottom: 3,
+                  }}
+                >
                   日本語
                 </div>
                 <AutoTextarea
@@ -268,7 +282,14 @@ export function KeyValueListEditor({
                   borderRight: "1px solid var(--card-border-color)",
                 }}
               >
-                <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--card-fg-color)",
+                    marginBottom: 3,
+                  }}
+                >
                   English
                 </div>
                 <TextInput
@@ -281,7 +302,14 @@ export function KeyValueListEditor({
 
               {/* English value textarea */}
               <div style={{ gridColumn: 2, gridRow: 2, padding: "3px 8px 6px" }}>
-                <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--card-fg-color)",
+                    marginBottom: 3,
+                  }}
+                >
                   English
                 </div>
                 <AutoTextarea

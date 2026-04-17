@@ -39,12 +39,14 @@ import type { SectionItem } from "../types";
 
 const sectionLabelStyle: React.CSSProperties = {
   fontSize: 14,
+  fontWeight: 600,
   color: "var(--card-fg-color)",
   marginBottom: 6,
 };
 
 const subLabelStyle: React.CSSProperties = {
   fontSize: 14,
+  fontWeight: 600,
   color: "var(--card-fg-color)",
   marginBottom: 3,
 };

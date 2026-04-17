@@ -25,16 +25,36 @@ export function ContentSectionEditor({
         onChange={(val) => onUpdateField("title", val)}
       />
       <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 6 }}>本文</div>
+        <div
+          style={{ fontSize: 14, fontWeight: 600, color: "var(--card-fg-color)", marginBottom: 6 }}
+        >
+          本文
+        </div>
         <div style={{ marginBottom: 8 }}>
-          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>日本語</div>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: "var(--card-fg-color)",
+              marginBottom: 3,
+            }}
+          >
+            日本語
+          </div>
           <SimpleBodyEditor
             initialValue={i18nGetBody(body, "ja")}
             onChange={(val) => onUpdateField("body", i18nSetBody(body, "ja", val))}
           />
         </div>
         <div>
-          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: "var(--card-fg-color)",
+              marginBottom: 3,
+            }}
+          >
             English
           </div>
           <SimpleBodyEditor
