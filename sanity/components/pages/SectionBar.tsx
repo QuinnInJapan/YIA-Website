@@ -10,6 +10,7 @@ export function SectionBar({
   index,
   totalCount,
   isExpanded,
+  editingInPanel,
   onToggle,
   onMoveUp,
   onMoveDown,
@@ -19,6 +20,7 @@ export function SectionBar({
   index: number;
   totalCount: number;
   isExpanded: boolean;
+  editingInPanel?: boolean;
   onToggle: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
@@ -82,6 +84,21 @@ export function SectionBar({
       >
         {title || (titleless ? "" : "（タイトルなし）")}
       </span>
+
+      {/* Right-panel editing indicator */}
+      {editingInPanel && (
+        <span
+          style={{
+            flexShrink: 0,
+            fontSize: 10,
+            color: "var(--card-focus-ring-color, #4a90d9)",
+            fontWeight: 500,
+            whiteSpace: "nowrap",
+          }}
+        >
+          右パネルで編集中
+        </span>
+      )}
 
       {/* Action buttons */}
       <div style={{ display: "flex", gap: 2, flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>

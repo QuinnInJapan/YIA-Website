@@ -349,8 +349,9 @@ function SortableRow({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const dragHandleCell = (
+  const handleTd = (rowSpan: number) => (
     <td
+      rowSpan={rowSpan}
       style={{
         border: "1px solid var(--card-border-color)",
         width: 24,
@@ -383,74 +384,168 @@ function SortableRow({
     </td>
   );
 
+  const deleteTd = (rowSpan: number) => (
+    <td
+      rowSpan={rowSpan}
+      style={{
+        border: "1px solid var(--card-border-color)",
+        textAlign: "center",
+        verticalAlign: "middle",
+        width: 28,
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => onDeleteRow(rowIndex)}
+        style={deleteButtonStyle}
+        title="行を削除"
+      >
+        <TrashIcon />
+      </button>
+    </td>
+  );
+
   if (row.groupLabel != null) {
     return (
-      <tr ref={setNodeRef} style={{ ...rowStyle, background: "rgba(200, 168, 75, 0.12)" }}>
-        {dragHandleCell}
-        <td
-          colSpan={columns.length}
-          style={{ border: "1px solid var(--card-border-color)", padding: 0 }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
-            <span
-              style={{
-                fontSize: 9,
-                fontWeight: 700,
-                border: "1px solid #c8a84b",
-                color: "#7a5800",
-                borderRadius: 2,
-                padding: "0 3px",
-                flexShrink: 0,
-              }}
-            >
-              見出し
-            </span>
-            <input
-              type="text"
-              value={i18nGet(row.groupLabel, "ja")}
-              onChange={(e) => onUpdateGroupLabel(rowIndex, "ja", e.target.value)}
-              placeholder="グループ名（日本語）"
-              style={cellInputStyle}
-            />
-            <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
-              /
-            </span>
-            <input
-              type="text"
-              value={i18nGet(row.groupLabel, "en")}
-              onChange={(e) => onUpdateGroupLabel(rowIndex, "en", e.target.value)}
-              placeholder="Group name (English)"
-              style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
-            />
-          </div>
-        </td>
-        <td
-          style={{
-            border: "1px solid var(--card-border-color)",
-            textAlign: "center",
-            width: 28,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => onDeleteRow(rowIndex)}
-            style={deleteButtonStyle}
-            title="行を削除"
+      <tbody ref={setNodeRef} style={{ ...rowStyle, background: "rgba(200, 168, 75, 0.12)" }}>
+        <tr>
+          {handleTd(1)}
+          <td
+            colSpan={columns.length}
+            style={{ border: "1px solid var(--card-border-color)", padding: 0 }}
           >
-            <TrashIcon />
-          </button>
-        </td>
-      </tr>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  border: "1px solid #c8a84b",
+                  color: "#7a5800",
+                  borderRadius: 2,
+                  padding: "0 3px",
+                  flexShrink: 0,
+                }}
+              >
+                見出し
+              </span>
+              <input
+                type="text"
+                value={i18nGet(row.groupLabel, "ja")}
+                onChange={(e) => onUpdateGroupLabel(rowIndex, "ja", e.target.value)}
+                placeholder="グループ名（日本語）"
+                style={cellInputStyle}
+              />
+              <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
+                /
+              </span>
+              <input
+                type="text"
+                value={i18nGet(row.groupLabel, "en")}
+                onChange={(e) => onUpdateGroupLabel(rowIndex, "en", e.target.value)}
+                placeholder="Group name (English)"
+                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+              />
+            </div>
+          </td>
+          {deleteTd(1)}
+        </tr>
+      </tbody>
     );
   }
 
-  // Data row
+  // Data row: JA and EN in separate <tr> so the divider is a real table border —
+  // always horizontally aligned regardless of cell content height.
+  const fileCellTd = (col: TableColumnDraft) => {
+    const fileCell = (row.fileCells ?? []).find((fc) => fc.colKey === col._key);
+    return (
+      <td
+        key={col._key}
+        rowSpan={2}
+        onFocus={() => setFocusedCol(col._key)}
+        onBlur={() => setFocusedCol(null)}
+        style={{
+          border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+          padding: "8px 6px",
+          verticalAlign: "middle",
+          background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
+        }}
+      >
+        {fileCell?.assetRef ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <span
+              style={{
+                fontSize: 10,
+                flex: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: "var(--card-muted-fg-color)",
+              }}
+              title={fileCell.filename ?? undefined}
+            >
+              {fileCell.filename ?? fileCell.assetRef}
+            </span>
+            <button
+              type="button"
+              onClick={() => onPickFile({ rowIndex, colKey: col._key })}
+              style={{
+                padding: "2px 6px",
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 3,
+                background: "transparent",
+                fontSize: 9,
+                cursor: "pointer",
+                flexShrink: 0,
+                color: "var(--card-muted-fg-color)",
+              }}
+            >
+              変更
+            </button>
+            <button
+              type="button"
+              onClick={() => onClearFileCell(rowIndex, col._key)}
+              style={{
+                padding: 2,
+                border: "none",
+                background: "transparent",
+                color: "var(--card-muted-fg-color)",
+                cursor: "pointer",
+                lineHeight: 0,
+              }}
+            >
+              <TrashIcon style={{ fontSize: 12 }} />
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onPickFile({ rowIndex, colKey: col._key })}
+            style={{
+              padding: "3px 8px",
+              border: "1px dashed var(--card-border-color)",
+              borderRadius: 3,
+              background: "transparent",
+              fontSize: 10,
+              cursor: "pointer",
+              color: "var(--card-muted-fg-color)",
+              width: "100%",
+            }}
+          >
+            ファイルを選択
+          </button>
+        )}
+      </td>
+    );
+  };
+
   return (
-    <tr ref={setNodeRef} style={rowStyle}>
-      {dragHandleCell}
-      {columns.map((col, colIndex) => {
-        if (col.type === "file") {
-          const fileCell = (row.fileCells ?? []).find((fc) => fc.colKey === col._key);
+    <tbody ref={setNodeRef} style={rowStyle}>
+      {/* JA row */}
+      <tr>
+        {handleTd(2)}
+        {columns.map((col, colIndex) => {
+          if (col.type === "file") return fileCellTd(col);
+          const cell = row.cells?.[colIndex] ?? emptyBilingual();
           return (
             <td
               key={col._key}
@@ -458,124 +553,48 @@ function SortableRow({
               onBlur={() => setFocusedCol(null)}
               style={{
                 border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
-                padding: "8px 6px",
-                verticalAlign: "middle",
+                padding: 0,
+                verticalAlign: "top",
                 background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
               }}
             >
-              {fileCell?.assetRef ? (
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      flex: 1,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      color: "var(--card-muted-fg-color)",
-                    }}
-                    title={fileCell.filename ?? undefined}
-                  >
-                    {fileCell.filename ?? fileCell.assetRef}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => onPickFile({ rowIndex, colKey: col._key })}
-                    style={{
-                      padding: "2px 6px",
-                      border: "1px solid var(--card-border-color)",
-                      borderRadius: 3,
-                      background: "transparent",
-                      fontSize: 9,
-                      cursor: "pointer",
-                      flexShrink: 0,
-                      color: "var(--card-muted-fg-color)",
-                    }}
-                  >
-                    変更
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onClearFileCell(rowIndex, col._key)}
-                    style={{
-                      padding: 2,
-                      border: "none",
-                      background: "transparent",
-                      color: "var(--card-muted-fg-color)",
-                      cursor: "pointer",
-                      lineHeight: 0,
-                    }}
-                  >
-                    <TrashIcon style={{ fontSize: 12 }} />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => onPickFile({ rowIndex, colKey: col._key })}
-                  style={{
-                    padding: "3px 8px",
-                    border: "1px dashed var(--card-border-color)",
-                    borderRadius: 3,
-                    background: "transparent",
-                    fontSize: 10,
-                    cursor: "pointer",
-                    color: "var(--card-muted-fg-color)",
-                    width: "100%",
-                  }}
-                >
-                  ファイルを選択
-                </button>
-              )}
+              <AutoTextarea
+                value={i18nGet(cell, "ja")}
+                onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
+                style={cellInputStyle}
+              />
             </td>
           );
-        }
-
-        // Text cell
-        const cell = row.cells?.[colIndex] ?? emptyBilingual();
-        return (
-          <td
-            key={col._key}
-            onFocus={() => setFocusedCol(col._key)}
-            onBlur={() => setFocusedCol(null)}
-            style={{
-              border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
-              padding: 0,
-              verticalAlign: "top",
-              background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
-            }}
-          >
-            <AutoTextarea
-              value={i18nGet(cell, "ja")}
-              onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
-              style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
-            />
-            <AutoTextarea
-              value={i18nGet(cell, "en")}
-              onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
-              style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
-            />
-          </td>
-        );
-      })}
-      <td
-        style={{
-          border: "1px solid var(--card-border-color)",
-          textAlign: "center",
-          verticalAlign: "middle",
-          width: 28,
-        }}
-      >
-        <button
-          type="button"
-          onClick={() => onDeleteRow(rowIndex)}
-          style={deleteButtonStyle}
-          title="行を削除"
-        >
-          <TrashIcon />
-        </button>
-      </td>
-    </tr>
+        })}
+        {deleteTd(2)}
+      </tr>
+      {/* EN row — file columns are skipped (covered by rowSpan=2 above) */}
+      <tr>
+        {columns.map((col, colIndex) => {
+          if (col.type === "file") return null;
+          const cell = row.cells?.[colIndex] ?? emptyBilingual();
+          return (
+            <td
+              key={col._key}
+              onFocus={() => setFocusedCol(col._key)}
+              onBlur={() => setFocusedCol(null)}
+              style={{
+                border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+                padding: 0,
+                verticalAlign: "top",
+                background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
+              }}
+            >
+              <AutoTextarea
+                value={i18nGet(cell, "en")}
+                onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
+                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+              />
+            </td>
+          );
+        })}
+      </tr>
+    </tbody>
   );
 }
 
@@ -1123,21 +1142,19 @@ export function TableEditorPanel({
                       items={rows.map((r) => r._key)}
                       strategy={verticalListSortingStrategy}
                     >
-                      <tbody>
-                        {rows.map((row, rowIndex) => (
-                          <SortableRow
-                            key={row._key}
-                            row={row}
-                            rowIndex={rowIndex}
-                            columns={columns}
-                            onUpdateGroupLabel={updateGroupLabel}
-                            onUpdateCell={updateCell}
-                            onDeleteRow={deleteRow}
-                            onPickFile={setFilePicking}
-                            onClearFileCell={clearFileCell}
-                          />
-                        ))}
-                      </tbody>
+                      {rows.map((row, rowIndex) => (
+                        <SortableRow
+                          key={row._key}
+                          row={row}
+                          rowIndex={rowIndex}
+                          columns={columns}
+                          onUpdateGroupLabel={updateGroupLabel}
+                          onUpdateCell={updateCell}
+                          onDeleteRow={deleteRow}
+                          onPickFile={setFilePicking}
+                          onClearFileCell={clearFileCell}
+                        />
+                      ))}
                     </SortableContext>
                   </table>
                 </DndContext>

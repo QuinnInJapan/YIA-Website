@@ -575,6 +575,7 @@ export function PageEditor({
                         index={index}
                         totalCount={merged.sections?.length ?? 0}
                         isExpanded={isActive}
+                        editingInPanel={(isGallery || isTable) && isActive}
                         onToggle={handleToggle}
                         onMoveUp={() => moveSection(index, -1)}
                         onMoveDown={() => moveSection(index, 1)}
