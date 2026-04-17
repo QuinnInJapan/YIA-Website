@@ -290,6 +290,265 @@ function ColumnDeleteWarning({
   );
 }
 
+// ─── SortableRow ──────────────────────────────────────────────────────────────
+
+interface SortableRowProps {
+  row: TableRowDraft;
+  rowIndex: number;
+  columns: TableColumnDraft[];
+  onUpdateGroupLabel: (rowIndex: number, lang: "ja" | "en", value: string) => void;
+  onUpdateCell: (rowIndex: number, colIndex: number, lang: "ja" | "en", value: string) => void;
+  onDeleteRow: (index: number) => void;
+  onPickFile: (state: { rowIndex: number; colKey: string }) => void;
+  onClearFileCell: (rowIndex: number, colKey: string) => void;
+}
+
+function SortableRow({
+  row,
+  rowIndex,
+  columns,
+  onUpdateGroupLabel,
+  onUpdateCell,
+  onDeleteRow,
+  onPickFile,
+  onClearFileCell,
+}: SortableRowProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: row._key,
+  });
+
+  const rowStyle: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  const dragHandleCell = (
+    <td
+      style={{
+        border: "1px solid var(--card-border-color)",
+        width: 24,
+        padding: 0,
+        textAlign: "center",
+        verticalAlign: "middle",
+        background: "var(--card-code-bg-color)",
+      }}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        style={{
+          padding: 3,
+          border: "none",
+          background: "transparent",
+          color: "var(--card-muted-fg-color)",
+          cursor: "grab",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          lineHeight: 0,
+          touchAction: "none",
+        }}
+        title="ドラッグして並び替え"
+      >
+        <DragHandleIcon />
+      </button>
+    </td>
+  );
+
+  if (row.groupLabel != null) {
+    return (
+      <tr ref={setNodeRef} style={{ ...rowStyle, background: "rgba(200, 168, 75, 0.12)" }}>
+        {dragHandleCell}
+        <td
+          colSpan={columns.length}
+          style={{ border: "1px solid var(--card-border-color)", padding: 0 }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
+            <span
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                border: "1px solid #c8a84b",
+                color: "#7a5800",
+                borderRadius: 2,
+                padding: "0 3px",
+                flexShrink: 0,
+              }}
+            >
+              見出し
+            </span>
+            <input
+              type="text"
+              value={i18nGet(row.groupLabel, "ja")}
+              onChange={(e) => onUpdateGroupLabel(rowIndex, "ja", e.target.value)}
+              placeholder="グループ名（日本語）"
+              style={cellInputStyle}
+            />
+            <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
+              /
+            </span>
+            <input
+              type="text"
+              value={i18nGet(row.groupLabel, "en")}
+              onChange={(e) => onUpdateGroupLabel(rowIndex, "en", e.target.value)}
+              placeholder="Group name (English)"
+              style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+            />
+          </div>
+        </td>
+        <td
+          style={{
+            border: "1px solid var(--card-border-color)",
+            textAlign: "center",
+            width: 28,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => onDeleteRow(rowIndex)}
+            style={deleteButtonStyle}
+            title="行を削除"
+          >
+            <TrashIcon />
+          </button>
+        </td>
+      </tr>
+    );
+  }
+
+  // Data row
+  return (
+    <tr ref={setNodeRef} style={rowStyle}>
+      {dragHandleCell}
+      {columns.map((col, colIndex) => {
+        if (col.type === "file") {
+          const fileCell = (row.fileCells ?? []).find((fc) => fc.colKey === col._key);
+          return (
+            <td
+              key={col._key}
+              style={{
+                border: "1px solid var(--card-border-color)",
+                padding: "4px 6px",
+                verticalAlign: "middle",
+              }}
+            >
+              {fileCell?.assetRef ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      flex: 1,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      color: "var(--card-muted-fg-color)",
+                    }}
+                    title={fileCell.filename ?? undefined}
+                  >
+                    {fileCell.filename ?? fileCell.assetRef}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onPickFile({ rowIndex, colKey: col._key })}
+                    style={{
+                      padding: "2px 6px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 3,
+                      background: "transparent",
+                      fontSize: 9,
+                      cursor: "pointer",
+                      flexShrink: 0,
+                      color: "var(--card-muted-fg-color)",
+                    }}
+                  >
+                    変更
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onClearFileCell(rowIndex, col._key)}
+                    style={{
+                      padding: 2,
+                      border: "none",
+                      background: "transparent",
+                      color: "var(--card-muted-fg-color)",
+                      cursor: "pointer",
+                      lineHeight: 0,
+                    }}
+                  >
+                    <TrashIcon style={{ fontSize: 12 }} />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => onPickFile({ rowIndex, colKey: col._key })}
+                  style={{
+                    padding: "3px 8px",
+                    border: "1px dashed var(--card-border-color)",
+                    borderRadius: 3,
+                    background: "transparent",
+                    fontSize: 10,
+                    cursor: "pointer",
+                    color: "var(--card-muted-fg-color)",
+                    width: "100%",
+                  }}
+                >
+                  ファイルを選択
+                </button>
+              )}
+            </td>
+          );
+        }
+
+        // Text cell
+        const cell = row.cells?.[colIndex] ?? emptyBilingual();
+        return (
+          <td
+            key={col._key}
+            style={{
+              border: "1px solid var(--card-border-color)",
+              padding: 0,
+              verticalAlign: "top",
+            }}
+          >
+            <input
+              type="text"
+              value={i18nGet(cell, "ja")}
+              onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
+              style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
+            />
+            <input
+              type="text"
+              value={i18nGet(cell, "en")}
+              onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
+              style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
+            />
+          </td>
+        );
+      })}
+      <td
+        style={{
+          border: "1px solid var(--card-border-color)",
+          textAlign: "center",
+          verticalAlign: "middle",
+          width: 28,
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => onDeleteRow(rowIndex)}
+          style={deleteButtonStyle}
+          title="行を削除"
+        >
+          <TrashIcon />
+        </button>
+      </td>
+    </tr>
+  );
+}
+
 // ─── TableEditorPanel ─────────────────────────────────────────────────────────
 
 type ColFormState =
@@ -491,245 +750,6 @@ export function TableEditorPanel({
       setRows(nextRows);
       onUpdateField("rows", nextRows);
     }
-  }
-
-  // ── SortableRow ────────────────────────────────────────────
-
-  function SortableRow({ row, rowIndex }: { row: TableRowDraft; rowIndex: number }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-      id: row._key,
-    });
-
-    const rowStyle: React.CSSProperties = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-      opacity: isDragging ? 0.5 : 1,
-    };
-
-    const dragHandleCell = (
-      <td
-        style={{
-          border: "1px solid var(--card-border-color)",
-          width: 24,
-          padding: 0,
-          textAlign: "center",
-          verticalAlign: "middle",
-          background: "var(--card-code-bg-color)",
-        }}
-      >
-        <button
-          type="button"
-          {...attributes}
-          {...listeners}
-          style={{
-            padding: 3,
-            border: "none",
-            background: "transparent",
-            color: "var(--card-muted-fg-color)",
-            cursor: "grab",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            lineHeight: 0,
-            touchAction: "none",
-          }}
-          title="ドラッグして並び替え"
-        >
-          <DragHandleIcon />
-        </button>
-      </td>
-    );
-
-    if (row.groupLabel != null) {
-      return (
-        <tr ref={setNodeRef} style={{ ...rowStyle, background: "rgba(200, 168, 75, 0.12)" }}>
-          {dragHandleCell}
-          <td
-            colSpan={columns.length}
-            style={{ border: "1px solid var(--card-border-color)", padding: 0 }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
-              <span
-                style={{
-                  fontSize: 9,
-                  fontWeight: 700,
-                  border: "1px solid #c8a84b",
-                  color: "#7a5800",
-                  borderRadius: 2,
-                  padding: "0 3px",
-                  flexShrink: 0,
-                }}
-              >
-                見出し
-              </span>
-              <input
-                type="text"
-                value={i18nGet(row.groupLabel, "ja")}
-                onChange={(e) => updateGroupLabel(rowIndex, "ja", e.target.value)}
-                placeholder="グループ名（日本語）"
-                style={cellInputStyle}
-              />
-              <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
-                /
-              </span>
-              <input
-                type="text"
-                value={i18nGet(row.groupLabel, "en")}
-                onChange={(e) => updateGroupLabel(rowIndex, "en", e.target.value)}
-                placeholder="Group name (English)"
-                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
-              />
-            </div>
-          </td>
-          <td
-            style={{
-              border: "1px solid var(--card-border-color)",
-              textAlign: "center",
-              width: 28,
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => deleteRow(rowIndex)}
-              style={deleteButtonStyle}
-              title="行を削除"
-            >
-              <TrashIcon />
-            </button>
-          </td>
-        </tr>
-      );
-    }
-
-    // Data row
-    return (
-      <tr ref={setNodeRef} style={rowStyle}>
-        {dragHandleCell}
-        {columns.map((col, colIndex) => {
-          if (col.type === "file") {
-            const fileCell = (row.fileCells ?? []).find((fc) => fc.colKey === col._key);
-            return (
-              <td
-                key={col._key}
-                style={{
-                  border: "1px solid var(--card-border-color)",
-                  padding: "4px 6px",
-                  verticalAlign: "middle",
-                }}
-              >
-                {fileCell?.assetRef ? (
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <span
-                      style={{
-                        fontSize: 10,
-                        flex: 1,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        color: "var(--card-muted-fg-color)",
-                      }}
-                      title={fileCell.filename ?? undefined}
-                    >
-                      {fileCell.filename ?? fileCell.assetRef}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setFilePicking({ rowIndex, colKey: col._key })}
-                      style={{
-                        padding: "2px 6px",
-                        border: "1px solid var(--card-border-color)",
-                        borderRadius: 3,
-                        background: "transparent",
-                        fontSize: 9,
-                        cursor: "pointer",
-                        flexShrink: 0,
-                        color: "var(--card-muted-fg-color)",
-                      }}
-                    >
-                      変更
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => clearFileCell(rowIndex, col._key)}
-                      style={{
-                        padding: 2,
-                        border: "none",
-                        background: "transparent",
-                        color: "var(--card-muted-fg-color)",
-                        cursor: "pointer",
-                        lineHeight: 0,
-                      }}
-                    >
-                      <TrashIcon style={{ fontSize: 12 }} />
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setFilePicking({ rowIndex, colKey: col._key })}
-                    style={{
-                      padding: "3px 8px",
-                      border: "1px dashed var(--card-border-color)",
-                      borderRadius: 3,
-                      background: "transparent",
-                      fontSize: 10,
-                      cursor: "pointer",
-                      color: "var(--card-muted-fg-color)",
-                      width: "100%",
-                    }}
-                  >
-                    ファイルを選択
-                  </button>
-                )}
-              </td>
-            );
-          }
-
-          // Text cell
-          const cell = row.cells?.[colIndex] ?? emptyBilingual();
-          return (
-            <td
-              key={col._key}
-              style={{
-                border: "1px solid var(--card-border-color)",
-                padding: 0,
-                verticalAlign: "top",
-              }}
-            >
-              <input
-                type="text"
-                value={i18nGet(cell, "ja")}
-                onChange={(e) => updateCell(rowIndex, colIndex, "ja", e.target.value)}
-                style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
-              />
-              <input
-                type="text"
-                value={i18nGet(cell, "en")}
-                onChange={(e) => updateCell(rowIndex, colIndex, "en", e.target.value)}
-                style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
-              />
-            </td>
-          );
-        })}
-        <td
-          style={{
-            border: "1px solid var(--card-border-color)",
-            textAlign: "center",
-            verticalAlign: "middle",
-            width: 28,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => deleteRow(rowIndex)}
-            style={deleteButtonStyle}
-            title="行を削除"
-          >
-            <TrashIcon />
-          </button>
-        </td>
-      </tr>
-    );
   }
 
   // ── Render ─────────────────────────────────────────────────
@@ -1089,7 +1109,17 @@ export function TableEditorPanel({
                     >
                       <tbody>
                         {rows.map((row, rowIndex) => (
-                          <SortableRow key={row._key} row={row} rowIndex={rowIndex} />
+                          <SortableRow
+                            key={row._key}
+                            row={row}
+                            rowIndex={rowIndex}
+                            columns={columns}
+                            onUpdateGroupLabel={updateGroupLabel}
+                            onUpdateCell={updateCell}
+                            onDeleteRow={deleteRow}
+                            onPickFile={setFilePicking}
+                            onClearFileCell={clearFileCell}
+                          />
                         ))}
                       </tbody>
                     </SortableContext>
@@ -1133,7 +1163,7 @@ export function TableEditorPanel({
         >
           <FilePickerPanel
             onSelect={(assetId, filename, ext) => {
-              updateFileCell(filePicking.rowIndex, filePicking.colKey, assetId, filename, ext);
+              updateFileCell(filePicking.rowIndex, filePicking.colKey, assetId, ext, filename);
               setFilePicking(null);
             }}
             onClose={() => setFilePicking(null)}
