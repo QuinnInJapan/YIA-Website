@@ -57,11 +57,13 @@ const cellInputStyle: React.CSSProperties = {
   padding: "3px 6px",
   border: "none",
   background: "transparent",
-  fontSize: 11,
+  fontSize: 14,
   fontFamily: "inherit",
   color: "inherit",
   outline: "none",
   boxSizing: "border-box",
+  resize: "none",
+  overflow: "hidden",
 };
 
 const deleteButtonStyle: React.CSSProperties = {
@@ -513,16 +515,26 @@ function SortableRow({
               verticalAlign: "top",
             }}
           >
-            <input
-              type="text"
+            <textarea
               value={i18nGet(cell, "ja")}
+              rows={1}
               onChange={(e) => onUpdateCell(rowIndex, colIndex, "ja", e.target.value)}
+              onInput={(e) => {
+                const el = e.currentTarget;
+                el.style.height = "auto";
+                el.style.height = el.scrollHeight + "px";
+              }}
               style={{ ...cellInputStyle, borderBottom: "1px solid var(--card-border-color)" }}
             />
-            <input
-              type="text"
+            <textarea
               value={i18nGet(cell, "en")}
+              rows={1}
               onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
+              onInput={(e) => {
+                const el = e.currentTarget;
+                el.style.height = "auto";
+                el.style.height = el.scrollHeight + "px";
+              }}
               style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
             />
           </td>
@@ -915,7 +927,7 @@ export function TableEditorPanel({
                   >
                     <span
                       style={{
-                        fontSize: 11,
+                        fontSize: 14,
                         fontWeight: 600,
                         color: isPendingDelete ? "#c03030" : "var(--card-fg-color)",
                       }}
@@ -925,7 +937,7 @@ export function TableEditorPanel({
                     {labelEn && (
                       <span
                         style={{
-                          fontSize: 10,
+                          fontSize: 12,
                           color: isPendingDelete ? "#e08080" : "var(--card-muted-fg-color)",
                         }}
                       >
@@ -1049,7 +1061,7 @@ export function TableEditorPanel({
                     style={{
                       width: "100%",
                       borderCollapse: "collapse",
-                      fontSize: 12,
+                      fontSize: 14,
                       tableLayout: "fixed",
                       minWidth: columns.length * 100 + 52,
                     }}
