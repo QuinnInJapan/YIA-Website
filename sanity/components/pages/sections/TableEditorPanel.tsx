@@ -475,7 +475,7 @@ function SortableRow({
         onFocus={() => setFocusedCol(col._key)}
         onBlur={() => setFocusedCol(null)}
         style={{
-          border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+          border: "1px solid var(--card-border-color)",
           padding: "8px 6px",
           verticalAlign: "middle",
           background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
@@ -563,7 +563,7 @@ function SortableRow({
               onFocus={() => setFocusedCol(col._key)}
               onBlur={() => setFocusedCol(null)}
               style={{
-                border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+                border: "1px solid var(--card-border-color)",
                 padding: 0,
                 verticalAlign: "top",
                 background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
@@ -591,7 +591,7 @@ function SortableRow({
               onFocus={() => setFocusedCol(col._key)}
               onBlur={() => setFocusedCol(null)}
               style={{
-                border: `1px solid ${focusedCol === col._key ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+                border: "1px solid var(--card-border-color)",
                 padding: 0,
                 verticalAlign: "top",
                 background: focusedCol === col._key ? "rgba(91, 156, 246, 0.07)" : undefined,
