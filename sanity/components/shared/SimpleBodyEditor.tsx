@@ -206,6 +206,7 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
     <div>
       <Toolbar />
       <div
+        className="simple-body-editor"
         style={{
           minHeight: 120,
           padding: "10px 14px",

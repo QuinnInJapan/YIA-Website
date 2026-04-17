@@ -39,6 +39,11 @@ export function UnifiedPagesTool() {
     deepLinkId ? { type: "page", id: deepLinkId } : null,
   );
   const [mergedDoc, setMergedDoc] = useState<PageDoc | null>(null);
+  const previewTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const setMergedDocDebounced = useCallback((doc: PageDoc | null) => {
+    if (previewTimerRef.current) clearTimeout(previewTimerRef.current);
+    previewTimerRef.current = setTimeout(() => setMergedDoc(doc), 250);
+  }, []);
   const [draftPageIds, setDraftPageIds] = useState<Set<string>>(new Set());
   const [livePreviewItems, setLivePreviewItems] = useState<{
     key: string;
@@ -234,7 +239,7 @@ export function UnifiedPagesTool() {
             }
             onDeselectTable={() => setRightPanel(null)}
             onCloseRightPanel={() => setRightPanel(null)}
-            onMergedChange={setMergedDoc}
+            onMergedChange={setMergedDocDebounced}
             onDraftChange={() => sidebarRefreshRef.current?.()}
           />
         );
