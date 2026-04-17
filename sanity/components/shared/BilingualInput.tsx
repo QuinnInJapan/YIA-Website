@@ -16,14 +16,10 @@ export function BilingualInput({
 }) {
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-        {label}
-      </div>
+      <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 6 }}>{label}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
-            日本語
-          </div>
+          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>日本語</div>
           <TextInput
             fontSize={fontSize}
             value={i18nGet(value, "ja")}
@@ -31,7 +27,7 @@ export function BilingualInput({
           />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
             English
           </div>
           <TextInput

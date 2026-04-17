@@ -38,16 +38,14 @@ import type { SectionItem } from "../types";
 // ─── Shared styles ────────────────────────────────────────────────────────────
 
 const sectionLabelStyle: React.CSSProperties = {
-  fontSize: 10,
-  color: "var(--card-muted-fg-color)",
+  fontSize: 14,
+  color: "var(--card-fg-color)",
   marginBottom: 6,
-  textTransform: "uppercase",
-  letterSpacing: "0.5px",
 };
 
 const subLabelStyle: React.CSSProperties = {
-  fontSize: 10,
-  color: "var(--card-muted-fg-color)",
+  fontSize: 14,
+  color: "var(--card-fg-color)",
   marginBottom: 3,
 };
 

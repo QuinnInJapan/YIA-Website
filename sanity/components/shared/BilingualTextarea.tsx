@@ -57,14 +57,10 @@ export function BilingualTextarea({
 
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
-        {label}
-      </div>
+      <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 6 }}>{label}</div>
       <div style={{ display: "flex", gap: 8 }}>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
-            日本語
-          </div>
+          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>日本語</div>
           <AutoTextarea
             value={i18nGet(value, "ja")}
             onChange={(v) => onChange(i18nSet(value, "ja", v))}
@@ -72,7 +68,7 @@ export function BilingualTextarea({
           />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 3 }}>
+          <div style={{ fontSize: 14, color: "var(--card-fg-color)", marginBottom: 3 }}>
             English
           </div>
           <AutoTextarea
