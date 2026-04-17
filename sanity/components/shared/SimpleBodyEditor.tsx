@@ -211,6 +211,8 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
         className="simple-body-editor"
         style={{
           minHeight: 120,
+          display: "flex",
+          flexDirection: "column",
           padding: "10px 14px",
           border: "1px solid var(--card-border-color)",
           borderRadius: 4,
@@ -224,7 +226,7 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
           renderDecorator={renderDecorator}
           renderStyle={renderStyle}
           renderListItem={renderListItem}
-          style={{ outline: "none", minHeight: "100%" }}
+          style={{ outline: "none", flex: 1 }}
         />
       </div>
       <ValueWatcher onChange={onChange} />
