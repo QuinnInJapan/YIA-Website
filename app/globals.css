@@ -3373,7 +3373,7 @@ html:has(:target) {
 }
 
 .about-showcase .mission-block__ja {
-  font-size: clamp(15px, 1.8vw, 17px);
+  font-size: clamp(var(--font-size-base), 1.8vw, var(--font-size-lg));
   line-height: 1.9;
 }
 
