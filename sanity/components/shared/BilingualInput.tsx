@@ -31,7 +31,7 @@ export function BilingualInput({
         <div style={{ flex: 1 }}>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,
@@ -48,7 +48,7 @@ export function BilingualInput({
         <div style={{ flex: 1 }}>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,

@@ -311,7 +311,7 @@ export function HotspotCropTool({
               background: "#2276fc",
               color: "#fff",
               cursor: "pointer",
-              fontSize: 12,
+              fontSize: fs.label,
               fontWeight: 500,
             }}
           >
