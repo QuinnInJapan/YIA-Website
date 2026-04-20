@@ -576,7 +576,7 @@ body {
 }
 
 #google_translate_element .goog-te-gadget {
-  font-size: 0; /* intentional: hides ruby visually, accessible to screen readers */
+  font-size: 0; /* intentional: suppresses Google Translate gadget label text */
   line-height: 0;
 }
 
