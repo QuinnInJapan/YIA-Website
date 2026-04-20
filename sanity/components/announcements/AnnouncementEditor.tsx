@@ -13,6 +13,7 @@ import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
 import { BodyEditor } from "../blog/PteEditor";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -374,7 +375,7 @@ export function AnnouncementEditor({
                 display: "inline-block",
                 padding: "2px 8px",
                 borderRadius: 10,
-                fontSize: 11,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 background: hasDraft ? "#f5a623" : "#4caf50",
                 color: "#fff",
@@ -443,7 +444,9 @@ export function AnnouncementEditor({
           >
             {/* Hero image */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 ヒーロー画像
               </div>
               {merged.heroImage?.asset?._ref ? (
@@ -506,7 +509,7 @@ export function AnnouncementEditor({
                     borderRadius: 6,
                     background: "transparent",
                     color: "var(--card-muted-fg-color)",
-                    fontSize: 13,
+                    fontSize: fs.body,
                     cursor: "pointer",
                   }}
                 >
@@ -517,7 +520,9 @@ export function AnnouncementEditor({
 
             {/* Title fields */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（日本語）
               </div>
               <TextInput
@@ -529,7 +534,9 @@ export function AnnouncementEditor({
               />
             </div>
             <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（English）
               </div>
               <TextInput
@@ -554,7 +561,13 @@ export function AnnouncementEditor({
               }}
             >
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   スラッグ
                 </div>
                 <TextInput
@@ -566,7 +579,13 @@ export function AnnouncementEditor({
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   日付
                 </div>
                 <TextInput
@@ -577,7 +596,13 @@ export function AnnouncementEditor({
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   固定表示
                 </div>
                 <label
@@ -586,7 +611,7 @@ export function AnnouncementEditor({
                     alignItems: "center",
                     gap: 8,
                     cursor: "pointer",
-                    fontSize: 13,
+                    fontSize: fs.body,
                   }}
                 >
                   <input
@@ -599,7 +624,13 @@ export function AnnouncementEditor({
                 </label>
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   抜粋（日本語）
                 </div>
                 <textarea
@@ -613,7 +644,7 @@ export function AnnouncementEditor({
                     padding: "6px 10px",
                     border: "1px solid var(--card-border-color)",
                     borderRadius: 4,
-                    fontSize: 13,
+                    fontSize: fs.body,
                     fontFamily: "inherit",
                     resize: "vertical",
                     background: "transparent",
@@ -633,7 +664,7 @@ export function AnnouncementEditor({
                   paddingBottom: 6,
                 }}
               >
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)" }}>本文</div>
+                <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)" }}>本文</div>
                 <div
                   style={{
                     display: "inline-flex",
@@ -655,7 +686,7 @@ export function AnnouncementEditor({
                         border: "none",
                         margin: 0,
                         cursor: "pointer",
-                        fontSize: 11,
+                        fontSize: fs.meta,
                         lineHeight: "18px",
                         fontWeight: bodyLang === l ? 600 : 400,
                         background: bodyLang === l ? "var(--card-fg-color)" : "transparent",
@@ -746,7 +777,7 @@ function DocumentsSection({
     >
       <div
         style={{
-          fontSize: 12,
+          fontSize: fs.label,
           color: "var(--card-muted-fg-color)",
           marginBottom: 8,
         }}
@@ -786,11 +817,11 @@ function DocumentsSection({
                   border: "1px solid var(--card-border-color)",
                   background: "transparent",
                   cursor: "pointer",
-                  fontSize: 13,
+                  fontSize: fs.body,
                   color: "var(--card-fg-color)",
                 }}
               >
-                <span style={{ fontSize: 14 }}>{doc.file ? "📎" : "🔗"}</span>
+                <span style={{ fontSize: fs.body }}>{doc.file ? "📎" : "🔗"}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{
@@ -802,7 +833,7 @@ function DocumentsSection({
                     {label}
                   </div>
                   {subtitle && (
-                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                    <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                       {subtitle}
                     </div>
                   )}

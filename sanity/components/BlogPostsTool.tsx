@@ -19,6 +19,7 @@ import { PostEditor, type BlogPostDoc } from "./blog/PostEditor";
 import { BlogPostPreview } from "./blog/BlogPostPreview";
 import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
 import { useDeepLink } from "./shared/useDeepLink";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -132,7 +133,7 @@ function SidebarRow({
       <div style={{ minWidth: 0, flex: 1 }}>
         <div
           style={{
-            fontSize: 13,
+            fontSize: fs.body,
             fontWeight: isSelected ? 600 : 400,
             lineHeight: 1.3,
             overflow: "hidden",
@@ -144,7 +145,7 @@ function SidebarRow({
         </div>
         <div
           style={{
-            fontSize: 11,
+            fontSize: fs.meta,
             color: "var(--card-muted-fg-color)",
             marginTop: 2,
             display: "flex",
