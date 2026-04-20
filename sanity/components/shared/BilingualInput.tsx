@@ -1,6 +1,7 @@
 "use client";
 
 import { TextInput } from "@sanity/ui";
+import { fs } from "@/sanity/lib/studioTokens";
 import { i18nGet, i18nSet } from "./i18n";
 
 export function BilingualInput({
@@ -17,7 +18,12 @@ export function BilingualInput({
   return (
     <div style={{ marginBottom: 12 }}>
       <div
-        style={{ fontSize: 14, fontWeight: 600, color: "var(--card-fg-color)", marginBottom: 6 }}
+        style={{
+          fontSize: fs.label,
+          fontWeight: 600,
+          color: "var(--card-fg-color)",
+          marginBottom: 6,
+        }}
       >
         {label}
       </div>

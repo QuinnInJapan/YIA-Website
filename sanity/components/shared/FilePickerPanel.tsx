@@ -5,6 +5,7 @@ import { useClient } from "sanity";
 import { Box, Button, Flex, Stack, Text, TextInput } from "@sanity/ui";
 import { AddIcon, DownloadIcon, SearchIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
+import { fs } from "@/sanity/lib/studioTokens";
 import { FileTypeIcon, formatFileSize, getFileType } from "./media-utils";
 
 // ── Types ────────────────────────────────────────────────
@@ -227,7 +228,7 @@ export function FilePickerPanel({
                       ? "var(--card-focus-ring-color, #1e3a5f)"
                       : "transparent",
                   color: typeFilter === f.value ? "#fff" : "var(--card-fg-color)",
-                  fontSize: 11,
+                  fontSize: fs.meta,
                   fontWeight: typeFilter === f.value ? 600 : 400,
                   cursor: "pointer",
                 }}
@@ -497,7 +498,7 @@ export function FilePickerPanel({
                     <div style={{ padding: "5px 6px" }}>
                       <div
                         style={{
-                          fontSize: 11,
+                          fontSize: fs.meta,
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
@@ -506,7 +507,7 @@ export function FilePickerPanel({
                       >
                         {asset.originalFilename ?? asset._id}
                       </div>
-                      <div style={{ fontSize: 10, color: "var(--card-muted-fg-color)" }}>
+                      <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                         {formatFileSize(asset.size)}
                       </div>
                     </div>
@@ -562,7 +563,7 @@ export function FilePickerPanel({
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div
                         style={{
-                          fontSize: 13,
+                          fontSize: fs.body,
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
@@ -570,7 +571,7 @@ export function FilePickerPanel({
                       >
                         {asset.originalFilename ?? asset._id}
                       </div>
-                      <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                      <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                         {formatFileSize(asset.size)}
                         {asset._createdAt &&
                           ` · ${new Date(asset._createdAt).toLocaleDateString("ja-JP")}`}

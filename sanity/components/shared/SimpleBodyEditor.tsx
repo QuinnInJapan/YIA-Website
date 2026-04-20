@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 import {
   EditorProvider,
   PortableTextEditable,
@@ -216,7 +217,7 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
           padding: "10px 14px",
           border: "1px solid var(--card-border-color)",
           borderRadius: 4,
-          fontSize: 13,
+          fontSize: fs.body,
           lineHeight: 1.7,
           color: "var(--card-fg-color)",
           outline: "none",

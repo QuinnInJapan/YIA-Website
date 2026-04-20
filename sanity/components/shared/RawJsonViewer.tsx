@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
           border: "1px solid rgba(128,128,128,0.3)",
           background: "#1a1a1a",
           color: "#999",
-          fontSize: 14,
+          fontSize: fs.body,
           fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
           cursor: "pointer",
           boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
@@ -91,7 +92,7 @@ export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
                 borderBottom: "1px solid rgba(128,128,128,0.2)",
               }}
             >
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#e0e0e0" }}>Raw JSON</span>
+              <span style={{ fontSize: fs.body, fontWeight: 600, color: "#e0e0e0" }}>Raw JSON</span>
               <div style={{ display: "flex", gap: 8 }}>
                 <button
                   type="button"
@@ -102,7 +103,7 @@ export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
                     borderRadius: 4,
                     background: copied ? "#4caf50" : "transparent",
                     color: copied ? "#fff" : "#e0e0e0",
-                    fontSize: 12,
+                    fontSize: fs.label,
                     cursor: "pointer",
                     transition: "background 150ms, color 150ms",
                   }}
@@ -118,7 +119,7 @@ export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
                     borderRadius: 4,
                     background: "transparent",
                     color: "#999",
-                    fontSize: 14,
+                    fontSize: fs.body,
                     cursor: "pointer",
                   }}
                 >
@@ -133,7 +134,7 @@ export function RawJsonButton({ getDocument }: { getDocument: () => unknown }) {
                 overflow: "auto",
                 margin: 0,
                 padding: 16,
-                fontSize: 12,
+                fontSize: fs.label,
                 lineHeight: 1.5,
                 fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
                 whiteSpace: "pre-wrap",

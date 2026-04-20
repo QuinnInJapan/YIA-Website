@@ -5,6 +5,7 @@ import { useClient } from "sanity";
 import { Box, Button, Flex, Stack, Text, TextInput } from "@sanity/ui";
 import { AddIcon, SearchIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -442,7 +443,7 @@ export function ImagePickerPanel({
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: 12,
+                          fontSize: fs.label,
                           fontWeight: 700,
                           pointerEvents: "none",
                         }}
@@ -465,7 +466,7 @@ export function ImagePickerPanel({
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: 12,
+                          fontSize: fs.label,
                           fontWeight: 700,
                           pointerEvents: "none",
                         }}
