@@ -268,16 +268,7 @@ ruby rt {
 }
 
 .page-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(10, 20, 40, 0.78) 0%,
-    rgba(15, 25, 50, 0.5) 50%,
-    rgba(15, 25, 50, 0.4) 100%
-  );
+  display: none;
 }
 
 .page-hero--solid {
@@ -315,6 +306,10 @@ ruby rt {
   font-size: var(--font-size-xxl);
   font-weight: 500;
   letter-spacing: -0.01em;
+  text-shadow:
+    0 0 40px rgba(0, 0, 0, 0.85),
+    0 0 15px rgba(0, 0, 0, 0.65),
+    0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .page-hero__subtitle {
@@ -322,6 +317,9 @@ ruby rt {
   font-weight: 400;
   opacity: 0.85;
   margin-top: var(--spacing-xs);
+  text-shadow:
+    0 0 20px rgba(0, 0, 0, 0.85),
+    0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .page-hero__description {
@@ -2538,15 +2536,7 @@ html:has(:target) {
 }
 
 .hero-viewport::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(15, 25, 50, 0.45) 0%,
-    rgba(15, 25, 50, 0.7) 100%
-  );
+  display: none;
 }
 
 .hero__overlay {
@@ -2565,7 +2555,10 @@ html:has(:target) {
   font-weight: 500;
   letter-spacing: 0.08em;
   margin: 0 0 12px;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  text-shadow:
+    0 0 40px rgba(0, 0, 0, 0.85),
+    0 0 15px rgba(0, 0, 0, 0.65),
+    0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .hero__subtitle {
@@ -2574,12 +2567,18 @@ html:has(:target) {
   letter-spacing: 0.14em;
   margin: 0 0 32px;
   opacity: 0.85;
+  text-shadow:
+    0 0 20px rgba(0, 0, 0, 0.85),
+    0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .hero__tagline {
   font-size: clamp(15px, 1.6vw, 22px);
   margin: 0 0 6px;
   font-weight: 500;
+  text-shadow:
+    0 0 20px rgba(0, 0, 0, 0.85),
+    0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .hero-scroll {
@@ -2629,6 +2628,9 @@ html:has(:target) {
   font-size: clamp(12px, 1.3vw, 18px);
   margin: 0;
   opacity: 0.7;
+  text-shadow:
+    0 0 20px rgba(0, 0, 0, 0.85),
+    0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* -- Oshirase (Announcements) Band -- */
