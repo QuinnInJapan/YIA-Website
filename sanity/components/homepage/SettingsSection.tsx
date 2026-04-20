@@ -4,6 +4,7 @@ import { i18nGet, i18nSet } from "../shared/i18n";
 import { AutoTextarea } from "../shared/BilingualTextarea";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
+import { fs } from "@/sanity/lib/studioTokens";
 import type { SiteSettingsData, SidebarData, DocumentLinkItem, UpdateFieldFn } from "./types";
 
 // ── Labeled input helper ────────────────────────────
@@ -24,7 +25,7 @@ function Field({
       <label
         style={{
           display: "block",
-          fontSize: 11,
+          fontSize: fs.meta,
           fontWeight: 600,
           marginBottom: 4,
           color: "var(--card-muted-fg-color)",
@@ -41,7 +42,7 @@ function Field({
           padding: "6px 10px",
           border: "1px solid var(--card-border-color)",
           borderRadius: 4,
-          fontSize: 13,
+          fontSize: fs.body,
           fontFamily: "inherit",
           background: "transparent",
           color: "inherit",
@@ -65,7 +66,7 @@ function I18nField({
       <label
         style={{
           display: "block",
-          fontSize: 11,
+          fontSize: fs.meta,
           fontWeight: 600,
           marginBottom: 4,
           color: "var(--card-muted-fg-color)",
@@ -85,7 +86,7 @@ function I18nField({
                 padding: "6px 10px",
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
-                fontSize: 13,
+                fontSize: fs.body,
                 fontFamily: "inherit",
                 background: "transparent",
                 color: "inherit",
@@ -140,7 +141,7 @@ export function SettingsSection({
         {/* ── Organization ── */}
         <h4
           style={{
-            fontSize: 13,
+            fontSize: fs.body,
             fontWeight: 600,
             margin: "0 0 12px",
             color: "var(--card-fg-color)",
@@ -175,7 +176,7 @@ export function SettingsSection({
         {/* ── Contact ── */}
         <h4
           style={{
-            fontSize: 13,
+            fontSize: fs.body,
             fontWeight: 600,
             margin: "20px 0 12px",
             color: "var(--card-fg-color)",
@@ -223,7 +224,7 @@ export function SettingsSection({
         {/* ── Other ── */}
         <h4
           style={{
-            fontSize: 13,
+            fontSize: fs.body,
             fontWeight: 600,
             margin: "20px 0 12px",
             color: "var(--card-fg-color)",
@@ -253,7 +254,7 @@ export function SettingsSection({
           <>
             <h4
               style={{
-                fontSize: 13,
+                fontSize: fs.body,
                 fontWeight: 600,
                 margin: "20px 0 12px",
                 color: "var(--card-fg-color)",
@@ -297,11 +298,11 @@ export function SettingsSection({
                         border: "1px solid var(--card-border-color)",
                         background: "transparent",
                         cursor: "pointer",
-                        fontSize: 13,
+                        fontSize: fs.body,
                         color: "var(--card-fg-color)",
                       }}
                     >
-                      <span style={{ fontSize: 14, flexShrink: 0 }}>
+                      <span style={{ fontSize: fs.body, flexShrink: 0 }}>
                         {doc.file ? "\u{1F4CE}" : "\u{1F517}"}
                       </span>
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -315,7 +316,7 @@ export function SettingsSection({
                           {label}
                         </div>
                         {typeLabel && (
-                          <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                          <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                             {typeLabel}
                           </div>
                         )}
@@ -347,7 +348,7 @@ export function SettingsSection({
                 borderRadius: 4,
                 background: "none",
                 cursor: "pointer",
-                fontSize: 12,
+                fontSize: fs.label,
                 color: "var(--card-muted-fg-color)",
               }}
             >

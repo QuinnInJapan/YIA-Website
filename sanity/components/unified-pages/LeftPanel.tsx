@@ -4,6 +4,7 @@
 import { useCallback, useRef, useState } from "react";
 import { Flex, Stack, Text } from "@sanity/ui";
 import { LoadingDots } from "../shared/ui";
+import { fs } from "@/sanity/lib/studioTokens";
 import { SYSTEM_PAGES } from "./types";
 import type { NavCategoryRaw, NavPageDoc, CategoryDoc, MiddlePanelState } from "./types";
 import type { NavSaveStatus } from "./useNavData";
@@ -41,7 +42,7 @@ function PageRow({
         style={{
           flex: 1,
           minWidth: 0,
-          fontSize: 13,
+          fontSize: fs.body,
           color: hidden ? "var(--card-muted-fg-color)" : "var(--card-fg-color)",
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -119,7 +120,7 @@ function CategoryRow({
               border: "none",
               background: "transparent",
               cursor: "pointer",
-              fontSize: 10,
+              fontSize: fs.meta,
               opacity: 0.5,
               padding: 0,
               color: "var(--card-fg-color)",
@@ -140,7 +141,7 @@ function CategoryRow({
             border: "none",
             background: "transparent",
             cursor: isReorderMode ? "default" : "pointer",
-            fontSize: 12,
+            fontSize: fs.label,
             fontWeight: 600,
             color: "var(--card-fg-color)",
             padding: 0,
@@ -159,7 +160,7 @@ function CategoryRow({
                 borderRadius: 3,
                 background: "transparent",
                 cursor: idx === 0 ? "default" : "pointer",
-                fontSize: 11,
+                fontSize: fs.meta,
                 padding: "2px 6px",
                 color: "var(--card-fg-color)",
                 opacity: idx === 0 ? 0.25 : 1,
@@ -176,7 +177,7 @@ function CategoryRow({
                 borderRadius: 3,
                 background: "transparent",
                 cursor: idx === totalCount - 1 ? "default" : "pointer",
-                fontSize: 11,
+                fontSize: fs.meta,
                 padding: "2px 6px",
                 color: "var(--card-fg-color)",
                 opacity: idx === totalCount - 1 ? 0.25 : 1,
@@ -313,7 +314,7 @@ export function LeftPanel({
                 onClick={handleCompleteReorder}
                 disabled={saveStatus !== "saved"}
                 style={{
-                  fontSize: 11,
+                  fontSize: fs.meta,
                   padding: "4px 8px",
                   border: "1px solid var(--card-border-color)",
                   borderRadius: 4,
@@ -329,7 +330,7 @@ export function LeftPanel({
                 type="button"
                 onClick={handleCancelReorder}
                 style={{
-                  fontSize: 11,
+                  fontSize: fs.meta,
                   padding: "4px 8px",
                   border: "1px solid var(--card-border-color)",
                   borderRadius: 4,
@@ -346,7 +347,7 @@ export function LeftPanel({
               type="button"
               onClick={enterReorderMode}
               style={{
-                fontSize: 11,
+                fontSize: fs.meta,
                 padding: "4px 8px",
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
@@ -409,12 +410,12 @@ export function LeftPanel({
                     ? "var(--card-border-color)"
                     : "transparent",
                 cursor: "pointer",
-                fontSize: 13,
+                fontSize: fs.body,
                 color: "var(--card-muted-fg-color)",
               }}
             >
               {sp.label}
-              <span style={{ fontSize: 10, marginLeft: 6 }}>(システム)</span>
+              <span style={{ fontSize: fs.meta, marginLeft: 6 }}>(システム)</span>
             </button>
           ))}
         </div>
@@ -432,7 +433,7 @@ export function LeftPanel({
             onClick={onCreateCategory}
             style={{
               width: "100%",
-              fontSize: 12,
+              fontSize: fs.label,
               padding: "8px 12px",
               border: "1px dashed var(--card-border-color)",
               borderRadius: 6,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 import { i18nGet, i18nSet } from "./i18n";
 
 export function AutoTextarea({
@@ -49,7 +50,7 @@ export function BilingualTextarea({
     padding: "6px 10px",
     border: "1px solid var(--card-border-color)",
     borderRadius: 4,
-    fontSize: 13,
+    fontSize: fs.body,
     fontFamily: "inherit",
     background: "transparent",
     color: "inherit",
@@ -58,7 +59,12 @@ export function BilingualTextarea({
   return (
     <div style={{ marginBottom: 12 }}>
       <div
-        style={{ fontSize: 14, fontWeight: 600, color: "var(--card-fg-color)", marginBottom: 6 }}
+        style={{
+          fontSize: fs.label,
+          fontWeight: 600,
+          color: "var(--card-fg-color)",
+          marginBottom: 6,
+        }}
       >
         {label}
       </div>
@@ -66,7 +72,7 @@ export function BilingualTextarea({
         <div style={{ flex: 1 }}>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,
@@ -83,7 +89,7 @@ export function BilingualTextarea({
         <div style={{ flex: 1 }}>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,

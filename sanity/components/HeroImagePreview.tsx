@@ -2,6 +2,7 @@ import { type ComponentType } from "react";
 import { type ArrayFieldProps, useFormValue } from "sanity";
 import imageUrlBuilder from "@sanity/image-url";
 import { useClient } from "sanity";
+import { fs } from "@/sanity/lib/studioTokens";
 
 /**
  * Custom field component for the page `images` array field.
@@ -54,7 +55,7 @@ export const HeroImageField: ComponentType<ArrayFieldProps> = (props) => {
           <div
             style={{
               padding: "6px 12px",
-              fontSize: 12,
+              fontSize: fs.label,
               color: "#666",
               background: "#f5f5f5",
             }}

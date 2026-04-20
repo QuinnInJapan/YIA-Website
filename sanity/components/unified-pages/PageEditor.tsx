@@ -17,6 +17,7 @@ import { useFocusContext } from "../shared/FocusContext";
 import { SectionEditor } from "../pages/SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "../pages/types";
 import { sectionDefaults } from "../pages/sectionDefaults";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Constants ────────────────────────────────────────────
 
@@ -347,7 +348,7 @@ export function PageEditor({
                 display: "inline-block",
                 padding: "2px 8px",
                 borderRadius: 10,
-                fontSize: 11,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 background: hasDraft ? "#f5a623" : "#4caf50",
                 color: "#fff",
@@ -407,7 +408,9 @@ export function PageEditor({
           >
             {/* Hero image */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 ヒーロー画像
               </div>
               {merged.images?.[0]?.file?.asset?._ref ? (
@@ -452,7 +455,7 @@ export function PageEditor({
                     borderRadius: 6,
                     background: "transparent",
                     color: "var(--card-muted-fg-color)",
-                    fontSize: 13,
+                    fontSize: fs.body,
                     cursor: "pointer",
                   }}
                 >
@@ -463,7 +466,9 @@ export function PageEditor({
 
             {/* Title fields */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（日本語）
               </div>
               <TextInput
@@ -475,7 +480,9 @@ export function PageEditor({
               />
             </div>
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（English）
               </div>
               <TextInput
@@ -490,7 +497,13 @@ export function PageEditor({
             {/* Description */}
             {(["ja", "en"] as const).map((lang) => (
               <div key={lang} style={{ marginBottom: lang === "ja" ? 16 : 20 }}>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   {lang === "ja" ? "説明（日本語）" : "説明（English）"}
                 </div>
                 <AutoTextarea
@@ -501,7 +514,7 @@ export function PageEditor({
                     padding: "6px 10px",
                     border: "1px solid var(--card-border-color)",
                     borderRadius: 4,
-                    fontSize: 13,
+                    fontSize: fs.body,
                     fontFamily: "inherit",
                     background: "transparent",
                     color: "inherit",
@@ -519,7 +532,7 @@ export function PageEditor({
             >
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: fs.label,
                   color: "var(--card-muted-fg-color)",
                   marginBottom: 12,
                   fontWeight: 600,
@@ -607,7 +620,7 @@ export function PageEditor({
                     borderRadius: 6,
                     background: "transparent",
                     color: "var(--card-muted-fg-color)",
-                    fontSize: 13,
+                    fontSize: fs.body,
                     cursor: "pointer",
                   }}
                 >

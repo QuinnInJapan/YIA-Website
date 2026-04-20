@@ -14,6 +14,7 @@ import type {
   AnnouncementPreviewData,
 } from "./types";
 import { StudioRegion } from "@/lib/components/StudioRegion";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export interface HomepageMergedState {
   homepage: HomepageData;
@@ -104,8 +105,12 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           >
             {stat?.value && (
               <>
-                <strong style={{ fontSize: 28, fontWeight: 900 }}>{stat.value}</strong>
-                <span style={{ fontSize: 11, opacity: 0.8 }}>{ja(stat.label)}</span>
+                <strong
+                  style={{ fontSize: 28 /* intentional: display/heading size */, fontWeight: 900 }}
+                >
+                  {stat.value}
+                </strong>
+                <span style={{ fontSize: fs.meta, opacity: 0.8 }}>{ja(stat.label)}</span>
               </>
             )}
           </div>
@@ -119,13 +124,15 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 14,
+              fontSize: fs.body,
               fontWeight: 600,
             }}
           >
             <div style={{ textAlign: "center", lineHeight: 1.4 }}>
               入会案内
-              <span style={{ display: "block", fontSize: 12, fontWeight: 400, opacity: 0.85 }}>
+              <span
+                style={{ display: "block", fontSize: fs.label, fontWeight: 400, opacity: 0.85 }}
+              >
                 Join Us
               </span>
             </div>
@@ -139,13 +146,15 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 14,
+              fontSize: fs.body,
               fontWeight: 500,
             }}
           >
             <div style={{ textAlign: "center", lineHeight: 1.4 }}>
               活動ブログ
-              <span style={{ display: "block", fontSize: 12, fontWeight: 400, opacity: 0.85 }}>
+              <span
+                style={{ display: "block", fontSize: fs.label, fontWeight: 400, opacity: 0.85 }}
+              >
                 Activity Blog
               </span>
             </div>
@@ -224,7 +233,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
         color: "#333",
         overflowY: "auto",
         height: "100%",
-        fontSize: 16,
+        fontSize: fs.body,
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
       }}
@@ -369,7 +378,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
                     alignItems: "center",
                     justifyContent: "center",
                     color: "#999",
-                    fontSize: 13,
+                    fontSize: fs.body,
                   }}
                 >
                   マップURL未設定

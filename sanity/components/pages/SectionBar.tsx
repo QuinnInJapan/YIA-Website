@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDownIcon, ChevronRightIcon, TrashIcon } from "@sanity/icons";
+import { fs } from "@/sanity/lib/studioTokens";
 import { i18nGet } from "../shared/i18n";
 import type { SectionItem, SectionTypeName } from "./types";
 import { SECTION_TYPE_LABELS } from "./types";
@@ -60,7 +61,7 @@ export function SectionBar({
           flexShrink: 0,
           padding: "1px 6px",
           borderRadius: 3,
-          fontSize: 10,
+          fontSize: fs.meta,
           fontWeight: 600,
           background: "var(--card-border-color)",
           color: "var(--card-muted-fg-color)",
@@ -75,7 +76,7 @@ export function SectionBar({
         style={{
           flex: 1,
           minWidth: 0,
-          fontSize: 13,
+          fontSize: fs.body,
           fontWeight: 500,
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -90,7 +91,7 @@ export function SectionBar({
         <span
           style={{
             flexShrink: 0,
-            fontSize: 10,
+            fontSize: fs.meta,
             color: "var(--card-focus-ring-color, #4a90d9)",
             fontWeight: 500,
             whiteSpace: "nowrap",
@@ -114,7 +115,7 @@ export function SectionBar({
             background: "transparent",
             color: index === 0 ? "var(--card-border-color)" : "var(--card-muted-fg-color)",
             cursor: index === 0 ? "default" : "pointer",
-            fontSize: 14,
+            fontSize: fs.label,
           }}
         >
           ▲
@@ -132,7 +133,7 @@ export function SectionBar({
             color:
               index === totalCount - 1 ? "var(--card-border-color)" : "var(--card-muted-fg-color)",
             cursor: index === totalCount - 1 ? "default" : "pointer",
-            fontSize: 14,
+            fontSize: fs.label,
           }}
         >
           ▼
@@ -148,7 +149,7 @@ export function SectionBar({
             background: "transparent",
             color: "var(--card-muted-fg-color)",
             cursor: "pointer",
-            fontSize: 14,
+            fontSize: fs.label,
             display: "flex",
             alignItems: "center",
           }}

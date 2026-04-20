@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 import { renderSections } from "@/lib/section-renderer";
 import type { PageSection } from "@/lib/types";
 import type { SectionTypeName } from "./types";
@@ -43,7 +44,7 @@ function RenderedPreview({ section }: { section: PageSection }) {
         color: "#333",
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
-        fontSize: 16,
+        fontSize: fs.body,
       }}
     >
       <div className="layout-program">{groups}</div>

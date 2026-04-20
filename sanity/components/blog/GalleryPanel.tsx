@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useClient } from "sanity";
 import { Box, Button, Flex, Text } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
+import { fs } from "@/sanity/lib/studioTokens";
 import { ImagePickerPanel } from "../shared/ImagePickerPanel";
 import { i18nGet, i18nSet } from "../shared/i18n";
 
@@ -209,7 +210,7 @@ export function CombinedGalleryPanel({
                           left: 2,
                           background: "rgba(0,0,0,0.6)",
                           color: "#fff",
-                          fontSize: 9,
+                          fontSize: 9 /* intentional: tiny badge */,
                           fontWeight: 700,
                           lineHeight: 1,
                           padding: "2px 3px",
@@ -236,7 +237,7 @@ export function CombinedGalleryPanel({
                         border: "none",
                         background: "rgba(0,0,0,0.6)",
                         color: "#fff",
-                        fontSize: 11,
+                        fontSize: fs.meta,
                         lineHeight: 1,
                         cursor: "pointer",
                         display: "flex",
@@ -285,7 +286,7 @@ export function CombinedGalleryPanel({
               )}
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, width: 24, flexShrink: 0 }}>
+                  <span style={{ fontSize: fs.meta, fontWeight: 600, width: 24, flexShrink: 0 }}>
                     JA:
                   </span>
                   <input
@@ -302,7 +303,7 @@ export function CombinedGalleryPanel({
                     placeholder="キャプション（日本語）"
                     style={{
                       flex: 1,
-                      fontSize: 12,
+                      fontSize: fs.label,
                       padding: "4px 6px",
                       border: "1px solid var(--card-border-color)",
                       borderRadius: 3,
@@ -313,7 +314,7 @@ export function CombinedGalleryPanel({
                   />
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, width: 24, flexShrink: 0 }}>
+                  <span style={{ fontSize: fs.meta, fontWeight: 600, width: 24, flexShrink: 0 }}>
                     EN:
                   </span>
                   <input
@@ -330,7 +331,7 @@ export function CombinedGalleryPanel({
                     placeholder="Caption (English)"
                     style={{
                       flex: 1,
-                      fontSize: 12,
+                      fontSize: fs.label,
                       padding: "4px 6px",
                       border: "1px solid var(--card-border-color)",
                       borderRadius: 3,

@@ -8,6 +8,7 @@ import DocList from "@/components/DocList";
 import type { AnnouncementDoc } from "./AnnouncementEditor";
 import type { I18nBlocks } from "@/lib/i18n";
 import type { Document } from "@/lib/types";
+import { fs } from "@/sanity/lib/studioTokens";
 
 /** Resolve file URLs client-side (mirrors server-side resolveDocs) */
 function resolveDocsClient(docs: AnnouncementDoc["documents"]): Document[] {
@@ -33,7 +34,7 @@ export function AnnouncementPreview({ doc }: { doc: AnnouncementDoc }) {
         color: "#333",
         overflowY: "auto",
         height: "100%",
-        fontSize: 16,
+        fontSize: fs.body,
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
       }}

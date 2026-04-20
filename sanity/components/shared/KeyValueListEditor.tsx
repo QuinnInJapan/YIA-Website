@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
+import { fs } from "@/sanity/lib/studioTokens";
 import { i18nGet, i18nSet } from "./i18n";
 
 function AutoTextarea({
@@ -40,7 +41,7 @@ function AutoTextarea({
         padding: "6px 8px",
         border: "1px solid var(--card-border-color)",
         borderRadius: 4,
-        fontSize: 12,
+        fontSize: fs.label,
         fontFamily: "inherit",
         resize: "none",
         overflow: "hidden",
@@ -145,7 +146,7 @@ export function KeyValueListEditor({
                 gridColumn: 1,
                 gridRow: 1,
                 padding: "5px 8px",
-                fontSize: 10,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 color: "var(--card-fg-color)",
                 borderRight: "1px solid var(--card-border-color)",
@@ -159,7 +160,7 @@ export function KeyValueListEditor({
                 gridColumn: 2,
                 gridRow: 1,
                 padding: "5px 8px",
-                fontSize: 10,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 color: "var(--card-fg-color)",
                 borderBottom: "1px solid var(--card-border-color)",
@@ -173,7 +174,7 @@ export function KeyValueListEditor({
                 gridColumn: 1,
                 gridRow: 2,
                 padding: "5px 8px",
-                fontSize: 10,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 color: "var(--card-muted-fg-color)",
                 borderRight: "1px solid var(--card-border-color)",
@@ -186,7 +187,7 @@ export function KeyValueListEditor({
                 gridColumn: 2,
                 gridRow: 2,
                 padding: "5px 8px",
-                fontSize: 10,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 color: "var(--card-muted-fg-color)",
               }}
@@ -218,7 +219,7 @@ export function KeyValueListEditor({
               >
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: fs.label,
                     fontWeight: 600,
                     color: "var(--card-fg-color)",
                     marginBottom: 3,
@@ -238,7 +239,7 @@ export function KeyValueListEditor({
               <div style={{ gridColumn: 2, gridRow: 1, padding: "6px 8px 3px" }}>
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: fs.label,
                     fontWeight: 600,
                     color: "var(--card-fg-color)",
                     marginBottom: 3,
@@ -284,7 +285,7 @@ export function KeyValueListEditor({
               >
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: fs.label,
                     fontWeight: 600,
                     color: "var(--card-fg-color)",
                     marginBottom: 3,
@@ -304,7 +305,7 @@ export function KeyValueListEditor({
               <div style={{ gridColumn: 2, gridRow: 2, padding: "3px 8px 6px" }}>
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: fs.label,
                     fontWeight: 600,
                     color: "var(--card-fg-color)",
                     marginBottom: 3,
@@ -332,7 +333,7 @@ export function KeyValueListEditor({
           borderRadius: 4,
           background: "transparent",
           color: "var(--card-muted-fg-color)",
-          fontSize: 12,
+          fontSize: fs.label,
           cursor: "pointer",
         }}
       >

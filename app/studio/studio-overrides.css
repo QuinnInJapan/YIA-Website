@@ -18,7 +18,7 @@
   /* ── Surface ─────────────────────────────────────────── */
   --card-bg-color: #f7f9fb !important;
   --card-bg2-color: #fcfdfe !important;
-  --card-fg-color: #1a2030 !important;
+  --card-fg-color: #111820 !important;
 
   /* ── Borders & hairlines ─────────────────────────────── */
   --card-border-color: #d0d8e0 !important;
@@ -26,9 +26,9 @@
   --card-hairline-soft-color: #eef1f5 !important;
 
   /* ── Muted / secondary text ──────────────────────────── */
-  --card-muted-fg-color: #3d4f5f !important;
+  --card-muted-fg-color: #2a3a4a !important;
   --card-muted-bg-color: #eef1f5 !important;
-  --card-icon-color: #3d4f5f !important;
+  --card-icon-color: #2a3a4a !important;
 
   /* ── Brand / accent (navy) ───────────────────────────── */
   --card-focus-ring-color: #1e3a5f !important;
@@ -50,7 +50,7 @@
   --card-backdrop-color: rgba(15, 25, 50, 0.55) !important;
 
   /* ── Inputs ──────────────────────────────────────────── */
-  --input-fg-color: #1a2030 !important;
+  --input-fg-color: #111820 !important;
   --input-placeholder-color: #9aa8b8 !important;
 
   /* ── Badge: primary (navy) ───────────────────────────── */

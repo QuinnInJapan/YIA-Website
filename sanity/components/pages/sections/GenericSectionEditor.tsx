@@ -2,6 +2,7 @@
 
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
+import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { BilingualTextarea } from "../../shared/BilingualTextarea";
 import { i18nGet, i18nSet } from "../../shared/i18n";
@@ -71,7 +72,7 @@ export function GenericSectionEditor({
           value={section.title}
           onChange={(val) => onUpdateField("title", val)}
         />
-        <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)" }}>
+        <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)" }}>
           「{typeLabel}」セクションの編集は未対応です。
         </div>
       </>
@@ -113,7 +114,13 @@ export function GenericSectionEditor({
           case "string":
             return (
               <div key={field.key} style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   {field.label}
                 </div>
                 <TextInput
@@ -126,7 +133,13 @@ export function GenericSectionEditor({
           case "date":
             return (
               <div key={field.key} style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   {field.label}
                 </div>
                 <TextInput
@@ -183,7 +196,7 @@ function WarningsEditor({
 }) {
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+      <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
         注意事項
       </div>
       {items.map((item, i) => (
@@ -207,7 +220,7 @@ function WarningsEditor({
                 padding: "6px 10px",
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
-                fontSize: 13,
+                fontSize: fs.body,
                 fontFamily: "inherit",
                 resize: "vertical",
                 background: "transparent",
@@ -229,7 +242,7 @@ function WarningsEditor({
                 padding: "6px 10px",
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
-                fontSize: 13,
+                fontSize: fs.body,
                 fontFamily: "inherit",
                 resize: "vertical",
                 background: "transparent",
@@ -274,7 +287,7 @@ function WarningsEditor({
           borderRadius: 4,
           background: "transparent",
           color: "var(--card-muted-fg-color)",
-          fontSize: 12,
+          fontSize: fs.label,
           cursor: "pointer",
         }}
       >
@@ -321,7 +334,7 @@ function GenericListEditor({
 
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+      <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
         {label}
       </div>
       {items.map((item, i) => (
@@ -347,7 +360,7 @@ function GenericListEditor({
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
-                          fontSize: 10,
+                          fontSize: fs.meta,
                           color: "var(--card-muted-fg-color)",
                           marginBottom: 2,
                         }}
@@ -370,7 +383,7 @@ function GenericListEditor({
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
-                          fontSize: 10,
+                          fontSize: fs.meta,
                           color: "var(--card-muted-fg-color)",
                           marginBottom: 2,
                         }}
@@ -396,7 +409,11 @@ function GenericListEditor({
               return (
                 <div key={field.key}>
                   <div
-                    style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 2 }}
+                    style={{
+                      fontSize: fs.meta,
+                      color: "var(--card-muted-fg-color)",
+                      marginBottom: 2,
+                    }}
                   >
                     {field.label}
                   </div>
@@ -439,7 +456,7 @@ function GenericListEditor({
           borderRadius: 4,
           background: "transparent",
           color: "var(--card-muted-fg-color)",
-          fontSize: 12,
+          fontSize: fs.label,
           cursor: "pointer",
         }}
       >

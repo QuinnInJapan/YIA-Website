@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -276,8 +277,8 @@ export function HotspotCropTool({
         }}
       >
         <div>
-          <div style={{ fontWeight: 600, fontSize: 13 }}>切り抜き & フォーカス</div>
-          <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginTop: 2 }}>
+          <div style={{ fontWeight: 600, fontSize: fs.body }}>切り抜き & フォーカス</div>
+          <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 2 }}>
             四角形で切り抜き範囲。円でフォーカス領域。
           </div>
         </div>
@@ -291,7 +292,7 @@ export function HotspotCropTool({
               border: "1px solid var(--card-border-color)",
               background: "transparent",
               cursor: "pointer",
-              fontSize: 12,
+              fontSize: fs.label,
               color: "inherit",
             }}
           >
@@ -310,7 +311,7 @@ export function HotspotCropTool({
               background: "#2276fc",
               color: "#fff",
               cursor: "pointer",
-              fontSize: 12,
+              fontSize: fs.label,
               fontWeight: 500,
             }}
           >
@@ -608,7 +609,7 @@ export function HotspotCropTool({
       {/* Preview strip */}
       {imgSize && (
         <div style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--card-border-color)" }}>
-          <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+          <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
             プレビュー
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
@@ -617,7 +618,11 @@ export function HotspotCropTool({
               return (
                 <div key={label}>
                   <div
-                    style={{ fontSize: 10, color: "var(--card-muted-fg-color)", marginBottom: 4 }}
+                    style={{
+                      fontSize: fs.meta,
+                      color: "var(--card-muted-fg-color)",
+                      marginBottom: 4,
+                    }}
                   >
                     {label}
                   </div>

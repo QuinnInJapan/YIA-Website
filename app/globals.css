@@ -14,7 +14,7 @@
 body {
   --font-body: var(--font-noto), "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 16px; /* intentional: base body reset — matches --font-size-base token */
   line-height: 1.7;
   color: var(--color-text);
   background: var(--color-bg);
@@ -83,10 +83,9 @@ ol {
   --color-gray-light: #eef1f5;
   --color-gray-mid: #d0d8e0;
   --color-border: #d0d8e0;
-  --color-text: #1a2030;
-  --color-text-muted: #3d4f5f;
-  --color-text-secondary: #405060;
-  --color-text-faint: #4a5565;
+  --color-text: #111820;
+  --color-text-muted: #2a3a4a;
+  --color-text-faint: #4a5a6a;
   --color-tint: #edf1f5;
   --color-tint-blue: #eef2f7;
   --color-hero-overlay: rgba(15, 25, 50, 0.55);
@@ -103,9 +102,9 @@ ol {
   --color-info-bg: #f0f4f8;
   --color-info-border: #1e3a5f;
 
-  --font-size-base: 15px;
-  --font-size-sm: 14px;
-  --font-size-xs: 13px;
+  --font-size-base: 16px;
+  --font-size-sm: 15px;
+  --font-size-xs: 14px;
   --font-size-lg: 18px;
   --font-size-xl: 22px;
   --font-size-xxl: 26px;
@@ -179,7 +178,7 @@ ruby rt {
 
 /* Hide ruby text visually but keep for screen readers */
 .ruby-hidden rt {
-  font-size: 0;
+  font-size: 0; /* intentional: hides ruby visually, accessible to screen readers */
   opacity: 0;
 }
 
@@ -338,7 +337,6 @@ ruby rt {
 }
 
 .page-hero__description-en {
-  font-size: var(--font-size-sm);
   margin-top: var(--spacing-xs);
 }
 
@@ -577,7 +575,7 @@ body {
 }
 
 #google_translate_element .goog-te-gadget {
-  font-size: 0;
+  font-size: 0; /* intentional: suppresses Google Translate gadget label text */
   line-height: 0;
 }
 
@@ -759,7 +757,6 @@ body {
 
 .site-nav__group-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-faint);
   margin-left: 0;
@@ -1007,13 +1004,11 @@ h3.section-header {
   display: block;
   margin-left: 0;
   margin-top: var(--spacing-xs);
-  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
 .section-header__en {
-  font-size: var(--font-size-sm);
   font-weight: normal;
   margin-left: var(--spacing-sm);
   opacity: 0.8;
@@ -1024,7 +1019,6 @@ h3.section-header {
     display: block;
     margin-left: 0;
     margin-top: 2px;
-    font-size: var(--font-size-xs);
   }
 }
 
@@ -1032,7 +1026,6 @@ h3.section-header {
 
 .nav-item__en {
   display: block;
-  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
 
@@ -1073,7 +1066,6 @@ h3.section-header {
 }
 
 .bilingual-block__en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   line-height: 1.6;
   border-left: none;
@@ -1201,7 +1193,6 @@ h3.section-header {
 .governance-list__term-en {
   display: block;
   font-weight: 600;
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
 }
 
@@ -1214,7 +1205,6 @@ h3.section-header {
 
 .governance-list__desc-en {
   display: block;
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   margin-top: 2px;
 }
@@ -1239,7 +1229,6 @@ h3.section-header {
 }
 
 .callout__text-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
 }
@@ -1285,7 +1274,7 @@ h4[id] {
 }
 
 .announcement__title {
-  font-size: 20px;
+  font-size: 20px; /* intentional: announcement emphasis between --font-size-lg(18px) and --font-size-xl(22px) */
   font-weight: 500;
   color: var(--color-navy);
   margin: 0 0 12px;
@@ -1523,7 +1512,6 @@ html:has(:target) {
 
 .resource-link__en {
   display: block;
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
   margin-top: var(--spacing-xs);
 }
@@ -1633,7 +1621,6 @@ html:has(:target) {
 }
 
 .page-subtitle__en {
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
 }
 
@@ -1711,7 +1698,6 @@ html:has(:target) {
 
 .info-dl__label-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   text-transform: none;
   color: var(--color-text-faint);
@@ -1726,7 +1712,6 @@ html:has(:target) {
 }
 
 .info-dl__value-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   margin-top: 2px;
   display: block;
@@ -1761,7 +1746,6 @@ html:has(:target) {
 }
 
 .checklist__label-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
 }
 
@@ -1794,7 +1778,6 @@ html:has(:target) {
 
 .data-table__en {
   color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
 }
 
 .data-table thead th .data-table__en {
@@ -1842,7 +1825,6 @@ html:has(:target) {
 
 .group-list__name-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-muted);
 }
@@ -1852,7 +1834,7 @@ html:has(:target) {
   flex-wrap: wrap;
   gap: var(--spacing-lg);
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -1897,7 +1879,7 @@ html:has(:target) {
 
 .history-timeline__cuisines {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.7;
 }
 
@@ -1946,7 +1928,7 @@ html:has(:target) {
 
 .membership-table__desc {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary, #555);
+  color: var(--color-text-muted);
 }
 
 .membership-table__parens {
@@ -2221,7 +2203,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 24px;
+  font-size: 24px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -2242,7 +2224,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 28px;
+  font-size: 28px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -2510,7 +2492,7 @@ html:has(:target) {
 }
 
 .activity-grid__tile-big {
-  font-size: 52px;
+  font-size: 52px; /* intentional: large display number */
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -2717,14 +2699,13 @@ html:has(:target) {
 }
 
 .oshirase-title__en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   line-height: 1.4;
 }
 
 .oshirase-pin {
   display: block;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: var(--color-silver);
 }
 
@@ -2750,7 +2731,6 @@ html:has(:target) {
 }
 
 .oshirase-viewall__en {
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-muted);
 }
@@ -2799,7 +2779,7 @@ html:has(:target) {
 
 .home-section__heading small {
   display: block;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   font-weight: 400;
   color: var(--color-text-faint);
   margin-top: 6px;
@@ -2908,7 +2888,6 @@ html:has(:target) {
 
 .program-card__link-en {
   display: block;
-  font-size: var(--font-size-xs);
 }
 
 .program-card__see-all {
@@ -2927,7 +2906,6 @@ html:has(:target) {
 
 .program-card__see-all-en {
   display: block;
-  font-size: var(--font-size-xs);
   opacity: 0.7;
 }
 
@@ -3021,7 +2999,7 @@ html:has(:target) {
 .program-band__en {
   margin: 0;
   margin-top: clamp(0.5rem, 1.5vh, 1rem);
-  font-size: clamp(0.9rem, 1.6vw, 1.35rem);
+  font-size: clamp(1rem, 1.6vw, 1.5rem); /* was clamp(0.9rem, 1.6vw, 1.35rem) */
   font-weight: 300;
   letter-spacing: 0.08em;
   text-shadow:
@@ -3306,7 +3284,7 @@ html:has(:target) {
 }
 
 .mission-block__en {
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(18px, 2.2vw, 22px); /* matches mission-block__ja */
   line-height: 1.8;
   color: var(--color-text-faint);
   margin: 0 0 var(--spacing-xl);
@@ -3374,12 +3352,16 @@ html:has(:target) {
 }
 
 .about-showcase .mission-block__ja {
-  font-size: clamp(15px, 1.8vw, 17px);
+  font-size: clamp(var(--font-size-base), 1.8vw, var(--font-size-lg));
   line-height: 1.9;
 }
 
 .about-showcase .mission-block__en {
-  font-size: clamp(13px, 1.4vw, 15px);
+  font-size: clamp(
+    var(--font-size-base),
+    1.8vw,
+    var(--font-size-lg)
+  ); /* matches mission-block__ja */
 }
 
 .about-showcase .home-section__heading {
@@ -3418,7 +3400,7 @@ html:has(:target) {
   }
 
   .about-showcase .mission-block__ja {
-    font-size: 15px;
+    font-size: var(--font-size-base);
   }
 
   .about-showcase .home-section__heading {
@@ -3505,7 +3487,7 @@ html:has(:target) {
 }
 
 .access-block__info {
-  font-size: 15px;
+  font-size: var(--font-size-base);
   line-height: 1.8;
   display: flex;
   flex-direction: column;
@@ -3517,7 +3499,7 @@ html:has(:target) {
 }
 
 .access-block__name {
-  font-size: 17px;
+  font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--color-navy);
 }
@@ -3683,7 +3665,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 28px;
+  font-size: 28px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -3827,7 +3809,7 @@ html:has(:target) {
   }
 
   .site-nav__brand-en {
-    font-size: 10px;
+    font-size: 10px; /* intentional: supplementary brand sub-label in mobile nav, kept subordinate */
     opacity: 0.75;
     letter-spacing: 0.04em;
     line-height: 1.3;
@@ -3885,7 +3867,7 @@ html:has(:target) {
     margin: 0 var(--spacing-sm) var(--spacing-sm) auto;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: var(--font-size-lg);
     color: var(--color-text-muted);
     cursor: pointer;
   }
@@ -4007,7 +3989,6 @@ html:has(:target) {
   }
 
   .site-nav__mobile-link .nav-item__en {
-    font-size: var(--font-size-xs);
     color: var(--color-text-faint);
   }
 
@@ -4908,7 +4889,6 @@ html:has(:target) {
 }
 
 .cat-item__desc .bilingual-block__en {
-  font-size: var(--font-size-xs, 0.75rem);
   color: var(--color-text-muted, #666);
   margin-top: 0.5rem;
   line-height: 1.7;
@@ -4926,7 +4906,7 @@ html:has(:target) {
   display: inline-block;
   padding: 1px 8px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-white);
   background: var(--color-navy-light);
@@ -4938,7 +4918,7 @@ html:has(:target) {
 
 .cat-item__excerpt {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0.25rem 0 0;
   display: -webkit-box;

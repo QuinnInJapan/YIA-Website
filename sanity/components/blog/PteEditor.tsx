@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useClient } from "sanity";
 import { Flex } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
+import { fs } from "@/sanity/lib/studioTokens";
 import {
   EditorProvider,
   PortableTextEditable,
@@ -70,11 +71,27 @@ const renderStyle: RenderStyleFunction = (props) => {
       return <h2 className="pte-h2">{props.children}</h2>;
     case "h3":
       return (
-        <h3 style={{ fontSize: 18, fontWeight: 700, margin: "1.5em 0 0.4em" }}>{props.children}</h3>
+        <h3
+          style={{
+            fontSize: 18 /* intentional: h3 render size */,
+            fontWeight: 700,
+            margin: "1.5em 0 0.4em",
+          }}
+        >
+          {props.children}
+        </h3>
       );
     case "h4":
       return (
-        <h4 style={{ fontSize: 15, fontWeight: 700, margin: "1em 0 0.3em" }}>{props.children}</h4>
+        <h4
+          style={{
+            fontSize: 15 /* intentional: h4 render size */,
+            fontWeight: 700,
+            margin: "1em 0 0.3em",
+          }}
+        >
+          {props.children}
+        </h4>
       );
     default:
       return <p style={{ margin: "0.8em 0" }}>{props.children}</p>;
@@ -105,7 +122,7 @@ function RemoveBlockButton({
         border: "none",
         background: "rgba(0,0,0,0.55)",
         color: "#fff",
-        fontSize: 16,
+        fontSize: fs.body,
         lineHeight: "28px",
         textAlign: "center",
         cursor: "pointer",
@@ -125,10 +142,26 @@ const renderListItem: RenderListItemFunction = (props) => {
 // ── Style definitions ────────────────────────────────────
 
 const BLOCK_STYLES: { value: string; label: string; style: React.CSSProperties }[] = [
-  { value: "normal", label: "本文", style: { fontSize: 15, fontWeight: 400 } },
-  { value: "h2", label: "大見出し", style: { fontSize: 22, fontWeight: 700 } },
-  { value: "h3", label: "中見出し", style: { fontSize: 18, fontWeight: 700 } },
-  { value: "h4", label: "小見出し", style: { fontSize: 15, fontWeight: 700 } },
+  {
+    value: "normal",
+    label: "本文",
+    style: { fontSize: 15 /* intentional: rich text block type size */, fontWeight: 400 },
+  },
+  {
+    value: "h2",
+    label: "大見出し",
+    style: { fontSize: 22 /* intentional: rich text block type size */, fontWeight: 700 },
+  },
+  {
+    value: "h3",
+    label: "中見出し",
+    style: { fontSize: 18 /* intentional: rich text block type size */, fontWeight: 700 },
+  },
+  {
+    value: "h4",
+    label: "小見出し",
+    style: { fontSize: 15 /* intentional: rich text block type size */, fontWeight: 700 },
+  },
 ];
 
 // ── Style Dropdown ───────────────────────────────────────
@@ -185,7 +218,7 @@ function StyleDropdown() {
         }}
       >
         <span style={{ flex: 1, textAlign: "left" }}>{current.label}</span>
-        <span style={{ fontSize: 10, opacity: 0.6 }}>▼</span>
+        <span style={{ fontSize: fs.meta, opacity: 0.6 }}>▼</span>
       </button>
 
       {open && (
@@ -661,7 +694,7 @@ export function BodyEditor({
               border: "1px dashed var(--card-border-color)",
               textAlign: "center",
               color: "var(--card-muted-fg-color)",
-              fontSize: 13,
+              fontSize: fs.body,
               ...selectionRing,
             }}
           >
@@ -684,7 +717,7 @@ export function BodyEditor({
               padding: "10px 14px",
               borderRadius: 6,
               background: toneColors[tone] ?? toneColors.info,
-              fontSize: 13,
+              fontSize: fs.body,
               lineHeight: 1.5,
               ...selectionRing,
             }}
@@ -702,7 +735,7 @@ export function BodyEditor({
               padding: "10px 14px",
               borderRadius: 6,
               background: "var(--card-border-color)",
-              fontSize: 13,
+              fontSize: fs.body,
               ...selectionRing,
             }}
           >
@@ -759,7 +792,7 @@ export function BodyEditor({
                 alignItems: "center",
                 justifyContent: "space-between",
                 marginBottom: images.length > 0 ? 10 : 0,
-                fontSize: 13,
+                fontSize: fs.body,
                 fontWeight: 600,
                 color: "var(--card-fg-color)",
               }}
@@ -890,7 +923,7 @@ function BodyEditorInner({
           border: "1px solid var(--card-border-color)",
           borderRadius: 4,
           outline: "none",
-          fontSize: 15,
+          fontSize: fs.body,
           lineHeight: 1.8,
           color: "#1a2030",
           opacity: readOnly ? 0.7 : 1,

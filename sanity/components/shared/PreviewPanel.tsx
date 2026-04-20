@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { Text } from "@sanity/ui";
+import { fs } from "@/sanity/lib/studioTokens";
 
 type PreviewMode = "desktop" | "mobile";
 
@@ -45,7 +46,7 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
                 border: "none",
                 background: mode === "desktop" ? "var(--card-border-color)" : "transparent",
                 color: "var(--card-fg-color)",
-                fontSize: 11,
+                fontSize: fs.meta,
                 cursor: "pointer",
                 lineHeight: 1.5,
               }}
@@ -62,7 +63,7 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
                 borderLeft: "1px solid var(--card-border-color)",
                 background: mode === "mobile" ? "var(--card-border-color)" : "transparent",
                 color: "var(--card-fg-color)",
-                fontSize: 11,
+                fontSize: fs.meta,
                 cursor: "pointer",
                 lineHeight: 1.5,
               }}
@@ -81,7 +82,7 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
                 borderRadius: 4,
                 background: "transparent",
                 color: "var(--card-muted-fg-color)",
-                fontSize: 11,
+                fontSize: fs.meta,
                 cursor: "pointer",
               }}
             >

@@ -1,3 +1,4 @@
+import { fs } from "@/sanity/lib/studioTokens";
 import { SECTION_TYPES, SECTION_TYPE_LABELS, SECTION_TYPE_META } from "./types";
 import type { SectionTypeName } from "./types";
 import { SectionPreview } from "./SectionPreviews";
@@ -22,14 +23,14 @@ export function SectionPickerPanel({
           flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: 13, fontWeight: 600 }}>セクションを追加</span>
+        <span style={{ fontSize: fs.body, fontWeight: 600 }}>セクションを追加</span>
         <button
           type="button"
           onClick={onClose}
           style={{
             border: "none",
             background: "transparent",
-            fontSize: 18,
+            fontSize: 18 /* intentional: display/heading size */,
             cursor: "pointer",
             color: "var(--card-muted-fg-color)",
             padding: "2px 6px",
@@ -84,12 +85,12 @@ export function SectionPickerPanel({
                 <SectionPreview type={type} />
               </div>
               <div style={{ padding: "8px 10px" }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "var(--card-fg-color)" }}>
+                <div style={{ fontSize: fs.body, fontWeight: 600, color: "var(--card-fg-color)" }}>
                   {SECTION_TYPE_LABELS[type]}
                 </div>
                 <div
                   style={{
-                    fontSize: 11,
+                    fontSize: fs.meta,
                     color: "var(--card-muted-fg-color)",
                     marginTop: 2,
                     lineHeight: 1.4,

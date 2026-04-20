@@ -8,6 +8,7 @@ import { AutoTextarea } from "../shared/BilingualTextarea";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
 import { FieldLabel, OverlayButton, ImageOverlayActions, EmptyImageSlot } from "./HeroSection";
+import { fs } from "@/sanity/lib/studioTokens";
 import type { HomepageAboutData, UpdateFieldFn, OpenPickerFn, ShowHotspotCropFn } from "./types";
 
 export function AboutSection({
@@ -80,7 +81,7 @@ export function AboutSection({
 
         {/* Photo */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+          <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
             写真
           </div>
           {about.image?.asset?._ref ? (
@@ -121,7 +122,7 @@ export function AboutSection({
               padding: "8px 10px",
               border: "1px solid var(--card-border-color)",
               borderRadius: 4,
-              fontSize: 13,
+              fontSize: fs.body,
               fontFamily: "inherit",
               background: "transparent",
               color: "inherit",
@@ -137,7 +138,7 @@ export function AboutSection({
               padding: "8px 10px",
               border: "1px solid var(--card-border-color)",
               borderRadius: 4,
-              fontSize: 13,
+              fontSize: fs.body,
               fontFamily: "inherit",
               background: "transparent",
               color: "inherit",
