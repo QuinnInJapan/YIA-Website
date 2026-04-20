@@ -7,6 +7,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 import { BilingualInput } from "../shared/BilingualInput";
 import { ImagePickerPanel } from "../shared/ImagePickerPanel";
 import type { I18nString, CategoryDoc } from "./types";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export function CategoryCreationForm({
   onCreated,
@@ -86,7 +87,7 @@ export function CategoryCreationForm({
       <div style={{ flex: 1, overflow: "auto", padding: 16 }}>
         <BilingualInput label="カテゴリ名" value={label} onChange={setLabel} />
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+          <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
             ヒーロー画像 *
           </div>
           {heroUrl ? (
@@ -112,7 +113,7 @@ export function CategoryCreationForm({
                   bottom: 6,
                   right: 6,
                   padding: "4px 10px",
-                  fontSize: 11,
+                  fontSize: fs.meta,
                   border: "none",
                   borderRadius: 4,
                   background: "rgba(0,0,0,0.6)",
@@ -138,7 +139,7 @@ export function CategoryCreationForm({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 13,
+                fontSize: fs.body,
                 color: "var(--card-muted-fg-color)",
               }}
             >

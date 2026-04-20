@@ -4,6 +4,7 @@
 import { useCallback, useState } from "react";
 import { useClient } from "sanity";
 import { Box, Button, Flex, Text, TextInput } from "@sanity/ui";
+import { fs } from "@/sanity/lib/studioTokens";
 
 function slugify(title: string): string {
   return title
@@ -86,7 +87,7 @@ export function PageCreationForm({
           <label
             style={{
               display: "block",
-              fontSize: 12,
+              fontSize: fs.label,
               color: "var(--card-muted-fg-color)",
               marginBottom: 6,
             }}
@@ -99,7 +100,7 @@ export function PageCreationForm({
             placeholder="e.g. Japanese Classes"
           />
           {slug && (
-            <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
+            <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
               URL: <span style={{ fontFamily: "monospace" }}>{urlPreview}</span>
             </div>
           )}
@@ -108,7 +109,7 @@ export function PageCreationForm({
           <label
             style={{
               display: "block",
-              fontSize: 12,
+              fontSize: fs.label,
               color: "var(--card-muted-fg-color)",
               marginBottom: 6,
             }}
@@ -126,7 +127,7 @@ export function PageCreationForm({
             padding: "10px 12px",
             background: "var(--yellow-100, #fef9c3)",
             borderRadius: 6,
-            fontSize: 12,
+            fontSize: fs.label,
             color: "var(--card-fg-color)",
             marginBottom: 16,
           }}
@@ -139,7 +140,7 @@ export function PageCreationForm({
               padding: "8px 12px",
               background: "var(--red-50, #fef2f2)",
               borderRadius: 6,
-              fontSize: 12,
+              fontSize: fs.label,
               color: "#dc2626",
               marginBottom: 16,
             }}
