@@ -307,19 +307,19 @@ ruby rt {
   font-weight: 500;
   letter-spacing: -0.01em;
   text-shadow:
-    0 0 40px rgba(0, 0, 0, 0.85),
-    0 0 15px rgba(0, 0, 0, 0.65),
-    0 2px 6px rgba(0, 0, 0, 0.5);
+    0 0 60px rgba(0, 0, 0, 0.95),
+    0 0 25px rgba(0, 0, 0, 0.8),
+    0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .page-hero__subtitle {
   font-size: var(--font-size-base);
   font-weight: 400;
-  opacity: 0.85;
   margin-top: var(--spacing-xs);
   text-shadow:
-    0 0 20px rgba(0, 0, 0, 0.85),
-    0 1px 4px rgba(0, 0, 0, 0.6);
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .page-hero__description {
@@ -2556,9 +2556,9 @@ html:has(:target) {
   letter-spacing: 0.08em;
   margin: 0 0 12px;
   text-shadow:
-    0 0 40px rgba(0, 0, 0, 0.85),
-    0 0 15px rgba(0, 0, 0, 0.65),
-    0 2px 6px rgba(0, 0, 0, 0.5);
+    0 0 60px rgba(0, 0, 0, 0.95),
+    0 0 25px rgba(0, 0, 0, 0.8),
+    0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero__subtitle {
@@ -2566,10 +2566,10 @@ html:has(:target) {
   font-weight: 400;
   letter-spacing: 0.14em;
   margin: 0 0 32px;
-  opacity: 0.85;
   text-shadow:
-    0 0 20px rgba(0, 0, 0, 0.85),
-    0 1px 4px rgba(0, 0, 0, 0.6);
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .hero__tagline {
@@ -2577,8 +2577,9 @@ html:has(:target) {
   margin: 0 0 6px;
   font-weight: 500;
   text-shadow:
-    0 0 20px rgba(0, 0, 0, 0.85),
-    0 1px 4px rgba(0, 0, 0, 0.6);
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .hero-scroll {
@@ -2627,10 +2628,10 @@ html:has(:target) {
 .hero__tagline-en {
   font-size: clamp(12px, 1.3vw, 18px);
   margin: 0;
-  opacity: 0.7;
   text-shadow:
-    0 0 20px rgba(0, 0, 0, 0.85),
-    0 1px 4px rgba(0, 0, 0, 0.6);
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* -- Oshirase (Announcements) Band -- */
@@ -4443,7 +4444,7 @@ html:has(:target) {
 .hero__subtitle {
   animation: hero-enter 0.8s ease both;
   animation-delay: 0.3s;
-  --hero-end-opacity: 0.85;
+  --hero-end-opacity: 1;
 }
 
 .hero__tagline {
@@ -4455,7 +4456,7 @@ html:has(:target) {
 .hero__tagline-en {
   animation: hero-enter 0.7s ease both;
   animation-delay: 0.7s;
-  --hero-end-opacity: 0.7;
+  --hero-end-opacity: 1;
 }
 
 /* Hero fade-out on scroll */
