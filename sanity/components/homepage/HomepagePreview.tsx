@@ -260,12 +260,26 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           />
         )}
         <div className="hero__overlay">
-          <h1 className="hero__title">{ja(siteSettings.org?.name)}</h1>
-          <p className="hero__subtitle" lang="en" translate="no">
+          <h1 className="hero__title" style={{ fontSize: "clamp(36px, 5.5cqw, 80px)" }}>
+            {ja(siteSettings.org?.name)}
+          </h1>
+          <p
+            className="hero__subtitle"
+            lang="en"
+            translate="no"
+            style={{ fontSize: "clamp(14px, 1.8cqw, 24px)" }}
+          >
             {en(siteSettings.org?.name)}
           </p>
-          <p className="hero__tagline">{ja(hp.hero?.tagline)}</p>
-          <p className="hero__tagline-en" lang="en" translate="no">
+          <p className="hero__tagline" style={{ fontSize: "clamp(15px, 1.6cqw, 22px)" }}>
+            {ja(hp.hero?.tagline)}
+          </p>
+          <p
+            className="hero__tagline-en"
+            lang="en"
+            translate="no"
+            style={{ fontSize: "clamp(12px, 1.3cqw, 18px)" }}
+          >
             {en(hp.hero?.tagline)}
           </p>
         </div>
@@ -276,7 +290,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
         {announcements.length > 0 && (
           <section className="oshirase-band">
             <div className="oshirase-inner">
-              <h2 className="home-section__heading">
+              <h2 className="home-section__heading" style={{ textAlign: "center" }}>
                 お知らせ
                 <small lang="en" translate="no">
                   Announcements
@@ -311,7 +325,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
         {/* About section */}
         {about && (
           <StudioRegion as="section" className="home-section home-section--about" studioId="about">
-            <h2 className="home-section__heading">
+            <h2 className="home-section__heading" style={{ textAlign: "center" }}>
               {about.titleJa}
               <small lang="en" translate="no">
                 {about.titleEn}
@@ -353,7 +367,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           className="home-section home-section--tinted"
           studioId="settings"
         >
-          <h2 className="home-section__heading">
+          <h2 className="home-section__heading" style={{ textAlign: "center" }}>
             アクセス
             <small lang="en" translate="no">
               Access
