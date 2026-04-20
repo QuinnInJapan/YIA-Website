@@ -1,6 +1,7 @@
 "use client";
 
 import type { PortableTextBlock } from "@portabletext/editor";
+import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { SimpleBodyEditor } from "../../shared/SimpleBodyEditor";
 import { i18nGetBody, i18nSetBody } from "../../shared/i18n";
@@ -26,14 +27,19 @@ export function ContentSectionEditor({
       />
       <div style={{ marginBottom: 12 }}>
         <div
-          style={{ fontSize: 14, fontWeight: 600, color: "var(--card-fg-color)", marginBottom: 6 }}
+          style={{
+            fontSize: fs.label,
+            fontWeight: 600,
+            color: "var(--card-fg-color)",
+            marginBottom: 6,
+          }}
         >
           本文
         </div>
         <div style={{ marginBottom: 8 }}>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,
@@ -49,7 +55,7 @@ export function ContentSectionEditor({
         <div>
           <div
             style={{
-              fontSize: 14,
+              fontSize: fs.label,
               fontWeight: 600,
               color: "var(--card-fg-color)",
               marginBottom: 3,

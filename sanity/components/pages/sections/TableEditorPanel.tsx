@@ -3,6 +3,7 @@
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
+import { fs } from "@/sanity/lib/studioTokens";
 import {
   DndContext,
   closestCenter,
@@ -38,14 +39,14 @@ import type { SectionItem } from "../types";
 // ─── Shared styles ────────────────────────────────────────────────────────────
 
 const sectionLabelStyle: React.CSSProperties = {
-  fontSize: 14,
+  fontSize: fs.label,
   fontWeight: 600,
   color: "var(--card-fg-color)",
   marginBottom: 6,
 };
 
 const subLabelStyle: React.CSSProperties = {
-  fontSize: 14,
+  fontSize: fs.label,
   fontWeight: 600,
   color: "var(--card-fg-color)",
   marginBottom: 3,
@@ -57,7 +58,7 @@ const cellInputStyle: React.CSSProperties = {
   padding: "8px 6px",
   border: "none",
   background: "transparent",
-  fontSize: 14,
+  fontSize: fs.label,
   fontFamily: "inherit",
   color: "inherit",
   outline: "none",
@@ -85,7 +86,7 @@ const addRowButtonStyle: React.CSSProperties = {
   borderRadius: 3,
   background: "transparent",
   color: "var(--card-muted-fg-color)",
-  fontSize: 11,
+  fontSize: fs.meta,
   cursor: "pointer",
 };
 
@@ -107,12 +108,14 @@ function TablePreview({
         background: "#fff",
         color: "#333",
         padding: "8px 12px",
-        fontSize: 14,
+        fontSize: fs.label,
         lineHeight: 1.6,
         overflowX: "auto",
       }}
     >
-      {titleJa && <div style={{ fontWeight: 700, marginBottom: 6, fontSize: 15 }}>{titleJa}</div>}
+      {titleJa && (
+        <div style={{ fontWeight: 700, marginBottom: 6, fontSize: fs.body }}>{titleJa}</div>
+      )}
       <SectionTable
         columns={columns.filter((c) => c.label != null) as unknown as TableColumn[]}
         rows={rows as unknown as TableRow[]}
@@ -167,7 +170,7 @@ function ColumnForm({
               borderRadius: 3,
               background: type === t ? "var(--card-focus-ring-color, #5b9cf6)" : "transparent",
               color: type === t ? "#fff" : "var(--card-muted-fg-color)",
-              fontSize: 10,
+              fontSize: fs.meta,
               cursor: "pointer",
             }}
           >
@@ -196,7 +199,7 @@ function ColumnForm({
             borderRadius: 3,
             background: "var(--card-focus-ring-color, #5b9cf6)",
             color: "#fff",
-            fontSize: 11,
+            fontSize: fs.meta,
             cursor: ja.trim() ? "pointer" : "not-allowed",
             opacity: ja.trim() ? 1 : 0.5,
           }}
@@ -211,7 +214,7 @@ function ColumnForm({
             border: "none",
             background: "transparent",
             color: "var(--card-muted-fg-color)",
-            fontSize: 11,
+            fontSize: fs.meta,
             cursor: "pointer",
           }}
         >
@@ -245,12 +248,12 @@ function ColumnDeleteWarning({
         gap: 5,
       }}
     >
-      <div style={{ fontSize: 11, fontWeight: 600, color: "#c03030" }}>
+      <div style={{ fontSize: fs.meta, fontWeight: 600, color: "#c03030" }}>
         「{colLabelJa}」列を削除しますか？
       </div>
       <div
         style={{
-          fontSize: 10,
+          fontSize: fs.meta,
           color: "var(--card-muted-fg-color)",
           lineHeight: 1.5,
         }}
@@ -267,7 +270,7 @@ function ColumnDeleteWarning({
             borderRadius: 3,
             background: "#e05555",
             color: "#fff",
-            fontSize: 11,
+            fontSize: fs.meta,
             cursor: "pointer",
           }}
         >
@@ -281,7 +284,7 @@ function ColumnDeleteWarning({
             border: "none",
             background: "transparent",
             color: "var(--card-muted-fg-color)",
-            fontSize: 11,
+            fontSize: fs.meta,
             cursor: "pointer",
           }}
         >
@@ -428,7 +431,7 @@ function SortableRow({
             <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "3px 5px" }}>
               <span
                 style={{
-                  fontSize: 9,
+                  fontSize: 9 /* intentional: tiny icon indicator */,
                   fontWeight: 700,
                   border: "1px solid #c8a84b",
                   color: "#7a5800",
@@ -446,7 +449,9 @@ function SortableRow({
                 placeholder="グループ名（日本語）"
                 style={cellInputStyle}
               />
-              <span style={{ color: "var(--card-muted-fg-color)", fontSize: 10, flexShrink: 0 }}>
+              <span
+                style={{ color: "var(--card-muted-fg-color)", fontSize: fs.meta, flexShrink: 0 }}
+              >
                 /
               </span>
               <input
@@ -485,7 +490,7 @@ function SortableRow({
           <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <span
               style={{
-                fontSize: 10,
+                fontSize: fs.meta,
                 flex: 1,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -504,7 +509,7 @@ function SortableRow({
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 3,
                 background: "transparent",
-                fontSize: 9,
+                fontSize: 9 /* intentional: tiny icon indicator */,
                 cursor: "pointer",
                 flexShrink: 0,
                 color: "var(--card-muted-fg-color)",
@@ -524,7 +529,7 @@ function SortableRow({
                 lineHeight: 0,
               }}
             >
-              <TrashIcon style={{ fontSize: 12 }} />
+              <TrashIcon style={{ fontSize: fs.label }} />
             </button>
           </div>
         ) : (
@@ -536,7 +541,7 @@ function SortableRow({
               border: "1px dashed var(--card-border-color)",
               borderRadius: 3,
               background: "transparent",
-              fontSize: 10,
+              fontSize: fs.meta,
               cursor: "pointer",
               color: "var(--card-muted-fg-color)",
               width: "100%",
@@ -877,13 +882,13 @@ export function TableEditorPanel({
             display: "flex",
             alignItems: "center",
             gap: 6,
-            fontSize: 12,
+            fontSize: fs.label,
             fontWeight: 600,
           }}
         >
           <span
             style={{
-              fontSize: 10,
+              fontSize: fs.meta,
               fontWeight: 700,
               background: "var(--card-code-bg-color)",
               border: "1px solid var(--card-border-color)",
@@ -904,7 +909,7 @@ export function TableEditorPanel({
             borderRadius: 4,
             background: "transparent",
             color: "var(--card-muted-fg-color)",
-            fontSize: 11,
+            fontSize: fs.meta,
             cursor: "pointer",
           }}
         >
@@ -998,7 +1003,7 @@ export function TableEditorPanel({
                   >
                     <span
                       style={{
-                        fontSize: 14,
+                        fontSize: fs.label,
                         fontWeight: 600,
                         color: isPendingDelete ? "#c03030" : "var(--card-fg-color)",
                       }}
@@ -1008,7 +1013,7 @@ export function TableEditorPanel({
                     {labelEn && (
                       <span
                         style={{
-                          fontSize: 12,
+                          fontSize: fs.label,
                           color: isPendingDelete ? "#e08080" : "var(--card-muted-fg-color)",
                         }}
                       >
@@ -1018,7 +1023,7 @@ export function TableEditorPanel({
                     {col.type === "file" && (
                       <span
                         style={{
-                          fontSize: 8,
+                          fontSize: 8 /* intentional: tiny icon indicator */,
                           color: "#5b9cf6",
                           fontWeight: 700,
                           letterSpacing: 0,
@@ -1042,12 +1047,12 @@ export function TableEditorPanel({
                         border: "none",
                         background: "transparent",
                         color: isPendingDelete ? "#e05555" : "var(--card-muted-fg-color)",
-                        fontSize: 12,
+                        fontSize: fs.label,
                         lineHeight: 1,
                         cursor: "pointer",
                       }}
                     >
-                      <TrashIcon style={{ fontSize: 10 }} />
+                      <TrashIcon style={{ fontSize: 10 /* intentional: tiny icon indicator */ }} />
                     </button>
                   </div>
                 );
@@ -1067,7 +1072,7 @@ export function TableEditorPanel({
                   background: "transparent",
                   color:
                     colForm !== null ? "var(--card-border-color)" : "var(--card-muted-fg-color)",
-                  fontSize: 11,
+                  fontSize: fs.meta,
                   cursor: colForm !== null ? "default" : "pointer",
                   height: 38,
                   alignSelf: "flex-start",
@@ -1112,7 +1117,7 @@ export function TableEditorPanel({
           {columns.length === 0 ? (
             <div
               style={{
-                fontSize: 12,
+                fontSize: fs.label,
                 color: "var(--card-muted-fg-color)",
                 fontStyle: "italic",
               }}
@@ -1132,7 +1137,7 @@ export function TableEditorPanel({
                     style={{
                       width: "100%",
                       borderCollapse: "collapse",
-                      fontSize: 14,
+                      fontSize: fs.label,
                       tableLayout: "fixed",
                       minWidth: columns.length * 100 + 52,
                     }}
@@ -1153,7 +1158,7 @@ export function TableEditorPanel({
                               padding: "4px 6px",
                               border: "1px solid var(--card-border-color)",
                               textAlign: "left",
-                              fontSize: 10,
+                              fontSize: fs.meta,
                               fontWeight: 600,
                               color: "var(--card-muted-fg-color)",
                               background: "var(--card-code-bg-color)",
@@ -1167,7 +1172,7 @@ export function TableEditorPanel({
                               <span
                                 style={{
                                   marginLeft: 4,
-                                  fontSize: 8,
+                                  fontSize: 8 /* intentional: tiny icon indicator */,
                                   color: "#5b9cf6",
                                   fontWeight: 700,
                                 }}

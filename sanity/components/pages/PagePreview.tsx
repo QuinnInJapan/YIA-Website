@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 import { ja, en } from "@/lib/i18n";
 import { renderSections } from "@/lib/section-renderer";
 import PageHero from "@/components/PageHero";
@@ -20,7 +21,7 @@ export function PagePreview({ page }: { page: PageDoc }) {
         color: "#333",
         overflowY: "auto",
         height: "100%",
-        fontSize: 16,
+        fontSize: fs.body,
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
       }}

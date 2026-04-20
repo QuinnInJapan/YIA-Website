@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Flex, TextInput } from "@sanity/ui";
+import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { i18nGet } from "../../shared/i18n";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../../shared/DocumentDetailPanel";
@@ -88,7 +89,7 @@ export function LinksSectionEditor({
       />
 
       <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+        <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
           リンク一覧
         </div>
 
@@ -129,11 +130,11 @@ export function LinksSectionEditor({
                     border: "1px solid var(--card-border-color)",
                     background: "transparent",
                     cursor: "pointer",
-                    fontSize: 13,
+                    fontSize: fs.body,
                     color: "var(--card-fg-color)",
                   }}
                 >
-                  <span style={{ fontSize: 14 }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
+                  <span style={{ fontSize: fs.label }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div
                       style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
@@ -141,7 +142,7 @@ export function LinksSectionEditor({
                       {label}
                     </div>
                     {subtitle && (
-                      <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                      <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                         {subtitle}
                       </div>
                     )}

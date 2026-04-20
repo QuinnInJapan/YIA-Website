@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { TrashIcon } from "@sanity/icons";
+import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { i18nGet } from "../../shared/i18n";
 import type { SectionItem } from "../types";
@@ -77,7 +78,7 @@ export function ImageCardsSectionEditor({
       />
 
       <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+        <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
           カード一覧
         </div>
 
@@ -120,7 +121,7 @@ export function ImageCardsSectionEditor({
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: 10,
+                      fontSize: fs.meta,
                       color: "var(--card-muted-fg-color)",
                       flexShrink: 0,
                     }}
@@ -130,7 +131,7 @@ export function ImageCardsSectionEditor({
                   <span
                     style={{
                       flex: 1,
-                      fontSize: 13,
+                      fontSize: fs.body,
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
@@ -174,7 +175,7 @@ export function ImageCardsSectionEditor({
                     <div>
                       <div
                         style={{
-                          fontSize: 11,
+                          fontSize: fs.meta,
                           color: "var(--card-muted-fg-color)",
                           marginBottom: 4,
                         }}
@@ -190,7 +191,7 @@ export function ImageCardsSectionEditor({
                           borderRadius: 4,
                           background: "transparent",
                           color: "var(--card-fg-color)",
-                          fontSize: 12,
+                          fontSize: fs.label,
                           cursor: "pointer",
                         }}
                       >
@@ -234,7 +235,7 @@ export function ImageCardsSectionEditor({
             borderRadius: 4,
             background: "transparent",
             color: "var(--card-muted-fg-color)",
-            fontSize: 12,
+            fontSize: fs.label,
             cursor: "pointer",
           }}
         >
