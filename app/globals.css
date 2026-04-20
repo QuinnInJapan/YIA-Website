@@ -337,7 +337,6 @@ ruby rt {
 }
 
 .page-hero__description-en {
-  font-size: var(--font-size-sm);
   margin-top: var(--spacing-xs);
 }
 
@@ -1006,13 +1005,11 @@ h3.section-header {
   display: block;
   margin-left: 0;
   margin-top: var(--spacing-xs);
-  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
 .section-header__en {
-  font-size: var(--font-size-sm);
   font-weight: normal;
   margin-left: var(--spacing-sm);
   opacity: 0.8;
@@ -1023,7 +1020,6 @@ h3.section-header {
     display: block;
     margin-left: 0;
     margin-top: 2px;
-    font-size: var(--font-size-xs);
   }
 }
 
@@ -1031,7 +1027,6 @@ h3.section-header {
 
 .nav-item__en {
   display: block;
-  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
 
@@ -1072,7 +1067,6 @@ h3.section-header {
 }
 
 .bilingual-block__en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   line-height: 1.6;
   border-left: none;
@@ -1522,7 +1516,6 @@ html:has(:target) {
 
 .resource-link__en {
   display: block;
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
   margin-top: var(--spacing-xs);
 }
@@ -1632,7 +1625,6 @@ html:has(:target) {
 }
 
 .page-subtitle__en {
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
 }
 
@@ -1793,7 +1785,6 @@ html:has(:target) {
 
 .data-table__en {
   color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
 }
 
 .data-table thead th .data-table__en {
@@ -2716,7 +2707,6 @@ html:has(:target) {
 }
 
 .oshirase-title__en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   line-height: 1.4;
 }
@@ -2749,7 +2739,6 @@ html:has(:target) {
 }
 
 .oshirase-viewall__en {
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-muted);
 }
@@ -3020,7 +3009,7 @@ html:has(:target) {
 .program-band__en {
   margin: 0;
   margin-top: clamp(0.5rem, 1.5vh, 1rem);
-  font-size: clamp(0.9rem, 1.6vw, 1.35rem);
+  font-size: clamp(1rem, 1.6vw, 1.5rem); /* was clamp(0.9rem, 1.6vw, 1.35rem) */
   font-weight: 300;
   letter-spacing: 0.08em;
   text-shadow:
@@ -3305,7 +3294,7 @@ html:has(:target) {
 }
 
 .mission-block__en {
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(16px, 1.6vw, 18px); /* was clamp(14px, 1.6vw, 16px) */
   line-height: 1.8;
   color: var(--color-text-faint);
   margin: 0 0 var(--spacing-xl);
@@ -4006,7 +3995,6 @@ html:has(:target) {
   }
 
   .site-nav__mobile-link .nav-item__en {
-    font-size: var(--font-size-xs);
     color: var(--color-text-faint);
   }
 
@@ -4907,7 +4895,6 @@ html:has(:target) {
 }
 
 .cat-item__desc .bilingual-block__en {
-  font-size: var(--font-size-xs, 0.75rem);
   color: var(--color-text-muted, #666);
   margin-top: 0.5rem;
   line-height: 1.7;
