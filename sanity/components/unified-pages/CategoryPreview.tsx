@@ -9,6 +9,7 @@ import type { I18nString } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import type { SanityImage } from "@/lib/types";
 import type { NavCategoryRaw, NavPageDoc, CategoryDoc } from "./types";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export function CategoryPreview({
   navCat,
@@ -33,7 +34,7 @@ export function CategoryPreview({
         color: "#333",
         overflowY: "auto",
         height: "100%",
-        fontSize: 16,
+        fontSize: fs.body,
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
       }}
