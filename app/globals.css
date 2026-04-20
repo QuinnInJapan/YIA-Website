@@ -757,7 +757,6 @@ body {
 
 .site-nav__group-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-faint);
   margin-left: 0;
@@ -1194,7 +1193,6 @@ h3.section-header {
 .governance-list__term-en {
   display: block;
   font-weight: 600;
-  font-size: var(--font-size-sm);
   color: var(--color-text-faint);
 }
 
@@ -1207,7 +1205,6 @@ h3.section-header {
 
 .governance-list__desc-en {
   display: block;
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   margin-top: 2px;
 }
@@ -1232,7 +1229,6 @@ h3.section-header {
 }
 
 .callout__text-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
 }
@@ -1702,7 +1698,6 @@ html:has(:target) {
 
 .info-dl__label-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   text-transform: none;
   color: var(--color-text-faint);
@@ -1717,7 +1712,6 @@ html:has(:target) {
 }
 
 .info-dl__value-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
   margin-top: 2px;
   display: block;
@@ -1752,7 +1746,6 @@ html:has(:target) {
 }
 
 .checklist__label-en {
-  font-size: var(--font-size-xs);
   color: var(--color-text-faint);
 }
 
@@ -1832,7 +1825,6 @@ html:has(:target) {
 
 .group-list__name-en {
   display: block;
-  font-size: var(--font-size-xs);
   font-weight: 400;
   color: var(--color-text-muted);
 }
@@ -2896,7 +2888,6 @@ html:has(:target) {
 
 .program-card__link-en {
   display: block;
-  font-size: var(--font-size-xs);
 }
 
 .program-card__see-all {
@@ -2915,7 +2906,6 @@ html:has(:target) {
 
 .program-card__see-all-en {
   display: block;
-  font-size: var(--font-size-xs);
   opacity: 0.7;
 }
 
@@ -3294,7 +3284,7 @@ html:has(:target) {
 }
 
 .mission-block__en {
-  font-size: clamp(16px, 1.6vw, 18px); /* was clamp(14px, 1.6vw, 16px) */
+  font-size: clamp(18px, 2.2vw, 22px); /* matches mission-block__ja */
   line-height: 1.8;
   color: var(--color-text-faint);
   margin: 0 0 var(--spacing-xl);
@@ -3368,10 +3358,10 @@ html:has(:target) {
 
 .about-showcase .mission-block__en {
   font-size: clamp(
-    13px,
-    1.4vw,
-    15px
-  ); /* intentional: about-showcase layout override — tighter range for this context */
+    var(--font-size-base),
+    1.8vw,
+    var(--font-size-lg)
+  ); /* matches mission-block__ja */
 }
 
 .about-showcase .home-section__heading {
