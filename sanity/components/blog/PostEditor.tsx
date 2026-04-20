@@ -14,6 +14,7 @@ import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
 import { BodyEditor } from "./PteEditor";
 import type { GalleryImageItem } from "./GalleryPanel";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -428,7 +429,7 @@ export function PostEditor({
                 display: "inline-block",
                 padding: "2px 8px",
                 borderRadius: 10,
-                fontSize: 11,
+                fontSize: fs.meta,
                 fontWeight: 600,
                 background: hasDraft ? "#f5a623" : "#4caf50",
                 color: "#fff",
@@ -502,7 +503,9 @@ export function PostEditor({
           >
             {/* Hero image — compact inline */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 ヒーロー画像
               </div>
               {merged.heroImage?.asset?._ref ? (
@@ -565,7 +568,7 @@ export function PostEditor({
                     borderRadius: 6,
                     background: "transparent",
                     color: "var(--card-muted-fg-color)",
-                    fontSize: 13,
+                    fontSize: fs.body,
                     cursor: "pointer",
                   }}
                 >
@@ -576,7 +579,9 @@ export function PostEditor({
 
             {/* Title fields */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（日本語）
               </div>
               <TextInput
@@ -588,7 +593,9 @@ export function PostEditor({
               />
             </div>
             <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+              <div
+                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+              >
                 タイトル（English）
               </div>
               <TextInput
@@ -613,7 +620,13 @@ export function PostEditor({
               }}
             >
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   スラッグ
                 </div>
                 <TextInput
@@ -625,7 +638,13 @@ export function PostEditor({
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   公開日
                 </div>
                 <TextInput
@@ -639,7 +658,13 @@ export function PostEditor({
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   著者
                 </div>
                 <TextInput
@@ -649,7 +674,13 @@ export function PostEditor({
                 />
               </div>
               <div>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   カテゴリー
                 </div>
                 <TextInput
@@ -661,7 +692,13 @@ export function PostEditor({
                 />
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
                   抜粋（日本語）
                 </div>
                 <textarea
@@ -675,7 +712,7 @@ export function PostEditor({
                     padding: "6px 10px",
                     border: "1px solid var(--card-border-color)",
                     borderRadius: 4,
-                    fontSize: 13,
+                    fontSize: fs.body,
                     fontFamily: "inherit",
                     resize: "vertical",
                     background: "transparent",
@@ -701,7 +738,7 @@ export function PostEditor({
                   paddingBottom: 6,
                 }}
               >
-                <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)" }}>本文</div>
+                <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)" }}>本文</div>
                 <div
                   style={{
                     display: "inline-flex",
@@ -723,7 +760,7 @@ export function PostEditor({
                         border: "none",
                         margin: 0,
                         cursor: "pointer",
-                        fontSize: 11,
+                        fontSize: fs.meta,
                         lineHeight: "18px",
                         fontWeight: bodyLang === l ? 600 : 400,
                         background: bodyLang === l ? "var(--card-fg-color)" : "transparent",
@@ -821,7 +858,7 @@ function DocumentsSection({
         borderTop: "1px solid var(--card-border-color)",
       }}
     >
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+      <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
         添付資料
       </div>
 
@@ -855,11 +892,11 @@ function DocumentsSection({
                   border: "1px solid var(--card-border-color)",
                   background: "transparent",
                   cursor: "pointer",
-                  fontSize: 13,
+                  fontSize: fs.body,
                   color: "var(--card-fg-color)",
                 }}
               >
-                <span style={{ fontSize: 14 }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
+                <span style={{ fontSize: fs.body }}>{doc.file ? "\u{1F4CE}" : "\u{1F517}"}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
@@ -867,7 +904,7 @@ function DocumentsSection({
                     {label}
                   </div>
                   {subtitle && (
-                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                    <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                       {subtitle}
                     </div>
                   )}
@@ -1019,7 +1056,7 @@ function RelatedPostsSection({
         borderTop: "1px solid var(--card-border-color)",
       }}
     >
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
+      <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
         関連記事
       </div>
 
@@ -1037,7 +1074,7 @@ function RelatedPostsSection({
                   padding: "6px 10px",
                   borderRadius: 4,
                   border: "1px solid var(--card-border-color)",
-                  fontSize: 13,
+                  fontSize: fs.body,
                 }}
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -1051,7 +1088,7 @@ function RelatedPostsSection({
                     {resolved?.titleJa ?? ref._ref}
                   </div>
                   {resolved?.slug && (
-                    <div style={{ fontSize: 11, color: "var(--card-muted-fg-color)" }}>
+                    <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
                       /blog/{resolved.slug}
                     </div>
                   )}
@@ -1066,7 +1103,7 @@ function RelatedPostsSection({
                     background: "transparent",
                     color: "var(--card-muted-fg-color)",
                     cursor: "pointer",
-                    fontSize: 14,
+                    fontSize: fs.body,
                   }}
                   title="削除"
                 >
@@ -1095,12 +1132,12 @@ function RelatedPostsSection({
           />
           <div style={{ marginTop: 8, maxHeight: 200, overflow: "auto" }}>
             {searching && (
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", padding: 4 }}>
+              <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", padding: 4 }}>
                 検索中…
               </div>
             )}
             {!searching && searchInput.trim() && searchResults.length === 0 && (
-              <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", padding: 4 }}>
+              <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", padding: 4 }}>
                 見つかりません
               </div>
             )}
@@ -1126,7 +1163,7 @@ function RelatedPostsSection({
                     background: "transparent",
                     cursor: alreadyAdded ? "default" : "pointer",
                     opacity: alreadyAdded ? 0.4 : 1,
-                    fontSize: 13,
+                    fontSize: fs.body,
                     color: "var(--card-fg-color)",
                   }}
                 >
@@ -1134,7 +1171,7 @@ function RelatedPostsSection({
                   {post.slug && (
                     <span
                       style={{
-                        fontSize: 11,
+                        fontSize: fs.meta,
                         color: "var(--card-muted-fg-color)",
                         marginLeft: 8,
                       }}
@@ -1145,7 +1182,7 @@ function RelatedPostsSection({
                   {alreadyAdded && (
                     <span
                       style={{
-                        fontSize: 11,
+                        fontSize: fs.meta,
                         color: "var(--card-muted-fg-color)",
                         marginLeft: 8,
                       }}
@@ -1171,7 +1208,7 @@ function RelatedPostsSection({
               borderRadius: 4,
               background: "transparent",
               color: "var(--card-muted-fg-color)",
-              fontSize: 12,
+              fontSize: fs.label,
               cursor: "pointer",
             }}
           >

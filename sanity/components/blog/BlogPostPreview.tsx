@@ -11,6 +11,7 @@ import BlogLanguageTabs, { BlogLanguageProvider } from "@/components/BlogLanguag
 import type { BlogPostDoc } from "./PostEditor";
 import type { I18nBlocks } from "@/lib/i18n";
 import type { Document } from "@/lib/types";
+import { fs } from "@/sanity/lib/studioTokens";
 
 function hasContent(blocks: unknown[]): boolean {
   if (blocks.length === 0) return false;
@@ -70,7 +71,7 @@ export function BlogPostPreview({ doc }: { doc: BlogPostDoc }) {
         color: "#333",
         overflowY: "auto",
         height: "100%",
-        fontSize: 16,
+        fontSize: fs.body,
         fontFamily: "var(--font-body)",
         lineHeight: 1.7,
       }}
