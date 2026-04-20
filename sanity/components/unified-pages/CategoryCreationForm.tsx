@@ -4,10 +4,10 @@ import { useCallback, useMemo, useState } from "react";
 import { useClient } from "sanity";
 import { Box, Button, Flex, Text } from "@sanity/ui";
 import createImageUrlBuilder from "@sanity/image-url";
+import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../shared/BilingualInput";
 import { ImagePickerPanel } from "../shared/ImagePickerPanel";
 import type { I18nString, CategoryDoc } from "./types";
-import { fs } from "@/sanity/lib/studioTokens";
 
 export function CategoryCreationForm({
   onCreated,
