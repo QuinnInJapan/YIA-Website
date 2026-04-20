@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export function SectionWrapper({
   id,
@@ -36,7 +37,7 @@ export function SectionWrapper({
           background: "transparent",
           cursor: "pointer",
           color: "var(--card-fg-color)",
-          fontSize: 15,
+          fontSize: fs.body,
           fontWeight: 600,
           textAlign: "left",
         }}

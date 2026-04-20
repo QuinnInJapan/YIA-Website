@@ -7,6 +7,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 import { i18nGet, i18nSet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
+import { fs } from "@/sanity/lib/studioTokens";
 import { FieldLabel, OverlayButton, ImageOverlayActions } from "./HeroSection";
 import type {
   HomepageData,
@@ -112,7 +113,7 @@ export function ActivityGridSection({
               background: "transparent",
               color: "#999",
               cursor: "pointer",
-              fontSize: 13,
+              fontSize: fs.body,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -127,7 +128,11 @@ export function ActivityGridSection({
 
   return (
     <div onFocusCapture={() => setFocus("activityGrid")} onBlurCapture={clearFocus}>
-      <SectionWrapper id="section-activity" title="活動グリッド" onExpand={() => setFocus("activityGrid")}>
+      <SectionWrapper
+        id="section-activity"
+        title="活動グリッド"
+        onExpand={() => setFocus("activityGrid")}
+      >
         {/* High-fidelity grid matching the actual homepage layout:
           4 equal columns, 3 rows
           "a a b c"   img[0](2col)  stat(1col)   img[1](1col)
@@ -183,7 +188,7 @@ export function ActivityGridSection({
                 borderBottom: "1px solid rgba(255,255,255,0.3)",
                 borderRadius: 0,
                 padding: "2px 0",
-                fontSize: 28,
+                fontSize: 28 /* intentional: display/heading size */,
                 fontWeight: 900,
                 background: "transparent",
                 color: "#fff",
@@ -194,7 +199,7 @@ export function ActivityGridSection({
             />
             <div
               style={{
-                fontSize: 11,
+                fontSize: fs.meta,
                 opacity: 0.8,
                 textAlign: "center",
                 lineHeight: 1.3,
@@ -219,13 +224,15 @@ export function ActivityGridSection({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 14,
+              fontSize: fs.body,
               fontWeight: 600,
             }}
           >
             <div style={{ textAlign: "center", lineHeight: 1.4 }}>
               入会案内
-              <span style={{ display: "block", fontSize: 12, fontWeight: 400, opacity: 0.85 }}>
+              <span
+                style={{ display: "block", fontSize: fs.label, fontWeight: 400, opacity: 0.85 }}
+              >
                 Join Us
               </span>
             </div>
@@ -243,13 +250,15 @@ export function ActivityGridSection({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 14,
+              fontSize: fs.body,
               fontWeight: 500,
             }}
           >
             <div style={{ textAlign: "center", lineHeight: 1.4 }}>
               活動ブログ
-              <span style={{ display: "block", fontSize: 12, fontWeight: 400, opacity: 0.85 }}>
+              <span
+                style={{ display: "block", fontSize: fs.label, fontWeight: 400, opacity: 0.85 }}
+              >
                 Activity Blog
               </span>
             </div>

@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { i18nGet, i18nSet } from "../shared/i18n";
 import { SectionWrapper } from "./SectionWrapper";
 import { useFocusContext } from "../shared/FocusContext";
+import { fs } from "@/sanity/lib/studioTokens";
 import type { HomepageData, SiteSettingsData, UpdateFieldFn, OpenPickerFn } from "./types";
 
 export function HeroSection({
@@ -67,7 +68,7 @@ export function HeroSection({
       <SectionWrapper id="section-hero" title="ヒーロー" onExpand={() => setFocus("hero")}>
         {/* Hero image */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+          <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
             ヒーロー画像
           </div>
           {heroImage?.asset?._ref ? (
@@ -262,7 +263,7 @@ export function HeroSection({
 export function FieldLabel({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{ fontSize: 12, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+      <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
         {label}
       </div>
       {children}
@@ -281,7 +282,7 @@ export function OverlayButton({ label, onClick }: { label: string; onClick: () =
         border: "1px solid rgba(255,255,255,0.25)",
         background: "rgba(0,0,0,0.6)",
         color: "#fff",
-        fontSize: 13,
+        fontSize: fs.body,
         fontWeight: 500,
         cursor: "pointer",
         backdropFilter: "blur(8px)",
@@ -347,7 +348,7 @@ export function EmptyImageSlot({ onClick }: { onClick: () => void }) {
         borderRadius: 6,
         background: "transparent",
         color: "var(--card-muted-fg-color)",
-        fontSize: 13,
+        fontSize: fs.body,
         cursor: "pointer",
       }}
     >
