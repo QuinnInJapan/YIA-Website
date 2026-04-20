@@ -14,7 +14,7 @@
 body {
   --font-body: var(--font-noto), "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--color-text);
   background: var(--color-bg);
@@ -178,7 +178,7 @@ ruby rt {
 
 /* Hide ruby text visually but keep for screen readers */
 .ruby-hidden rt {
-  font-size: 0;
+  font-size: 0; /* intentional: hides ruby visually, accessible to screen readers */
   opacity: 0;
 }
 
@@ -576,7 +576,7 @@ body {
 }
 
 #google_translate_element .goog-te-gadget {
-  font-size: 0;
+  font-size: 0; /* intentional: hides ruby visually, accessible to screen readers */
   line-height: 0;
 }
 
@@ -1284,7 +1284,7 @@ h4[id] {
 }
 
 .announcement__title {
-  font-size: 20px;
+  font-size: 20px; /* intentional: announcement emphasis between --font-size-lg(18px) and --font-size-xl(22px) */
   font-weight: 500;
   color: var(--color-navy);
   margin: 0 0 12px;
@@ -2220,7 +2220,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 24px;
+  font-size: 24px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -2241,7 +2241,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 28px;
+  font-size: 28px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -2509,7 +2509,7 @@ html:has(:target) {
 }
 
 .activity-grid__tile-big {
-  font-size: 52px;
+  font-size: 52px; /* intentional: large display number */
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -2723,7 +2723,7 @@ html:has(:target) {
 
 .oshirase-pin {
   display: block;
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   color: var(--color-silver);
 }
 
@@ -2798,7 +2798,7 @@ html:has(:target) {
 
 .home-section__heading small {
   display: block;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   font-weight: 400;
   color: var(--color-text-faint);
   margin-top: 6px;
@@ -3417,7 +3417,7 @@ html:has(:target) {
   }
 
   .about-showcase .mission-block__ja {
-    font-size: 15px;
+    font-size: var(--font-size-base);
   }
 
   .about-showcase .home-section__heading {
@@ -3504,7 +3504,7 @@ html:has(:target) {
 }
 
 .access-block__info {
-  font-size: 15px;
+  font-size: var(--font-size-base);
   line-height: 1.8;
   display: flex;
   flex-direction: column;
@@ -3516,7 +3516,7 @@ html:has(:target) {
 }
 
 .access-block__name {
-  font-size: 17px;
+  font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--color-navy);
 }
@@ -3682,7 +3682,7 @@ html:has(:target) {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
   color: var(--color-white);
-  font-size: 28px;
+  font-size: 28px; /* intentional: lightbox UI control */
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s;
@@ -3826,7 +3826,7 @@ html:has(:target) {
   }
 
   .site-nav__brand-en {
-    font-size: 10px;
+    font-size: 10px; /* intentional: supplementary brand sub-label in mobile nav, kept subordinate */
     opacity: 0.75;
     letter-spacing: 0.04em;
     line-height: 1.3;
@@ -3884,7 +3884,7 @@ html:has(:target) {
     margin: 0 var(--spacing-sm) var(--spacing-sm) auto;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: var(--font-size-lg);
     color: var(--color-text-muted);
     cursor: pointer;
   }
@@ -4925,7 +4925,7 @@ html:has(:target) {
   display: inline-block;
   padding: 1px 8px;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-white);
   background: var(--color-navy-light);
