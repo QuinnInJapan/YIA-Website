@@ -83,10 +83,9 @@ ol {
   --color-gray-light: #eef1f5;
   --color-gray-mid: #d0d8e0;
   --color-border: #d0d8e0;
-  --color-text: #1a2030;
-  --color-text-muted: #3d4f5f;
-  --color-text-secondary: #405060;
-  --color-text-faint: #4a5565;
+  --color-text: #111820;
+  --color-text-muted: #2a3a4a;
+  --color-text-faint: #4a5a6a;
   --color-tint: #edf1f5;
   --color-tint-blue: #eef2f7;
   --color-hero-overlay: rgba(15, 25, 50, 0.55);
@@ -103,9 +102,9 @@ ol {
   --color-info-bg: #f0f4f8;
   --color-info-border: #1e3a5f;
 
-  --font-size-base: 15px;
-  --font-size-sm: 14px;
-  --font-size-xs: 13px;
+  --font-size-base: 16px;
+  --font-size-sm: 15px;
+  --font-size-xs: 14px;
   --font-size-lg: 18px;
   --font-size-xl: 22px;
   --font-size-xxl: 26px;
@@ -1852,7 +1851,7 @@ html:has(:target) {
   flex-wrap: wrap;
   gap: var(--spacing-lg);
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -1897,7 +1896,7 @@ html:has(:target) {
 
 .history-timeline__cuisines {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.7;
 }
 
@@ -1946,7 +1945,7 @@ html:has(:target) {
 
 .membership-table__desc {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary, #555);
+  color: var(--color-text-muted);
 }
 
 .membership-table__parens {
@@ -4938,7 +4937,7 @@ html:has(:target) {
 
 .cat-item__excerpt {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0.25rem 0 0;
   display: -webkit-box;

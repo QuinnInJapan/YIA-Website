@@ -107,7 +107,7 @@
 
 .blog-card__excerpt {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 4px 0 0;
   display: -webkit-box;
@@ -387,7 +387,7 @@
 }
 
 .blog-post__body-en {
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
 }
 
 .blog-post__docs {
