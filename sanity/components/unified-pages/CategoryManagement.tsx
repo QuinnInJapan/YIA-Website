@@ -11,6 +11,7 @@ import { ImagePickerPanel } from "../shared/ImagePickerPanel";
 import { HotspotCropTool } from "../shared/HotspotCropTool";
 import type { HotspotCropValue } from "../shared/HotspotCropTool";
 import type { NavCategoryRaw, NavItemRaw, NavPageDoc, CategoryDoc, ImageField } from "./types";
+import { fs } from "@/sanity/lib/studioTokens";
 
 export function CategoryManagement({
   navCat,
@@ -204,7 +205,7 @@ export function CategoryManagement({
                 background: "transparent",
                 cursor: !categoryDoc ? "default" : "pointer",
                 padding: "2px 4px",
-                fontSize: 14,
+                fontSize: fs.body,
                 color: "var(--card-muted-fg-color)",
                 flexShrink: 0,
                 lineHeight: 1,
@@ -250,7 +251,7 @@ export function CategoryManagement({
                   }}
                   style={{
                     padding: "4px 8px",
-                    fontSize: 11,
+                    fontSize: fs.meta,
                     border: "none",
                     borderRadius: 4,
                     background: "rgba(0,0,0,0.6)",
@@ -265,7 +266,7 @@ export function CategoryManagement({
                   onClick={() => setShowImagePicker(true)}
                   style={{
                     padding: "4px 8px",
-                    fontSize: 11,
+                    fontSize: fs.meta,
                     border: "none",
                     borderRadius: 4,
                     background: "rgba(0,0,0,0.6)",
@@ -292,7 +293,7 @@ export function CategoryManagement({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 13,
+                fontSize: fs.body,
                 color: "var(--card-muted-fg-color)",
               }}
             >
@@ -311,7 +312,7 @@ export function CategoryManagement({
               type="button"
               onClick={isReorderMode ? handleCompleteReorder : () => setIsReorderMode(true)}
               style={{
-                fontSize: 11,
+                fontSize: fs.meta,
                 padding: "3px 8px",
                 border: "1px solid var(--card-border-color)",
                 borderRadius: 4,
@@ -350,7 +351,7 @@ export function CategoryManagement({
                 <span
                   style={{
                     flex: 1,
-                    fontSize: 13,
+                    fontSize: fs.body,
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
@@ -362,7 +363,7 @@ export function CategoryManagement({
                   type="button"
                   onClick={() => onTogglePageHidden(item._key)}
                   style={{
-                    fontSize: 11,
+                    fontSize: fs.meta,
                     padding: "2px 6px",
                     border: "1px solid var(--card-border-color)",
                     borderRadius: 3,
@@ -380,7 +381,7 @@ export function CategoryManagement({
                     onClick={() => onRemovePage(item._key)}
                     title="このカテゴリから削除"
                     style={{
-                      fontSize: 11,
+                      fontSize: fs.meta,
                       padding: "2px 4px",
                       border: "none",
                       background: "transparent",
@@ -402,7 +403,7 @@ export function CategoryManagement({
           style={{
             width: "100%",
             padding: "8px 12px",
-            fontSize: 13,
+            fontSize: fs.body,
             border: "1px dashed var(--card-border-color)",
             borderRadius: 6,
             background: "transparent",
