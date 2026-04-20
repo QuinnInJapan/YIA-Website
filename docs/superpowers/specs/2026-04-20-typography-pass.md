@@ -43,6 +43,28 @@ Simplify from 4 tiers to 3, all darkened.
 
 All `var(--color-text-secondary)` references in the codebase → `var(--color-text-muted)`.
 
+### Hardcoded Font Sizes in globals.css
+
+`globals.css` contains ~15 hardcoded `font-size` values outside the variable system. During implementation, grep all of them and classify each as one of:
+
+- **Replace with variable** — role clearly matches an existing token (e.g. a label that should use `--font-size-xs`)
+- **Bump in place** — value is below the new xs floor (14px) with no matching variable; raise to 14px minimum
+- **Intentional one-off** — display numbers, UI controls, special cases where a variable doesn't apply; leave with an inline comment explaining why
+
+Known values to classify:
+
+| Value | Location                         | Expected classification                                               |
+| ----- | -------------------------------- | --------------------------------------------------------------------- |
+| 10px  | home section emoji/icon labels   | bump to 14px or replace with xs                                       |
+| 11px  | blog card category tag           | bump to 14px or replace with xs                                       |
+| 17px  | specific home section body       | replace with `--font-size-lg` (18px) or leave if intentional midpoint |
+| 20px  | announcement title               | intentional one-off (between lg and xl)                               |
+| 24px  | photo lightbox close button      | intentional UI control                                                |
+| 28px  | photo lightbox nav buttons       | intentional UI control                                                |
+| 52px  | activity grid big display number | intentional display number                                            |
+
+After classification, document any "intentional one-off" values with a `/* intentional: reason */` comment in the CSS so future passes know they were reviewed.
+
 ### English Parity
 
 Remove font-size overrides from all `__en`-suffixed CSS rules that set a smaller size than their Japanese counterpart. English text inherits the same role token as its parent.
@@ -116,3 +138,4 @@ Sanity UI component `fontSize` props (numeric, passed to `<Button>`, `<Text>`, e
 - [ ] `grep -rn "fontSize: [0-9]" sanity/components/` returns zero results (all inline style numeric sizes replaced by `fs.*`)
 - [ ] Visual spot-check: English text at same size as Japanese in section headers, page heroes, blog cards, nav, data tables
 - [ ] Visual spot-check: Studio left panel labels readable at 13–15px
+- [ ] `grep -n "font-size: [0-9]" app/globals.css` — every result is either a variable reference, a `clamp()`, or has an `/* intentional: */` comment; no bare px values remain unreviewed
