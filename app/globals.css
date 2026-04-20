@@ -3367,7 +3367,11 @@ html:has(:target) {
 }
 
 .about-showcase .mission-block__en {
-  font-size: clamp(13px, 1.4vw, 15px);
+  font-size: clamp(
+    13px,
+    1.4vw,
+    15px
+  ); /* intentional: about-showcase layout override — tighter range for this context */
 }
 
 .about-showcase .home-section__heading {
