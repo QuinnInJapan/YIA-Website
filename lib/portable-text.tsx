@@ -27,6 +27,30 @@ export const ptComponents: PortableTextComponents = {
         </figure>
       );
     },
+    callout: ({ value }: { value: { tone?: string; body?: string } }) => {
+      const tone = value.tone || "info";
+      return (
+        <aside className={`pt-callout pt-callout--${tone}`}>
+          <p>{value.body}</p>
+        </aside>
+      );
+    },
+    youtube: ({ value }: { value: { url: string; caption?: string } }) => (
+      <YouTubeEmbed url={value.url} caption={value.caption} />
+    ),
+    inlineGallery: ({ value }: { value: { images?: ImageFileValue[] } }) => {
+      const images = (value.images ?? [])
+        .filter((img) => img.file?.asset?._ref)
+        .map((img) => ({
+          src: imageUrl(img.file!),
+          lqip: imageLqip(img.file!),
+          alt: ja(img.caption) || "",
+          captionJa: ja(img.caption),
+          captionEn: en(img.caption),
+        }));
+      if (!images.length) return null;
+      return <PhotoGalleryWrapper images={images} />;
+    },
   },
 };
 
@@ -41,30 +65,6 @@ export function makeBlogPtComponents(h2IdMap?: Record<string, string>): Portable
     },
     types: {
       ...ptComponents.types,
-      callout: ({ value }: { value: { tone?: string; body?: string } }) => {
-        const tone = value.tone || "info";
-        return (
-          <aside className={`pt-callout pt-callout--${tone}`}>
-            <p>{value.body}</p>
-          </aside>
-        );
-      },
-      youtube: ({ value }: { value: { url: string; caption?: string } }) => (
-        <YouTubeEmbed url={value.url} caption={value.caption} />
-      ),
-      inlineGallery: ({ value }: { value: { images?: ImageFileValue[] } }) => {
-        const images = (value.images ?? [])
-          .filter((img) => img.file?.asset?._ref)
-          .map((img) => ({
-            src: imageUrl(img.file!),
-            lqip: imageLqip(img.file!),
-            alt: ja(img.caption) || "",
-            captionJa: ja(img.caption),
-            captionEn: en(img.caption),
-          }));
-        if (!images.length) return null;
-        return <PhotoGalleryWrapper images={images} />;
-      },
     },
   };
 }
