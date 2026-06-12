@@ -268,7 +268,17 @@ ruby rt {
 }
 
 .page-hero::before {
-  display: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(19, 40, 69, 0.82) 0%,
+    rgba(19, 40, 69, 0.55) 40%,
+    rgba(19, 40, 69, 0.15) 75%,
+    rgba(19, 40, 69, 0) 100%
+  );
 }
 
 .page-hero--solid {
