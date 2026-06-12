@@ -1776,6 +1776,14 @@ html:has(:target) {
   word-break: break-word;
 }
 
+/* First column (years, labels) stays on one line and shrinks to content */
+.data-table thead th:first-child,
+.data-table tbody td:first-child {
+  white-space: nowrap;
+  word-break: keep-all;
+  width: 1%;
+}
+
 /* Replace striping with hover */
 .data-table tbody tr:nth-child(even) {
   background: transparent;
