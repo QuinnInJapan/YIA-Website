@@ -6,5 +6,6 @@ import "../studio-overrides.css";
 import "@/app/blog.css";
 
 export default function StudioPage() {
-  return <NextStudio config={config} />;
+  // Controlled scheme with no onSchemeChange = studio locked to light mode
+  return <NextStudio config={config} scheme="light" />;
 }
