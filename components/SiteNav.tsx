@@ -25,14 +25,28 @@ interface SiteNavProps {
   orgName: string;
   orgNameEn: string;
   contact: { tel: string; email: string };
+  showBlog?: boolean;
 }
 
 // All categories in the navigation have landing pages — no hardcoded list needed
 
 function ChevronIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 3l5 5-5 5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -45,7 +59,13 @@ function CloseIcon() {
   );
 }
 
-export default function SiteNav({ categories, orgName, orgNameEn, contact }: SiteNavProps) {
+export default function SiteNav({
+  categories,
+  orgName,
+  orgNameEn,
+  contact,
+  showBlog = true,
+}: SiteNavProps) {
   const router = useRouter();
   const [openId, setOpenId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -111,7 +131,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
         hamburgerRef.current?.focus();
       } else if (e.key === "Tab") {
         const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
-          'button, a[href], [tabindex]:not([tabindex="-1"])'
+          'button, a[href], [tabindex]:not([tabindex="-1"])',
         );
         if (!focusable || focusable.length === 0) return;
         const first = focusable[0];
@@ -137,7 +157,7 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
   useEffect(() => {
     if (isMobileMenuOpen) {
       const firstFocusable = drawerRef.current?.querySelector<HTMLElement>(
-        'button, a[href], [tabindex]:not([tabindex="-1"])'
+        'button, a[href], [tabindex]:not([tabindex="-1"])',
       );
       firstFocusable?.focus();
     }
@@ -148,7 +168,9 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
       {/* Mobile branding — visible only on mobile */}
       <Link href="/" className="site-nav__brand">
         <span className="site-nav__brand-jp">{orgName}</span>
-        <span className="site-nav__brand-en" lang="en" translate="no">{orgNameEn}</span>
+        <span className="site-nav__brand-en" lang="en" translate="no">
+          {orgNameEn}
+        </span>
       </Link>
 
       {/* Hamburger button — visible only on mobile */}
@@ -169,66 +191,94 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
       {/* Desktop nav — hidden on mobile */}
       <div className="site-nav__desktop">
         <div className="site-nav__inner">
-          <Link href="/" className={`site-nav__home notranslate${pathname === "/" ? " site-nav__home--active" : ""}`} aria-current={pathname === "/" ? "page" : undefined}>
+          <Link
+            href="/"
+            className={`site-nav__home notranslate${pathname === "/" ? " site-nav__home--active" : ""}`}
+            aria-current={pathname === "/" ? "page" : undefined}
+          >
             HOME
           </Link>
           {categories.map((cat) => {
-            const hasActive = cat.items.some((it) => pathname === it.url) || pathname === `/${cat.categoryId}` || pathname.startsWith(`/${cat.categoryId}/`);
+            const hasActive =
+              cat.items.some((it) => pathname === it.url) ||
+              pathname === `/${cat.categoryId}` ||
+              pathname.startsWith(`/${cat.categoryId}/`);
             return (
+              <div
+                className={`site-nav__group${openId === cat.id ? " site-nav__group--open" : ""}${hasActive ? " site-nav__group--active" : ""}`}
+                key={cat.id}
+              >
+                <button
+                  className="site-nav__group-label"
+                  type="button"
+                  aria-expanded={openId === cat.id}
+                  aria-controls={`nav-dropdown-${cat.id}`}
+                  onClick={() => toggle(cat.id)}
+                >
+                  {ja(cat.label)}{" "}
+                  <span className="site-nav__group-en" lang="en" translate="no">
+                    {en(cat.label)}
+                  </span>
+                </button>
+                <div
+                  className="site-nav__dropdown"
+                  id={`nav-dropdown-${cat.id}`}
+                  role="region"
+                  aria-label={`${ja(cat.label)} ${en(cat.label)}`}
+                >
+                  {cat.items.map((it) => {
+                    const isActive = pathname === it.url;
+                    return (
+                      <Link
+                        className={`nav-item${isActive ? " nav-item--active" : ""}`}
+                        href={it.url}
+                        key={it.id}
+                        aria-current={isActive ? "page" : undefined}
+                      >
+                        <span className="nav-item__title">{ja(it.title)}</span>
+                        <span className="nav-item__en" lang="en" translate="no">
+                          {en(it.title)}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                  {cat.categoryId && (
+                    <Link
+                      className={`nav-item nav-item--view-all${pathname === `/${cat.categoryId}` ? " nav-item--active" : ""}`}
+                      href={`/${cat.categoryId}`}
+                    >
+                      <span className="nav-item__title">すべて見る</span>
+                      <span className="nav-item__en" lang="en" translate="no">
+                        View All →
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+          {showBlog && (
             <div
-              className={`site-nav__group${openId === cat.id ? " site-nav__group--open" : ""}${hasActive ? " site-nav__group--active" : ""}`}
-              key={cat.id}
+              className={`site-nav__group${pathname.startsWith("/blog") ? " site-nav__group--active" : ""}`}
             >
               <button
                 className="site-nav__group-label"
                 type="button"
-                aria-expanded={openId === cat.id}
-                aria-controls={`nav-dropdown-${cat.id}`}
-                onClick={() => toggle(cat.id)}
+                onClick={() => router.push("/blog")}
               >
-                {ja(cat.label)}{" "}
-                <span className="site-nav__group-en" lang="en" translate="no">{en(cat.label)}</span>
+                ブログ{" "}
+                <span className="site-nav__group-en" lang="en" translate="no">
+                  Blog
+                </span>
               </button>
-              <div className="site-nav__dropdown" id={`nav-dropdown-${cat.id}`} role="region" aria-label={`${ja(cat.label)} ${en(cat.label)}`}>
-                {cat.items.map((it) => {
-                  const isActive = pathname === it.url;
-                  return (
-                  <Link className={`nav-item${isActive ? " nav-item--active" : ""}`} href={it.url} key={it.id} aria-current={isActive ? "page" : undefined}>
-                    <span className="nav-item__title">{ja(it.title)}</span>
-                    <span className="nav-item__en" lang="en" translate="no">{en(it.title)}</span>
-                  </Link>
-                  );
-                })}
-                {cat.categoryId && (
-                  <Link className={`nav-item nav-item--view-all${pathname === `/${cat.categoryId}` ? " nav-item--active" : ""}`} href={`/${cat.categoryId}`}>
-                    <span className="nav-item__title">すべて見る</span>
-                    <span className="nav-item__en" lang="en" translate="no">View All →</span>
-                  </Link>
-                )}
-              </div>
             </div>
-          );
-          })}
-          <div className={`site-nav__group${pathname.startsWith("/blog") ? " site-nav__group--active" : ""}`}>
-            <button
-              className="site-nav__group-label"
-              type="button"
-              onClick={() => router.push("/blog")}
-            >
-              ブログ{" "}
-              <span className="site-nav__group-en" lang="en" translate="no">Blog</span>
-            </button>
-          </div>
+          )}
         </div>
       </div>
 
       {/* Mobile drawer — hidden on desktop */}
       {isMobileMenuOpen && (
-        <div
-          className="site-nav__backdrop"
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
+        <div className="site-nav__backdrop" onClick={closeMobileMenu} aria-hidden="true" />
       )}
       <div
         className={`site-nav__mobile${isMobileMenuOpen ? " site-nav__mobile--open" : ""}`}
@@ -258,7 +308,10 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
 
         {categories.map((cat) => {
           const isOpen = openId === cat.id;
-          const hasActive = cat.items.some((it) => pathname === it.url) || pathname === `/${cat.categoryId}` || pathname.startsWith(`/${cat.categoryId}/`);
+          const hasActive =
+            cat.items.some((it) => pathname === it.url) ||
+            pathname === `/${cat.categoryId}` ||
+            pathname.startsWith(`/${cat.categoryId}/`);
           return (
             <div className="site-nav__mobile-group" key={cat.id}>
               <button
@@ -270,9 +323,13 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
               >
                 <span className="site-nav__mobile-group-text">
                   <span>{ja(cat.label)}</span>
-                  <span className="site-nav__mobile-group-en" lang="en" translate="no">{en(cat.label)}</span>
+                  <span className="site-nav__mobile-group-en" lang="en" translate="no">
+                    {en(cat.label)}
+                  </span>
                 </span>
-                <ChevronIcon className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`} />
+                <ChevronIcon
+                  className={`site-nav__mobile-chevron${isOpen ? " site-nav__mobile-chevron--open" : ""}`}
+                />
               </button>
               <div
                 className={`site-nav__mobile-accordion${isOpen ? " site-nav__mobile-accordion--open" : ""}`}
@@ -292,7 +349,9 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                         onClick={closeMobileMenu}
                       >
                         <span className="nav-item__title">{ja(it.title)}</span>
-                        <span className="nav-item__en" lang="en" translate="no">{en(it.title)}</span>
+                        <span className="nav-item__en" lang="en" translate="no">
+                          {en(it.title)}
+                        </span>
                       </Link>
                     );
                   })}
@@ -303,7 +362,9 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
                       onClick={closeMobileMenu}
                     >
                       <span className="nav-item__title">すべて見る</span>
-                      <span className="nav-item__en" lang="en" translate="no">View All →</span>
+                      <span className="nav-item__en" lang="en" translate="no">
+                        View All →
+                      </span>
                     </Link>
                   )}
                 </div>
@@ -312,18 +373,25 @@ export default function SiteNav({ categories, orgName, orgNameEn, contact }: Sit
           );
         })}
 
-        <div className="site-nav__mobile-group">
-          <button
-            className={`site-nav__mobile-group-label${pathname.startsWith("/blog") ? " site-nav__mobile-group-label--has-active" : ""}`}
-            type="button"
-            onClick={() => { router.push("/blog"); closeMobileMenu(); }}
-          >
-            <span className="site-nav__mobile-group-text">
-              <span>ブログ</span>
-              <span className="site-nav__mobile-group-en" lang="en" translate="no">Blog</span>
-            </span>
-          </button>
-        </div>
+        {showBlog && (
+          <div className="site-nav__mobile-group">
+            <button
+              className={`site-nav__mobile-group-label${pathname.startsWith("/blog") ? " site-nav__mobile-group-label--has-active" : ""}`}
+              type="button"
+              onClick={() => {
+                router.push("/blog");
+                closeMobileMenu();
+              }}
+            >
+              <span className="site-nav__mobile-group-text">
+                <span>ブログ</span>
+                <span className="site-nav__mobile-group-en" lang="en" translate="no">
+                  Blog
+                </span>
+              </span>
+            </button>
+          </div>
+        )}
 
         <div className="site-nav__mobile-contact">
           <a href={`tel:${stegaClean(contact.tel)}`}>TEL: {contact.tel}</a>

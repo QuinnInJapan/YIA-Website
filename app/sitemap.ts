@@ -17,18 +17,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           categoryRef->{ _id },
           items[]{ pageRef->{ slug } }
         }
-      }`
+      }`,
     ),
     client.fetch<{ slug: string; updatedAt: string }[]>(
-      `*[_type == "blogPost"]{ "slug": slug.current, "updatedAt": _updatedAt }`
+      `*[_type == "blogPost"]{ "slug": slug.current, "updatedAt": _updatedAt }`,
     ),
   ]);
 
   const entries: MetadataRoute.Sitemap = [
     { url: BASE_URL, changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE_URL}/blog`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/announcements`, changeFrequency: "weekly", priority: 0.8 },
   ];
+
+  // Blog index only exists while there are published posts
+  if ((blogSlugs ?? []).length > 0) {
+    entries.push({ url: `${BASE_URL}/blog`, changeFrequency: "weekly", priority: 0.8 });
+  }
 
   // Category and page routes
   for (const cat of nav?.categories ?? []) {

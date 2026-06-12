@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { fetchBlogPosts, fetchBlogPostCount } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
@@ -30,6 +31,12 @@ export default async function BlogIndexPage({ searchParams }: PageProps) {
     fetchBlogPosts(currentPage, PAGE_SIZE),
     fetchBlogPostCount(),
   ]);
+
+  // Blog is hidden site-wide while there are no published posts
+  if ((totalCount as number) === 0) {
+    notFound();
+  }
+
   const allPosts = (posts ?? []) as BlogPost[];
   const totalPages = Math.ceil((totalCount as number) / PAGE_SIZE);
 
