@@ -43,40 +43,88 @@ test.describe("Program Pages", () => {
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
   });
 
-  test("/classes/conversation-salon schedule matches cached 2026 source facts", async ({ page }) => {
+  test("/classes/conversation-salon schedule matches cached 2026 source facts", async ({
+    page,
+  }) => {
     const response = await page.goto("/classes/conversation-salon");
     expect(response?.status()).toBe(200);
 
-    await expect(page.locator(".schedule-list")).toHaveCount(3);
+    await expect(page.locator(".schedule-directory")).toHaveCount(3);
+    await expect(page.locator(".comparison-table")).toHaveCount(0);
+    await expect(page.locator(".schedule-list")).toHaveCount(0);
     await expect(page.locator("body")).toContainText("はじめに");
     await expect(page.locator("body")).toContainText("総合福祉会館");
     await expect(page.locator("body")).toContainText("Adult Classes at Sogo Fukushi Kaikan");
     await expect(page.locator("body")).toContainText("Adult Classes at Other Locations");
     await expect(page.locator("body")).toContainText("Children and Student Class List");
-    const irohaEntry = page.locator(".schedule-list__entry").filter({ hasText: "Iroha-kai" });
-    await expect(irohaEntry).toContainText("いろは会");
-    await expect(irohaEntry).toContainText("月");
-    await expect(irohaEntry).toContainText("Mon");
-    await expect(irohaEntry).toContainText("10:15〜11:45");
-    await expect(irohaEntry).toContainText("4階");
-    await expect(irohaEntry).toContainText("4F");
-    await expect(irohaEntry).toContainText("1学期 1,000円");
-    await expect(irohaEntry.locator("a", { hasText: "2026irohakai.pdf" })).toBeVisible();
+    const sogoDirectory = page.locator(".schedule-directory").filter({ hasText: "Iroha-kai" });
+    await expect(sogoDirectory.locator(".schedule-directory__head")).toContainText("Day");
+    await expect(sogoDirectory.locator(".schedule-directory__head")).toContainText("Time");
+    const irohaEntry = sogoDirectory
+      .locator(".schedule-directory__entry")
+      .filter({ hasText: "Iroha-kai" })
+      .first();
+    await expect(irohaEntry.locator(".schedule-directory__name")).toContainText("いろは会");
+    await expect(irohaEntry.locator(".schedule-directory__name")).toContainText("Iroha-kai");
+    await expect(irohaEntry.locator(".schedule-directory__day")).toContainText("月");
+    await expect(irohaEntry.locator(".schedule-directory__day")).toContainText("Mon");
+    await expect(irohaEntry.locator(".schedule-directory__time")).toContainText("10:15〜11:45");
+    await expect(irohaEntry.locator(".schedule-directory__details")).toContainText("4階");
+    await expect(irohaEntry.locator(".schedule-directory__details")).toContainText("4F");
+    await expect(irohaEntry.locator(".schedule-directory__details")).toContainText("1学期 1,000円");
+    await expect(
+      irohaEntry.locator('.schedule-directory__actions a[title="2026irohakai.pdf"]'),
+    ).toBeVisible();
 
     await expect(page.locator("body")).not.toContainText("月 Mon\n月 Mon");
     await expect(page.locator("body")).toContainText("Potluck International");
     await expect(page.locator("body")).toContainText("TERAKOYA-SAN");
     await expect(page.locator("body")).toContainText("TSUBASA");
-    await expect(page.locator(".schedule-list a", { hasText: "photos.pdf" })).toBeVisible();
+    await expect(
+      sogoDirectory.locator('.schedule-directory__actions a[title="photos.pdf"]'),
+    ).toBeVisible();
     await expect(page.locator(".doc-list")).toContainText("2026年度予定表");
     await expect(page.locator(".doc-list")).toContainText("たのしいにほんご 写真");
     await expect(page.locator("body")).toContainText("施設が休館した場合は休講");
     await expect(page.locator("body")).toContainText("participation may be denied");
   });
 
-  test("/classes/foreign-languages matches cached class details and fees", async ({
+  test("/classes/conversation-salon schedule directory stacks consistently on mobile", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 390, height: 900 });
+    const response = await page.goto("/classes/conversation-salon");
+    expect(response?.status()).toBe(200);
+
+    const irohaEntry = page
+      .locator(".schedule-directory__entry")
+      .filter({ hasText: "Iroha-kai" })
+      .first();
+    const order = await irohaEntry.evaluate((node) =>
+      Array.from(
+        node.querySelectorAll(
+          ".schedule-directory__day, .schedule-directory__time, .schedule-directory__name, .schedule-directory__details, .schedule-directory__actions",
+        ),
+      ).map((child) => child.className),
+    );
+
+    const dayIndex = order.findIndex((value) => value.includes("schedule-directory__day"));
+    const timeIndex = order.findIndex((value) => value.includes("schedule-directory__time"));
+    const nameIndex = order.findIndex((value) => value.includes("schedule-directory__name"));
+    const detailsIndex = order.findIndex((value) => value.includes("schedule-directory__details"));
+    const actionsIndex = order.findIndex((value) => value.includes("schedule-directory__actions"));
+
+    expect(dayIndex).toBeGreaterThanOrEqual(0);
+    expect(dayIndex).toBeLessThan(timeIndex);
+    expect(timeIndex).toBeLessThan(nameIndex);
+    expect(nameIndex).toBeLessThan(detailsIndex);
+    expect(detailsIndex).toBeLessThan(actionsIndex);
+    await expect(
+      irohaEntry.locator('.schedule-directory__actions a[title="2026irohakai.pdf"]'),
+    ).toBeVisible();
+  });
+
+  test("/classes/foreign-languages matches cached class details and fees", async ({ page }) => {
     const response = await page.goto("/classes/foreign-languages");
     expect(response?.status()).toBe(200);
 

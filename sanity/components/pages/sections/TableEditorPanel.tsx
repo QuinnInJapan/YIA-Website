@@ -21,6 +21,9 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { DragHandleIcon } from "@sanity/icons";
 import { FilePickerPanel } from "../../shared/FilePickerPanel";
+import ComparisonTable from "@/components/ComparisonTable";
+import ScheduleDirectory from "@/components/ScheduleDirectory";
+import ScheduleListTable from "@/components/ScheduleListTable";
 import SectionTable from "@/components/SectionTable";
 import { i18nGet, i18nSet } from "../../shared/i18n";
 import {
@@ -105,6 +108,8 @@ function TablePreview({
   rows: TableRowDraft[];
 }) {
   const titleJa = i18nGet(title, "ja");
+  const previewColumns = columns.filter((c) => c.label != null) as unknown as TableColumn[];
+  const previewRows = rows as unknown as TableRow[];
   return (
     <div
       style={{
@@ -119,13 +124,24 @@ function TablePreview({
       {titleJa && (
         <div style={{ fontWeight: 700, marginBottom: 6, fontSize: fs.body }}>{titleJa}</div>
       )}
-      <SectionTable
-        columns={columns.filter((c) => c.label != null) as unknown as TableColumn[]}
-        rows={rows as unknown as TableRow[]}
-      />
-      {display === "scheduleList" && (
+      {display === "comparisonTable" ? (
+        <ComparisonTable columns={previewColumns} rows={previewRows} />
+      ) : display === "scheduleDirectory" ? (
+        <ScheduleDirectory columns={previewColumns} rows={previewRows} />
+      ) : display === "scheduleList" ? (
+        <ScheduleListTable columns={previewColumns} rows={previewRows} />
+      ) : (
+        <SectionTable columns={previewColumns} rows={previewRows} />
+      )}
+      {display !== "table" && (
         <div style={{ marginTop: 6, color: "#666", fontSize: fs.meta }}>
-          公開ページではスケジュールリスト形式で表示されます。
+          公開ページでは
+          {display === "comparisonTable"
+            ? "比較テーブル"
+            : display === "scheduleDirectory"
+              ? "スケジュールディレクトリ"
+              : "スケジュールリスト"}
+          形式で表示されます。編集する内容はテーブルの列・行・ファイルセルです。
         </div>
       )}
     </div>
@@ -972,7 +988,9 @@ export function TableEditorPanel({
             <div style={{ display: "flex", gap: 6 }}>
               {[
                 { value: "table" as const, label: "テーブル" },
+                { value: "comparisonTable" as const, label: "比較テーブル" },
                 { value: "scheduleList" as const, label: "スケジュールリスト" },
+                { value: "scheduleDirectory" as const, label: "スケジュールディレクトリ" },
               ].map((option) => (
                 <button
                   key={option.value}

@@ -3,7 +3,7 @@
 export type I18nArr = { _key: string; value: string }[];
 
 export type TableColumnType = "text" | "file";
-export type TableDisplayMode = "table" | "scheduleList";
+export type TableDisplayMode = "table" | "comparisonTable" | "scheduleList" | "scheduleDirectory";
 
 export interface TableColumnDraft {
   _key: string;

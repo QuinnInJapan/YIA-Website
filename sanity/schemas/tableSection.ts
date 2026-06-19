@@ -75,12 +75,13 @@ export default defineType({
         layout: "radio",
         list: [
           { title: "テーブル", value: "table" },
+          { title: "比較テーブル", value: "comparisonTable" },
           { title: "スケジュールリスト", value: "scheduleList" },
+          { title: "スケジュールディレクトリ", value: "scheduleDirectory" },
         ],
       },
       initialValue: "table",
-      description:
-        "列と行のデータはそのままに、公開ページでの表示形式だけを切り替えます。",
+      description: "列と行のデータはそのままに、公開ページでの表示形式だけを切り替えます。",
     }),
     defineField({
       name: "rows",
