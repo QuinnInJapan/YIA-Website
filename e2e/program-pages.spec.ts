@@ -64,6 +64,27 @@ test.describe("Program Pages", () => {
     await expect(page.locator(".data-table")).toContainText("Potluck International (Princess)");
   });
 
+  test("/classes/foreign-languages shows English class PDFs in the class table", async ({
+    page,
+  }) => {
+    const response = await page.goto("/classes/foreign-languages");
+    expect(response?.status()).toBe(200);
+
+    await expect(page.locator("body")).toContainText("English Class PDFs");
+    const pdfTable = page.locator(".data-table").filter({ hasText: "Travel English" });
+    await expect(pdfTable).toContainText("旅行英語");
+    await expect(pdfTable).toContainText("Travel English");
+    await expect(pdfTable).toContainText("英会話");
+    await expect(pdfTable).toContainText("English Conversation");
+    await expect(pdfTable).toContainText("夜間クラス");
+    await expect(pdfTable).toContainText("Night Class");
+
+    await expect(pdfTable.locator('a[href$=".pdf"]')).toHaveCount(3);
+    await expect(pdfTable.locator("a", { hasText: "旅行英語.pdf" })).toBeVisible();
+    await expect(pdfTable.locator("a", { hasText: "英会話.pdf" })).toBeVisible();
+    await expect(pdfTable.locator("a", { hasText: "夜間クラス.pdf" })).toBeVisible();
+  });
+
   test("all program page slugs return 200", async ({ page }) => {
     // Get all program page links from the nav dropdowns
     await page.goto("/");
