@@ -13,6 +13,8 @@ import type { BlogPost } from "@/lib/types";
 
 const PAGE_SIZE = 10;
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "ブログ | 横須賀国際交流協会",
   description:

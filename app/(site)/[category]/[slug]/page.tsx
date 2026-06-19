@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  getSiteData,
-  getPage,
-  getEnrichedNavigation,
-  shortId,
-} from "@/lib/data";
+import { getSiteData, getPage, getEnrichedNavigation, shortId } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import PageTemplate from "@/components/templates/PageTemplate";
 import { SolidHero } from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 import AccessSection from "@/components/AccessSection";
 import SiteFooter from "@/components/SiteFooter";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ category: string; slug: string }>;
@@ -30,7 +27,7 @@ export async function generateStaticParams() {
         categoryRef->{ _id },
         items[]{ pageRef->{ slug } }
       }
-    }`
+    }`,
   );
 
   const params: { category: string; slug: string }[] = [];
@@ -49,9 +46,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const data = await getSiteData();
 

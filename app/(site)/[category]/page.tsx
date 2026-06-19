@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  getSiteData,
-  getCategoryIndex,
-  getCategoryIds,
-  getCategoryIdsStatic,
-} from "@/lib/data";
+import { getSiteData, getCategoryIndex, getCategoryIds, getCategoryIdsStatic } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -18,10 +15,7 @@ interface PageProps {
 export async function generateStaticParams() {
   const categoryIds = await getCategoryIdsStatic();
 
-  return [
-    { category: "announcements" },
-    ...categoryIds.map((s) => ({ category: s })),
-  ];
+  return [{ category: "announcements" }, ...categoryIds.map((s) => ({ category: s }))];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

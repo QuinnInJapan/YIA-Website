@@ -11,6 +11,7 @@ import AccessSection from "@/components/AccessSection";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
 import HomepageActivityGrid from "./HomepageActivityGrid";
+import { resolveHomepageAboutContent } from "./homepage-about-content";
 
 /**
  * Variant C — identical to the current homepage except the event flyers
@@ -41,13 +42,7 @@ export default async function HomepageTemplateAbout() {
   const framedPhoto =
     aboutImage ?? (hp.activityGrid?.images?.[0] ? imageUrl(hp.activityGrid.images[0]) : null);
   const framedPhotoPos = aboutImage ? aboutImagePos : null;
-
-  const bodyJa =
-    about?.bodyJa ??
-    "横須賀国際交流協会（YIA）は、横須賀市における多文化共生社会の実現を目指し、国際交流・国際協力・在住外国人支援の三つの柱で活動しています。日本語教室、文化交流イベント、生活相談など、地域に根ざした多様なプログラムを通じて、すべての人が安心して暮らせるまちづくりに貢献しています。";
-  const bodyEn =
-    about?.bodyEn ??
-    "The Yokosuka International Association (YIA) works toward a multicultural society in Yokosuka through international exchange, cooperation, and support for foreign residents. From Japanese language classes and cultural events to daily-life consultations, our community-rooted programs help everyone feel at home.";
+  const aboutContent = resolveHomepageAboutContent(about);
 
   return (
     <HomepageEffects>
@@ -205,14 +200,14 @@ export default async function HomepageTemplateAbout() {
             )}
             <div className="mission-block">
               <h2 className="home-section__heading">
-                {about?.titleJa}
+                {aboutContent.titleJa}
                 <small lang="en" translate="no">
-                  {about?.titleEn}
+                  {aboutContent.titleEn}
                 </small>
               </h2>
-              <p className="mission-block__ja">{bodyJa}</p>
+              <p className="mission-block__ja">{aboutContent.bodyJa}</p>
               <p className="mission-block__en" lang="en" translate="no">
-                {bodyEn}
+                {aboutContent.bodyEn}
               </p>
               <Link href="/about" className="mission-block__link">
                 <span className="mission-block__link-ja">もっと詳しく</span>

@@ -2,6 +2,8 @@ import NextTopLoader from "nextjs-toploader";
 import SiteHeader from "@/components/SiteHeader";
 import SiteNavWrapper from "@/components/SiteNavWrapper";
 
+export const revalidate = 60;
+
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>

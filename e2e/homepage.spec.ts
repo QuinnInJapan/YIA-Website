@@ -33,6 +33,22 @@ test.describe("Homepage", () => {
     expect(count === 0 || count === 4).toBe(true);
   });
 
+  test("homepage navigation does not include the Japanese study and living handbook", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    await expect(page.locator(".site-nav")).not.toContainText("日本語学習・生活ハンドブック");
+    await expect(page.locator(".site-nav")).not.toContainText("Japanese Study & Living Handbook");
+  });
+
+  test("about mission block shows its bilingual heading", async ({ page }) => {
+    await page.goto("/");
+    const heading = page.locator(".home-section--mission .home-section__heading");
+    await expect(heading).toContainText("YIAについて");
+    await expect(heading).toContainText("About YIA");
+  });
+
   test("access/map section visible", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator(".access-block")).toBeVisible();

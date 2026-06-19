@@ -3,6 +3,8 @@ import { client } from "@/lib/sanity/client";
 
 const BASE_URL = "https://yia.or.jp";
 
+export const revalidate = 60;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch all routes in parallel
   const [nav, blogSlugs] = await Promise.all([

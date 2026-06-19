@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Sanity Content Updates
+
+Public Sanity-backed routes have a 60-second ISR fallback. For faster updates, configure a Sanity webhook to `POST /api/revalidate` with either `Authorization: Bearer <secret>` or an `x-sanity-revalidate-secret` header.
+
+Set the same secret in Vercel as `SANITY_REVALIDATE_SECRET`. The webhook revalidates the exact affected paths when possible, and falls back to the shared site layout for global documents like navigation.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

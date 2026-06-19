@@ -145,6 +145,7 @@ export default defineConfig({
             "homepage",
             "navigation",
             "homepageFeatured",
+            "homepageAbout",
             "sidebar",
             "category",
             "page",

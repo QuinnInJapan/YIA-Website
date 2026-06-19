@@ -14,6 +14,8 @@ import DocList from "@/components/DocList";
 import BilingualPortableText from "@/components/BilingualPortableText";
 import type { Announcement } from "@/lib/types";
 
+export const revalidate = 60;
+
 /** Try slug first, fall back to _id lookup */
 async function fetchAnnouncement(id: string): Promise<Announcement | null> {
   const bySlug = await fetchAnnouncementBySlug(id);

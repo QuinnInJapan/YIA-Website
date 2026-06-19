@@ -17,6 +17,8 @@ import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await fetchAllBlogSlugsStatic();
   return (slugs ?? []).map(({ slug }) => ({ slug }));

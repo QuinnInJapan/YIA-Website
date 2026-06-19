@@ -1,5 +1,13 @@
 import { cache } from "react";
 import { client } from "./client";
+import { SANITY_REVALIDATE_SECONDS, SANITY_SITE_DATA_TAG } from "./revalidation";
+
+const sanityFetchOptions = {
+  next: {
+    revalidate: SANITY_REVALIDATE_SECONDS,
+    tags: [SANITY_SITE_DATA_TAG],
+  },
+};
 
 // ── Timing helper ───────────────────────────────────────────────
 async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
@@ -13,7 +21,8 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
 // ── Full site data (single composite GROQ query) ────────────────
 export async function fetchSiteData() {
   return timed("fetchSiteData (1 query)", async () => {
-    return client.fetch(`{
+    return client.fetch(
+      `{
         "site": *[_type == "siteSettings"][0],
         "categories": *[_type == "category"] | order(_id asc),
         "navigation": *[_type == "navigation"][0]{
@@ -32,30 +41,37 @@ export async function fetchSiteData() {
         },
         // NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
         "pages": *[_type == "page"] | order(_id asc)
-      }`);
+      }`,
+      {},
+      sanityFetchOptions,
+    );
   });
 }
 
 // ── Homepage "About" variant (standalone singleton) ─────────────
 export async function fetchHomepageAbout() {
   return timed("homepageAbout", async () => {
-    return client.fetch(`*[_type == "homepageAbout"][0]`);
+    return client.fetch(
+      `*[_type == "homepageAbout" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`,
+      {},
+      sanityFetchOptions,
+    );
   });
 }
 
 // ── Single page fetch ───────────────────────────────────────────
 // NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
 export async function fetchPageBySlug(slug: string) {
-  return client.fetch(`*[_type == "page" && slug == $slug][0]`, { slug });
+  return client.fetch(`*[_type == "page" && slug == $slug][0]`, { slug }, sanityFetchOptions);
 }
 
 export async function fetchAllPageSlugs() {
-  return client.fetch(`*[_type == "page"]{ slug }`);
+  return client.fetch(`*[_type == "page"]{ slug }`, {}, sanityFetchOptions);
 }
 
 // Static version for generateStaticParams (no draftMode dependency)
 export function fetchAllPageSlugsStatic() {
-  return client.fetch<{ slug: string }[]>(`*[_type == "page"]{ slug }`);
+  return client.fetch<{ slug: string }[]>(`*[_type == "page"]{ slug }`, {}, sanityFetchOptions);
 }
 
 // ── Blog Posts ──────────────────────────────────────────────────
@@ -69,6 +85,7 @@ export async function fetchBlogPosts(page = 1, pageSize = 10) {
         "slug": slug.current
       }`,
       { start, end },
+      sanityFetchOptions,
     );
   });
 }
@@ -83,6 +100,7 @@ export const fetchBlogPostBySlug = cache(async (slug: string) => {
         relatedPosts[]-> { ..., "slug": slug.current }
       }`,
       { slug },
+      sanityFetchOptions,
     );
   });
 });
@@ -105,6 +123,7 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
         }
       }`,
       { publishedAt, slug },
+      sanityFetchOptions,
     )) as {
       prev: { title: { _key: string; value: string }[]; slug: string } | null;
       next: { title: { _key: string; value: string }[]; slug: string } | null;
@@ -114,7 +133,7 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
 
 export async function fetchBlogPostCount() {
   return timed("blogPostCount", async () => {
-    return client.fetch(`count(*[_type == "blogPost"])`);
+    return client.fetch(`count(*[_type == "blogPost"])`, {}, sanityFetchOptions);
   });
 }
 
@@ -129,13 +148,14 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
         "slug": slug.current
       }`,
       { start, end },
+      sanityFetchOptions,
     );
   });
 }
 
 export async function fetchAnnouncementCount() {
   return timed("announcementCount", async () => {
-    return client.fetch(`count(*[_type == "announcement"])`);
+    return client.fetch(`count(*[_type == "announcement"])`, {}, sanityFetchOptions);
   });
 }
 
@@ -144,6 +164,7 @@ export async function fetchAnnouncementById(id: string) {
     return client.fetch(
       `*[_type == "announcement" && _id == $id][0] { ..., "slug": slug.current }`,
       { id },
+      sanityFetchOptions,
     );
   });
 }
@@ -153,6 +174,7 @@ export async function fetchAnnouncementBySlug(slug: string) {
     return client.fetch(
       `*[_type == "announcement" && slug.current == $slug][0] { ..., "slug": slug.current }`,
       { slug },
+      sanityFetchOptions,
     );
   });
 }
@@ -160,9 +182,15 @@ export async function fetchAnnouncementBySlug(slug: string) {
 export function fetchAllAnnouncementIdsStatic() {
   return client.fetch<{ _id: string; slug?: string }[]>(
     `*[_type == "announcement"]{ _id, "slug": slug.current }`,
+    {},
+    sanityFetchOptions,
   );
 }
 
 export function fetchAllBlogSlugsStatic() {
-  return client.fetch<{ slug: string }[]>(`*[_type == "blogPost"]{ "slug": slug.current }`);
+  return client.fetch<{ slug: string }[]>(
+    `*[_type == "blogPost"]{ "slug": slug.current }`,
+    {},
+    sanityFetchOptions,
+  );
 }

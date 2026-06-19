@@ -9,6 +9,34 @@ test.describe("Program Pages", () => {
     expect(await sections.count()).toBeGreaterThanOrEqual(1);
   });
 
+  test("/services/counseling reflects the 2026 multilingual counseling updates", async ({
+    page,
+  }) => {
+    const response = await page.goto("/services/counseling");
+    expect(response?.status()).toBe(200);
+
+    await expect(page.locator("body")).toContainText("ネパール語");
+    await expect(page.locator("body")).toContainText("Nepali");
+    await expect(page.locator("body")).not.toContainText("スペイン語");
+    await expect(page.locator("body")).not.toContainText("Spanish");
+
+    const nepaliRow = page.locator(".data-table tbody tr").filter({ hasText: "ネパール語" });
+    await expect(nepaliRow).toContainText("木曜日");
+    await expect(nepaliRow).toContainText("10:00〜12:00");
+
+    await expect(page.locator(".doc-list")).toContainText("チラシ（R8）");
+  });
+
+  test("event pages show the 2026 dates", async ({ page }) => {
+    let response = await page.goto("/events/youth-forum");
+    expect(response?.status()).toBe(200);
+    await expect(page.locator("body")).toContainText("2026年8月2日（日）");
+
+    response = await page.goto("/events/kids");
+    expect(response?.status()).toBe(200);
+    await expect(page.locator("body")).toContainText("2026年10月18日（日）");
+  });
+
   test("/classes/conversation-salon loads with content", async ({ page }) => {
     const response = await page.goto("/classes/conversation-salon");
     expect(response?.status()).toBe(200);

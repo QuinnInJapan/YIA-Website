@@ -3,6 +3,8 @@ import { getSiteData } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import HomepageTemplateAbout from "@/components/templates/HomepageTemplateAbout";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();
   return {
