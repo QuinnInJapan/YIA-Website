@@ -1,6 +1,7 @@
 // sanity/schemas/tableSection.ts
 import { defineType, defineField } from "sanity";
 import { ThLargeIcon } from "@sanity/icons";
+import { tocLevelField } from "./fields/tocLevelField";
 
 export default defineType({
   name: "table",
@@ -22,6 +23,7 @@ export default defineType({
       type: "internationalizedArrayString",
       description: "セクションの見出し。省略可。",
     }),
+    tocLevelField,
     defineField({
       name: "columns",
       title: "列定義",

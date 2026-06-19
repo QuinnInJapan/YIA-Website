@@ -1,6 +1,7 @@
 // sanity/schemas/contentSection.ts
 import { defineType, defineField } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
+import { tocLevelField } from "./fields/tocLevelField";
 
 export default defineType({
   name: "content",
@@ -29,6 +30,7 @@ export default defineType({
       type: "internationalizedArrayString",
       description: "セクションの見出し。ページ上で太字の見出しとして表示されます。",
     }),
+    tocLevelField,
     defineField({
       name: "body",
       title: "本文",

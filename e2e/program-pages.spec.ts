@@ -89,6 +89,45 @@ test.describe("Program Pages", () => {
     await expect(page.locator("body")).toContainText("participation may be denied");
   });
 
+  test("/classes/conversation-salon table of contents nests subsections under landmarks", async ({
+    page,
+  }) => {
+    const response = await page.goto("/classes/conversation-salon");
+    expect(response?.status()).toBe(200);
+
+    const sectionLinks = page.locator(".ann-toc__link--section");
+    await expect(sectionLinks).toHaveCount(3);
+    await expect(sectionLinks.nth(0)).toContainText("Start Here");
+    await expect(sectionLinks.nth(1)).toContainText("Adult Classes");
+    await expect(sectionLinks.nth(2)).toContainText("Children and Student Classes");
+
+    const startGroup = page.locator(".ann-toc__group").filter({ hasText: "Start Here" });
+    await expect(startGroup.locator(".ann-toc__link--subsection")).toContainText(
+      "Application, Schedule & Map",
+    );
+
+    const adultGroup = page.locator(".ann-toc__group").filter({ hasText: "Adult Classes" });
+    await expect(adultGroup.locator(".ann-toc__link--subsection")).toHaveCount(2);
+    await expect(adultGroup.locator(".ann-toc__link--subsection").nth(0)).toContainText(
+      "Adult Classes at Sogo Fukushi Kaikan",
+    );
+    await expect(adultGroup.locator(".ann-toc__link--subsection").nth(1)).toContainText(
+      "Adult Classes at Other Locations",
+    );
+
+    const childrenGroup = page.locator(".ann-toc__group").filter({
+      hasText: "Children and Student Classes",
+    });
+    await expect(childrenGroup.locator(".ann-toc__link--subsection")).toContainText(
+      "Children and Student Class List",
+    );
+
+    await expect(page.locator("body")).toContainText("Application, Schedule & Map");
+    await expect(page.locator("body")).toContainText("Adult Classes at Sogo Fukushi Kaikan");
+    await expect(page.locator("body")).toContainText("Adult Classes at Other Locations");
+    await expect(page.locator("body")).toContainText("Children and Student Class List");
+  });
+
   test("/classes/conversation-salon schedule directory stacks consistently on mobile", async ({
     page,
   }) => {

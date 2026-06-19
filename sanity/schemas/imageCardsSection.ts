@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { EarthGlobeIcon } from "@sanity/icons";
+import { tocLevelField } from "./fields/tocLevelField";
 
 export default defineType({
   name: "imageCards",
@@ -21,6 +22,7 @@ export default defineType({
       type: "internationalizedArrayString",
       description: "セクションの見出し。省略可。",
     }),
+    tocLevelField,
     defineField({
       name: "items",
       title: "アイテム",

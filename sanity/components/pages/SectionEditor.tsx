@@ -1,5 +1,6 @@
 "use client";
 
+import { fs } from "@/sanity/lib/studioTokens";
 import { ContentSectionEditor } from "./sections/ContentSectionEditor";
 import { LinksSectionEditor } from "./sections/LinksSectionEditor";
 import { LabelTableSectionEditor } from "./sections/LabelTableSectionEditor";
@@ -9,6 +10,35 @@ import { GenericSectionEditor } from "./sections/GenericSectionEditor";
 import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
 import type { SectionItem } from "./types";
 import { useFocusContext } from "../shared/FocusContext";
+
+type TocLevel = "section" | "subsection" | "hidden";
+
+const TOC_SECTION_TYPES = new Set([
+  "content",
+  "links",
+  "table",
+  "labelTable",
+  "infoCards",
+  "imageCards",
+]);
+
+const TOC_LEVEL_OPTIONS: { value: TocLevel; label: string; description: string }[] = [
+  {
+    value: "section",
+    label: "大見出し",
+    description: "目次に通常項目として表示",
+  },
+  {
+    value: "subsection",
+    label: "小見出し",
+    description: "直前の大見出しの下に表示",
+  },
+  {
+    value: "hidden",
+    label: "本文のみ",
+    description: "ページには表示し、目次には表示しない",
+  },
+];
 
 export function SectionEditor({
   section,
@@ -71,7 +101,78 @@ export function SectionEditor({
           background: "var(--card-bg-color)",
         }}
       >
+        {TOC_SECTION_TYPES.has(section._type) && (
+          <TocLevelControl
+            value={(section.tocLevel as TocLevel | undefined) ?? "section"}
+            onChange={(value) => onUpdateField("tocLevel", value)}
+          />
+        )}
         {renderEditor()}
+      </div>
+    </div>
+  );
+}
+
+function TocLevelControl({
+  value,
+  onChange,
+}: {
+  value: TocLevel;
+  onChange: (value: TocLevel) => void;
+}) {
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div
+        style={{
+          fontSize: fs.label,
+          fontWeight: 600,
+          color: "var(--card-fg-color)",
+          marginBottom: 6,
+        }}
+      >
+        目次での扱い
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+        {TOC_LEVEL_OPTIONS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => onChange(option.value)}
+            style={{
+              padding: "6px 8px",
+              border: `1px solid ${
+                value === option.value
+                  ? "var(--card-focus-ring-color, #5b9cf6)"
+                  : "var(--card-border-color)"
+              }`,
+              borderRadius: 4,
+              background:
+                value === option.value ? "var(--card-focus-ring-color, #5b9cf6)" : "transparent",
+              color: value === option.value ? "#fff" : "var(--card-fg-color)",
+              cursor: "pointer",
+              textAlign: "left",
+              fontFamily: "inherit",
+            }}
+          >
+            <span style={{ display: "block", fontSize: fs.label, fontWeight: 700 }}>
+              {option.label}
+            </span>
+            <span
+              style={{
+                display: "block",
+                marginTop: 2,
+                fontSize: fs.meta,
+                color:
+                  value === option.value
+                    ? "rgba(255, 255, 255, 0.78)"
+                    : "var(--card-muted-fg-color)",
+                lineHeight: 1.35,
+              }}
+            >
+              {option.description}
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );

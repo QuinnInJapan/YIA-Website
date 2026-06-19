@@ -16,7 +16,10 @@ export interface TocEntry {
   id: string;
   text: string;
   subtext?: string;
+  level?: Exclude<TocLevel, "hidden">;
 }
+
+export type TocLevel = "section" | "subsection" | "hidden";
 
 export interface BilingualCell {
   ja: string;
@@ -135,7 +138,7 @@ type PageSectionShape =
   | InfoCardsSection
   | ImageCardsSection;
 
-export type PageSection = PageSectionShape & { _key: string };
+export type PageSection = PageSectionShape & { _key: string; tocLevel?: TocLevel };
 
 // ─── Document Types (top-level keys in site-data.json) ─────────────
 
