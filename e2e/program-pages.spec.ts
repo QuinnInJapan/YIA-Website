@@ -57,7 +57,7 @@ test.describe("Program Pages", () => {
       "いろは会\nIroha-kai",
       "月\nMon",
       "10:15〜11:45",
-      "ヴェルクよこすか",
+      "ヴェルクよこすか\nWerk Yokosuka",
     ]);
 
     await expect(page.locator(".data-table")).not.toContainText("月 Mon\n月 Mon");
