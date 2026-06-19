@@ -1,6 +1,7 @@
 import React from "react";
 import { ja, en } from "@/lib/i18n";
 import { fileUrl } from "@/lib/sanity/image";
+import { getDisplayCellContent } from "./table-cell-content";
 import type { TableColumn, TableRow, FileCellItem } from "@/lib/types";
 
 interface SectionTableProps {
@@ -72,17 +73,21 @@ export default function SectionTable({ columns, rows }: SectionTableProps) {
                   );
                 }
 
-                const cell = row.cells?.[j];
+                const cell = getDisplayCellContent(row.cells?.[j]);
                 return (
-                  <td key={col._key} data-type={col.type ?? "text"}>
-                    {cell ? (
+                  <td
+                    className={cell.isSingle ? "data-table__cell--single" : undefined}
+                    key={col._key}
+                    data-type={col.type ?? "text"}
+                  >
+                    {cell.primary ? (
                       <>
-                        {ja(cell)}
-                        {en(cell) && (
+                        <span className="data-table__primary">{cell.primary}</span>
+                        {cell.secondary && (
                           <>
                             <br />
                             <span className="data-table__en" lang="en" translate="no">
-                              {en(cell)}
+                              {cell.secondary}
                             </span>
                           </>
                         )}

@@ -43,6 +43,27 @@ test.describe("Program Pages", () => {
     await expect(page.locator(".page-hero__title, h1")).toBeVisible();
   });
 
+  test("/classes/conversation-salon schedule avoids duplicate bilingual cells", async ({ page }) => {
+    const response = await page.goto("/classes/conversation-salon");
+    expect(response?.status()).toBe(200);
+
+    const firstRowCells = await page
+      .locator(".data-table tbody tr")
+      .first()
+      .locator("td")
+      .evaluateAll((cells) => cells.map((cell) => (cell as HTMLElement).innerText));
+
+    expect(firstRowCells).toEqual([
+      "いろは会\nIroha-kai",
+      "月\nMon",
+      "10:15〜11:45",
+      "ヴェルクよこすか",
+    ]);
+
+    await expect(page.locator(".data-table")).not.toContainText("月 Mon\n月 Mon");
+    await expect(page.locator(".data-table")).toContainText("Potluck International (Princess)");
+  });
+
   test("all program page slugs return 200", async ({ page }) => {
     // Get all program page links from the nav dropdowns
     await page.goto("/");
