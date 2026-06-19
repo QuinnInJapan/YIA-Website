@@ -2155,7 +2155,11 @@ html:has(:target) {
 
 .schedule-directory__head,
 .schedule-directory__entry {
-  display: contents;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  column-gap: inherit;
+  align-items: start;
 }
 
 .schedule-directory__head > div,
@@ -2166,12 +2170,18 @@ html:has(:target) {
 .schedule-directory__actions {
   min-width: 0;
   padding: var(--spacing-sm) 0;
+}
+
+.schedule-directory__head {
+  border-bottom: 2px solid var(--color-navy);
+}
+
+.schedule-directory__entry {
   border-bottom: 1px solid var(--color-border);
 }
 
 .schedule-directory__head > div {
   padding: var(--spacing-xs) 0;
-  border-bottom: 2px solid var(--color-navy);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   font-weight: 700;
@@ -2242,6 +2252,7 @@ html:has(:target) {
 
 .schedule-directory__actions {
   display: flex;
+  align-items: flex-start;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--spacing-xs);

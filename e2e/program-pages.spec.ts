@@ -163,6 +163,44 @@ test.describe("Program Pages", () => {
     ).toBeVisible();
   });
 
+  test("/classes/conversation-salon schedule directory uses row-level separators", async ({
+    page,
+  }) => {
+    const response = await page.goto("/classes/conversation-salon");
+    expect(response?.status()).toBe(200);
+
+    const irohaEntry = page
+      .locator(".schedule-directory__entry")
+      .filter({ hasText: "Iroha-kai" })
+      .first();
+    await expect(irohaEntry).toBeVisible();
+
+    const metrics = await irohaEntry.evaluate((entry) => {
+      const day = entry.querySelector(".schedule-directory__day");
+      const header = document.querySelector(".schedule-directory__head");
+      const headerCell = header?.querySelector("div");
+      const pdf = entry.querySelector('.schedule-directory__actions a[title="2026irohakai.pdf"]');
+
+      return {
+        entryDisplay: getComputedStyle(entry).display,
+        entryBorderBottomWidth: getComputedStyle(entry).borderBottomWidth,
+        dayBorderBottomWidth: day ? getComputedStyle(day).borderBottomWidth : null,
+        headerBorderBottomWidth: header ? getComputedStyle(header).borderBottomWidth : null,
+        headerCellBorderBottomWidth: headerCell
+          ? getComputedStyle(headerCell).borderBottomWidth
+          : null,
+        pdfHeight: pdf?.getBoundingClientRect().height ?? 0,
+      };
+    });
+
+    expect(metrics.entryDisplay).toBe("grid");
+    expect(metrics.entryBorderBottomWidth).not.toBe("0px");
+    expect(metrics.dayBorderBottomWidth).toBe("0px");
+    expect(metrics.headerBorderBottomWidth).not.toBe("0px");
+    expect(metrics.headerCellBorderBottomWidth).toBe("0px");
+    expect(metrics.pdfHeight).toBeLessThan(44);
+  });
+
   test("/classes/foreign-languages matches cached class details and fees", async ({ page }) => {
     const response = await page.goto("/classes/foreign-languages");
     expect(response?.status()).toBe(200);
