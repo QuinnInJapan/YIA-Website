@@ -28,6 +28,7 @@ import {
   padRowsForNewColumn,
   trimRowsForRemovedColumn,
   type I18nArr,
+  type TableDisplayMode,
   type TableColumnDraft,
   type TableColumnType,
   type TableRowDraft,
@@ -94,10 +95,12 @@ const addRowButtonStyle: React.CSSProperties = {
 
 function TablePreview({
   title,
+  display,
   columns,
   rows,
 }: {
   title: I18nArr;
+  display: TableDisplayMode;
   columns: TableColumnDraft[];
   rows: TableRowDraft[];
 }) {
@@ -120,6 +123,11 @@ function TablePreview({
         columns={columns.filter((c) => c.label != null) as unknown as TableColumn[]}
         rows={rows as unknown as TableRow[]}
       />
+      {display === "scheduleList" && (
+        <div style={{ marginTop: 6, color: "#666", fontSize: fs.meta }}>
+          公開ページではスケジュールリスト形式で表示されます。
+        </div>
+      )}
     </div>
   );
 }
@@ -634,6 +642,9 @@ export function TableEditorPanel({
   onClose: () => void;
 }) {
   const [title, setTitle] = useState<I18nArr>((section.title as I18nArr) ?? emptyBilingual());
+  const [display, setDisplay] = useState<TableDisplayMode>(
+    (section.display as TableDisplayMode | undefined) ?? "table",
+  );
 
   const hasExistingColumns = !!(section.columns as TableColumnDraft[])?.length;
 
@@ -956,6 +967,43 @@ export function TableEditorPanel({
             </div>
           </div>
 
+          <div>
+            <div style={sectionLabelStyle}>表示形式</div>
+            <div style={{ display: "flex", gap: 6 }}>
+              {[
+                { value: "table" as const, label: "テーブル" },
+                { value: "scheduleList" as const, label: "スケジュールリスト" },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => {
+                    setDisplay(option.value);
+                    onUpdateField("display", option.value);
+                  }}
+                  style={{
+                    padding: "5px 10px",
+                    border: `1px solid ${
+                      display === option.value
+                        ? "var(--card-focus-ring-color, #5b9cf6)"
+                        : "var(--card-border-color)"
+                    }`,
+                    borderRadius: 4,
+                    background:
+                      display === option.value
+                        ? "var(--card-focus-ring-color, #5b9cf6)"
+                        : "transparent",
+                    color: display === option.value ? "#fff" : "var(--card-muted-fg-color)",
+                    fontSize: fs.meta,
+                    cursor: "pointer",
+                  }}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* ③ Column strip */}
           <div>
             <div style={sectionLabelStyle}>列定義</div>
@@ -1243,7 +1291,7 @@ export function TableEditorPanel({
                 overflow: "auto",
               }}
             >
-              <TablePreview title={title} columns={columns} rows={rows} />
+              <TablePreview title={title} display={display} columns={columns} rows={rows} />
             </div>
           </div>
         </div>

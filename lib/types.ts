@@ -84,6 +84,7 @@ export interface TableRow {
 export interface TableSection {
   _type: "table";
   title?: I18nString;
+  display?: "table" | "scheduleList";
   columns: TableColumn[];
   rows: TableRow[];
 }

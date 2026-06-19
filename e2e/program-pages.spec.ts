@@ -47,27 +47,26 @@ test.describe("Program Pages", () => {
     const response = await page.goto("/classes/conversation-salon");
     expect(response?.status()).toBe(200);
 
-    const irohaRowCells = await page
-      .locator(".data-table tbody tr")
-      .filter({ hasText: "Iroha-kai" })
-      .locator("td")
-      .evaluateAll((cells) => cells.map((cell) => (cell as HTMLElement).innerText));
+    await expect(page.locator(".schedule-list")).toBeVisible();
+    const irohaEntry = page.locator(".schedule-list__entry").filter({ hasText: "Iroha-kai" });
+    await expect(irohaEntry).toContainText("いろは会");
+    await expect(irohaEntry).toContainText("月");
+    await expect(irohaEntry).toContainText("Mon");
+    await expect(irohaEntry).toContainText("10:15〜11:45");
+    await expect(irohaEntry).toContainText("総合福祉会館 4階");
+    await expect(irohaEntry).toContainText("Sogo Fukushi Kaikan Hall 4F");
+    await expect(irohaEntry).toContainText("1学期 1,000円");
+    await expect(irohaEntry.locator("a", { hasText: "2026irohakai.pdf" })).toBeVisible();
 
-    expect(irohaRowCells).toEqual([
-      "いろは会\nIroha-kai",
-      "月\nMon",
-      "10:15〜11:45",
-      "総合福祉会館 4階\nSogo Fukushi Kaikan Hall 4F",
-      "1学期 1,000円\n1,000 yen/term",
-      "一般\nAdults",
-      "2026irohakai.pdf",
-    ]);
-
-    await expect(page.locator(".data-table")).not.toContainText("月 Mon\n月 Mon");
-    await expect(page.locator(".data-table")).toContainText("Potluck International");
-    await expect(page.locator(".data-table")).toContainText("TERAKOYA-SAN");
-    await expect(page.locator(".data-table")).toContainText("TSUBASA");
+    await expect(page.locator(".schedule-list")).not.toContainText("月 Mon\n月 Mon");
+    await expect(page.locator(".schedule-list")).toContainText("Potluck International");
+    await expect(page.locator(".schedule-list")).toContainText("TERAKOYA-SAN");
+    await expect(page.locator(".schedule-list")).toContainText("TSUBASA");
+    await expect(page.locator(".schedule-list").locator("a", { hasText: "photos.pdf" })).toBeVisible();
     await expect(page.locator(".doc-list")).toContainText("2026年度予定表");
+    await expect(page.locator(".doc-list")).toContainText("たのしいにほんご 写真");
+    await expect(page.locator("body")).toContainText("施設が休館した場合は授業は中止");
+    await expect(page.locator("body")).toContainText("Participation may be denied");
   });
 
   test("/classes/foreign-languages matches cached class details and fees", async ({

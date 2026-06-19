@@ -68,6 +68,21 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
+      name: "display",
+      title: "表示形式",
+      type: "string",
+      options: {
+        layout: "radio",
+        list: [
+          { title: "テーブル", value: "table" },
+          { title: "スケジュールリスト", value: "scheduleList" },
+        ],
+      },
+      initialValue: "table",
+      description:
+        "列と行のデータはそのままに、公開ページでの表示形式だけを切り替えます。",
+    }),
+    defineField({
       name: "rows",
       title: "行",
       type: "array",
