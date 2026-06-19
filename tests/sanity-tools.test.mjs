@@ -1,0 +1,139 @@
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import test from "node:test";
+import {
+  cell,
+  fail,
+  formatFailure,
+  i18n,
+  loadSanityEnv,
+  parseScriptFlags,
+  patchWithRevision,
+} from "../scripts/lib/sanity-tools.mjs";
+
+test("parseScriptFlags defaults to dry-run", () => {
+  assert.deepEqual(parseScriptFlags([]), { dryRun: true, live: false, args: [] });
+});
+
+test("parseScriptFlags requires --live for live mode", () => {
+  assert.deepEqual(parseScriptFlags(["--live", "page-id"]), {
+    dryRun: false,
+    live: true,
+    args: ["page-id"],
+  });
+});
+
+test("parseScriptFlags rejects conflicting modes", () => {
+  assert.throws(
+    () => parseScriptFlags(["--dry-run", "--live"]),
+    /Choose either --dry-run or --live/,
+  );
+});
+
+test("runSanityScript formats flag errors from the real template entrypoint", () => {
+  const result = spawnSync(
+    process.execPath,
+    ["scripts/sanity-script-template.mjs", "--dry-run", "--live"],
+    { encoding: "utf8" },
+  );
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /ERROR/);
+  assert.match(result.stderr, /WHY/);
+  assert.match(result.stderr, /FIX/);
+  assert.doesNotMatch(result.stderr, /SanityScriptError:/);
+});
+
+test("i18n and cell create standard bilingual arrays", () => {
+  assert.deepEqual(i18n("日本語", "English"), [
+    { _key: "ja", value: "日本語" },
+    { _key: "en", value: "English" },
+  ]);
+  assert.deepEqual(cell("10:00", "10:00"), i18n("10:00", "10:00"));
+});
+
+test("loadSanityEnv fails loudly when env is missing", () => {
+  assert.throws(
+    () => loadSanityEnv({ env: {}, envPath: "/tmp/does-not-matter.env", loadDotenv: false }),
+    /Missing required Sanity environment variables/,
+  );
+});
+
+test("formatFailure prints loud actionable sections", () => {
+  const error = fail("Missing page", { fix: "Check the page id", context: { id: "page-x" } });
+  const formatted = formatFailure(error);
+  assert.match(formatted, /ERROR/);
+  assert.match(formatted, /WHY/);
+  assert.match(formatted, /FIX/);
+  assert.match(formatted, /CONTEXT/);
+});
+
+test("formatFailure wraps unexpected errors with a default fix", () => {
+  const formatted = formatFailure(
+    Object.assign(new Error("network failed"), { code: "ENOTFOUND" }),
+  );
+  assert.match(formatted, /ERROR/);
+  assert.match(formatted, /WHY/);
+  assert.match(formatted, /FIX/);
+  assert.match(formatted, /CONTEXT/);
+  assert.match(formatted, /ENOTFOUND/);
+});
+
+test("patchWithRevision prevents writes in dry-run mode", async () => {
+  let called = false;
+  const client = {
+    patch() {
+      called = true;
+      throw new Error("should not write");
+    },
+  };
+
+  const result = await patchWithRevision(
+    client,
+    { _id: "page-test", _rev: "rev-1" },
+    { title: "new" },
+    { dryRun: true },
+  );
+
+  assert.equal(called, false);
+  assert.equal(result.dryRun, true);
+});
+
+test("patchWithRevision uses revision guards in live mode", async () => {
+  const calls = [];
+  const client = {
+    patch(id) {
+      calls.push(["patch", id]);
+      return {
+        ifRevisionId(rev) {
+          calls.push(["ifRevisionId", rev]);
+          return this;
+        },
+        set(value) {
+          calls.push(["set", value]);
+          return this;
+        },
+        async commit() {
+          calls.push(["commit"]);
+          return { ok: true };
+        },
+      };
+    },
+  };
+
+  await patchWithRevision(
+    client,
+    { _id: "page-test", _rev: "rev-1" },
+    { title: "new" },
+    {
+      dryRun: false,
+    },
+  );
+
+  assert.deepEqual(calls, [
+    ["patch", "page-test"],
+    ["ifRevisionId", "rev-1"],
+    ["set", { title: "new" }],
+    ["commit"],
+  ]);
+});

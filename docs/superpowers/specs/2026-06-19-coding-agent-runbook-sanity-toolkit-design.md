@@ -51,6 +51,7 @@ Use the combined approach:
 
 The runbook should cover:
 
+- **Maintenance contract:** any change touching package scripts, Sanity schema/client config, environment variables, Vercel deploy/revalidation behavior, Playwright setup, or command/escalation patterns must update the runbook/toolkit/template in the same change.
 - **Core rule:** prefer deterministic scripts and documented command forms over ad hoc shell work.
 - **Git:** inspect status first, stage only intended files, never revert unrelated user changes.
 - **Local dev:** use explicit host/port when needed: `./node_modules/.bin/next dev -H 127.0.0.1 -p 3000`.
@@ -65,6 +66,10 @@ The runbook should cover:
 ## Sanity Toolkit API
 
 `scripts/lib/sanity-tools.mjs` should export:
+
+- `runSanityScript({ name, description, requireEnv, handler })`
+  - The preferred entrypoint for new scripts.
+  - Parses flags, loads env, creates the client, catches errors, prints loud standardized failures, and exits nonzero.
 
 - `loadSanityEnv(options?)`
   - Loads `.env.local` with `dotenv`.
@@ -96,16 +101,22 @@ The runbook should cover:
   - Small generic helper for dry-run-aware mutation functions.
 
 - `getOrUploadFileAsset(client, filePath, options?)`
-  - Reuses an existing file asset by original filename when possible.
-  - Uploads only in live mode.
+  - Validates local file existence in dry-run and live modes.
+  - Reuses an existing file asset only when filename plus size or sha1 match deterministically.
+  - Fails loudly if multiple filename matches exist and no deterministic match is available.
+  - Uploads only in live mode; dry-run prints whether reuse or upload would happen.
 
 - `logSummary(summary)`
   - Consistent end-of-script summary output.
+
+- `fail(message, { cause, fix, context })`
+  - Creates a standardized loud failure with `ERROR`, `WHY`, `FIX`, and `CONTEXT` sections.
 
 ## Error Handling
 
 - Missing env vars should fail before any network request.
 - Missing target documents, sections, rows, or assets should throw explicit errors.
+- Error output should use the shared failure format so agents can quickly see what failed and how to recover.
 - Live mutations should use revision guards by default.
 - Dry runs should not upload files or patch documents.
 - Scripts should exit nonzero on failure.
@@ -116,6 +127,7 @@ After implementation:
 
 - Run `npm run typecheck`.
 - Run `node --test --experimental-strip-types tests/*.test.mjs`.
+- Add deterministic tests for flag parsing, missing env failure, i18n helpers, and dry-run mutation prevention.
 - Run a dry-run template invocation.
 - If a script is refactored, run it in dry-run mode.
 - Do not require network-only live Sanity mutation for verification unless explicitly requested.
