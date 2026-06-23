@@ -95,6 +95,8 @@ export interface TableSection {
 export interface LabelTableSection {
   _type: "labelTable";
   title?: I18nString;
+  /** Render as an emphasised bordered card (e.g. for ご利用案内 key-facts blocks). */
+  prominent?: boolean;
   rows: InfoRow[];
 }
 

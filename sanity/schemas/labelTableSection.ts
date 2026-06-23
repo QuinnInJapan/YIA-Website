@@ -22,6 +22,14 @@ export default defineType({
       type: "internationalizedArrayString",
       description: "テーブルの見出し。省略可。",
     }),
+    defineField({
+      name: "prominent",
+      title: "目立たせる（カード表示）",
+      type: "boolean",
+      description:
+        "オンにすると、このテーブルを枠線付きカードとして強調表示します。「ご利用案内」など、特に目立たせたい重要な案内に使用してください。",
+      initialValue: false,
+    }),
     tocLevelField,
     defineField({
       name: "rows",

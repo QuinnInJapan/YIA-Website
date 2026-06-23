@@ -11,6 +11,6 @@ export const labelTable: SectionHandler<LabelTableSection> = (s, ctx) => {
   if (s.title) {
     ctx.addTocHeader(ja(s.title), en(s.title));
   }
-  ctx.push(<InfoTable rows={s.rows} />);
+  ctx.push(<InfoTable rows={s.rows} prominent={s.prominent} />);
   ctx.flush();
 };
