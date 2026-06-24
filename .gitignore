@@ -17,6 +17,11 @@
 
 # caches
 scripts/pages-cache.json
+.codegraph/
+.codex/
+.superpowers/
+__pycache__/
+*.pyc
 
 # next.js
 /.next/
