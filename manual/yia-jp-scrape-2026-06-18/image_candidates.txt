@@ -1,0 +1,143 @@
+Likely text-bearing image candidates
+OCR note: tesseract is installed, but Japanese language data is not available; no OCR text was generated.
+
+- assets/pachiwaku.png__070f2af003.png | 5377x3561 | 25521126 bytes | filename_or_url_keyword, large_image, document_or_photo_size, non_photo_image_type
+  http://yia.jp/pachiwaku.png
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_282_29.jpg__987a025a2b.jpg | 4080x3072 | 8702360 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%282%29.jpg
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_283_29.jpg__9c7494d2cf.jpg | 4080x3072 | 6855832 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_281_29.JPG__1e40dc2ffd.jpg | 4896x3672 | 6159639 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%281%29.JPG
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_282_29.JPG__0b48f753cf.jpg | 4896x3672 | 5559167 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%282%29.JPG
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_285_29.jpg__5a1aeaaf49.jpg | 4080x3072 | 5007839 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_284_29.jpg__9f9d7769c6.jpg | 4080x3072 | 4336139 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__temaki.jpg__34a297dd6b.jpg | 4000x3000 | 2648053 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/temaki.jpg
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_285_29.JPG__c6d8366370.jpg | 4000x3000 | 1793226 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG
+- assets/top__09katsudo__kouryu__homestay__homestay-top__HORIZON_0001_BURST20230809180904430_COVER_20_28003_291.jpg__266c3a59f6.jpg | 3453x2229 | 1789036 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/HORIZON_0001_BURST20230809180904430_COVER%20%28003%291.jpg
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_286_29.JPG__fb872cb72f.jpg | 4000x3000 | 1373735 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG
+- assets/hptsurushibina.png__bdc88bba70.png | 1280x720 | 840335 bytes | filename_or_url_keyword, large_image, document_or_photo_size, non_photo_image_type
+  http://yia.jp/hptsurushibina.png
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_287_29.JPG__9b3bccbc32.jpg | 4000x3000 | 840102 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_281_29.JPG__725a31e996.jpg | 4000x3000 | 744287 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_282_29.jpg__6bb22e10f5.jpg | 2048x1536 | 625288 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_283_29.jpg__988dff08a1.jpg | 2048x1536 | 592941 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%283%29.jpg
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_283_29.jpg__ce5a032969.jpg | 2048x1536 | 592672 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_282_29.jpg__62febb6fd4.jpg | 2048x1536 | 514242 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%282%29.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_284_29.jpg__90158c4555.jpg | 2048x1536 | 491515 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%284%29.jpg
+- assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_284_29.jpg__6b692ae2a6.jpg | 2048x1536 | 480608 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_281_29.jpg__7c895cf394.jpg | 2048x1536 | 458002 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%281%29.jpg
+- assets/top__09katsudo__kouryu__cooking__cooking-top__DSC02966.jpg__63126bac10.jpg | 1280x960 | 381570 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC02966.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-syodou.jpg__65f90afe89.jpg | 1280x960 | 375762 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-syodou.jpg
+- assets/top__09katsudo__kouryu__cooking__cooking-top__DSC03414.jpg__76f1144b6f.jpg | 1280x960 | 374804 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC03414.jpg
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-stageskakkosoran.jpg__4ab14fc4dc.jpg | 1280x960 | 315918 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__jyougashima.jpg__239c88c632.jpg | 1477x1108 | 281213 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/jyougashima.jpg
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_281_29.jpg__568a79d4db.jpg | 1024x768 | 257808 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%281%29.jpg
+- assets/top__09katsudo__kouryu__cooking__cooking-top__nepal_20IMG_8834.jpg__ff865cb55f.jpg | 1024x576 | 228221 bytes | large_image
+  http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/nepal%20IMG_8834.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__game.jpg__da992e58d2.jpg | 1108x739 | 199541 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/game.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__hostdog.jpg__a48c641fa1.jpg | 1170x877 | 161057 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/hostdog.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_282_29.jpg__b6ae31ec26.jpg | 1024x768 | 152567 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg
+- assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_281_29.jpg__12a3cc42b0.jpg | 1024x768 | 149046 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg
+- assets/20160613map.JPG__fa54257f96.jpg | 913x713 | 117554 bytes | filename_or_url_keyword, large_image, document_or_photo_size
+  http://yia.jp/20160613map.JPG
+- assets/top__09katsudo__kouryu__homestay__homestay-top__369028266_1660410821129953_1480844403728008705_n.jpg__361cccbb95.jpg | 1280x795 | 116611 bytes | large_image, document_or_photo_size
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/369028266_1660410821129953_1480844403728008705_n.jpg
+- assets/Seikatsusoudan.png__ee203f729d.png | 246x342 | 25899 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/Seikatsusoudan.png
+- assets/top__09aboutyia__ennkaku__hpb_head014.jpg__7ecac197c2.jpg | 760x70 | 7149 bytes | filename_or_url_keyword, banner_shape
+  http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg
+- assets/top__09aboutyia__kaiinn__hpb_head014.jpg__27a569753e.jpg | 760x70 | 7149 bytes | filename_or_url_keyword, banner_shape
+  http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg
+- assets/top__09aboutyia__sanjo__hpb_head014.jpg__b6d0823c86.jpg | 760x70 | 7149 bytes | filename_or_url_keyword, banner_shape
+  http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg
+- assets/syokaibotton.gif__7ec62da7b2.gif | 162x55 | 6833 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/syokaibotton.gif
+- assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan2.jpg__a10bfa9861.jpg | 186x123 | 4503 bytes | filename_or_url_keyword
+  http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg
+- assets/other019.gif__82fe99bb04.gif | 153x82 | 4472 bytes | non_photo_image_type
+  http://yia.jp/other019.gif
+- assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__logo3.gif__30ccbe2288.gif | 138x54 | 3484 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif
+- assets/other022.gif__322d67bfa1.gif | 63x59 | 3026 bytes | non_photo_image_type
+  http://yia.jp/other022.gif
+- assets/logo22.gif__7a65497fdf.gif | 314x34 | 2872 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/logo22.gif
+- assets/line029.gif__8b3a6cf441.gif | 420x13 | 1519 bytes | non_photo_image_type
+  http://yia.jp/line029.gif
+- assets/bullet245.gif__a64026d242.gif | 32x32 | 534 bytes | non_photo_image_type
+  http://yia.jp/bullet245.gif
+- assets/bullet249.gif__720043852a.gif | 32x32 | 443 bytes | non_photo_image_type
+  http://yia.jp/bullet249.gif
+- assets/bullet248.gif__9d7f6cf71b.gif | 32x32 | 433 bytes | non_photo_image_type
+  http://yia.jp/bullet248.gif
+- assets/pinkbotton.gif__f0ff78530a.gif | 15x16 | 427 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/pinkbotton.gif
+- assets/bullet246.gif__048f3186f3.gif | 32x32 | 361 bytes | non_photo_image_type
+  http://yia.jp/bullet246.gif
+- assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__bullet213.gif__ab1d217922.gif | 32x32 | 356 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif
+- assets/bullet244.gif__b92aa4d17d.gif | 32x32 | 236 bytes | non_photo_image_type
+  http://yia.jp/bullet244.gif
+- assets/bullet302.gif__a67a6106ee.gif | 32x31 | 225 bytes | non_photo_image_type
+  http://yia.jp/bullet302.gif
+- assets/top__09aboutyia__c.gif__5ba44bf7ce.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09aboutyia/c.gif
+- assets/top__09aboutyia__ennkaku__c.gif__cc20ffd297.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09aboutyia/ennkaku/c.gif
+- assets/top__09aboutyia__kaiinn__c.gif__b840519255.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09aboutyia/kaiinn/c.gif
+- assets/top__09aboutyia__sanjo__c.gif__a1cfa9be8a.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09aboutyia/sanjo/c.gif
+- assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__c.gif__6a32892fcf.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif
+- assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__c.gif__809d566976.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/c.gif
+- assets/top__09katsudo__kehatsu__youthfo__youthfo-top__c.gif__f04e38fb7f.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/c.gif
+- assets/top__09katsudo__kokusaikoken__kokusaikoken-top__c.gif__f78dd4c276.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/c.gif
+- assets/top__09katsudo__kouryu__cooking__cooking-top__c.gif__8d617962e3.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/c.gif
+- assets/top__09katsudo__kouryu__homestay__homestay-top__c.gif__fed4605e78.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif
+- assets/top__09katsudo__kouryu__kids__kids-top__c.gif__93012f62be.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif
+- assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__c.gif__c5a8632c0b.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/c.gif
+- assets/top__09katsudo__shien__bosai__bosai-top__c.gif__df44c75ea0.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif
+- assets/top__09katsudo__shien__honyaku__honyaku-top__c.gif__7d3fc94942.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif
+- assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__c.gif__1780dff76f.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif
+- assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__c.gif__746b867dcb.gif | 1x1 | 43 bytes | filename_or_url_keyword, non_photo_image_type
+  http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif
+- assets/top__09katsudo__sistercity__sistercity-top__c.gif__afb1728327.gif | 1x1 | 43 bytes | non_photo_image_type
+  http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif

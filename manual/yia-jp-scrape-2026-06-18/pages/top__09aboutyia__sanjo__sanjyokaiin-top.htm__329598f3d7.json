@@ -1,0 +1,62 @@
+{
+  "url": "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+  "final_url": "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Wed, 11 Mar 2026 05:17:39 GMT",
+    "etag": "\"31c0-64cb8c1373395-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09aboutyia__sanjo__sanjyokaiin-top.htm__329598f3d7.html",
+  "text_path": "text/top__09aboutyia__sanjo__sanjyokaiin-top.htm__329598f3d7.txt",
+  "text_characters": 687,
+  "links": [
+    "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+    "http://yia.jp/",
+    "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm",
+    "http://yia.jp/top/09katsudonaiyo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+    "http://yia.jp/top/09katsudonaiyo/sistercity/sistercity-top/sistercity-top.htm"
+  ],
+  "assets": [
+    "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+    "http://yia.jp/top/09aboutyia/sanjo/c.gif"
+  ],
+  "images": [
+    {
+      "src": "hpb_head014.jpg",
+      "alt": "タイトルイメージ"
+    },
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

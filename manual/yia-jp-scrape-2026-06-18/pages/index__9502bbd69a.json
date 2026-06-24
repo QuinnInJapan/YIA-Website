@@ -1,0 +1,193 @@
+{
+  "url": "http://yia.jp/",
+  "final_url": "http://yia.jp/",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Mon, 15 Jun 2026 04:23:48 GMT",
+    "etag": "\"7ce8-654433168e6cd-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:40 GMT",
+    "connection": "close"
+  },
+  "title": "横須賀国際交流協会",
+  "meta": [
+    {
+      "key": "Pragma",
+      "content": "no-cache"
+    },
+    {
+      "key": "Cache-Control",
+      "content": "no-cache"
+    },
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=UTF-8"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/index__9502bbd69a.html",
+  "text_path": "text/index__9502bbd69a.txt",
+  "text_characters": 1773,
+  "links": [
+    "http://yia.jp/",
+    "http://yia.jp/teikan.pdf",
+    "http://yia.jp/2026yakuin.pdf",
+    "http://yia.jp/20261go.pdf",
+    "http://yia.jp/20262go.pdf",
+    "http://yia.jp/2026taishakutaisho.pdf",
+    "http://yia.jp/20263go.pdf",
+    "http://yia.jp/20264go.pdf",
+    "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+    "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+    "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+    "http://yia.jp/20160613map.JPG",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+    "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+    "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+    "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+    "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+    "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+    "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+    "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+    "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+    "http://yia.jp/2026language1.pdf",
+    "http://yia.jp/2026travel1.pdf",
+    "http://yia.jp/2026talk1.pdf",
+    "http://yia.jp/2026night1.pdf",
+    "http://yia.jp/2026chinese1.pdf",
+    "http://yia.jp/hptsurushibina.png",
+    "http://yia.jp/nihongo2014.pdf",
+    "http://yia.jp/katsudoiraisho2.xls"
+  ],
+  "assets": [
+    "http://yia.jp/i/c.gif",
+    "http://yia.jp/bullet244.gif",
+    "http://yia.jp/bullet249.gif",
+    "http://yia.jp/bullet248.gif",
+    "http://yia.jp/bullet245.gif",
+    "http://yia.jp/syokaibotton.gif",
+    "http://yia.jp/pinkbotton.gif",
+    "http://yia.jp/other022.gif",
+    "http://yia.jp/logo22.gif",
+    "http://yia.jp/other019.gif",
+    "http://yia.jp/line029.gif",
+    "http://yia.jp/pachiwaku.png",
+    "http://yia.jp/bullet246.gif",
+    "http://yia.jp/bullet302.gif",
+    "http://yia.jp/Seikatsusoudan.png"
+  ],
+  "images": [
+    {
+      "src": "i/\nc.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "bullet244.gif"
+    },
+    {
+      "src": "bullet249.gif"
+    },
+    {
+      "src": "bullet248.gif"
+    },
+    {
+      "src": "bullet245.gif"
+    },
+    {
+      "src": "syokaibotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "pinkbotton.gif"
+    },
+    {
+      "src": "other022.gif"
+    },
+    {
+      "src": "logo22.gif",
+      "alt": "今後のイベントスケジュール"
+    },
+    {
+      "src": "other019.gif"
+    },
+    {
+      "src": "line029.gif"
+    },
+    {
+      "src": "line029.gif"
+    },
+    {
+      "src": "pachiwaku.png"
+    },
+    {
+      "src": "line029.gif"
+    },
+    {
+      "src": "line029.gif"
+    },
+    {
+      "src": "bullet246.gif"
+    },
+    {
+      "src": "bullet302.gif"
+    },
+    {
+      "src": "Seikatsusoudan.png"
+    }
+  ]
+}

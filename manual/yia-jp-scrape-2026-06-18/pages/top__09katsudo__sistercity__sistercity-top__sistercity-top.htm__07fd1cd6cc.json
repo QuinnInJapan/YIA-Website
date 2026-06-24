@@ -1,0 +1,78 @@
+{
+  "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+  "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 21 Apr 2026 04:23:20 GMT",
+    "etag": "\"3d8f-64ff0c677e1ef-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:45 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__sistercity__sistercity-top__sistercity-top.htm__07fd1cd6cc.html",
+  "text_path": "text/top__09katsudo__sistercity__sistercity-top__sistercity-top.htm__07fd1cd6cc.txt",
+  "text_characters": 1006,
+  "links": [
+    "http://yia.jp/index.htm"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/haken%20gakusei.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/brest%20macaron1.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/medway%20teatime1.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20takoyaki1.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20shibuya1.jpg",
+    "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20nagano1.jpg"
+  ],
+  "images": [
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "haken gakusei.jpg"
+    },
+    {
+      "src": "brest macaron1.jpg"
+    },
+    {
+      "src": "fremantle (2).jpg"
+    },
+    {
+      "src": "corpus cristi.jpg"
+    },
+    {
+      "src": "medway teatime1.jpg"
+    },
+    {
+      "src": "hostfamily takoyaki1.jpg"
+    },
+    {
+      "src": "hostfamily shibuya1.jpg"
+    },
+    {
+      "src": "hostfamily nagano1.jpg"
+    }
+  ]
+}

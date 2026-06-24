@@ -1,0 +1,63 @@
+{
+  "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+  "final_url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 02 Apr 2024 04:44:16 GMT",
+    "etag": "\"3d9c-61515c226495f-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__shien__honyaku__honyaku-top__honyaku-top.html__62eb5ecc23.html",
+  "text_path": "text/top__09katsudo__shien__honyaku__honyaku-top__honyaku-top.txt__62eb5ecc23.txt",
+  "text_characters": 1302,
+  "links": [
+    "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+    "http://yia.jp/index.htm",
+    "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+    "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/katsudoiraisho.pdf"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif",
+    "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku.jpg"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "honyaku.jpg"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

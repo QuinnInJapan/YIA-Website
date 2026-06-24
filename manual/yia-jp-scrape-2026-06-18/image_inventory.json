@@ -1,0 +1,1576 @@
+[
+  {
+    "url": "http://yia.jp/pachiwaku.png",
+    "path": "assets/pachiwaku.png__070f2af003.png",
+    "bytes": 25521126,
+    "content_type": "image/png",
+    "width": 5377,
+    "height": 3561,
+    "mode": "RGBA",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "large_image",
+      "document_or_photo_size",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%282%29.jpg",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_282_29.jpg__987a025a2b.jpg",
+    "bytes": 8702360,
+    "content_type": "image/jpeg",
+    "width": 4080,
+    "height": 3072,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_283_29.jpg__9c7494d2cf.jpg",
+    "bytes": 6855832,
+    "content_type": "image/jpeg",
+    "width": 4080,
+    "height": 3072,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%281%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_281_29.JPG__1e40dc2ffd.jpg",
+    "bytes": 6159639,
+    "content_type": "image/jpeg",
+    "width": 4896,
+    "height": 3672,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%282%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_282_29.JPG__0b48f753cf.jpg",
+    "bytes": 5559167,
+    "content_type": "image/jpeg",
+    "width": 4896,
+    "height": 3672,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_285_29.jpg__5a1aeaaf49.jpg",
+    "bytes": 5007839,
+    "content_type": "image/jpeg",
+    "width": 4080,
+    "height": 3072,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_284_29.jpg__9f9d7769c6.jpg",
+    "bytes": 4336139,
+    "content_type": "image/jpeg",
+    "width": 4080,
+    "height": 3072,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/temaki.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__temaki.jpg__34a297dd6b.jpg",
+    "bytes": 2648053,
+    "content_type": "image/jpeg",
+    "width": 4000,
+    "height": 3000,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_285_29.JPG__c6d8366370.jpg",
+    "bytes": 1793226,
+    "content_type": "image/jpeg",
+    "width": 4000,
+    "height": 3000,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/HORIZON_0001_BURST20230809180904430_COVER%20%28003%291.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__HORIZON_0001_BURST20230809180904430_COVER_20_28003_291.jpg__266c3a59f6.jpg",
+    "bytes": 1789036,
+    "content_type": "image/jpeg",
+    "width": 3453,
+    "height": 2229,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_286_29.JPG__fb872cb72f.jpg",
+    "bytes": 1373735,
+    "content_type": "image/jpeg",
+    "width": 4000,
+    "height": 3000,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/hptsurushibina.png",
+    "path": "assets/hptsurushibina.png__bdc88bba70.png",
+    "bytes": 840335,
+    "content_type": "image/png",
+    "width": 1280,
+    "height": 720,
+    "mode": "RGB",
+    "referenced_by": [],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "large_image",
+      "document_or_photo_size",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_287_29.JPG__9b3bccbc32.jpg",
+    "bytes": 840102,
+    "content_type": "image/jpeg",
+    "width": 4000,
+    "height": 3000,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_281_29.JPG__725a31e996.jpg",
+    "bytes": 744287,
+    "content_type": "image/jpeg",
+    "width": 4000,
+    "height": 3000,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_282_29.jpg__6bb22e10f5.jpg",
+    "bytes": 625288,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%283%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_283_29.jpg__988dff08a1.jpg",
+    "bytes": 592941,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_283_29.jpg__ce5a032969.jpg",
+    "bytes": 592672,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%282%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_282_29.jpg__62febb6fd4.jpg",
+    "bytes": 514242,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%284%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_284_29.jpg__90158c4555.jpg",
+    "bytes": 491515,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_284_29.jpg__6b692ae2a6.jpg",
+    "bytes": 480608,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%281%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_281_29.jpg__7c895cf394.jpg",
+    "bytes": 458002,
+    "content_type": "image/jpeg",
+    "width": 2048,
+    "height": 1536,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC02966.jpg",
+    "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__DSC02966.jpg__63126bac10.jpg",
+    "bytes": 381570,
+    "content_type": "image/jpeg",
+    "width": 1280,
+    "height": 960,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-syodou.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-syodou.jpg__65f90afe89.jpg",
+    "bytes": 375762,
+    "content_type": "image/jpeg",
+    "width": 1280,
+    "height": 960,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC03414.jpg",
+    "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__DSC03414.jpg__76f1144b6f.jpg",
+    "bytes": 374804,
+    "content_type": "image/jpeg",
+    "width": 1280,
+    "height": 960,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-stageskakkosoran.jpg__4ab14fc4dc.jpg",
+    "bytes": 315918,
+    "content_type": "image/jpeg",
+    "width": 1280,
+    "height": 960,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/jyougashima.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__jyougashima.jpg__239c88c632.jpg",
+    "bytes": 281213,
+    "content_type": "image/jpeg",
+    "width": 1477,
+    "height": 1108,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%281%29.jpg",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_281_29.jpg__568a79d4db.jpg",
+    "bytes": 257808,
+    "content_type": "image/jpeg",
+    "width": 1024,
+    "height": 768,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/nepal%20IMG_8834.jpg",
+    "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__nepal_20IMG_8834.jpg__ff865cb55f.jpg",
+    "bytes": 228221,
+    "content_type": "image/jpeg",
+    "width": 1024,
+    "height": 576,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/game.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__game.jpg__da992e58d2.jpg",
+    "bytes": 199541,
+    "content_type": "image/jpeg",
+    "width": 1108,
+    "height": 739,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/hostdog.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__hostdog.jpg__a48c641fa1.jpg",
+    "bytes": 161057,
+    "content_type": "image/jpeg",
+    "width": 1170,
+    "height": 877,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_282_29.jpg__b6ae31ec26.jpg",
+    "bytes": 152567,
+    "content_type": "image/jpeg",
+    "width": 1024,
+    "height": 768,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_281_29.jpg__12a3cc42b0.jpg",
+    "bytes": 149046,
+    "content_type": "image/jpeg",
+    "width": 1024,
+    "height": 768,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/20160613map.JPG",
+    "path": "assets/20160613map.JPG__fa54257f96.jpg",
+    "bytes": 117554,
+    "content_type": "image/jpeg",
+    "width": 913,
+    "height": 713,
+    "mode": "RGB",
+    "referenced_by": [],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/369028266_1660410821129953_1480844403728008705_n.jpg",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__369028266_1660410821129953_1480844403728008705_n.jpg__361cccbb95.jpg",
+    "bytes": 116611,
+    "content_type": "image/jpeg",
+    "width": 1280,
+    "height": 795,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "large_image",
+      "document_or_photo_size"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/Seikatsusoudan.png",
+    "path": "assets/Seikatsusoudan.png__ee203f729d.png",
+    "bytes": 25899,
+    "content_type": "image/png",
+    "width": 246,
+    "height": 342,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg",
+    "path": "assets/top__09aboutyia__ennkaku__hpb_head014.jpg__7ecac197c2.jpg",
+    "bytes": 7149,
+    "content_type": "image/jpeg",
+    "width": 760,
+    "height": 70,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "banner_shape"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+    "path": "assets/top__09aboutyia__kaiinn__hpb_head014.jpg__27a569753e.jpg",
+    "bytes": 7149,
+    "content_type": "image/jpeg",
+    "width": 760,
+    "height": 70,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "banner_shape"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+    "path": "assets/top__09aboutyia__sanjo__hpb_head014.jpg__b6d0823c86.jpg",
+    "bytes": 7149,
+    "content_type": "image/jpeg",
+    "width": 760,
+    "height": 70,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "banner_shape"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/syokaibotton.gif",
+    "path": "assets/syokaibotton.gif__7ec62da7b2.gif",
+    "bytes": 6833,
+    "content_type": "image/gif",
+    "width": 162,
+    "height": 55,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg",
+    "path": "assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan2.jpg__a10bfa9861.jpg",
+    "bytes": 4503,
+    "content_type": "image/jpeg",
+    "width": 186,
+    "height": 123,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/other019.gif",
+    "path": "assets/other019.gif__82fe99bb04.gif",
+    "bytes": 4472,
+    "content_type": "image/gif",
+    "width": 153,
+    "height": 82,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+    "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__logo3.gif__30ccbe2288.gif",
+    "bytes": 3484,
+    "content_type": "image/gif",
+    "width": 138,
+    "height": 54,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/other022.gif",
+    "path": "assets/other022.gif__322d67bfa1.gif",
+    "bytes": 3026,
+    "content_type": "image/gif",
+    "width": 63,
+    "height": 59,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/logo22.gif",
+    "path": "assets/logo22.gif__7a65497fdf.gif",
+    "bytes": 2872,
+    "content_type": "image/gif",
+    "width": 314,
+    "height": 34,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/line029.gif",
+    "path": "assets/line029.gif__8b3a6cf441.gif",
+    "bytes": 1519,
+    "content_type": "image/gif",
+    "width": 420,
+    "height": 13,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet245.gif",
+    "path": "assets/bullet245.gif__a64026d242.gif",
+    "bytes": 534,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet249.gif",
+    "path": "assets/bullet249.gif__720043852a.gif",
+    "bytes": 443,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet248.gif",
+    "path": "assets/bullet248.gif__9d7f6cf71b.gif",
+    "bytes": 433,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/pinkbotton.gif",
+    "path": "assets/pinkbotton.gif__f0ff78530a.gif",
+    "bytes": 427,
+    "content_type": "image/gif",
+    "width": 15,
+    "height": 16,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet246.gif",
+    "path": "assets/bullet246.gif__048f3186f3.gif",
+    "bytes": 361,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif",
+    "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__bullet213.gif__ab1d217922.gif",
+    "bytes": 356,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet244.gif",
+    "path": "assets/bullet244.gif__b92aa4d17d.gif",
+    "bytes": 236,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 32,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/bullet302.gif",
+    "path": "assets/bullet302.gif__a67a6106ee.gif",
+    "bytes": 225,
+    "content_type": "image/gif",
+    "width": 32,
+    "height": 31,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/",
+      "http://yia.jp/index.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/c.gif",
+    "path": "assets/top__09aboutyia__c.gif__5ba44bf7ce.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/aboutyia-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/ennkaku/c.gif",
+    "path": "assets/top__09aboutyia__ennkaku__c.gif__cc20ffd297.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/kaiinn/c.gif",
+    "path": "assets/top__09aboutyia__kaiinn__c.gif__b840519255.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/sanjo/c.gif",
+    "path": "assets/top__09aboutyia__sanjo__c.gif__a1cfa9be8a.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif",
+    "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__c.gif__6a32892fcf.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/c.gif",
+    "path": "assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__c.gif__809d566976.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/c.gif",
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__c.gif__f04e38fb7f.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/c.gif",
+    "path": "assets/top__09katsudo__kokusaikoken__kokusaikoken-top__c.gif__f78dd4c276.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/c.gif",
+    "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__c.gif__8d617962e3.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+    "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__c.gif__fed4605e78.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+      "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif",
+    "path": "assets/top__09katsudo__kouryu__kids__kids-top__c.gif__93012f62be.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/c.gif",
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__c.gif__c5a8632c0b.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif",
+    "path": "assets/top__09katsudo__shien__bosai__bosai-top__c.gif__df44c75ea0.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif",
+    "path": "assets/top__09katsudo__shien__honyaku__honyaku-top__c.gif__7d3fc94942.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif",
+    "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__c.gif__1780dff76f.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif",
+    "path": "assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__c.gif__746b867dcb.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "filename_or_url_keyword",
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__c.gif__afb1728327.gif",
+    "bytes": 43,
+    "content_type": "image/gif",
+    "width": 1,
+    "height": 1,
+    "mode": "P",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": true,
+    "candidate_reasons": [
+      "non_photo_image_type"
+    ],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__fremantle_20_282_29.jpg__4a23ed1f8b.jpg",
+    "bytes": 49154,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 239,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/medway%20teatime1.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__medway_20teatime1.jpg__9b294bf351.jpg",
+    "bytes": 20464,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20shibuya1.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20shibuya1.jpg__07f582dfa6.jpg",
+    "bytes": 20454,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20takoyaki1.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20takoyaki1.jpg__7d36d9da88.jpg",
+    "bytes": 20224,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20nagano1.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20nagano1.jpg__6ff5399564.jpg",
+    "bytes": 20148,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__corpus_20cristi.jpg__838d86f866.jpg",
+    "bytes": 20098,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 211,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/haken%20gakusei.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__haken_20gakusei.jpg__ea5b564ba6.jpg",
+    "bytes": 20040,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/brest%20macaron1.jpg",
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__brest_20macaron1.jpg__1b99715538.jpg",
+    "bytes": 20025,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/IMG_2273.jpg",
+    "path": "assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__IMG_2273.jpg__aba9ab3626.jpg",
+    "bytes": 11503,
+    "content_type": "image/jpeg",
+    "width": 200,
+    "height": 150,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/coffeenew1.jpg",
+    "path": "assets/top__09katsudo__kokusaikoken__kokusaikoken-top__coffeenew1.jpg__17d36a68e6.jpg",
+    "bytes": 11268,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 213,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC.jpg",
+    "path": "assets/top__09katsudo__shien__bosai__bosai-top__ABC.jpg__d719d6a180.jpg",
+    "bytes": 10804,
+    "content_type": "image/jpeg",
+    "width": 160,
+    "height": 120,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC1.jpg",
+    "path": "assets/top__09katsudo__shien__bosai__bosai-top__ABC1.jpg__a1b6fa313f.jpg",
+    "bytes": 10684,
+    "content_type": "image/jpeg",
+    "width": 160,
+    "height": 120,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku.jpg",
+    "path": "assets/top__09katsudo__shien__honyaku__honyaku-top__honyaku.jpg__3540fd6f79.jpg",
+    "bytes": 9235,
+    "content_type": "image/jpeg",
+    "width": 320,
+    "height": 240,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/kaiinn/werk11.jpg",
+    "path": "assets/top__09aboutyia__kaiinn__werk11.jpg__7cd07aeecf.jpg",
+    "bytes": 6670,
+    "content_type": "image/jpeg",
+    "width": 186,
+    "height": 139,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09aboutyia/werk11.jpg",
+    "path": "assets/top__09aboutyia__werk11.jpg__0b68a9ce83.jpg",
+    "bytes": 6670,
+    "content_type": "image/jpeg",
+    "width": 186,
+    "height": 139,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09aboutyia/aboutyia-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  },
+  {
+    "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/DSCF0193.jpg",
+    "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__DSCF0193.jpg__6f716339ea.jpg",
+    "bytes": 3553,
+    "content_type": "image/jpeg",
+    "width": 160,
+    "height": 120,
+    "mode": "RGB",
+    "referenced_by": [
+      "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm"
+    ],
+    "likely_text_candidate": false,
+    "candidate_reasons": [],
+    "ocr_status": "not_run_tesseract_jpn_missing",
+    "inspect_error": null
+  }
+]

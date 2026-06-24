@@ -1,0 +1,75 @@
+{
+  "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+  "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Wed, 07 May 2025 01:39:05 GMT",
+    "etag": "\"157f-63481cc6bee5b-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__kouryu__kids__kids-top__kids-top.htm__0ea17542c2.html",
+  "text_path": "text/top__09katsudo__kouryu__kids__kids-top__kids-top.htm__0ea17542c2.txt",
+  "text_characters": 316,
+  "links": [
+    "http://yia.jp/index.htm",
+    "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG",
+    "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG"
+  ],
+  "images": [
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "Kids2024 (2).jpg"
+    },
+    {
+      "src": "Kids2024 (3).jpg"
+    },
+    {
+      "src": "Kids2024 (4).jpg"
+    },
+    {
+      "src": "Kids2024 (5).JPG"
+    },
+    {
+      "src": "Kids2024 (6).JPG"
+    },
+    {
+      "src": "Kids2024 (7).JPG"
+    },
+    {
+      "src": "Kids2024 (1).JPG"
+    }
+  ]
+}

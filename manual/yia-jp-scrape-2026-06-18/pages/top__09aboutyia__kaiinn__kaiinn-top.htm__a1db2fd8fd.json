@@ -1,0 +1,71 @@
+{
+  "url": "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+  "final_url": "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 02 Apr 2024 04:22:28 GMT",
+    "etag": "\"200e-61515743028a7-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09aboutyia__kaiinn__kaiinn-top.htm__a1db2fd8fd.html",
+  "text_path": "text/top__09aboutyia__kaiinn__kaiinn-top.htm__a1db2fd8fd.txt",
+  "text_characters": 952,
+  "links": [
+    "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+    "http://yia.jp/",
+    "http://yia.jp/top/09aboutyia/kaiinn/kaiin.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/danntai201610.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/2024sanjo.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/gakusei201610.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/gaikokujinn201610nihonngo.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiineigo.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/kaiintouroku%20eigo2.xls",
+    "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiin%20nihongo.xls"
+  ],
+  "assets": [
+    "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+    "http://yia.jp/top/09aboutyia/kaiinn/c.gif",
+    "http://yia.jp/top/09aboutyia/kaiinn/werk11.jpg"
+  ],
+  "images": [
+    {
+      "src": "hpb_head014.jpg",
+      "alt": "タイトルイメージ"
+    },
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "werk11.jpg"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

@@ -1,0 +1,2816 @@
+{
+  "start_url": "http://yia.jp/",
+  "allowed_hosts": [
+    "www.yia.jp",
+    "yia.jp"
+  ],
+  "generated_at": "2026-06-18T02:35:53Z",
+  "request_delay_seconds": 0.25,
+  "page_count": 20,
+  "asset_count": 125,
+  "error_count": 11,
+  "pages": [
+    {
+      "url": "http://yia.jp/",
+      "final_url": "http://yia.jp/",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Mon, 15 Jun 2026 04:23:48 GMT",
+        "etag": "\"7ce8-654433168e6cd-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:40 GMT",
+        "connection": "close"
+      },
+      "title": "横須賀国際交流協会",
+      "meta": [
+        {
+          "key": "Pragma",
+          "content": "no-cache"
+        },
+        {
+          "key": "Cache-Control",
+          "content": "no-cache"
+        },
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=UTF-8"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/index__9502bbd69a.html",
+      "text_path": "text/index__9502bbd69a.txt",
+      "text_characters": 1773,
+      "links": [
+        "http://yia.jp/",
+        "http://yia.jp/teikan.pdf",
+        "http://yia.jp/2026yakuin.pdf",
+        "http://yia.jp/20261go.pdf",
+        "http://yia.jp/20262go.pdf",
+        "http://yia.jp/2026taishakutaisho.pdf",
+        "http://yia.jp/20263go.pdf",
+        "http://yia.jp/20264go.pdf",
+        "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+        "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+        "http://yia.jp/20160613map.JPG",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+        "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+        "http://yia.jp/2026language1.pdf",
+        "http://yia.jp/2026travel1.pdf",
+        "http://yia.jp/2026talk1.pdf",
+        "http://yia.jp/2026night1.pdf",
+        "http://yia.jp/2026chinese1.pdf",
+        "http://yia.jp/hptsurushibina.png",
+        "http://yia.jp/nihongo2014.pdf",
+        "http://yia.jp/katsudoiraisho2.xls"
+      ],
+      "assets": [
+        "http://yia.jp/i/c.gif",
+        "http://yia.jp/bullet244.gif",
+        "http://yia.jp/bullet249.gif",
+        "http://yia.jp/bullet248.gif",
+        "http://yia.jp/bullet245.gif",
+        "http://yia.jp/syokaibotton.gif",
+        "http://yia.jp/pinkbotton.gif",
+        "http://yia.jp/other022.gif",
+        "http://yia.jp/logo22.gif",
+        "http://yia.jp/other019.gif",
+        "http://yia.jp/line029.gif",
+        "http://yia.jp/pachiwaku.png",
+        "http://yia.jp/bullet246.gif",
+        "http://yia.jp/bullet302.gif",
+        "http://yia.jp/Seikatsusoudan.png"
+      ],
+      "images": [
+        {
+          "src": "i/\nc.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "bullet244.gif"
+        },
+        {
+          "src": "bullet249.gif"
+        },
+        {
+          "src": "bullet248.gif"
+        },
+        {
+          "src": "bullet245.gif"
+        },
+        {
+          "src": "syokaibotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "other022.gif"
+        },
+        {
+          "src": "logo22.gif",
+          "alt": "今後のイベントスケジュール"
+        },
+        {
+          "src": "other019.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "pachiwaku.png"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "bullet246.gif"
+        },
+        {
+          "src": "bullet302.gif"
+        },
+        {
+          "src": "Seikatsusoudan.png"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+      "final_url": "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 31 Mar 2026 05:16:58 GMT",
+        "etag": "\"58ad-64e4b13971f9a-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:40 GMT",
+        "connection": "close"
+      },
+      "title": "横須賀国際交流協会とは",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09aboutyia__aboutyia-top.htm__0347793c3a.html",
+      "text_path": "text/top__09aboutyia__aboutyia-top.htm__0347793c3a.txt",
+      "text_characters": 2631,
+      "links": [
+        "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09aboutyia/c.gif",
+        "http://yia.jp/top/09aboutyia/werk11.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "werk11.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 04:22:28 GMT",
+        "etag": "\"200e-61515743028a7-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09aboutyia__kaiinn__kaiinn-top.htm__a1db2fd8fd.html",
+      "text_path": "text/top__09aboutyia__kaiinn__kaiinn-top.htm__a1db2fd8fd.txt",
+      "text_characters": 952,
+      "links": [
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+        "http://yia.jp/",
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiin.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/danntai201610.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/2024sanjo.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/gakusei201610.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/gaikokujinn201610nihonngo.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiineigo.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiintouroku%20eigo2.xls",
+        "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiin%20nihongo.xls"
+      ],
+      "assets": [
+        "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+        "http://yia.jp/top/09aboutyia/kaiinn/c.gif",
+        "http://yia.jp/top/09aboutyia/kaiinn/werk11.jpg"
+      ],
+      "images": [
+        {
+          "src": "hpb_head014.jpg",
+          "alt": "タイトルイメージ"
+        },
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "werk11.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+      "final_url": "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Wed, 11 Mar 2026 05:17:39 GMT",
+        "etag": "\"31c0-64cb8c1373395-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09aboutyia__sanjo__sanjyokaiin-top.htm__329598f3d7.html",
+      "text_path": "text/top__09aboutyia__sanjo__sanjyokaiin-top.htm__329598f3d7.txt",
+      "text_characters": 687,
+      "links": [
+        "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+        "http://yia.jp/",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/sistercity/sistercity-top/sistercity-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+        "http://yia.jp/top/09aboutyia/sanjo/c.gif"
+      ],
+      "images": [
+        {
+          "src": "hpb_head014.jpg",
+          "alt": "タイトルイメージ"
+        },
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 07 Apr 2026 00:26:10 GMT",
+        "etag": "\"376c-64ed3d47e46b0-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__kaiwasalon-top.html__37101e9b1c.html",
+      "text_path": "text/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__kaiwasalon-top.txt__37101e9b1c.txt",
+      "text_characters": 1395,
+      "links": [
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2014application.doc",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026kaiwasaron.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026map.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026irohakai.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026nihongoclub.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/tanoshii2024.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/photos.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026ybridge.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025terakoyasan.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/wakaba2025.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2023crossroads.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025sakurakai.pdf",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2024nihongoplaza.pdf"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Thu, 12 Feb 2026 06:46:22 GMT",
+        "etag": "\"2bb6-64a9ad8ca5bd3-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan-top.html__2b0122afea.html",
+      "text_path": "text/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan-top.txt__2b0122afea.txt",
+      "text_characters": 1479,
+      "links": [
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+        "http://yia.jp/",
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/Chirashi2025.pdf"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif",
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "seikatsusodan2.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 04:44:16 GMT",
+        "etag": "\"3d9c-61515c226495f-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__shien__honyaku__honyaku-top__honyaku-top.html__62eb5ecc23.html",
+      "text_path": "text/top__09katsudo__shien__honyaku__honyaku-top__honyaku-top.txt__62eb5ecc23.txt",
+      "text_characters": 1302,
+      "links": [
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/katsudoiraisho.pdf"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif",
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "honyaku.jpg"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 05:02:53 GMT",
+        "etag": "\"1957-6151604bf9df4-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__shien__bosai__bosai-top__bosai-top.html__b133b55634.html",
+      "text_path": "text/top__09katsudo__shien__bosai__bosai-top__bosai-top.txt__b133b55634.txt",
+      "text_characters": 455,
+      "links": [
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+        "http://yia.jp/index.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif",
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC.jpg",
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC1.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "ABC.jpg"
+        },
+        {
+          "src": "ABC1.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 10 Mar 2026 07:00:16 GMT",
+        "etag": "\"312c-64ca6125e98ec-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:43 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__gaikokugo-top.htm__04755fd631.html",
+      "text_path": "text/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__gaikokugo-top.htm__04755fd631.txt",
+      "text_characters": 1485,
+      "links": [
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026language1.pdf",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026chinese1.pdf",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026travel1.pdf",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026talk1.pdf",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026night1.pdf"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/DSCF0193.jpg",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "DSCF0193.jpg"
+        },
+        {
+          "src": "logo3.gif",
+          "alt": "NEWS "
+        },
+        {
+          "src": "bullet213.gif"
+        },
+        {
+          "src": "bullet213.gif"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 05:04:56 GMT",
+        "etag": "\"10f6-615160c10f1c9-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:43 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__kokusairikai-top.html__601def6d3a.html",
+      "text_path": "text/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__kokusairikai-top.txt__601def6d3a.txt",
+      "text_characters": 508,
+      "links": [
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm",
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-hokoku/21kokusairikai-hokoku.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/c.gif",
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/IMG_2273.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "IMG_2273.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Thu, 01 May 2025 01:45:47 GMT",
+        "etag": "\"1e9a-63409315ac8c2-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:43 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kehatsu__youthfo__youthfo-top__youthfo-top.html__234d48de76.html",
+      "text_path": "text/top__09katsudo__kehatsu__youthfo__youthfo-top__youthfo-top.txt__234d48de76.txt",
+      "text_characters": 725,
+      "links": [
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/c.gif",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%281%29.jpg",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%282%29.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "InternationalYouthForum1 (5).jpg"
+        },
+        {
+          "src": "InternationalYouthForum1 (3).jpg"
+        },
+        {
+          "src": "InternationalYouthForum1 (4).jpg"
+        },
+        {
+          "src": "InternationalYouthForum1 (1).jpg"
+        },
+        {
+          "src": "InternationalYouthForum1 (2).jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Mon, 15 Jun 2026 04:26:39 GMT",
+        "etag": "\"2938-654433b97a426-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__nihonbunka-top.htm__c7c591013d.html",
+      "text_path": "text/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__nihonbunka-top.htm__c7c591013d.txt",
+      "text_characters": 718,
+      "links": [
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/c.gif",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%281%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%282%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%283%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%284%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%281%29.JPG",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%282%29.JPG",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-syodou.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "2024.11 (1).jpg"
+        },
+        {
+          "src": "2024.11 (2).jpg"
+        },
+        {
+          "src": "2024.11 (3).jpg"
+        },
+        {
+          "src": "2024.11 (4).jpg"
+        },
+        {
+          "src": "2024 jfy(1).JPG"
+        },
+        {
+          "src": "2024 jfy(2).JPG"
+        },
+        {
+          "src": "s-syodou.jpg"
+        },
+        {
+          "src": "s-stageskakkosoran.jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Wed, 07 May 2025 01:39:05 GMT",
+        "etag": "\"157f-63481cc6bee5b-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kouryu__kids__kids-top__kids-top.htm__0ea17542c2.html",
+      "text_path": "text/top__09katsudo__kouryu__kids__kids-top__kids-top.htm__0ea17542c2.txt",
+      "text_characters": 316,
+      "links": [
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG"
+      ],
+      "images": [
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "Kids2024 (2).jpg"
+        },
+        {
+          "src": "Kids2024 (3).jpg"
+        },
+        {
+          "src": "Kids2024 (4).jpg"
+        },
+        {
+          "src": "Kids2024 (5).JPG"
+        },
+        {
+          "src": "Kids2024 (6).JPG"
+        },
+        {
+          "src": "Kids2024 (7).JPG"
+        },
+        {
+          "src": "Kids2024 (1).JPG"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Mon, 01 Jun 2026 05:44:42 GMT",
+        "etag": "\"20dd-6532ab0e9fd80-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kouryu__homestay__homestay-top__englishguide-top.htm__e057118fae.html",
+      "text_path": "text/top__09katsudo__kouryu__homestay__homestay-top__englishguide-top.htm__e057118fae.txt",
+      "text_characters": 770,
+      "links": [
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "2024.11 (1).jpg"
+        },
+        {
+          "src": "2024.11 (2).jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 05:16:25 GMT",
+        "etag": "\"148f-615163524c7ac-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kouryu__homestay__homestay-top__homestay-top.htm__044f184ae6.html",
+      "text_path": "text/top__09katsudo__kouryu__homestay__homestay-top__homestay-top.htm__044f184ae6.txt",
+      "text_characters": 695,
+      "links": [
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+        "http://yia.jp/index.htm",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/jyougashima.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/369028266_1660410821129953_1480844403728008705_n.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/HORIZON_0001_BURST20230809180904430_COVER%20%28003%291.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/hostdog.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/temaki.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/game.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "jyougashima.jpg"
+        },
+        {
+          "src": "369028266_1660410821129953_1480844403728008705_n.jpg"
+        },
+        {
+          "src": "HORIZON_0001_BURST20230809180904430_COVER (003)1.jpg"
+        },
+        {
+          "src": "hostdog.jpg"
+        },
+        {
+          "src": "temaki.jpg"
+        },
+        {
+          "src": "game.jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Mon, 20 Apr 2026 01:27:36 GMT",
+        "etag": "\"2c5d-64fda3423e1b3-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:45 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kouryu__cooking__cooking-top__cooking-top.htm__89f623d137.html",
+      "text_path": "text/top__09katsudo__kouryu__cooking__cooking-top__cooking-top.htm__89f623d137.txt",
+      "text_characters": 1070,
+      "links": [
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+        "http://yia.jp/index.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/c.gif",
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/nepal%20IMG_8834.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC02966.jpg",
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC03414.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "nepal IMG_8834.jpg"
+        },
+        {
+          "src": "DSC02966.jpg"
+        },
+        {
+          "src": "DSC03414.jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 02 Apr 2024 05:21:12 GMT",
+        "etag": "\"2459-615164648f71f-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:45 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__kokusaikoken__kokusaikoken-top__kokusaikoken-top.htm__cc38dc44f3.html",
+      "text_path": "text/top__09katsudo__kokusaikoken__kokusaikoken-top__kokusaikoken-top.htm__cc38dc44f3.txt",
+      "text_characters": 767,
+      "links": [
+        "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+        "http://yia.jp/index.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/c.gif",
+        "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/coffeenew1.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "coffeenew1.jpg"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 21 Apr 2026 04:23:20 GMT",
+        "etag": "\"3d8f-64ff0c677e1ef-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:45 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09katsudo__sistercity__sistercity-top__sistercity-top.htm__07fd1cd6cc.html",
+      "text_path": "text/top__09katsudo__sistercity__sistercity-top__sistercity-top.htm__07fd1cd6cc.txt",
+      "text_characters": 1006,
+      "links": [
+        "http://yia.jp/index.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/haken%20gakusei.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/brest%20macaron1.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/medway%20teatime1.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20takoyaki1.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20shibuya1.jpg",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20nagano1.jpg"
+      ],
+      "images": [
+        {
+          "src": "c.gif"
+        },
+        {
+          "src": "haken gakusei.jpg"
+        },
+        {
+          "src": "brest macaron1.jpg"
+        },
+        {
+          "src": "fremantle (2).jpg"
+        },
+        {
+          "src": "corpus cristi.jpg"
+        },
+        {
+          "src": "medway teatime1.jpg"
+        },
+        {
+          "src": "hostfamily takoyaki1.jpg"
+        },
+        {
+          "src": "hostfamily shibuya1.jpg"
+        },
+        {
+          "src": "hostfamily nagano1.jpg"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/index.htm",
+      "final_url": "http://yia.jp/index.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Mon, 15 Jun 2026 04:23:48 GMT",
+        "etag": "\"7ce8-654433168e6cd-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:46 GMT",
+        "connection": "close"
+      },
+      "title": "横須賀国際交流協会",
+      "meta": [
+        {
+          "key": "Pragma",
+          "content": "no-cache"
+        },
+        {
+          "key": "Cache-Control",
+          "content": "no-cache"
+        },
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=UTF-8"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/index.htm__d83ad6bb85.html",
+      "text_path": "text/index.htm__d83ad6bb85.txt",
+      "text_characters": 1773,
+      "links": [
+        "http://yia.jp/index.htm",
+        "http://yia.jp/teikan.pdf",
+        "http://yia.jp/2026yakuin.pdf",
+        "http://yia.jp/20261go.pdf",
+        "http://yia.jp/20262go.pdf",
+        "http://yia.jp/2026taishakutaisho.pdf",
+        "http://yia.jp/20263go.pdf",
+        "http://yia.jp/20264go.pdf",
+        "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+        "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm",
+        "http://yia.jp/20160613map.JPG",
+        "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+        "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+        "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku-top.html",
+        "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+        "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+        "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/kokusairikai-top.html",
+        "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/youthfo-top.html",
+        "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/nihonbunka-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/kids-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/homestay-top.htm",
+        "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/cooking-top.htm",
+        "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+        "http://yia.jp/top/09katsudo/sistercity/sistercity-top/sistercity-top.htm",
+        "http://yia.jp/2026language1.pdf",
+        "http://yia.jp/2026travel1.pdf",
+        "http://yia.jp/2026talk1.pdf",
+        "http://yia.jp/2026night1.pdf",
+        "http://yia.jp/2026chinese1.pdf",
+        "http://yia.jp/hptsurushibina.png",
+        "http://yia.jp/nihongo2014.pdf",
+        "http://yia.jp/katsudoiraisho2.xls"
+      ],
+      "assets": [
+        "http://yia.jp/i/c.gif",
+        "http://yia.jp/bullet244.gif",
+        "http://yia.jp/bullet249.gif",
+        "http://yia.jp/bullet248.gif",
+        "http://yia.jp/bullet245.gif",
+        "http://yia.jp/syokaibotton.gif",
+        "http://yia.jp/pinkbotton.gif",
+        "http://yia.jp/other022.gif",
+        "http://yia.jp/logo22.gif",
+        "http://yia.jp/other019.gif",
+        "http://yia.jp/line029.gif",
+        "http://yia.jp/pachiwaku.png",
+        "http://yia.jp/bullet246.gif",
+        "http://yia.jp/bullet302.gif",
+        "http://yia.jp/Seikatsusoudan.png"
+      ],
+      "images": [
+        {
+          "src": "i/\nc.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "bullet244.gif"
+        },
+        {
+          "src": "bullet249.gif"
+        },
+        {
+          "src": "bullet248.gif"
+        },
+        {
+          "src": "bullet245.gif"
+        },
+        {
+          "src": "syokaibotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "pinkbotton.gif"
+        },
+        {
+          "src": "other022.gif"
+        },
+        {
+          "src": "logo22.gif",
+          "alt": "今後のイベントスケジュール"
+        },
+        {
+          "src": "other019.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "pachiwaku.png"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "line029.gif"
+        },
+        {
+          "src": "bullet246.gif"
+        },
+        {
+          "src": "bullet302.gif"
+        },
+        {
+          "src": "Seikatsusoudan.png"
+        }
+      ]
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm",
+      "final_url": "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm",
+      "status": 200,
+      "content_type": "text/html",
+      "headers": {
+        "last-modified": "Tue, 05 Jan 2021 04:32:16 GMT",
+        "etag": "\"1e05-5b81fb0fb0f27-gzip\"",
+        "accept-ranges": "bytes",
+        "vary": "Accept-Encoding",
+        "content-type": "text/html",
+        "transfer-encoding": "chunked",
+        "date": "Thu, 18 Jun 2026 02:32:46 GMT",
+        "connection": "close"
+      },
+      "title": "",
+      "meta": [
+        {
+          "key": "Content-Type",
+          "content": "text/html; charset=Shift_JIS"
+        },
+        {
+          "key": "Content-Style-Type",
+          "content": "text/css"
+        },
+        {
+          "key": "GENERATOR",
+          "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+        }
+      ],
+      "headings": [],
+      "raw_html_path": "raw_html/top__09aboutyia__ennkaku__aboutyia-top.htm__6b36c0255d.html",
+      "text_path": "text/top__09aboutyia__ennkaku__aboutyia-top.htm__6b36c0255d.txt",
+      "text_characters": 594,
+      "links": [
+        "http://yia.jp/top/09aboutyia/ennkaku/aboutyia-top.htm",
+        "http://yia.jp/09japa-top.htm",
+        "http://yia.jp/top/09aboutyia/aboutyia-top.htm",
+        "http://yia.jp/top/09aboutyia/kaiinn/kaiinn-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+        "http://yia.jp/top/09katsudonaiyo/sistercity/sistercity-top/sistercity-top.htm",
+        "http://yia.jp/top/09aboutyia/sanjo/sanjyokaiin-top.htm"
+      ],
+      "assets": [
+        "http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg",
+        "http://yia.jp/top/09aboutyia/ennkaku/c.gif"
+      ],
+      "images": [
+        {
+          "src": "hpb_head014.jpg",
+          "alt": "タイトルイメージ"
+        },
+        {
+          "src": "c.gif",
+          "alt": "本文へジャンプ"
+        },
+        {
+          "src": "c.gif"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "url": "http://yia.jp/teikan.pdf",
+      "final_url": "http://yia.jp/teikan.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 152773,
+      "path": "assets/teikan.pdf__e1acd8975c.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026yakuin.pdf",
+      "final_url": "http://yia.jp/2026yakuin.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 22178,
+      "path": "assets/2026yakuin.pdf__c3768f4710.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/20261go.pdf",
+      "final_url": "http://yia.jp/20261go.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 147987,
+      "path": "assets/20261go.pdf__787de51656.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/20262go.pdf",
+      "final_url": "http://yia.jp/20262go.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 145263,
+      "path": "assets/20262go.pdf__b91c78de52.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026taishakutaisho.pdf",
+      "final_url": "http://yia.jp/2026taishakutaisho.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 62265,
+      "path": "assets/2026taishakutaisho.pdf__8917d627e5.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/20263go.pdf",
+      "final_url": "http://yia.jp/20263go.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 131980,
+      "path": "assets/20263go.pdf__aba851a813.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/20264go.pdf",
+      "final_url": "http://yia.jp/20264go.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 117238,
+      "path": "assets/20264go.pdf__fb8f1e9aa9.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/20160613map.JPG",
+      "final_url": "http://yia.jp/20160613map.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 117554,
+      "path": "assets/20160613map.JPG__fa54257f96.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/2026language1.pdf",
+      "final_url": "http://yia.jp/2026language1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 2862898,
+      "path": "assets/2026language1.pdf__6dfeccb1ce.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026travel1.pdf",
+      "final_url": "http://yia.jp/2026travel1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 636623,
+      "path": "assets/2026travel1.pdf__d1eb54435f.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026talk1.pdf",
+      "final_url": "http://yia.jp/2026talk1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 451636,
+      "path": "assets/2026talk1.pdf__61550db023.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026night1.pdf",
+      "final_url": "http://yia.jp/2026night1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 323069,
+      "path": "assets/2026night1.pdf__96c9d15415.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/2026chinese1.pdf",
+      "final_url": "http://yia.jp/2026chinese1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 335545,
+      "path": "assets/2026chinese1.pdf__59b6a7d7ad.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/hptsurushibina.png",
+      "final_url": "http://yia.jp/hptsurushibina.png",
+      "status": 200,
+      "content_type": "image/png",
+      "bytes": 840335,
+      "path": "assets/hptsurushibina.png__bdc88bba70.png",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/katsudoiraisho2.xls",
+      "final_url": "http://yia.jp/katsudoiraisho2.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 50688,
+      "path": "assets/katsudoiraisho2.xls__a9520070c1.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/bullet244.gif",
+      "final_url": "http://yia.jp/bullet244.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 236,
+      "path": "assets/bullet244.gif__b92aa4d17d.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/bullet249.gif",
+      "final_url": "http://yia.jp/bullet249.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 443,
+      "path": "assets/bullet249.gif__720043852a.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/bullet248.gif",
+      "final_url": "http://yia.jp/bullet248.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 433,
+      "path": "assets/bullet248.gif__9d7f6cf71b.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/bullet245.gif",
+      "final_url": "http://yia.jp/bullet245.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 534,
+      "path": "assets/bullet245.gif__a64026d242.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/syokaibotton.gif",
+      "final_url": "http://yia.jp/syokaibotton.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 6833,
+      "path": "assets/syokaibotton.gif__7ec62da7b2.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/pinkbotton.gif",
+      "final_url": "http://yia.jp/pinkbotton.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 427,
+      "path": "assets/pinkbotton.gif__f0ff78530a.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/other022.gif",
+      "final_url": "http://yia.jp/other022.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 3026,
+      "path": "assets/other022.gif__322d67bfa1.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/logo22.gif",
+      "final_url": "http://yia.jp/logo22.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 2872,
+      "path": "assets/logo22.gif__7a65497fdf.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/other019.gif",
+      "final_url": "http://yia.jp/other019.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 4472,
+      "path": "assets/other019.gif__82fe99bb04.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/line029.gif",
+      "final_url": "http://yia.jp/line029.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 1519,
+      "path": "assets/line029.gif__8b3a6cf441.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/pachiwaku.png",
+      "final_url": "http://yia.jp/pachiwaku.png",
+      "status": 200,
+      "content_type": "image/png",
+      "bytes": 25521126,
+      "path": "assets/pachiwaku.png__070f2af003.png",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/bullet246.gif",
+      "final_url": "http://yia.jp/bullet246.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 361,
+      "path": "assets/bullet246.gif__048f3186f3.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/bullet302.gif",
+      "final_url": "http://yia.jp/bullet302.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 225,
+      "path": "assets/bullet302.gif__a67a6106ee.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/Seikatsusoudan.png",
+      "final_url": "http://yia.jp/Seikatsusoudan.png",
+      "status": 200,
+      "content_type": "image/png",
+      "bytes": 25899,
+      "path": "assets/Seikatsusoudan.png__ee203f729d.png",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/c.gif",
+      "final_url": "http://yia.jp/top/09aboutyia/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09aboutyia__c.gif__5ba44bf7ce.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/werk11.jpg",
+      "final_url": "http://yia.jp/top/09aboutyia/werk11.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 6670,
+      "path": "assets/top__09aboutyia__werk11.jpg__0b68a9ce83.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/kaiin.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/kaiin.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 40960,
+      "path": "assets/top__09aboutyia__kaiinn__kaiin.xls__677bfb9f3e.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/danntai201610.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/danntai201610.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 32256,
+      "path": "assets/top__09aboutyia__kaiinn__danntai201610.xls__5fe284824d.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/2024sanjo.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/2024sanjo.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 36352,
+      "path": "assets/top__09aboutyia__kaiinn__2024sanjo.xls__f8dac26b96.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/gakusei201610.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/gakusei201610.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 40960,
+      "path": "assets/top__09aboutyia__kaiinn__gakusei201610.xls__5575629220.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/gaikokujinn201610nihonngo.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/gaikokujinn201610nihonngo.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 40960,
+      "path": "assets/top__09aboutyia__kaiinn__gaikokujinn201610nihonngo.xls__493965a6ea.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiineigo.xls",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiineigo.xls",
+      "status": 200,
+      "content_type": "application/vnd.ms-excel",
+      "bytes": 30720,
+      "path": "assets/top__09aboutyia__kaiinn__jyunkaiineigo.xls__48c37a7df0.xls",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 7149,
+      "path": "assets/top__09aboutyia__kaiinn__hpb_head014.jpg__27a569753e.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/c.gif",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09aboutyia__kaiinn__c.gif__b840519255.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/werk11.jpg",
+      "final_url": "http://yia.jp/top/09aboutyia/kaiinn/werk11.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 6670,
+      "path": "assets/top__09aboutyia__kaiinn__werk11.jpg__7cd07aeecf.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+      "final_url": "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 7149,
+      "path": "assets/top__09aboutyia__sanjo__hpb_head014.jpg__b6d0823c86.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/sanjo/c.gif",
+      "final_url": "http://yia.jp/top/09aboutyia/sanjo/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09aboutyia__sanjo__c.gif__a1cfa9be8a.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2014application.doc",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2014application.doc",
+      "status": 200,
+      "content_type": "application/msword",
+      "bytes": 87552,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2014application.doc__c379203d7a.doc",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026kaiwasaron.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026kaiwasaron.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 113966,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2026kaiwasaron.pdf__b48b9b8aa4.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026map.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026map.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 463889,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2026map.pdf__afd4a2f199.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026irohakai.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026irohakai.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 317507,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2026irohakai.pdf__ed2c2cf406.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026nihongoclub.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026nihongoclub.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 372352,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2026nihongoclub.pdf__85e75496cd.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/tanoshii2024.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/tanoshii2024.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 300703,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__tanoshii2024.pdf__7da43e096a.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/photos.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/photos.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 975309,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__photos.pdf__f00802f464.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026ybridge.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026ybridge.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 94275,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2026ybridge.pdf__9738503a48.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025terakoyasan.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025terakoyasan.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 427353,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2025terakoyasan.pdf__d7c97831c6.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/wakaba2025.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/wakaba2025.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 569003,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__wakaba2025.pdf__8c81c19105.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2023crossroads.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2023crossroads.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 195721,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2023crossroads.pdf__f6f9e1e764.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025sakurakai.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025sakurakai.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 403728,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2025sakurakai.pdf__1febd5f49d.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2024nihongoplaza.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2024nihongoplaza.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 292345,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__2024nihongoplaza.pdf__f605ff7785.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__c.gif__1780dff76f.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/Chirashi2025.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/Chirashi2025.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 541797,
+      "path": "assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__Chirashi2025.pdf__641a776918.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__c.gif__746b867dcb.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 4503,
+      "path": "assets/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan2.jpg__a10bfa9861.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/katsudoiraisho.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/katsudoiraisho.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 78603,
+      "path": "assets/top__09katsudo__shien__honyaku__honyaku-top__katsudoiraisho.pdf__896b8a3c45.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__shien__honyaku__honyaku-top__c.gif__7d3fc94942.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/shien/honyaku/honyaku-top/honyaku.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 9235,
+      "path": "assets/top__09katsudo__shien__honyaku__honyaku-top__honyaku.jpg__3540fd6f79.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__shien__bosai__bosai-top__c.gif__df44c75ea0.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 10804,
+      "path": "assets/top__09katsudo__shien__bosai__bosai-top__ABC.jpg__d719d6a180.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 10684,
+      "path": "assets/top__09katsudo__shien__bosai__bosai-top__ABC1.jpg__a1b6fa313f.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026language1.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026language1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 2862898,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__2026language1.pdf__fba00a722d.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026chinese1.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026chinese1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 335545,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__2026chinese1.pdf__a02cb524aa.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026travel1.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026travel1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 636623,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__2026travel1.pdf__fe48b87eec.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026talk1.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026talk1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 451636,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__2026talk1.pdf__5d6bfd907f.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026night1.pdf",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026night1.pdf",
+      "status": 200,
+      "content_type": "application/pdf",
+      "bytes": 323069,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__2026night1.pdf__43f54f4cfa.pdf",
+      "is_image": false
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__c.gif__6a32892fcf.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/DSCF0193.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/DSCF0193.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 3553,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__DSCF0193.jpg__6f716339ea.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 3484,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__logo3.gif__30ccbe2288.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 356,
+      "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__bullet213.gif__ab1d217922.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__c.gif__809d566976.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/IMG_2273.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/IMG_2273.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 11503,
+      "path": "assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__IMG_2273.jpg__aba9ab3626.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__c.gif__f04e38fb7f.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 5007839,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_285_29.jpg__5a1aeaaf49.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 6855832,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_283_29.jpg__9c7494d2cf.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 4336139,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_284_29.jpg__9f9d7769c6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%281%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%281%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 257808,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_281_29.jpg__568a79d4db.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%282%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%282%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 8702360,
+      "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_282_29.jpg__987a025a2b.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__c.gif__c5a8632c0b.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%281%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%281%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 458002,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_281_29.jpg__7c895cf394.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%282%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%282%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 514242,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_282_29.jpg__62febb6fd4.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%283%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%283%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 592941,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_283_29.jpg__988dff08a1.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%284%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024.11%20%284%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 491515,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024.11_20_284_29.jpg__90158c4555.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%281%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%281%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 6159639,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_281_29.JPG__1e40dc2ffd.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%282%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/2024%20jfy%282%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 5559167,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__2024_20jfy_282_29.JPG__0b48f753cf.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-syodou.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-syodou.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 375762,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-syodou.jpg__65f90afe89.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 315918,
+      "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-stageskakkosoran.jpg__4ab14fc4dc.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__c.gif__93012f62be.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%282%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 625288,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_282_29.jpg__6bb22e10f5.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%283%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 592672,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_283_29.jpg__ce5a032969.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%284%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 480608,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_284_29.jpg__6b692ae2a6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%285%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 1793226,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_285_29.JPG__c6d8366370.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%286%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 1373735,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_286_29.JPG__fb872cb72f.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%287%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 840102,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_287_29.JPG__9b3bccbc32.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/kids/kids-top/Kids2024%20%281%29.JPG",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 744287,
+      "path": "assets/top__09katsudo__kouryu__kids__kids-top__Kids2024_20_281_29.JPG__725a31e996.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__c.gif__fed4605e78.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 149046,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_281_29.jpg__12a3cc42b0.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 152567,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__2024.11_20_282_29.jpg__b6ae31ec26.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/jyougashima.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/jyougashima.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 281213,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__jyougashima.jpg__239c88c632.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/369028266_1660410821129953_1480844403728008705_n.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/369028266_1660410821129953_1480844403728008705_n.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 116611,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__369028266_1660410821129953_1480844403728008705_n.jpg__361cccbb95.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/HORIZON_0001_BURST20230809180904430_COVER%20%28003%291.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/HORIZON_0001_BURST20230809180904430_COVER%20%28003%291.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 1789036,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__HORIZON_0001_BURST20230809180904430_COVER_20_28003_291.jpg__266c3a59f6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/hostdog.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/hostdog.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 161057,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__hostdog.jpg__a48c641fa1.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/temaki.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/temaki.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 2648053,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__temaki.jpg__34a297dd6b.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/game.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/game.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 199541,
+      "path": "assets/top__09katsudo__kouryu__homestay__homestay-top__game.jpg__da992e58d2.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__c.gif__8d617962e3.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/nepal%20IMG_8834.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/nepal%20IMG_8834.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 228221,
+      "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__nepal_20IMG_8834.jpg__ff865cb55f.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC02966.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC02966.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 381570,
+      "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__DSC02966.jpg__63126bac10.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC03414.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kouryu/cooking/cooking-top/DSC03414.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 374804,
+      "path": "assets/top__09katsudo__kouryu__cooking__cooking-top__DSC03414.jpg__76f1144b6f.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__kokusaikoken__kokusaikoken-top__c.gif__f78dd4c276.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/coffeenew1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/kokusaikoken/kokusaikoken-top/coffeenew1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 11268,
+      "path": "assets/top__09katsudo__kokusaikoken__kokusaikoken-top__coffeenew1.jpg__17d36a68e6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__c.gif__afb1728327.gif",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/haken%20gakusei.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/haken%20gakusei.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20040,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__haken_20gakusei.jpg__ea5b564ba6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/brest%20macaron1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/brest%20macaron1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20025,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__brest_20macaron1.jpg__1b99715538.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 49154,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__fremantle_20_282_29.jpg__4a23ed1f8b.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20098,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__corpus_20cristi.jpg__838d86f866.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/medway%20teatime1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/medway%20teatime1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20464,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__medway_20teatime1.jpg__9b294bf351.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20takoyaki1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20takoyaki1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20224,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20takoyaki1.jpg__7d36d9da88.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20shibuya1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20shibuya1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20454,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20shibuya1.jpg__07f582dfa6.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20nagano1.jpg",
+      "final_url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/hostfamily%20nagano1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 20148,
+      "path": "assets/top__09katsudo__sistercity__sistercity-top__hostfamily_20nagano1.jpg__6ff5399564.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg",
+      "final_url": "http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg",
+      "status": 200,
+      "content_type": "image/jpeg",
+      "bytes": 7149,
+      "path": "assets/top__09aboutyia__ennkaku__hpb_head014.jpg__7ecac197c2.jpg",
+      "is_image": true
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/ennkaku/c.gif",
+      "final_url": "http://yia.jp/top/09aboutyia/ennkaku/c.gif",
+      "status": 200,
+      "content_type": "image/gif",
+      "bytes": 43,
+      "path": "assets/top__09aboutyia__ennkaku__c.gif__cc20ffd297.gif",
+      "is_image": true
+    }
+  ],
+  "errors": [
+    {
+      "url": "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09katsudonaiyo/kokusaikoken/kokusaikoken-top/kokusaikoken-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09katsudonaiyo/sistercity/sistercity-top/sistercity-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-hokoku/21kokusairikai-hokoku.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/09japa-top.htm",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/nihongo2014.pdf",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/i/c.gif",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/kaiintouroku%20eigo2.xls",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "http://yia.jp/top/09aboutyia/kaiinn/jyunkaiin%20nihongo.xls",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "limits": {
+    "max_pages": 2000,
+    "max_assets": 5000
+  }
+}

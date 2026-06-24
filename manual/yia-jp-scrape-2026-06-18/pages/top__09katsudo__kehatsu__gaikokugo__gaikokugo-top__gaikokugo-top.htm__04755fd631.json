@@ -1,0 +1,79 @@
+{
+  "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+  "final_url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 10 Mar 2026 07:00:16 GMT",
+    "etag": "\"312c-64ca6125e98ec-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:43 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__gaikokugo-top.htm__04755fd631.html",
+  "text_path": "text/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__gaikokugo-top.htm__04755fd631.txt",
+  "text_characters": 1485,
+  "links": [
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/gaikokugo-top.htm",
+    "http://yia.jp/index.htm",
+    "http://yia.jp/top/09katsudonaiyo/keihatsu/keihatsu-top/keihatsu-top.htm",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026language1.pdf",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026chinese1.pdf",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026travel1.pdf",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026talk1.pdf",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/2026night1.pdf"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/c.gif",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/DSCF0193.jpg",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+    "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/bullet213.gif"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "DSCF0193.jpg"
+    },
+    {
+      "src": "logo3.gif",
+      "alt": "NEWS "
+    },
+    {
+      "src": "bullet213.gif"
+    },
+    {
+      "src": "bullet213.gif"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

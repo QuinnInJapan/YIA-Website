@@ -1,0 +1,154 @@
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps12 \o\ad(\s\up 13(にほんご),日本語)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps12 \o\ad(\s\up 13(かいわ),会話)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps12 \o\ad(\s\up 13(さろん),サロン)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps12 \o\ad(\s\up 13(もうしこみしょ),申込書) Japanese Conversation Class Application Form　
+일본어 회화 살롱 신청서　日語会話教室申请表　Formulario de Suscripción para las Clases de Japonés
+               Formulário de inscrição para as Classes de Japonês
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(な),名)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(まえ),前) Name 이 름 
+姓 名 Nombre 　Nome
+
+拼 音
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(せい),性)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(べつ),別) Gender
+성 별 性別 Sexo
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(おとこ),男)・EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(おんな),女)　 M・F 　남・여
+Hombre・Mujer 
+homem・ mulher
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(じゅう),住)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(しょ),所) Address
+주　소
+ Dirección 　 Endereço
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps10 \o\ad(\s\up 9(でん),電)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps10 \o\ad(\s\up 9(わ),話) 　Tel.　전 화
+电话　Teléfono　 tel.
+
+E-mail
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(こく),国)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(せき),籍) Nationality
+국 적 Nationalidad
+nacionalidade
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(ぼこくご),母国語)　Native Language
+모 국 어 会何种語言
+Idiomas que comprende Ud.　Idioma nativo
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(せいねん),生年)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(がっぴ),月日) 
+Date of Birth
+생년월일
+Fecha de Nacimiento
+Data de nascimento
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(しょく),職)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(ぎょう),業) Occupation
+직 업 职业 Ocupación
+Ocupação
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(きぼう),希望)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(くらす),クラス) Class
+희망하는 반
+希望参加时间 Clase
+classe
+
+いつEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(にほん),日本)にEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(き),来)ましたか？ How long have you been in Japan？
+언제 일본에 오셨습니까? 　什么时候来日本的？
+¿Cuánto tiempo ha estado en Japón？
+Há quanto tempo esta no Japão?
+
+いつまでEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(にほん),日本)にいますか？ When will you leave Japan？
+언제까지 일본에 계십니까? 　在日本居住至何时?
+¿Cuánto tiempo ha estado en Japón？
+Há quanto tempo reside no Japão?
+
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(にほんご),日本語)をEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(べんきょう),勉強)したことがありますか？
+Have you ever studied Japanese？
+일본어를 공부한 적이 있습니까?　 有没有学过日语?
+¿Ha estudiado japonés hasta ahora？
+Já estudou japonês alguma vez?
+
+はい・いいえ   Yes・No   네・아뇨
+有・没有 　Sí・No　　Sim . não
+
+
+　　　→
+「はい」のEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(ひと),人)  If Yes 「네」라고 대답하신 분
+回答「有」的人  Sí (sim)
+
+どこでEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(べんきょう),勉強)しましたか？ 
+Where did you study?
+어디서 공부했습니까? 　在何地学的？
+¿Dónde ha estudiado？　 Onde estudou?
+
+ひらがながEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(よ),読)めますか？　 Can you read Hiragana？
+히라가나를 읽을 수 있습니까?　 能看懂平假名吗?
+¿Puede leer Hiragana？　 Consegue ler Hiragana?
+はい・いいえ   Yes・No   네・아뇨  
+ 能・不能 　Sí・No 　 sim . não
+ひらがながEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(か),書)けますか？　 Can you write Hiragana？
+히라가나를 쓸 수 있습니까?　 能写平假名吗？
+¿Puede escribir Hiragana？　 Consegue escrever Hiragana?
+はい・いいえ   Yes・No   네・아뇨  
+ 能・不能 　Sí・No 　 sim . não
+カタカナがEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(よ),読)めますか？　 Can you read Katakana？
+가타카나를 읽을 수 있습니까?　 能看懂片假名吗？
+¿Puede leer Katakana？ 　Consegue ler Katakana?
+はい・いいえ   Yes・No   네・아뇨  
+ 能・不能 　Sí・No　  sim . não
+カタカナがEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(か),書)けますか？　 Can you write Katakana？
+가타카나를 쓸 수 있습니까? 　能写片假名吗？
+¿Puede escribir Katakana？ 　Consegue ler Katakana?
+はい・いいえ   Yes・No   네・아뇨 
+  能・不能 　Sí・No 　 sim . não
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(かんじ),漢字)がEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(よ),読)めますか？ 　Can you read Kanji？
+한자를 읽을 수 있습니까?　 能看懂汉字吗　¿Puede leer Kanji？
+Consegue ler Kanji?
+はい・いいえ   Yes・No   네・아뇨  
+ 能・不能 　Sí・No  sim . não
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(かんじ),漢字)がEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(か),書)けますか？　 Can you write Kanji？
+한자를 쓸 수 있습니까?　 能写汉字吗？　¿Puede escribir Kanji？
+Consegue escrever Kanji? 
+はい・いいえ   Yes・No   네・아뇨  
+ 能・不能 　Sí・No  sim . não
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(にほんご),日本語)がEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(はな),話)せますか？ 　Can you speak Japanese
+일본어를 말할 수 있습니까?？ 　能用日语会话？
+¿Puede hablar japonés？ 
+Consegue conversar em japonês?
+1まったくEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(はな),話)せない     2EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9( か　   もの),買い物)ができる
+3EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(にちじょう),日常)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(かいわ),会話)にEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(こま),困)らない   4そのEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(た),他)
+１None ２I can use Japanese while shopping.３Other general conversation ４Other
+１전혀 못함 ２혼자서 쇼핑을 할 수 있을 정도　３일상 회화에 곤란을 느끼지 않음 ４기타
+１一点儿也不会 ２能外出购物 ３日常会話没问题 
+４其他
+１No puedo hablar nada. ２Puedo hacer la compra. ３No tengo ninguna dificultad en la conversación cotidiana. 4Otro
+1 – Não falo nada  2 – Consigo fazer compras  3 – Não tenho dificuldades para conversação cotidiana  4 - Outros
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(とうきょうかい),当協会)からのEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(　し),お知)らせをEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(めーる),メール)でおEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(おく),送)りしてもよろしいですか？
+Can we send you some information about YIA activities？
+당협회로부터 정보 발신메일을 보내도 괜찮습니까? 本协会的各种活动内容可发送伊妹儿给你吗？
+¿Le importa que le mandemos las informaciones sobre las actividades de nuestra Asociación？ 
+S e importa se enviarmos informações sobre nossas atividades da Associação YIA?
+はい・いいえ 
+Yes・No  네・아뇨
+可・否  Sí・No
+Sim . não
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps9 \o\ad(\s\up 8(じしん),地震)などのとき、EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps9 \o\ad(\s\up 8(しやくしょ),市役所)からEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps9 \o\ad(\s\up 8(め),メ)ーEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps9 \o\ad(\s\up 8(る),ル)をEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps9 \o\ad(\s\up 8(おくって),送って)もよいですか？
+Can we offer your information to the Yokosuka City Office, Multilingual Emergency and Disaster Support Center in the case of disaster for rescue operation?
+재해시 원활하고 더욱 적절한 대응을 도모하기 위해 요코스카시, 재해 다언어 지원센터에 당신의 정보를 제공해도 좋습니까?
+发生灾害时,为了适当且顺利的做出对应，可以向横须贺市灾害多种语言支援中心提供你的个人情况吗？
+¿Le importa que proporcionemos su información a la ciudad de Yokosuka y Centro de multilingue apoyo en caso de desastre con el fin de la operación de rescate solo cuando ocurran los desastres?
+A Prefeitura de Yokosuka pode enviar informações através de mensagens eletrônicas (e-mail) sobre desastres naturais, tais como terremotos, ciclones, inundações, etc.?
+はい・いいえ 
+Yes・No 
+ 네・아뇨
+可・否 
+ Sí・No
+Sim . não
+EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(きにゅう),記入)していただいたEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(こじん),個人)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(じょうほう),情報)を横須賀市とEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(とうきょうかい),当協会)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(かつどう),活動)EQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(いがい),以外)のEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(もくてき),目的)でEQ \* jc2 \* "Font:HG丸ｺﾞｼｯｸM-PRO" \* hps8 \o\ad(\s\up 9(しよう),使用)することはありません。
+We don’t utilize this information to any other occasions except for Yokosuka City & YIA activities
+기입하신 개인정보를 요코스카시와 당협회활동 이외의 목적으로 사용하는 일은 절대로 없습니다.
+以上所填写的个人情况仅供横须贺市及本协会的活动使用
+Las informaciones llenadas en ese formulario son confidenciales, solo se usan para las actividades de la ciudad de Yokosuka y la Asociación International de Yokosuka.
+Todas as informações contidas neste formulário são confidenciais, somente serão utilizadas para as atividades da Prefeitura de Yokosuka e da Associação Internacional de Yokosuka – YIA.
+
+
+
+
+
+
+
+
+　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　       年　　　月　　　日
+
+
+

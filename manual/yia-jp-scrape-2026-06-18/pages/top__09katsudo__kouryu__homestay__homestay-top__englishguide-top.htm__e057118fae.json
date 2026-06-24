@@ -1,0 +1,60 @@
+{
+  "url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+  "final_url": "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Mon, 01 Jun 2026 05:44:42 GMT",
+    "etag": "\"20dd-6532ab0e9fd80-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:44 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__kouryu__homestay__homestay-top__englishguide-top.htm__e057118fae.html",
+  "text_path": "text/top__09katsudo__kouryu__homestay__homestay-top__englishguide-top.htm__e057118fae.txt",
+  "text_characters": 770,
+  "links": [
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/englishguide-top.htm",
+    "http://yia.jp/index.htm",
+    "http://yia.jp/top/09katsudonaiyo/koryu/koryu-top/koryu-top.htm"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/c.gif",
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%281%29.jpg",
+    "http://yia.jp/top/09katsudo/kouryu/homestay/homestay-top/2024.11%20%282%29.jpg"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "2024.11 (1).jpg"
+    },
+    {
+      "src": "2024.11 (2).jpg"
+    }
+  ]
+}

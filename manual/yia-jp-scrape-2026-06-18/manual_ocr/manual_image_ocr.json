@@ -1,0 +1,255 @@
+[
+  {
+    "ocr_id": 1,
+    "path": "assets/20160613map.JPG__fa54257f96.jpg",
+    "url": "http://yia.jp/20160613map.JPG",
+    "role": "page_level",
+    "confidence": "high",
+    "transcription": [
+      "国の合同庁舎（法務局等）",
+      "Legal Affairs Bureau",
+      "横須賀警察署",
+      "Police Office",
+      "よこすか海岸通り",
+      "Yokosuka Kaigan Street",
+      "諏訪小学校",
+      "Suwa Elementary school",
+      "常葉中学校",
+      "Tokiwa Junior school",
+      "市役所北口駐車場",
+      "City Hall's Parking",
+      "消防局",
+      "Fire Department",
+      "Werk Yokosuka",
+      "2nd Floor",
+      "Yokosuka International Association",
+      "観音崎・浦賀・久里浜 方面 →",
+      "横須賀市役所",
+      "City Hall",
+      "City Hall",
+      "市役所分館",
+      "横須賀郵便局",
+      "Post Office",
+      "市役所前公園",
+      "Park",
+      "国道16号",
+      "Route 16",
+      "東京電力-東京ガス",
+      "Electric power company- Gas company",
+      "NTT",
+      "米が浜通",
+      "Yonegahama Street",
+      "公園地下駐車場（ぴぽ320）",
+      "ザ・プライム",
+      "The Prime Mall",
+      "横須賀中央駅",
+      "Keikyu Yokosuka Chuo Station"
+    ],
+    "notes": "Access map image for the association office."
+  },
+  {
+    "ocr_id": 2,
+    "path": "assets/Seikatsusoudan.png__ee203f729d.png",
+    "url": "http://yia.jp/Seikatsusoudan.png",
+    "role": "page_level",
+    "confidence": "high",
+    "transcription": [
+      "■ Counseling for Foreigners",
+      "Call for appointment",
+      "Monday & Thursday 9:00 -12:00",
+      "■ 외국인 생활상담    비밀엄수    예약제",
+      "목요일 9:00 - 12:00",
+      "■ 外国人生活咨询处    咨询请事先预约",
+      "星期二 10:00 - 12:00",
+      "■ Servicio de Consulta para",
+      "Extranjeros",
+      "Por favor haga reservaciones.",
+      "Miercoles 9:00 - 12:00",
+      "■ Serviço de Consulta para",
+      "Estrangeiros",
+      "Reservas com hora marcada",
+      "Sexta-feira das 14:00-17:00"
+    ],
+    "notes": "Multilingual consultation schedule image."
+  },
+  {
+    "ocr_id": 9,
+    "path": "assets/hptsurushibina.png__bdc88bba70.png",
+    "url": "http://yia.jp/hptsurushibina.png",
+    "role": "page_level",
+    "confidence": "high",
+    "transcription": [
+      "手作り和雑貨 ✿ 吊るし雛 販売中",
+      "お土産に最適",
+      "履物型を身に付けていると",
+      "足腰が達者で過ごせるとか・・・★",
+      "お人形一つ一つに意味があります",
+      "娘に悪い虫がつかないように「トウガラシ」",
+      "安産や子宝を願う「犬」",
+      "無病息災の「三角」（昔は薬袋や香袋が三角だった）",
+      "長寿を願う「桃」",
+      "不苦労と書く「ふくろう」",
+      "健やかに成長してほしいという気持ちから「枕」",
+      "細部にまでこだわって作られています。",
+      "各９００円",
+      "１セットに含まれる人形は３２個。",
+      "各セットに干支が１２支揃っています。",
+      "S字フックで簡単に飾ることができます。",
+      "各セット 15,000円　高さ 約100cm",
+      "各６００円〜９００円"
+    ],
+    "notes": "Sale/flyer image. Preserve pricing and product explanation for later audit."
+  },
+  {
+    "ocr_id": 11,
+    "path": "assets/logo22.gif__7a65497fdf.gif",
+    "url": "http://yia.jp/logo22.gif",
+    "role": "navigation_label",
+    "confidence": "high",
+    "transcription": ["今後のイベントスケジュール"],
+    "notes": "Small navigation/banner label."
+  },
+  {
+    "ocr_id": 14,
+    "path": "assets/pachiwaku.png__070f2af003.png",
+    "url": "http://yia.jp/pachiwaku.png",
+    "role": "page_level",
+    "confidence": "medium",
+    "transcription": [
+      "横須賀パッチワークキルト協会",
+      "展示・即売コーナー"
+    ],
+    "notes": "Other small price tags and item labels are visible but too small or partially obscured for reliable transcription."
+  },
+  {
+    "ocr_id": 16,
+    "path": "assets/syokaibotton.gif__7ec62da7b2.gif",
+    "url": "http://yia.jp/syokaibotton.gif",
+    "role": "navigation_label",
+    "confidence": "high",
+    "transcription": ["事業紹介"],
+    "notes": "Button graphic."
+  },
+  {
+    "ocr_id": 19,
+    "path": "assets/top__09aboutyia__ennkaku__hpb_head014.jpg__7ecac197c2.jpg",
+    "url": "http://yia.jp/top/09aboutyia/ennkaku/hpb_head014.jpg",
+    "role": "site_header",
+    "confidence": "high",
+    "transcription": [
+      "NPO法人 横須賀国際交流協会",
+      "NPO Yokosuka International Association"
+    ],
+    "notes": "Repeated association header."
+  },
+  {
+    "ocr_id": 21,
+    "path": "assets/top__09aboutyia__kaiinn__hpb_head014.jpg__27a569753e.jpg",
+    "url": "http://yia.jp/top/09aboutyia/kaiinn/hpb_head014.jpg",
+    "role": "site_header",
+    "confidence": "high",
+    "transcription": [
+      "NPO法人 横須賀国際交流協会",
+      "NPO Yokosuka International Association"
+    ],
+    "notes": "Repeated association header."
+  },
+  {
+    "ocr_id": 23,
+    "path": "assets/top__09aboutyia__sanjo__hpb_head014.jpg__b6d0823c86.jpg",
+    "url": "http://yia.jp/top/09aboutyia/sanjo/hpb_head014.jpg",
+    "role": "site_header",
+    "confidence": "high",
+    "transcription": [
+      "NPO法人 横須賀国際交流協会",
+      "NPO Yokosuka International Association"
+    ],
+    "notes": "Repeated association header."
+  },
+  {
+    "ocr_id": 26,
+    "path": "assets/top__09katsudo__kehatsu__gaikokugo__gaikokugo-top__logo3.gif__30ccbe2288.gif",
+    "url": "http://yia.jp/top/09katsudo/kehatsu/gaikokugo/gaikokugo-top/logo3.gif",
+    "role": "navigation_label",
+    "confidence": "high",
+    "transcription": ["NEWS"],
+    "notes": "Small page label."
+  },
+  {
+    "ocr_id": 30,
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_283_29.jpg__9c7494d2cf.jpg",
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%283%29.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "medium",
+    "transcription": [
+      "WHERE IS BREST ?",
+      "Brest is a port city located at the westernmost tip of France, in the Brittany region. It is situated on the northern coast of the Finistère department, bordered by the Atlantic Ocean and the Iroise Sea. Brest is known for its naval port, one of the most important in France, as well as for its rich maritime heritage."
+    ],
+    "notes": "Projected slide inside event photo; do not treat as page body by default."
+  },
+  {
+    "ocr_id": 31,
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_284_29.jpg__9f9d7769c6.jpg",
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%284%29.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "medium",
+    "transcription": [
+      "History of Medway",
+      "Medway has a rich and interesting historical background; from centuries old castles, to important historical figures who went on to change the course of History."
+    ],
+    "notes": "Projected slide inside event photo; do not treat as page body by default."
+  },
+  {
+    "ocr_id": 32,
+    "path": "assets/top__09katsudo__kehatsu__youthfo__youthfo-top__InternationalYouthForum1_20_285_29.jpg__5a1aeaaf49.jpg",
+    "url": "http://yia.jp/top/09katsudo/kehatsu/youthfo/youthfo-top/InternationalYouthForum1%20%285%29.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "high",
+    "transcription": [
+      "About the awareness of \"mottainai\"",
+      "Yuna Miyazaki",
+      "Oppama high school"
+    ],
+    "notes": "Projected slide inside event photo; do not treat as page body by default."
+  },
+  {
+    "ocr_id": 63,
+    "path": "assets/top__09katsudo__kouryu__nihonbunka__nihonbunka-top__s-stageskakkosoran.jpg__4ab14fc4dc.jpg",
+    "url": "http://yia.jp/top/09katsudo/kouryu/nihonbunka/nihonbunka-top/s-stageskakkosoran.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "high",
+    "transcription": [
+      "第29回 ジャパン フェスティバル・イン・よこすか",
+      "火気厳禁",
+      "禁煙"
+    ],
+    "notes": "Stage banner/signage inside event photo."
+  },
+  {
+    "ocr_id": 74,
+    "path": "assets/top__09katsudo__kehatsu__kokusairikai__kokusairikai-top__IMG_2273.jpg__aba9ab3626.jpg",
+    "url": "http://yia.jp/top/09katsudo/kehatsu/kokusairikai/kokusairikai-top/IMG_2273.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "medium",
+    "transcription": ["BRASIL"],
+    "notes": "Projected slide/title inside event photo."
+  },
+  {
+    "ocr_id": 80,
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__corpus_20cristi.jpg__838d86f866.jpg",
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/corpus%20cristi.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "high",
+    "transcription": ["CITY OF CORPUS CHRISTI"],
+    "notes": "Visible location signage in sister city photo."
+  },
+  {
+    "ocr_id": 81,
+    "path": "assets/top__09katsudo__sistercity__sistercity-top__fremantle_20_282_29.jpg__4a23ed1f8b.jpg",
+    "url": "http://yia.jp/top/09katsudo/sistercity/sistercity-top/fremantle%20%282%29.jpg",
+    "role": "incidental_photo_text",
+    "confidence": "high",
+    "transcription": ["City of Fremantle"],
+    "notes": "Visible location signage in sister city photo."
+  }
+]

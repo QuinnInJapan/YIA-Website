@@ -1,0 +1,59 @@
+{
+  "url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+  "final_url": "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Thu, 12 Feb 2026 06:46:22 GMT",
+    "etag": "\"2bb6-64a9ad8ca5bd3-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan-top.html__2b0122afea.html",
+  "text_path": "text/top__09katsudo__shien__seikatsusodan__sekatsusodan-top__seikatsusodan-top.txt__2b0122afea.txt",
+  "text_characters": 1479,
+  "links": [
+    "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan-top.html",
+    "http://yia.jp/",
+    "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/Chirashi2025.pdf"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/c.gif",
+    "http://yia.jp/top/09katsudo/shien/seikatsusodan/sekatsusodan-top/seikatsusodan2.jpg"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "seikatsusodan2.jpg"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

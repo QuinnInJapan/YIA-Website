@@ -1,0 +1,71 @@
+{
+  "url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+  "final_url": "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 07 Apr 2026 00:26:10 GMT",
+    "etag": "\"376c-64ed3d47e46b0-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:41 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__kaiwasalon-top.html__37101e9b1c.html",
+  "text_path": "text/top__09katsudo__shien__kaiwasalon__kaiwasalon-top__kaiwasalon-top.txt__37101e9b1c.txt",
+  "text_characters": 1395,
+  "links": [
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/kaiwasalon-top.html",
+    "http://yia.jp/index.htm",
+    "http://yia.jp/top/09katsudonaiyo/shien/shien-top/shien-top.htm",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2014application.doc",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026kaiwasaron.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026map.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026irohakai.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026nihongoclub.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/tanoshii2024.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/photos.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2026ybridge.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025terakoyasan.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/wakaba2025.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2023crossroads.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2025sakurakai.pdf",
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/2024nihongoplaza.pdf"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/shien/kaiwasalon/kaiwasalon-top/c.gif"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}

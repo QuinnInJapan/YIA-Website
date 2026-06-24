@@ -1,0 +1,65 @@
+{
+  "url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+  "final_url": "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+  "status": 200,
+  "content_type": "text/html",
+  "headers": {
+    "last-modified": "Tue, 02 Apr 2024 05:02:53 GMT",
+    "etag": "\"1957-6151604bf9df4-gzip\"",
+    "accept-ranges": "bytes",
+    "vary": "Accept-Encoding",
+    "content-type": "text/html",
+    "transfer-encoding": "chunked",
+    "date": "Thu, 18 Jun 2026 02:32:42 GMT",
+    "connection": "close"
+  },
+  "title": "",
+  "meta": [
+    {
+      "key": "Content-Type",
+      "content": "text/html; charset=Shift_JIS"
+    },
+    {
+      "key": "Content-Style-Type",
+      "content": "text/css"
+    },
+    {
+      "key": "GENERATOR",
+      "content": "IBM WebSphere Studio Homepage Builder Version 11.0.0.0 for Windows"
+    }
+  ],
+  "headings": [],
+  "raw_html_path": "raw_html/top__09katsudo__shien__bosai__bosai-top__bosai-top.html__b133b55634.html",
+  "text_path": "text/top__09katsudo__shien__bosai__bosai-top__bosai-top.txt__b133b55634.txt",
+  "text_characters": 455,
+  "links": [
+    "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/bosai-top.html",
+    "http://yia.jp/index.htm"
+  ],
+  "assets": [
+    "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/c.gif",
+    "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC.jpg",
+    "http://yia.jp/top/09katsudo/shien/bosai/bosai-top/ABC1.jpg"
+  ],
+  "images": [
+    {
+      "src": "c.gif",
+      "alt": "本文へジャンプ"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "c.gif"
+    },
+    {
+      "src": "ABC.jpg"
+    },
+    {
+      "src": "ABC1.jpg"
+    },
+    {
+      "src": "c.gif"
+    }
+  ]
+}
