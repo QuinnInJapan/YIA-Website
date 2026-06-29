@@ -179,7 +179,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
           const navCat = navCategories.find((nc) => nc.categoryId === catId);
           const pageItems = navCat?.items ?? [];
           return (
-            <div className="program-card" key={catId || i}>
+            <div className={`program-card${img ? "" : " program-card--empty"}`} key={catId || i}>
               {img && (
                 <img
                   src={img}
@@ -195,6 +195,7 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
                   }}
                 />
               )}
+              {!img && <div className="program-card__empty-media" aria-hidden="true" />}
               <div className="program-card__overlay">
                 <h3 className="program-card__title">{ja(cat.label)}</h3>
                 <span className="program-card__title-en" lang="en" translate="no">

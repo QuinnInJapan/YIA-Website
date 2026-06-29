@@ -130,7 +130,7 @@ export default async function HomepageTemplateAbout() {
             const pos = hotspotPosition(card.heroImage);
             return (
               <div
-                className="program-card reveal"
+                className={`program-card reveal${img ? "" : " program-card--empty"}`}
                 style={{ "--reveal-i": i } as React.CSSProperties}
                 key={card.categoryId}
               >
@@ -143,6 +143,7 @@ export default async function HomepageTemplateAbout() {
                     style={pos ? { objectPosition: pos } : undefined}
                   />
                 )}
+                {!img && <div className="program-card__empty-media" aria-hidden="true" />}
                 <div className="program-card__overlay">
                   <Link href={card.categoryUrl} className="program-card__heading-link">
                     <h3 className="program-card__title">{ja(card.label)}</h3>

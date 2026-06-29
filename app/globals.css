@@ -3378,6 +3378,7 @@ html:has(:target) {
   position: relative;
   overflow: hidden;
   min-height: 580px;
+  background: oklch(32% 0.038 218);
 }
 
 .program-card__img {
@@ -3395,6 +3396,50 @@ html:has(:target) {
 .program-card:hover .program-card__img {
   filter: brightness(0.55);
   transform: scale(1.03);
+}
+
+.program-card__empty-media {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, oklch(96% 0.012 215 / 0.08) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(0deg, oklch(96% 0.012 215 / 0.06) 0 1px, transparent 1px 44px),
+    linear-gradient(
+      138deg,
+      oklch(28% 0.04 226) 0%,
+      oklch(37% 0.047 188) 48%,
+      oklch(30% 0.032 220) 100%
+    );
+}
+
+.program-card__empty-media::before {
+  content: "";
+  position: absolute;
+  inset: -18% -24%;
+  background:
+    linear-gradient(
+      118deg,
+      transparent 0 31%,
+      oklch(84% 0.06 79 / 0.16) 31% 32%,
+      transparent 32% 55%,
+      oklch(82% 0.052 172 / 0.14) 55% 56%,
+      transparent 56% 100%
+    ),
+    repeating-linear-gradient(
+      118deg,
+      transparent 0 26px,
+      oklch(92% 0.018 212 / 0.07) 26px 27px,
+      transparent 27px 86px
+    );
+  transform: rotate(-4deg);
+}
+
+.program-card--empty .program-card__overlay {
+  background: linear-gradient(
+    180deg,
+    oklch(15% 0.026 224 / 0.2) 0%,
+    oklch(13% 0.024 224 / 0.5) 100%
+  );
 }
 
 .program-card__overlay {
