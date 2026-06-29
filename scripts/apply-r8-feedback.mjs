@@ -1,85 +1,17 @@
 #!/usr/bin/env node
 
-import fs from "node:fs";
 import path from "node:path";
-import dotenv from "dotenv";
-import { createClient } from "@sanity/client";
-
-dotenv.config({ path: ".env.local", quiet: true });
-
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
-const token = process.env.SANITY_TOKEN;
-const flyerPath = process.argv[2] ?? process.env.R8_FLYER_PATH;
-
-if (!projectId || !dataset || !token) {
-  console.error("Missing Sanity environment variables.");
-  process.exit(1);
-}
-
-if (!flyerPath) {
-  console.error("Usage: node scripts/apply-r8-feedback.mjs /path/to/r8-flyer.pdf");
-  process.exit(1);
-}
-
-const flyerFilename = path.basename(flyerPath);
-
-if (!fs.existsSync(flyerPath)) {
-  console.error(`Flyer PDF not found: ${flyerPath}`);
-  process.exit(1);
-}
-
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion: "2024-01-01",
-  token,
-  useCdn: false,
-});
-
-function i18n(jaValue, enValue) {
-  return [
-    { _key: "ja", value: jaValue },
-    { _key: "en", value: enValue },
-  ];
-}
-
-function cell(jaValue, enValue = "") {
-  return i18n(jaValue, enValue);
-}
-
-function jaValue(field) {
-  return field?.find((entry) => entry._key === "ja")?.value ?? "";
-}
-
-function findSection(doc, key, type) {
-  const section = doc.sections?.find((item) => item._key === key && item._type === type);
-  if (!section) throw new Error(`Missing ${type} section ${key} on ${doc._id}`);
-  return section;
-}
-
-async function getOrUploadFlyer() {
-  const existing = await client.fetch(
-    `*[_type == "sanity.fileAsset" && originalFilename == $filename][0]{
-      _id,
-      originalFilename,
-      url
-    }`,
-    { filename: flyerFilename },
-  );
-
-  if (existing?._id) {
-    console.log(`Using existing flyer asset: ${existing._id}`);
-    return existing;
-  }
-
-  const asset = await client.assets.upload("file", fs.createReadStream(flyerPath), {
-    filename: flyerFilename,
-    contentType: "application/pdf",
-  });
-  console.log(`Uploaded flyer asset: ${asset._id}`);
-  return asset;
-}
+import {
+  cell,
+  fail,
+  findSection,
+  getOrUploadFileAsset,
+  i18n,
+  jaValue,
+  logSummary,
+  patchWithRevision,
+  runSanityScript,
+} from "./lib/sanity-tools.mjs";
 
 function updateCounselingSections(doc, flyerAssetId) {
   const sections = structuredClone(doc.sections ?? []);
@@ -171,45 +103,95 @@ function updateNavigationCategories(nav) {
   return categories;
 }
 
-async function patchWithRevision(docId, rev, set) {
-  await client.patch(docId).ifRevisionId(rev).set(set).commit();
-}
+await runSanityScript({
+  name: "Apply R8 feedback",
+  description:
+    "Apply R8 launch feedback to counseling, youth forum, kids festival, and navigation documents.",
+  defaultLive: true,
+  handler: async ({ client, dryRun, args }) => {
+    const flyerPath = args[0] ?? process.env.R8_FLYER_PATH;
+    if (!flyerPath) {
+      throw fail("Missing R8 flyer PDF path.", {
+        fix: "Run `node scripts/apply-r8-feedback.mjs --live /path/to/r8-flyer.pdf` or set R8_FLYER_PATH.",
+      });
+    }
 
-async function main() {
-  const flyer = await getOrUploadFlyer();
-  const data = await client.fetch(`{
-    "counseling": *[_id == "page-seikatsusodan"][0],
-    "youth": *[_id == "page-youthfo"][0],
-    "kids": *[_id == "page-kids"][0],
-    "navigation": *[_type == "navigation"][0]
-  }`);
+    const flyerFilename = path.basename(flyerPath);
+    const flyer = await getOrUploadFileAsset(client, flyerPath, {
+      dryRun,
+      filename: flyerFilename,
+      contentType: "application/pdf",
+    });
+    const flyerAssetId = flyer._id ?? `dry-run.${flyerFilename}`;
 
-  if (!data.counseling || !data.youth || !data.kids || !data.navigation) {
-    throw new Error("Missing one or more required Sanity documents");
-  }
+    const data = await client.fetch(`{
+      "counseling": *[_id == "page-seikatsusodan"][0],
+      "youth": *[_id == "page-youthfo"][0],
+      "kids": *[_id == "page-kids"][0],
+      "navigation": *[_type == "navigation"][0]
+    }`);
 
-  await patchWithRevision(data.counseling._id, data.counseling._rev, {
-    sections: updateCounselingSections(data.counseling, flyer._id),
-  });
-  console.log("Updated multilingual counseling page");
+    if (!data.counseling || !data.youth || !data.kids || !data.navigation) {
+      throw fail("Missing one or more required Sanity documents.", {
+        fix: "Confirm page-seikatsusodan, page-youthfo, page-kids, and the navigation singleton exist.",
+        context: {
+          counseling: Boolean(data.counseling),
+          youth: Boolean(data.youth),
+          kids: Boolean(data.kids),
+          navigation: Boolean(data.navigation),
+        },
+      });
+    }
 
-  await patchWithRevision(data.youth._id, data.youth._rev, {
-    sections: updateYouthSections(data.youth),
-  });
-  console.log("Updated International Youth Forum date");
+    await patchWithRevision(
+      client,
+      data.counseling,
+      {
+        sections: updateCounselingSections(data.counseling, flyerAssetId),
+      },
+      { dryRun },
+    );
+    console.log("Updated multilingual counseling page");
 
-  await patchWithRevision(data.kids._id, data.kids._rev, {
-    sections: updateKidsSections(data.kids),
-  });
-  console.log("Updated Kids Festival date");
+    await patchWithRevision(
+      client,
+      data.youth,
+      {
+        sections: updateYouthSections(data.youth),
+      },
+      { dryRun },
+    );
+    console.log("Updated International Youth Forum date");
 
-  await patchWithRevision(data.navigation._id, data.navigation._rev, {
-    categories: updateNavigationCategories(data.navigation),
-  });
-  console.log("Hid Japanese study and living handbook from navigation");
-}
+    await patchWithRevision(
+      client,
+      data.kids,
+      {
+        sections: updateKidsSections(data.kids),
+      },
+      { dryRun },
+    );
+    console.log("Updated Kids Festival date");
 
-main().catch((err) => {
-  console.error(`Migration failed: ${err?.message ?? "Unknown error"}`);
-  process.exit(1);
+    await patchWithRevision(
+      client,
+      data.navigation,
+      {
+        categories: updateNavigationCategories(data.navigation),
+      },
+      { dryRun },
+    );
+    console.log("Hid Japanese study and living handbook from navigation");
+
+    logSummary({
+      dryRun,
+      flyer: flyer._id ?? flyer.filename,
+      patched: [
+        data.counseling._id,
+        data.youth._id,
+        data.kids._id,
+        data.navigation._id,
+      ],
+    });
+  },
 });

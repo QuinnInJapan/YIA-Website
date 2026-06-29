@@ -10,13 +10,19 @@ import { AutoTextarea } from "../shared/BilingualTextarea";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
-import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/document-link-types";
 import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { SectionBar } from "../pages/SectionBar";
 import { useFocusContext } from "../shared/FocusContext";
 import { SectionEditor } from "../pages/SectionEditor";
 import type { PageDoc, SectionItem, SectionTypeName } from "../pages/types";
 import { sectionDefaults } from "../pages/sectionDefaults";
+import {
+  documentPairIds,
+  draftDocumentForBase,
+  publishedDocumentForDraft,
+} from "../shared/draft-documents";
+import { formatStudioRelativeTime } from "../shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Constants ────────────────────────────────────────────
@@ -31,21 +37,6 @@ const DOC_PROJECTION = `{
     ...
   }
 }`;
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatRelativeTime(dateStr: string | undefined | null): string {
-  if (!dateStr) return "";
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "たった今";
-  if (mins < 60) return `${mins}分前`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}時間前`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}日前`;
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
 
 // ── PageEditor ───────────────────────────────────────────
 
@@ -129,8 +120,7 @@ export function PageEditor({
 
   useEffect(() => {
     setLoading(true);
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
     Promise.all([
       client.fetch<PageDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: pubId }),
@@ -155,13 +145,8 @@ export function PageEditor({
       setSaving(true);
       setSaveStatus("saving");
       try {
-        const pubId = documentId.replace(/^drafts\./, "");
-        const draftId = `drafts.${pubId}`;
-        await client.createIfNotExists({
-          ...baseDoc,
-          _id: draftId,
-          _type: "page",
-        });
+        const { draftId } = documentPairIds(documentId);
+        await client.createIfNotExists(draftDocumentForBase(baseDoc, draftId, "page"));
         await client.patch(draftId).set(updates).commit();
         const updated = await client.fetch<PageDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, {
           id: draftId,
@@ -247,20 +232,14 @@ export function PageEditor({
     try {
       setSaving(true);
       setSaveStatus("saving");
-      const pubId = documentId.replace(/^drafts\./, "");
-      const draftId = `drafts.${pubId}`;
+      const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
       const draft = await client.fetch<PageDoc | null>(`*[_id == $draftId][0] ${DOC_PROJECTION}`, {
         draftId,
       });
       const source = draft ?? merged;
 
-      const { _rev, _updatedAt, ...rest } = source;
-      await client.createOrReplace({
-        ...rest,
-        _id: pubId,
-        _type: "page",
-      });
+      await client.createOrReplace(publishedDocumentForDraft(source, pubId, "page"));
 
       await client.delete(draftId).catch(() => {});
 
@@ -286,8 +265,7 @@ export function PageEditor({
     if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       const freshPub = await client.fetch<PageDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, {
@@ -361,7 +339,7 @@ export function PageEditor({
             </Text>
             {draftDoc?._updatedAt && (
               <Text size={0} muted>
-                {formatRelativeTime(draftDoc._updatedAt)}
+                {formatStudioRelativeTime(draftDoc._updatedAt)}
               </Text>
             )}
           </Flex>

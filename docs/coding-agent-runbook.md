@@ -23,8 +23,7 @@ Update this file, `scripts/lib/sanity-tools.mjs`, and `scripts/sanity-script-tem
 ## Standard Checks
 
 ```bash
-npm run typecheck
-node --test --experimental-strip-types tests/*.test.mjs
+npm test
 ```
 
 For UI/page changes:

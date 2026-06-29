@@ -11,14 +11,13 @@ import { PreviewPanel } from "./shared/PreviewPanel";
 import { RightPanel } from "./shared/RightPanel";
 import { FilePickerPanel } from "./shared/FilePickerPanel";
 import { HotspotCropTool } from "./shared/HotspotCropTool";
-import {
-  DocumentDetailPanel,
-  type DocumentLinkItem as SharedDocumentLinkItem,
-} from "./shared/DocumentDetailPanel";
+import { DocumentDetailPanel } from "./shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "./shared/document-link-types";
 import { PostEditor, type BlogPostDoc } from "./blog/PostEditor";
 import { BlogPostPreview } from "./blog/BlogPostPreview";
 import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
 import { useDeepLink } from "./shared/useDeepLink";
+import { formatStudioDateTime } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
@@ -37,13 +36,6 @@ interface BlogPostItem {
 // ── Constants ────────────────────────────────────────────
 
 const PAGE_SIZE = 20;
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return "下書き";
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
 
 // ── GROQ ─────────────────────────────────────────────────
 
@@ -165,7 +157,7 @@ function SidebarRow({
               }}
             />
           )}
-          {formatDate(post.publishedAt)}
+          {formatStudioDateTime(post.publishedAt)}
           {post.categoryJa && ` · ${post.categoryJa}`}
         </div>
       </div>

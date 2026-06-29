@@ -11,6 +11,7 @@ import { ProgramCardsSection } from "./ProgramCardsSection";
 import { AboutSection } from "./AboutSection";
 import { ActivityGridSection } from "./ActivityGridSection";
 import { SettingsSection } from "./SettingsSection";
+import type { DocumentLinkItem } from "../shared/document-link-types";
 import type {
   HomepageData,
   HomepageAboutData,
@@ -48,8 +49,8 @@ export function HomepageEditor({
   onOpenFilePicker: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
   onShowHotspotCrop: ShowHotspotCropFn;
   onOpenDocumentDetail?: (
-    doc: import("../shared/DocumentDetailPanel").DocumentLinkItem,
-    onUpdate: (doc: import("../shared/DocumentDetailPanel").DocumentLinkItem) => void,
+    doc: DocumentLinkItem,
+    onUpdate: (doc: DocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
   onMergedChange?: (state: HomepageMergedState | null) => void;

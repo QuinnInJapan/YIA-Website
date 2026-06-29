@@ -1,3 +1,6 @@
+import type { DocumentLinkItem } from "../shared/document-link-types";
+export type { DocumentLinkItem } from "../shared/document-link-types";
+
 export interface ImageField {
   _type?: string;
   _key?: string;
@@ -79,15 +82,6 @@ export interface AnnouncementPreviewData {
   date?: string;
   slug?: string;
   pinned?: boolean;
-}
-
-export interface DocumentLinkItem {
-  _key: string;
-  label?: I18nString[];
-  url?: string;
-  file?: { asset?: { _ref: string } };
-  type?: string;
-  fileType?: string;
 }
 
 export interface SidebarData {

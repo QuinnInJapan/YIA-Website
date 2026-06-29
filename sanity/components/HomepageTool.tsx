@@ -4,10 +4,8 @@ import { useCallback, useState } from "react";
 import { ImagePickerPanel } from "./shared/ImagePickerPanel";
 import { FilePickerPanel } from "./shared/FilePickerPanel";
 import { HotspotCropTool } from "./shared/HotspotCropTool";
-import {
-  DocumentDetailPanel,
-  type DocumentLinkItem as SharedDocumentLinkItem,
-} from "./shared/DocumentDetailPanel";
+import { DocumentDetailPanel } from "./shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "./shared/document-link-types";
 import { PreviewPanel } from "./shared/PreviewPanel";
 import { RightPanel } from "./shared/RightPanel";
 import { HomepageEditor } from "./homepage/HomepageEditor";

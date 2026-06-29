@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSiteData, getPage, getEnrichedNavigation, shortId } from "@/lib/data";
+import { getSiteData, getPage, getEnrichedNavigation } from "@/lib/data";
 import { ja } from "@/lib/i18n";
+import { categorySegment } from "@/lib/routes";
+import { fetchNavigationPageParamsStatic } from "@/lib/sanity/navigation-routes";
 import PageTemplate from "@/components/templates/PageTemplate";
 import { SolidHero } from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
@@ -15,35 +17,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const { client } = await import("@/lib/sanity/client");
-  const nav = await client.fetch<{
-    categories: {
-      categoryRef: { _id: string };
-      items: { pageRef: { slug: string } }[];
-    }[];
-  }>(
-    `*[_type == "navigation"][0]{
-      categories[]{
-        categoryRef->{ _id },
-        items[]{ pageRef->{ slug } }
-      }
-    }`,
-  );
-
-  const params: { category: string; slug: string }[] = [];
-
-  for (const navCat of nav?.categories ?? []) {
-    const category = shortId(navCat.categoryRef?._id);
-    if (!category) continue;
-
-    for (const item of navCat.items ?? []) {
-      if (item.pageRef?.slug) {
-        params.push({ category, slug: item.pageRef.slug });
-      }
-    }
-  }
-
-  return params;
+  return fetchNavigationPageParamsStatic(categorySegment);
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

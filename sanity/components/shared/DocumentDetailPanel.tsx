@@ -6,18 +6,11 @@ import { Box, Button, Flex, Label, Stack, Text, TextInput } from "@sanity/ui";
 import { CloseIcon, DownloadIcon } from "@sanity/icons";
 import { FileTypeIcon, formatFileSize, getFileType } from "./media-utils";
 import { i18nGet, i18nSet } from "./i18n";
+import type { DocumentLinkItem } from "./document-link-types";
 
 // ── Types ────────────────────────────────────────────────
 
-export interface DocumentLinkItem {
-  _key: string;
-  _type?: "documentLink";
-  label?: { _key: string; value: string }[];
-  file?: { asset?: { _ref: string } };
-  url?: string;
-  type?: string;
-  fileType?: string;
-}
+export type { DocumentLinkItem } from "./document-link-types";
 
 interface AssetInfo {
   _id: string;

@@ -5,18 +5,8 @@ import { Button, Flex, TextInput } from "@sanity/ui";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { i18nGet } from "../../shared/i18n";
-import type { DocumentLinkItem as SharedDocumentLinkItem } from "../../shared/DocumentDetailPanel";
+import type { DocumentLinkItem } from "../../shared/document-link-types";
 import type { SectionItem } from "../types";
-
-interface DocumentLinkItem {
-  _key: string;
-  _type: "documentLink";
-  label?: { _key: string; value: string }[];
-  file?: { asset: { _ref: string } };
-  url?: string;
-  type?: string;
-  fileType?: string;
-}
 
 export function LinksSectionEditor({
   section,
@@ -28,8 +18,8 @@ export function LinksSectionEditor({
   onUpdateField: (field: string, value: unknown) => void;
   onOpenFilePicker?: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
   onOpenDocumentDetail?: (
-    doc: SharedDocumentLinkItem,
-    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    doc: DocumentLinkItem,
+    onUpdate: (doc: DocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
 }) {

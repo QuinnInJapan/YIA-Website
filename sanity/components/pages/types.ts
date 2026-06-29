@@ -1,3 +1,5 @@
+import { documentIdSegment } from "@/lib/routes";
+
 // Section type names matching the schema definitions
 export const SECTION_TYPES = [
   "content",
@@ -79,8 +81,7 @@ export interface CategoryGroup {
 
 /** Strip the type prefix from a Sanity _id (e.g. "category-support" → "support") */
 export function shortId(docId: string): string {
-  const dash = docId.indexOf("-");
-  return dash >= 0 ? docId.slice(dash + 1) : docId;
+  return documentIdSegment(docId);
 }
 
 /** Build the frontend URL path for a page given its category _id and slug */

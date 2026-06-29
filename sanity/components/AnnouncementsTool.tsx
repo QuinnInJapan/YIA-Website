@@ -11,13 +11,12 @@ import { PreviewPanel } from "./shared/PreviewPanel";
 import { RightPanel } from "./shared/RightPanel";
 import { FilePickerPanel } from "./shared/FilePickerPanel";
 import { HotspotCropTool } from "./shared/HotspotCropTool";
-import {
-  DocumentDetailPanel,
-  type DocumentLinkItem as SharedDocumentLinkItem,
-} from "./shared/DocumentDetailPanel";
+import { DocumentDetailPanel } from "./shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "./shared/document-link-types";
 import { AnnouncementEditor, type AnnouncementDoc } from "./announcements/AnnouncementEditor";
 import { AnnouncementPreview } from "./announcements/AnnouncementPreview";
 import { useDeepLink } from "./shared/useDeepLink";
+import { formatStudioDateOnly } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
@@ -37,13 +36,6 @@ interface AnnouncementItem {
 const PAGE_SIZE = 20;
 
 type FilterMode = "all" | "pinned" | "upcoming" | "past";
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return "下書き";
-  return new Date(dateStr + "T00:00:00").toLocaleDateString("ja-JP");
-}
 
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10);
@@ -157,7 +149,7 @@ function SidebarRow({
               }}
             />
           )}
-          {formatDate(item.date)}
+          {formatStudioDateOnly(item.date)}
         </div>
       </div>
     </button>

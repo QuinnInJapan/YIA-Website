@@ -57,7 +57,7 @@ export function formatFailure(error) {
   return lines.join("\n");
 }
 
-export function parseScriptFlags(argv = process.argv.slice(2)) {
+export function parseScriptFlags(argv = process.argv.slice(2), { defaultLive = false } = {}) {
   const dryRun = argv.includes("--dry-run");
   const live = argv.includes("--live");
 
@@ -69,8 +69,8 @@ export function parseScriptFlags(argv = process.argv.slice(2)) {
   }
 
   return {
-    dryRun: !live,
-    live,
+    dryRun: dryRun || (!live && !defaultLive),
+    live: live || (!dryRun && defaultLive),
     args: argv.filter((arg) => arg !== "--dry-run" && arg !== "--live"),
   };
 }
@@ -112,9 +112,15 @@ export function createSanityClient(options = {}) {
   });
 }
 
-export async function runSanityScript({ name, description, requireEnv = true, handler }) {
+export async function runSanityScript({
+  name,
+  description,
+  requireEnv = true,
+  defaultLive = false,
+  handler,
+}) {
   try {
-    const flags = parseScriptFlags();
+    const flags = parseScriptFlags(process.argv.slice(2), { defaultLive });
     const modeLabel = flags.dryRun ? "DRY RUN" : "LIVE";
 
     if (!handler) {

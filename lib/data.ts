@@ -3,13 +3,12 @@ import { stegaClean } from "next-sanity";
 import type { SiteData, SanityImage, Page, Category } from "./types";
 import type { I18nString } from "@/lib/i18n";
 import { fetchSiteData, fetchAllPageSlugsStatic } from "./sanity/queries";
+import { fetchNavigationCategorySegmentsStatic } from "./sanity/navigation-routes";
+import { categoryPath, categorySegment, documentIdSegment, pagePath as buildPagePath } from "./routes";
 
 /** Strip the type prefix from a Sanity _id (e.g. "category-support" → "support") */
 export function shortId(docId: string | undefined): string {
-  if (!docId) return "";
-  const clean = stegaClean(docId);
-  const dash = clean.indexOf("-");
-  return dash >= 0 ? clean.slice(dash + 1) : clean;
+  return documentIdSegment(docId);
 }
 
 // Empty defaults for when Sanity has no data yet
@@ -162,7 +161,7 @@ export const getEnrichedNavigation = cache(async (): Promise<EnrichedNavigation>
             id: pg ? shortId(pg._id) : "",
             slug: pgSlug,
             title: pg?.title ?? [],
-            url: pgSlug ? `/${catId}/${pgSlug}` : "",
+            url: catId && pgSlug ? buildPagePath(catId, pgSlug) : "",
           };
         }),
     };
@@ -193,7 +192,7 @@ export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
       categoryId: catId,
       label: cat.label ?? [],
       heroImage: cat.heroImage,
-      categoryUrl: `/${catId}`,
+      categoryUrl: categoryPath(catId),
       pages: (navCat?.items ?? []).map((item) => ({
         id: item.id,
         title: item.title,
@@ -212,11 +211,7 @@ export async function getCategoryIds(): Promise<string[]> {
 
 // Static version for generateStaticParams (no draftMode dependency)
 export async function getCategoryIdsStatic(): Promise<string[]> {
-  const { client } = await import("./sanity/client");
-  const nav = await client.fetch<{ categories: { categoryRef: { _id: string } }[] }>(
-    `*[_type == "navigation"][0]{ categories[]{ categoryRef-> { _id } } }`,
-  );
-  return (nav?.categories ?? []).map((c) => shortId(c.categoryRef?._id)).filter(Boolean);
+  return fetchNavigationCategorySegmentsStatic(categorySegment);
 }
 
 // ── Pages ────────────────────────────────────────────────────────
@@ -251,7 +246,7 @@ export async function pageUrl(slug: string): Promise<string> {
   const nav = await getEnrichedNavigation();
   for (const cat of nav.categories) {
     for (const item of cat.items) {
-      if (item.slug === slug) return `/${cat.categoryId}/${slug}`;
+      if (item.slug === slug) return buildPagePath(cat.categoryId, slug);
     }
   }
   return `/${slug}`; // fallback for uncategorized pages

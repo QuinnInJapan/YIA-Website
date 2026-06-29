@@ -7,10 +7,8 @@ import { useDeepLink } from "./shared/useDeepLink";
 import { ImagePickerPanel } from "./shared/ImagePickerPanel";
 import { FilePickerPanel } from "./shared/FilePickerPanel";
 import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel";
-import {
-  DocumentDetailPanel,
-  type DocumentLinkItem as SharedDocumentLinkItem,
-} from "./shared/DocumentDetailPanel";
+import { DocumentDetailPanel } from "./shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "./shared/document-link-types";
 import { PreviewPanel } from "./shared/PreviewPanel";
 import { RightPanel } from "./shared/RightPanel";
 import { SectionPickerPanel } from "./pages/SectionPickerPanel";

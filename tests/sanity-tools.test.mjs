@@ -15,6 +15,19 @@ test("parseScriptFlags defaults to dry-run", () => {
   assert.deepEqual(parseScriptFlags([]), { dryRun: true, live: false, args: [] });
 });
 
+test("parseScriptFlags can preserve a legacy live default", () => {
+  assert.deepEqual(parseScriptFlags([], { defaultLive: true }), {
+    dryRun: false,
+    live: true,
+    args: [],
+  });
+  assert.deepEqual(parseScriptFlags(["--dry-run", "page-id"], { defaultLive: true }), {
+    dryRun: true,
+    live: false,
+    args: ["page-id"],
+  });
+});
+
 test("parseScriptFlags requires --live for live mode", () => {
   assert.deepEqual(parseScriptFlags(["--live", "page-id"]), {
     dryRun: false,

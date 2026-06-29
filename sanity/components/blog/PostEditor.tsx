@@ -7,11 +7,17 @@ import { PublishIcon, TrashIcon, RevertIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import type { PortableTextBlock } from "@portabletext/editor";
 import { DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
-import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
+import type { DocumentLinkItem } from "../shared/document-link-types";
 import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
+import {
+  documentPairIds,
+  draftDocumentForBase,
+  publishedDocumentForDraft,
+} from "../shared/draft-documents";
+import { formatStudioRelativeTime } from "../shared/date-format";
 import { BodyEditor } from "./PteEditor";
 import type { GalleryImageItem } from "./GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
@@ -39,16 +45,6 @@ export interface BlogPostDoc {
   relatedPosts: RelatedPostRef[] | null;
 }
 
-interface DocumentLinkItem {
-  _key: string;
-  _type: "documentLink";
-  label?: { _key: string; value: string }[];
-  file?: { asset: { _ref: string } };
-  url?: string;
-  type?: string;
-  fileType?: string;
-}
-
 interface RelatedPostRef {
   _key: string;
   _type: "reference";
@@ -68,26 +64,6 @@ export const DOC_PROJECTION = `{
   heroImage, excerpt, body, documents,
   "relatedPosts": relatedPosts[] { _key, _type, _ref }
 }`;
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return "下書き";
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
-
-function formatRelativeTime(dateStr: string | undefined | null): string {
-  if (!dateStr) return "";
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "たった今";
-  if (mins < 60) return `${mins}分前`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}時間前`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}日前`;
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
 
 // ── PostEditor ───────────────────────────────────────────
 
@@ -123,8 +99,8 @@ export function PostEditor({
     onChange: (v: { hotspot: any; crop: any }) => void,
   ) => void;
   onOpenDocumentDetail?: (
-    doc: SharedDocumentLinkItem,
-    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    doc: DocumentLinkItem,
+    onUpdate: (doc: DocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
 }) {
@@ -177,8 +153,7 @@ export function PostEditor({
 
   useEffect(() => {
     setLoading(true);
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
     Promise.all([
       client.fetch<BlogPostDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: pubId }),
@@ -203,14 +178,9 @@ export function PostEditor({
       setSaving(true);
       setSaveStatus("saving");
       try {
-        const pubId = documentId.replace(/^drafts\./, "");
-        const draftId = `drafts.${pubId}`;
+        const { draftId } = documentPairIds(documentId);
         // Ensure draft exists
-        await client.createIfNotExists({
-          ...baseDoc,
-          _id: draftId,
-          _type: "blogPost",
-        });
+        await client.createIfNotExists(draftDocumentForBase(baseDoc, draftId, "blogPost"));
         await client.patch(draftId).set(updates).commit();
         // Re-fetch draft to get updated _updatedAt
         const updated = await client.fetch<BlogPostDoc | null>(
@@ -246,8 +216,7 @@ export function PostEditor({
     try {
       setSaving(true);
       setSaveStatus("saving");
-      const pubId = documentId.replace(/^drafts\./, "");
-      const draftId = `drafts.${pubId}`;
+      const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
       // Get latest draft
       const draft = await client.fetch<BlogPostDoc | null>(
@@ -257,12 +226,7 @@ export function PostEditor({
       const source = draft ?? merged;
 
       // Create/replace published version
-      const { _rev, _updatedAt, ...rest } = source;
-      await client.createOrReplace({
-        ...rest,
-        _id: pubId,
-        _type: "blogPost",
-      });
+      await client.createOrReplace(publishedDocumentForDraft(source, pubId, "blogPost"));
 
       // Delete draft
       await client.delete(draftId).catch(() => {});
@@ -290,8 +254,7 @@ export function PostEditor({
     if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       const freshPub = await client.fetch<BlogPostDoc | null>(
@@ -316,8 +279,7 @@ export function PostEditor({
   async function handleDeletePost() {
     const label = !publishedDoc ? "この下書き" : "この記事（公開版・下書き含む）";
     if (!confirm(`${label}を完全に削除しますか？この操作は元に戻せません。`)) return;
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       await client.delete(pubId).catch(() => {});
@@ -442,7 +404,7 @@ export function PostEditor({
             </Text>
             {draftDoc?._updatedAt && (
               <Text size={0} muted>
-                {formatRelativeTime(draftDoc._updatedAt)}
+                {formatStudioRelativeTime(draftDoc._updatedAt)}
               </Text>
             )}
           </Flex>
@@ -827,8 +789,8 @@ function DocumentsSection({
   onAddUrl: (label: string, url: string) => void;
   onPickFile: () => void;
   onOpenDocumentDetail?: (
-    doc: SharedDocumentLinkItem,
-    onUpdate: (doc: SharedDocumentLinkItem) => void,
+    doc: DocumentLinkItem,
+    onUpdate: (doc: DocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
 }) {

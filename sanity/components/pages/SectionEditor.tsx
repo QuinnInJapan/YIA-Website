@@ -7,7 +7,7 @@ import { LabelTableSectionEditor } from "./sections/LabelTableSectionEditor";
 import { InfoCardsSectionEditor } from "./sections/InfoCardsSectionEditor";
 import { ImageCardsSectionEditor } from "./sections/ImageCardsSectionEditor";
 import { GenericSectionEditor } from "./sections/GenericSectionEditor";
-import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/DocumentDetailPanel";
+import type { DocumentLinkItem as SharedDocumentLinkItem } from "../shared/document-link-types";
 import type { SectionItem } from "./types";
 import { useFocusContext } from "../shared/FocusContext";
 

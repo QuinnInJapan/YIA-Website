@@ -9,8 +9,15 @@ import type { PortableTextBlock } from "@portabletext/editor";
 import { DEFAULT_HOTSPOT, DEFAULT_CROP } from "../shared/HotspotCropTool";
 import { OverlayButton, ImageOverlayActions } from "../homepage/HeroSection";
 import { i18nGet, i18nSet, i18nGetBody, i18nSetBody } from "../shared/i18n";
+import type { DocumentLinkItem } from "../shared/document-link-types";
 import { LoadingDots } from "../shared/ui";
 import { RawJsonButton } from "../shared/RawJsonViewer";
+import {
+  documentPairIds,
+  draftDocumentForBase,
+  publishedDocumentForDraft,
+} from "../shared/draft-documents";
+import { formatStudioRelativeTime } from "../shared/date-format";
 import { BodyEditor } from "../blog/PteEditor";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
@@ -36,37 +43,12 @@ export interface AnnouncementDoc {
   documents: DocumentLinkItem[] | null;
 }
 
-interface DocumentLinkItem {
-  _key: string;
-  _type?: "documentLink";
-  label?: { _key: string; value: string }[];
-  file?: { asset?: { _ref: string } };
-  url?: string;
-  type?: string;
-  fileType?: string;
-}
-
 // ── Constants ────────────────────────────────────────────
 
 export const DOC_PROJECTION = `{
   _id, _rev, _updatedAt, title, slug, date, pinned,
   heroImage, excerpt, body, documents
 }`;
-
-// ── Helpers ──────────────────────────────────────────────
-
-function formatRelativeTime(dateStr: string | undefined | null): string {
-  if (!dateStr) return "";
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "たった今";
-  if (mins < 60) return `${mins}分前`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}時間前`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}日前`;
-  return new Date(dateStr).toLocaleDateString("ja-JP");
-}
 
 // ── AnnouncementEditor ──────────────────────────────────
 
@@ -152,8 +134,7 @@ export function AnnouncementEditor({
 
   useEffect(() => {
     setLoading(true);
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
     Promise.all([
       client.fetch<AnnouncementDoc | null>(`*[_id == $id][0] ${DOC_PROJECTION}`, { id: pubId }),
@@ -178,13 +159,8 @@ export function AnnouncementEditor({
       setSaving(true);
       setSaveStatus("saving");
       try {
-        const pubId = documentId.replace(/^drafts\./, "");
-        const draftId = `drafts.${pubId}`;
-        await client.createIfNotExists({
-          ...baseDoc,
-          _id: draftId,
-          _type: "announcement",
-        });
+        const { draftId } = documentPairIds(documentId);
+        await client.createIfNotExists(draftDocumentForBase(baseDoc, draftId, "announcement"));
         await client.patch(draftId).set(updates).commit();
         const updated = await client.fetch<AnnouncementDoc | null>(
           `*[_id == $id][0] ${DOC_PROJECTION}`,
@@ -219,8 +195,7 @@ export function AnnouncementEditor({
     try {
       setSaving(true);
       setSaveStatus("saving");
-      const pubId = documentId.replace(/^drafts\./, "");
-      const draftId = `drafts.${pubId}`;
+      const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
       const draft = await client.fetch<AnnouncementDoc | null>(
         `*[_id == $draftId][0] ${DOC_PROJECTION}`,
@@ -228,12 +203,7 @@ export function AnnouncementEditor({
       );
       const source = draft ?? merged;
 
-      const { _rev, _updatedAt, ...rest } = source;
-      await client.createOrReplace({
-        ...rest,
-        _id: pubId,
-        _type: "announcement",
-      });
+      await client.createOrReplace(publishedDocumentForDraft(source, pubId, "announcement"));
 
       await client.delete(draftId).catch(() => {});
 
@@ -260,8 +230,7 @@ export function AnnouncementEditor({
     if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       const freshPub = await client.fetch<AnnouncementDoc | null>(
@@ -286,8 +255,7 @@ export function AnnouncementEditor({
   async function handleDelete() {
     const label = !publishedDoc ? "この下書き" : "このお知らせ（公開版・下書き含む）";
     if (!confirm(`${label}を完全に削除しますか？この操作は元に戻せません。`)) return;
-    const pubId = documentId.replace(/^drafts\./, "");
-    const draftId = `drafts.${pubId}`;
+    const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       await client.delete(pubId).catch(() => {});
@@ -388,7 +356,7 @@ export function AnnouncementEditor({
             </Text>
             {draftDoc?._updatedAt && (
               <Text size={0} muted>
-                {formatRelativeTime(draftDoc._updatedAt)}
+                {formatStudioRelativeTime(draftDoc._updatedAt)}
               </Text>
             )}
           </Flex>

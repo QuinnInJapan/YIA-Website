@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test:e2e": "playwright test",
+    "test:unit": "node --test --experimental-strip-types tests/*.test.mjs",
+    "test": "npm run typecheck && npm run test:unit",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
