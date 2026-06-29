@@ -53,7 +53,15 @@ export default defineConfig({
                     name: "link",
                     type: "object",
                     title: "リンク",
-                    fields: [{ name: "href", type: "url", title: "URL" }],
+                    fields: [
+                      defineField({
+                        name: "href",
+                        type: "url",
+                        title: "URL",
+                        validation: (Rule) =>
+                          Rule.uri({ scheme: ["http", "https", "mailto", "tel"] }).required(),
+                      }),
+                    ],
                   },
                 ],
               },

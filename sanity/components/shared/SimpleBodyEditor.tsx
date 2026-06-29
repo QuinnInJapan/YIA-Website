@@ -9,16 +9,20 @@ import {
   useEditor,
   useEditorSelector,
   type PortableTextBlock,
+  type RenderAnnotationFunction,
   type RenderDecoratorFunction,
   type RenderStyleFunction,
   type RenderListItemFunction,
 } from "@portabletext/editor";
+import * as selectors from "@portabletext/editor/selectors";
+import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
 
 // ── Schema ───────────────────────────────────────────────
 
 const simpleSchema = defineSchema({
   decorators: [{ name: "strong" }, { name: "em" }],
   styles: [{ name: "normal" }],
+  annotations: [{ name: "link", fields: [{ name: "href", type: "string" }] }],
   lists: [{ name: "bullet" }, { name: "number" }],
 });
 
@@ -28,6 +32,19 @@ const renderDecorator: RenderDecoratorFunction = (props) => {
   if (props.value === "strong") return <span style={{ fontWeight: 700 }}>{props.children}</span>;
   if (props.value === "em") return <span style={{ fontStyle: "italic" }}>{props.children}</span>;
   return <>{props.children}</>;
+};
+
+const renderAnnotation: RenderAnnotationFunction = (props) => {
+  if (props.schemaType.name !== "link") return <>{props.children}</>;
+  const href = typeof props.value?.href === "string" ? props.value.href : "";
+  return (
+    <span
+      title={href}
+      style={{ color: "#075985", textDecoration: "underline", textUnderlineOffset: 2 }}
+    >
+      {props.children}
+    </span>
+  );
 };
 
 const renderStyle: RenderStyleFunction = (props) => (
@@ -90,6 +107,25 @@ function IconNumberList() {
   );
 }
 
+function IconLink() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6.8 4.2 7.7 3.3a3 3 0 0 1 4.2 4.2l-1.4 1.4a3 3 0 0 1-4.2 0" />
+      <path d="M9.2 11.8 8.3 12.7a3 3 0 0 1-4.2-4.2l1.4-1.4a3 3 0 0 1 4.2 0" />
+      <path d="M6.5 9.5 9.5 6.5" />
+    </svg>
+  );
+}
+
 // ── Toolbar ──────────────────────────────────────────────
 
 const BTN: React.CSSProperties = {
@@ -122,6 +158,10 @@ function Toolbar() {
   const editor = useEditor();
   const isStrong = useEditorSelector(editor, (s) => s.decoratorState["strong"] ?? false);
   const isEm = useEditorSelector(editor, (s) => s.decoratorState["em"] ?? false);
+  const isLink = useEditorSelector(
+    editor,
+    selectors.isActiveAnnotation("link", { mode: "partial" }),
+  );
 
   return (
     <div
@@ -155,6 +195,25 @@ function Toolbar() {
         title="斜体"
       >
         <IconItalic />
+      </button>
+      <button
+        type="button"
+        style={isLink ? BTN_ACTIVE : BTN}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          if (isLink) {
+            editor.send({ type: "annotation.remove", annotation: { name: "link" } });
+            editor.send({ type: "focus" });
+            return;
+          }
+          const href = normalizePortableTextHrefInput(window.prompt("リンクURL", "") ?? "");
+          if (!href) return;
+          editor.send({ type: "annotation.add", annotation: { name: "link", value: { href } } });
+          editor.send({ type: "focus" });
+        }}
+        title="リンク"
+      >
+        <IconLink />
       </button>
       <span style={DIVIDER} />
       <button
@@ -224,6 +283,7 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
         }}
       >
         <PortableTextEditable
+          renderAnnotation={renderAnnotation}
           renderDecorator={renderDecorator}
           renderStyle={renderStyle}
           renderListItem={renderListItem}

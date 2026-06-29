@@ -26,9 +26,9 @@ export default defineType({
     }),
     defineField({
       name: "title",
-      title: "タイトル",
+      title: "見出し（任意）",
       type: "internationalizedArrayString",
-      description: "セクションの見出し。ページ上で太字の見出しとして表示されます。",
+      description: "空欄にすると見出しなしのテキストブロックとして表示されます。",
     }),
     tocLevelField,
     defineField({

@@ -26,7 +26,7 @@ export const SECTION_TYPE_LABELS: Record<SectionTypeName, string> = {
 
 // Metadata for section picker UI
 export const SECTION_TYPE_META: Record<SectionTypeName, { description: string }> = {
-  content: { description: "テキストコンテンツを表示" },
+  content: { description: "見出しなしでも使えるテキストブロック" },
   links: { description: "資料やリンクの一覧" },
   warnings: { description: "注意書きや警告メッセージ" },
   gallery: { description: "写真をグリッドで表示" },

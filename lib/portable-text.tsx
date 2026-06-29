@@ -6,6 +6,7 @@ import YouTubeEmbed from "@/components/YouTubeEmbed";
 import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 import type { I18nString } from "@/lib/i18n";
 import type { SanityImage } from "@/lib/types";
+import { safePortableTextHref } from "./portable-text-link";
 
 interface ImageFileValue {
   file?: SanityImage;
@@ -13,6 +14,22 @@ interface ImageFileValue {
 }
 
 export const ptComponents: PortableTextComponents = {
+  marks: {
+    link: ({ children, value }) => {
+      const href = safePortableTextHref(value?.href);
+      if (!href) return <>{children}</>;
+      const external = /^https?:\/\//i.test(href);
+      return (
+        <a
+          href={href}
+          target={external ? "_blank" : undefined}
+          rel={external ? "noopener noreferrer" : undefined}
+        >
+          {children}
+        </a>
+      );
+    },
+  },
   types: {
     image: ({ value }: { value: { asset: { _ref: string }; alt?: string } }) => {
       if (!value?.asset?._ref) return null;

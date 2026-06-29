@@ -21,7 +21,7 @@ export function ContentSectionEditor({
   return (
     <>
       <BilingualInput
-        label="タイトル"
+        label="見出し（任意）"
         value={section.title}
         onChange={(val) => onUpdateField("title", val)}
       />
