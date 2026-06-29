@@ -8,7 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import AccessSection from "@/components/AccessSection";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
-import { selectHomepageAnnouncements } from "./homepage-announcements";
+import { announcementPath, selectHomepageAnnouncements } from "./homepage-announcements";
 
 export default async function HomepageTemplateAlt() {
   const data = await getSiteData();
@@ -70,7 +70,7 @@ export default async function HomepageTemplateAlt() {
                 const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
-                    href={`/announcements/${a.slug || a._id}`}
+                    href={announcementPath(a)}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a._id}

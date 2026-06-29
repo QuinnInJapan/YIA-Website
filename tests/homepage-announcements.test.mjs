@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { selectHomepageAnnouncements } from "../components/templates/homepage-announcements.ts";
+import {
+  announcementPath,
+  selectHomepageAnnouncements,
+} from "../components/templates/homepage-announcements.ts";
 
 const title = (value) => [{ _key: "ja", value }];
 
@@ -52,5 +55,34 @@ test("falls back to pinned/latest announcements when no curated refs exist", () 
   assert.deepEqual(
     selected.map((announcement) => announcement._id),
     ["pinned", "newer", "older"],
+  );
+});
+
+test("builds homepage announcement links from string slugs", () => {
+  assert.equal(
+    announcementPath({
+      _id: "announcement-website-renewal-2026",
+      slug: "our-website-has-been-redesigned",
+    }),
+    "/announcements/our-website-has-been-redesigned",
+  );
+});
+
+test("builds homepage announcement links from Sanity slug objects", () => {
+  assert.equal(
+    announcementPath({
+      _id: "announcement-website-renewal-2026",
+      slug: { current: "our-website-has-been-redesigned" },
+    }),
+    "/announcements/our-website-has-been-redesigned",
+  );
+});
+
+test("falls back to announcement id when slug is missing", () => {
+  assert.equal(
+    announcementPath({
+      _id: "announcement-website-renewal-2026",
+    }),
+    "/announcements/announcement-website-renewal-2026",
   );
 });

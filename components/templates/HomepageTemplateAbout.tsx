@@ -11,7 +11,7 @@ import AccessSection from "@/components/AccessSection";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
 import HomepageActivityGrid from "./HomepageActivityGrid";
-import { selectHomepageAnnouncements } from "./homepage-announcements";
+import { announcementPath, selectHomepageAnnouncements } from "./homepage-announcements";
 import { resolveHomepageAboutContent } from "./homepage-about-content";
 
 /**
@@ -86,7 +86,7 @@ export default async function HomepageTemplateAbout() {
                 const dateDisplay = d ? formatDateDot(d) : "";
                 return (
                   <Link
-                    href={`/announcements/${a.slug || a._id}`}
+                    href={announcementPath(a)}
                     className="oshirase-item reveal"
                     style={{ "--reveal-i": i } as React.CSSProperties}
                     key={a._id}

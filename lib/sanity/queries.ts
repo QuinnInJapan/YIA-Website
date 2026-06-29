@@ -35,7 +35,10 @@ export async function fetchSiteData() {
         },
         "announcements": *[_type == "announcement"] | order(date desc) { ..., "slug": slug.current },
         "sidebar": *[_type == "sidebar"][0]{ ... },
-        "homepage": *[_type == "homepage"][0]{ ..., announcementRefs[]-> },
+        "homepage": *[_type == "homepage"][0]{
+          ...,
+          announcementRefs[]->{ ..., "slug": slug.current }
+        },
         "homepageFeatured": *[_type == "homepageFeatured"][0]{
           categories[]->
         },
