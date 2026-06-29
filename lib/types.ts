@@ -116,6 +116,7 @@ export interface InfoCardsSection {
 export interface ImageCardsSection {
   _type: "imageCards";
   title?: I18nString;
+  body?: I18nBlocks;
   items: SisterCity[];
 }
 

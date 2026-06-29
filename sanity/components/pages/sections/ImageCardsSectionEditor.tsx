@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import type { PortableTextBlock } from "@portabletext/editor";
 import { TrashIcon } from "@sanity/icons";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
-import { i18nGet } from "../../shared/i18n";
+import { SimpleBodyEditor } from "../../shared/SimpleBodyEditor";
+import { i18nGet, i18nGetBody, i18nSetBody } from "../../shared/i18n";
 import type { SectionItem } from "../types";
 
 interface ImageCardItem {
@@ -16,6 +18,8 @@ interface ImageCardItem {
   note?: { _key: string; value: string }[] | null;
 }
 
+type I18nBlocks = { _key: string; value: PortableTextBlock[] }[];
+
 export function ImageCardsSectionEditor({
   section,
   onUpdateField,
@@ -26,6 +30,7 @@ export function ImageCardsSectionEditor({
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
 }) {
   const items = (section.items as ImageCardItem[]) ?? [];
+  const body = (section.body ?? null) as I18nBlocks | null;
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   function updateItem(index: number, patch: Partial<ImageCardItem>) {
@@ -76,6 +81,51 @@ export function ImageCardsSectionEditor({
         value={section.title}
         onChange={(val) => onUpdateField("title", val)}
       />
+
+      <div style={{ marginBottom: 12 }}>
+        <div
+          style={{
+            fontSize: fs.label,
+            fontWeight: 600,
+            color: "var(--card-fg-color)",
+            marginBottom: 6,
+          }}
+        >
+          説明文（任意）
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <div
+            style={{
+              fontSize: fs.label,
+              fontWeight: 600,
+              color: "var(--card-fg-color)",
+              marginBottom: 3,
+            }}
+          >
+            日本語
+          </div>
+          <SimpleBodyEditor
+            initialValue={i18nGetBody(body, "ja")}
+            onChange={(val) => onUpdateField("body", i18nSetBody(body, "ja", val))}
+          />
+        </div>
+        <div>
+          <div
+            style={{
+              fontSize: fs.label,
+              fontWeight: 600,
+              color: "var(--card-fg-color)",
+              marginBottom: 3,
+            }}
+          >
+            English
+          </div>
+          <SimpleBodyEditor
+            initialValue={i18nGetBody(body, "en")}
+            onChange={(val) => onUpdateField("body", i18nSetBody(body, "en", val))}
+          />
+        </div>
+      </div>
 
       <div style={{ marginBottom: 12 }}>
         <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>

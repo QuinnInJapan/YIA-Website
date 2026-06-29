@@ -24,6 +24,12 @@ export default defineType({
     }),
     tocLevelField,
     defineField({
+      name: "body",
+      title: "説明文（任意）",
+      type: "internationalizedArrayBlockContent",
+      description: "カード一覧の上に表示するリッチテキストです。リンクも追加できます。",
+    }),
+    defineField({
       name: "items",
       title: "アイテム",
       type: "array",
