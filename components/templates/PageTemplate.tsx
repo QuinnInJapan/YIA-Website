@@ -4,6 +4,7 @@ import { renderSections } from "@/lib/section-renderer";
 import PageHero from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import SidebarToc from "@/components/SidebarToc";
+
 interface PageTemplateProps {
   page: Page;
 }
