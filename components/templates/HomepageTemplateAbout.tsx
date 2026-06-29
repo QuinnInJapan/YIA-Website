@@ -11,6 +11,7 @@ import AccessSection from "@/components/AccessSection";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
 import HomepageActivityGrid from "./HomepageActivityGrid";
+import { selectHomepageAnnouncements } from "./homepage-announcements";
 import { resolveHomepageAboutContent } from "./homepage-about-content";
 
 /**
@@ -26,12 +27,10 @@ export default async function HomepageTemplateAbout() {
   const heroPosition = hotspotPosition(hp.hero.image);
 
   // Announcements: pinned first, then by date, show 5
-  const hpAnnouncements = [...(data.announcements ?? [])]
-    .sort(
-      (a, b) =>
-        (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.date ?? "").localeCompare(a.date ?? ""),
-    )
-    .slice(0, 5);
+  const hpAnnouncements = selectHomepageAnnouncements({
+    homepage: hp,
+    announcements: data.announcements,
+  });
 
   // Fetch "About YIA" content — falls back to hardcoded defaults
   const about = await fetchHomepageAbout();

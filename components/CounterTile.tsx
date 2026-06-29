@@ -6,6 +6,7 @@ interface CounterTileProps {
   target: number;
   label: string;
   labelEn: string;
+  href?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -14,11 +15,12 @@ export default function CounterTile({
   target,
   label,
   labelEn,
+  href,
   className,
   style,
 }: CounterTileProps) {
   const [display, setDisplay] = useState(target);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLAnchorElement | HTMLDivElement>(null);
   const fired = useRef(false);
 
   const animate = useCallback(() => {
@@ -59,13 +61,32 @@ export default function CounterTile({
     return () => observer.disconnect();
   }, [animate]);
 
-  return (
-    <div ref={ref} className={className} style={style}>
+  const content = (
+    <>
       <div className="activity-grid__tile-big">{display}+</div>
       <div className="activity-grid__tile-text">
         {label}
         <span>{labelEn}</span>
       </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        ref={ref as React.RefObject<HTMLAnchorElement>}
+        className={className}
+        style={style}
+        href={href}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div ref={ref as React.RefObject<HTMLDivElement>} className={className} style={style}>
+      {content}
     </div>
   );
 }

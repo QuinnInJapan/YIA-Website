@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSiteData } from "@/lib/data";
+import { getSiteData, pageUrl } from "@/lib/data";
 import { fetchBlogPostCount } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl } from "@/lib/sanity/image";
@@ -7,7 +7,12 @@ import LazyImage from "@/components/LazyImage";
 import CounterTile from "@/components/CounterTile";
 
 export default async function HomepageActivityGrid() {
-  const [data, blogPostCount] = await Promise.all([getSiteData(), fetchBlogPostCount()]);
+  const [data, blogPostCount, aboutUrl, membershipUrl] = await Promise.all([
+    getSiteData(),
+    fetchBlogPostCount(),
+    pageUrl("about"),
+    pageUrl("membership"),
+  ]);
   const hp = data.homepage;
   const showBlog = (blogPostCount as number) > 0;
 
@@ -27,6 +32,7 @@ export default async function HomepageActivityGrid() {
           target={Number(gridStat.value)}
           label={ja(gridStat.label)}
           labelEn={en(gridStat.label)}
+          href={`${aboutUrl}#sec-あゆみ`}
           className="activity-grid__tile activity-grid__tile--navy reveal"
           style={{ gridArea: "b", "--reveal-i": 1 } as React.CSSProperties}
         />
@@ -42,14 +48,15 @@ export default async function HomepageActivityGrid() {
         >
           <LazyImage src={imageUrl(galleryImages[2])} alt="" loading="lazy" fill />
         </figure>
-        <div
+        <Link
+          href={membershipUrl}
           className="activity-grid__tile activity-grid__tile--gold reveal"
           style={{ gridArea: "e", "--reveal-i": 4 } as React.CSSProperties}
         >
           <div className="activity-grid__tile-text">
             入会案内<span>Join Us</span>
           </div>
-        </div>
+        </Link>
         <figure
           className="activity-grid__item reveal"
           style={{ gridArea: "f", "--reveal-i": 5 } as React.CSSProperties}

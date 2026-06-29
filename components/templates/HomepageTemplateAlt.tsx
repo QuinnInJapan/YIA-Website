@@ -8,6 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import AccessSection from "@/components/AccessSection";
 import HomepageEffects from "@/components/HomepageEffects";
 import LazyImage from "@/components/LazyImage";
+import { selectHomepageAnnouncements } from "./homepage-announcements";
 
 export default async function HomepageTemplateAlt() {
   const data = await getSiteData();
@@ -19,12 +20,10 @@ export default async function HomepageTemplateAlt() {
   const aboutUrl = await pageUrl("about");
 
   // Announcements: pinned first, then by date, show 5
-  const hpAnnouncements = [...(data.announcements ?? [])]
-    .sort(
-      (a, b) =>
-        (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || (b.date ?? "").localeCompare(a.date ?? ""),
-    )
-    .slice(0, 5);
+  const hpAnnouncements = selectHomepageAnnouncements({
+    homepage: hp,
+    announcements: data.announcements,
+  });
 
   // Activity mosaic
   const gridStat = hp.activityGrid.stat;

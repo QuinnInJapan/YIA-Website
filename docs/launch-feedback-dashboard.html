@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Launch Feedback Fix Dashboard</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #1b2320;
+        --muted: #5b6762;
+        --line: #d7ddd7;
+        --paper: #fbfcfa;
+        --band: #eef4ef;
+        --fixed: #0f6b45;
+        --blocked: #9a3412;
+        --partial: #7c5b00;
+        --ok: #315a86;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+      header {
+        padding: 28px 32px 20px;
+        border-bottom: 1px solid var(--line);
+        background: white;
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: clamp(24px, 3vw, 34px);
+        letter-spacing: 0;
+      }
+      .meta {
+        color: var(--muted);
+        margin: 0;
+      }
+      main {
+        padding: 24px 32px 40px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .stat {
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 8px;
+        padding: 12px 14px;
+      }
+      .stat strong {
+        display: block;
+        font-size: 26px;
+        line-height: 1;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0 0 14px;
+      }
+      input,
+      select {
+        min-height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: white;
+        padding: 8px 10px;
+        font: inherit;
+      }
+      input {
+        min-width: min(420px, 100%);
+        flex: 1;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border: 1px solid var(--line);
+      }
+      th,
+      td {
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        text-align: left;
+      }
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: var(--band);
+        font-size: 13px;
+        color: #33413b;
+      }
+      td:first-child {
+        width: 72px;
+        color: var(--muted);
+      }
+      .area {
+        width: 150px;
+        color: var(--muted);
+      }
+      .request {
+        min-width: 240px;
+      }
+      .fix {
+        min-width: 300px;
+      }
+      .badge {
+        display: inline-block;
+        min-width: 82px;
+        border-radius: 999px;
+        padding: 3px 9px;
+        color: white;
+        font-size: 12px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .Fixed {
+        background: var(--fixed);
+      }
+      .Blocked {
+        background: var(--blocked);
+      }
+      .Partial {
+        background: var(--partial);
+      }
+      .Already {
+        background: var(--ok);
+      }
+      @media (max-width: 760px) {
+        header,
+        main {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        table,
+        thead,
+        tbody,
+        tr,
+        th,
+        td {
+          display: block;
+        }
+        thead {
+          display: none;
+        }
+        tr {
+          border-bottom: 1px solid var(--line);
+        }
+        td {
+          border-bottom: 0;
+          padding: 6px 12px;
+        }
+        td::before {
+          content: attr(data-label);
+          display: block;
+          color: var(--muted);
+          font-size: 12px;
+          margin-bottom: 2px;
+        }
+        td:first-child,
+        .area {
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Launch Feedback Fix Dashboard</h1>
+      <p class="meta">
+        Source: /Users/quinnngo/Downloads/YIAホームページ.docx · Applied: 2026-06-29 · Scope: Sanity
+        content + minimal homepage component fixes
+      </p>
+    </header>
+    <main>
+      <section class="stats" id="stats" aria-label="Status summary"></section>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search request, page, or fix" />
+        <select id="status">
+          <option value="">All statuses</option>
+          <option>Fixed</option>
+          <option>Partial</option>
+          <option>Blocked</option>
+          <option>Already OK</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Area</th>
+            <th>TODO from feedback</th>
+            <th>Status</th>
+            <th>Exactly how it was handled</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </main>
+    <script>
+      const todos = [
+        [
+          "L-001",
+          "Top page",
+          "お知らせは指定の3件だけにする",
+          "Fixed",
+          "Added curated homepage announcement selection in code and set homepage announcementRefs to renewal, quilt sale, and disaster interpretation/translation volunteers.",
+        ],
+        [
+          "L-002",
+          "Top page",
+          "災害時通訳翻訳ボランティア募集をお知らせに出す",
+          "Fixed",
+          "Renamed the disaster volunteer announcement title and included it in the homepage curated refs.",
+        ],
+        [
+          "L-003",
+          "Top page",
+          "上と下の項目順を合わせ、相談・サービスとイベントを入れ替える",
+          "Fixed",
+          "Set homepageFeatured order to イベント, 教室・講座, 相談・サービス, 交流・協力.",
+        ],
+        [
+          "L-004",
+          "Top page",
+          "ページ下の年度PDFを旧HPの最新版に差し替える",
+          "Blocked",
+          "No matching newer PDF assets exist in Sanity, and yia.jp returned 502/no searchable annual PDFs. Left current files untouched to avoid mislabeled downloads.",
+        ],
+        [
+          "L-005",
+          "Top page",
+          "30年の歴史を「あゆみ」にリンクする",
+          "Fixed",
+          "Made the homepage 30+ counter tile link to the About page history anchor.",
+        ],
+        [
+          "L-006",
+          "Top page",
+          "入会案内を会員募集にリンクする",
+          "Fixed",
+          "Converted the 入会案内 homepage tile into a link to the membership page.",
+        ],
+
+        [
+          "E-001",
+          "日本文化体験 & JFY",
+          "タイトルを「日本文化体験教室&ジャパンフェスティバル イン よこすか」に修正",
+          "Fixed",
+          "Updated the page title in Sanity.",
+        ],
+        [
+          "E-002",
+          "日本文化体験 & JFY",
+          "JFYの説明文を追加",
+          "Fixed",
+          "Appended the requested stage/exhibition sentence to the page description.",
+        ],
+        [
+          "E-003",
+          "日本文化体験 & JFY",
+          "目次からジャパンフェスティバル イン よこすかを削除",
+          "Fixed",
+          "Removed the duplicate JFY label-table section below the gallery, which also removed its TOC entry.",
+        ],
+        [
+          "E-004",
+          "日本文化体験 & JFY",
+          "スケジュールにチラシをリンクする",
+          "Blocked",
+          "No JFY flyer file asset was available. Dashboard records this as needing a flyer PDF before linking.",
+        ],
+        [
+          "E-005",
+          "日本文化体験 & JFY",
+          "6/13・11/7は日本文化体験教室、2/28はJFYだと分かるようにする",
+          "Fixed",
+          "Added an 行事 / Program column to the schedule table.",
+        ],
+        [
+          "E-006",
+          "日本文化体験 & JFY",
+          "11/7（土）に時間・場所を追加",
+          "Fixed",
+          "Set 12:30〜16:30 and 総合福祉会館 6階 for the 2026-11-07 row.",
+        ],
+        [
+          "E-007",
+          "日本文化体験 & JFY",
+          "写真キャプション 着付け→三味線",
+          "Fixed",
+          "Updated gallery caption key125.",
+        ],
+        [
+          "E-008",
+          "日本文化体験 & JFY",
+          "写真キャプション 茶道→甲冑隊",
+          "Fixed",
+          "Updated gallery caption key128.",
+        ],
+        [
+          "E-009",
+          "日本文化体験 & JFY",
+          "写真キャプション 展示場→着物",
+          "Fixed",
+          "Updated gallery caption key130.",
+        ],
+        [
+          "E-010",
+          "日本文化体験 & JFY",
+          "写真キャプション ステージソーラン→ステージ発表",
+          "Fixed",
+          "Updated gallery caption key131.",
+        ],
+        [
+          "E-011",
+          "日本文化体験 & JFY",
+          "写真下のジャパンフェスティバル イン よこすかを削除",
+          "Fixed",
+          "Removed the bottom JFY label-table section.",
+        ],
+        [
+          "E-012",
+          "キッズフェスティバル",
+          "説明文の歌コンテスト→仮装コンテスト",
+          "Fixed",
+          "Replaced the term in the page description.",
+        ],
+        [
+          "E-013",
+          "キッズフェスティバル",
+          "2026年度スケジュールに場所（ヴェルクよこすか）を入れる",
+          "Fixed",
+          "Added a 場所 / Venue row to the schedule table.",
+        ],
+        [
+          "E-014",
+          "国際ユースフォーラム",
+          "2026年度スケジュールだけ書き、事業内容と基本目的は削除",
+          "Fixed",
+          "Changed the label-table title to 2026年度スケジュール and kept only date + venue rows.",
+        ],
+        [
+          "E-015",
+          "国際ユースフォーラム",
+          "場所はヴェルクよこすか",
+          "Fixed",
+          "Added 場所 / Venue as ヴェルクよこすか.",
+        ],
+
+        [
+          "C-001",
+          "教室・講座",
+          "すべて見る写真を国際ユースフォーラムから英語ガイドツアーか世界の料理教室へ差替え",
+          "Fixed",
+          "Changed the 教室・講座 category hero image to the cooking class photo already present in Sanity.",
+        ],
+        [
+          "C-002",
+          "日本語会話サロン",
+          "申込書・予定表・地図のたのしいにほんご写真は不要",
+          "Fixed",
+          "Removed the たのしいにほんご写真 download and removed the photos file column from the class table.",
+        ],
+        [
+          "C-003",
+          "日本語会話サロン",
+          "ポットラックのサイトをリンク",
+          "Fixed",
+          "Added a Potluck International website links section after その他の場所の大人向けクラス.",
+        ],
+        [
+          "C-004",
+          "日本語会話サロン",
+          "こども・学生向けクラス一覧の「一覧」を削除",
+          "Fixed",
+          "Renamed the section/table title to こども・学生向けクラス.",
+        ],
+        [
+          "C-005",
+          "日本語会話サロン",
+          "てらこやさん★こどもクラスの「★こどもクラス」を削除",
+          "Fixed",
+          "Changed the class name cell to てらこやさん.",
+        ],
+        [
+          "C-006",
+          "日本語会話サロン",
+          "てらこやさん備考を予定表の下へ移す",
+          "Fixed",
+          "Removed the note from the row and added it as a small content note below the schedule.",
+        ],
+        [
+          "C-007",
+          "外国語講座",
+          "説明文を指定文に修正",
+          "Fixed",
+          "Replaced the page description with the requested two-sentence copy.",
+        ],
+        [
+          "C-008",
+          "外国語講座",
+          "講座概要 期間に「年間3期」を追加",
+          "Fixed",
+          "Updated the 期間 row to 1期12回（約3ヶ月程度）、年間3期.",
+        ],
+        [
+          "C-009",
+          "外国語講座",
+          "各クラス詳細は総合パンフレットPDFにし、表は削除",
+          "Fixed",
+          "Removed the class details table and kept the general PDF download.",
+        ],
+        [
+          "C-010",
+          "外国語講座",
+          "英会話講座は人気があるため〜は原文確認、なければ削除",
+          "Fixed",
+          "No source text was available, so the unverified warning section was removed.",
+        ],
+        [
+          "C-011",
+          "外国語講座",
+          "申込方法の希望クラスに曜日・講師名を追加",
+          "Fixed",
+          "Changed the row value to 希望クラス（曜日・講師名）.",
+        ],
+        [
+          "C-012",
+          "外国語講座",
+          "料金・お支払いの下に支払方法を追加",
+          "Fixed",
+          "Added the requested payment sentence under 料金・お支払い.",
+        ],
+        [
+          "C-013",
+          "外国語講座",
+          "お知らせに継続受講受付の文を追加",
+          "Fixed",
+          "Added the requested continuing-student application timing note.",
+        ],
+        [
+          "C-014",
+          "外国語講座",
+          "お知らせに先着順・入金確認完了の文を追加",
+          "Fixed",
+          "Added the requested first-come/payment-confirmation note.",
+        ],
+        [
+          "C-015",
+          "外国語講座",
+          "ダウンロードに個別チラシを掲載",
+          "Fixed",
+          "Moved the existing class-table PDF assets into the downloads list before removing the table.",
+        ],
+        [
+          "C-016",
+          "国際理解講座",
+          "説明文 自治会学習センターへ→生涯学習センターなどへ",
+          "Fixed",
+          "Replaced the phrase in the page description.",
+        ],
+        [
+          "C-017",
+          "英語ガイドツアー",
+          "説明文の年2回を削除",
+          "Fixed",
+          "Removed 年2回 from the English guide tour page description.",
+        ],
+        [
+          "C-018",
+          "英語ガイドツアー",
+          "2024年11月猿島ツアー写真が日本文化体験写真なので削除かYIAからもらう",
+          "Fixed",
+          "Deleted the two mismatched Sarushima gallery images rather than replacing without source photos.",
+        ],
+        [
+          "C-019",
+          "世界の料理教室",
+          "料金（多少変動あり）→（当日現金支払）",
+          "Fixed",
+          "Updated the 料金 row note.",
+        ],
+        [
+          "C-020",
+          "世界の料理教室",
+          "写真キャプション 高知料理→香港料理",
+          "Fixed",
+          "Changed the gallery caption to 2025年7月 香港料理.",
+        ],
+        [
+          "C-021",
+          "世界の料理教室",
+          "2025年アメリカ料理→2025年9月アメリカ料理",
+          "Fixed",
+          "Changed the gallery caption to 2025年9月 アメリカ料理.",
+        ],
+        [
+          "C-022",
+          "世界の料理教室",
+          "世界の味を楽しむ 国名の英訳がない年がある",
+          "Fixed",
+          "Added English country/cuisine translations for every year row.",
+        ],
+
+        [
+          "S-001",
+          "相談・サービス",
+          "すべて見る写真を防災写真に差替え",
+          "Blocked",
+          "No disaster-prep image asset was found in Sanity. Current image left untouched until YIA supplies/identifies a photo.",
+        ],
+        [
+          "S-002",
+          "多言語による生活相談",
+          "説明文の有料相談注記を削除",
+          "Fixed",
+          "Removed the parenthetical paid-consultation note from the description.",
+        ],
+        [
+          "S-003",
+          "多言語による生活相談",
+          "スケジュールの火曜日行を削除",
+          "Fixed",
+          "Removed the Tuesday no-consultation row.",
+        ],
+        [
+          "S-004",
+          "翻訳・通訳",
+          "窓口翻訳 行ないます→行います",
+          "Fixed",
+          "Corrected the verb in the counter translation content.",
+        ],
+        [
+          "S-005",
+          "翻訳・通訳",
+          "窓口翻訳 受付られません→受け付けられません",
+          "Fixed",
+          "Corrected the warning text.",
+        ],
+        [
+          "S-006",
+          "翻訳・通訳",
+          "タイトルと目次 通訳・翻訳派遣→翻訳・翻訳",
+          "Partial",
+          "The target text appears to contain a typo, so the section title was changed to the coherent 翻訳・通訳. Needs confirmation if literal 翻訳・翻訳 was intended.",
+        ],
+        [
+          "S-007",
+          "翻訳・通訳",
+          "受付方法は※で改行",
+          "Fixed",
+          "Inserted a line break before ※ in the受付方法 row.",
+        ],
+        [
+          "S-008",
+          "翻訳・通訳",
+          "翻訳・通訳の赤字 受付られません→受け付けられません",
+          "Fixed",
+          "Corrected the dispatch warning text.",
+        ],
+        [
+          "S-009",
+          "外国人防災生活訓練",
+          "タイトルを外国人防災啓発事業へ変更",
+          "Fixed",
+          "Updated the page title.",
+        ],
+        [
+          "S-010",
+          "外国人防災生活訓練",
+          "説明文を指定文に修正",
+          "Fixed",
+          "Replaced the page description with the requested two-sentence copy.",
+        ],
+        [
+          "S-011",
+          "外国人防災生活訓練",
+          "動画タイトルを外国人のための防災講座へ",
+          "Partial",
+          "Renamed the video link. No separate form-start/form-end fields were found in the current content.",
+        ],
+
+        [
+          "P-001",
+          "フェアトレードコーヒー",
+          "ページ末の申込・引換説明文を変更",
+          "Fixed",
+          "Replaced the final purchase instruction paragraph.",
+        ],
+        [
+          "P-002",
+          "交換学生",
+          "説明文から大学生を削除",
+          "Fixed",
+          "Updated the description to refer to 高校生 only.",
+        ],
+        [
+          "P-003",
+          "交換学生",
+          "派遣事業に2026年度スケジュールを入れる",
+          "Fixed",
+          "Made the dispatch schedule label-table visible with the title 2026年度スケジュール.",
+        ],
+        [
+          "P-004",
+          "交換学生",
+          "コーパスクリスティ 7/19〜8/3",
+          "Fixed",
+          "Updated the 2026 schedule row.",
+        ],
+        [
+          "P-005",
+          "交換学生",
+          "フリマントル 8/10〜8/25",
+          "Fixed",
+          "Added/replaced the 2026 schedule row for Fremantle.",
+        ],
+        ["P-006", "交換学生", "メッドウェイ 8/12〜8/27", "Fixed", "Updated the 2026 schedule row."],
+        [
+          "P-007",
+          "交換学生",
+          "派遣学生の写真を8年度のものに差替え",
+          "Already OK",
+          "The gallery already used 2026年度派遣学生 as the first caption; no change made.",
+        ],
+        [
+          "P-008",
+          "交換学生",
+          "参加するには→募集説明会",
+          "Fixed",
+          "Renamed the section title to 募集説明会.",
+        ],
+        [
+          "P-009",
+          "交換学生",
+          "3月26日は終了したと書く",
+          "Fixed",
+          "Added （終了しました） to the information-session date.",
+        ],
+        [
+          "P-010",
+          "交換学生",
+          "姉妹都市の写真タイトル「姉妹都市」に市サイトをリンク",
+          "Blocked",
+          "The imageCards section has no title-link field. URL noted for a schema/design follow-up: https://www.city.yokosuka.kanagawa.jp/0535/g_info/l100050650.html",
+        ],
+        [
+          "P-011",
+          "交換学生",
+          "フリマントル 2026年度派遣中止を削除",
+          "Fixed",
+          "Cleared the Fremantle note.",
+        ],
+        [
+          "P-012",
+          "交換学生",
+          "ダウンロード 説明会詳細→説明会チラシ",
+          "Fixed",
+          "Renamed the download label.",
+        ],
+
+        [
+          "A-001",
+          "YIAについて",
+          "会員数を令和8年4月1日現在の値へ変更",
+          "Fixed",
+          "Updated the 団体概要 member count row.",
+        ],
+        [
+          "A-002",
+          "YIAについて",
+          "職員を令和8年4月1日現在の値へ変更",
+          "Fixed",
+          "Updated the 団体概要 staff row.",
+        ],
+        [
+          "A-003",
+          "YIAについて",
+          "事業内容の名称・分類を修正",
+          "Fixed",
+          "Updated labels and values for イベント, 教室・講座, 相談・サービス, 交流・協力, including requested additions/removals.",
+        ],
+        [
+          "A-004",
+          "YIAについて",
+          "イベントと相談・サービスの位置を交換",
+          "Fixed",
+          "Reordered the business content rows to put イベント before 相談・サービス.",
+        ],
+        [
+          "A-005",
+          "YIAについて",
+          "あゆみの年表文言を指定内容へ修正",
+          "Fixed",
+          "Updated the listed history rows for 1995, 1996, 1997, 1998, 2001, 2003, 2007, 2008, 2012, 2013, 2014, 2015, 2018, and 2022.",
+        ],
+        [
+          "A-006",
+          "YIAについて",
+          "運営委員会の説明文を修正",
+          "Fixed",
+          "Replaced the operations card definition.",
+        ],
+        ["A-007", "YIAについて", "事業実行委員会→事業執行委員会", "Fixed", "Renamed the term."],
+        [
+          "A-008",
+          "YIAについて",
+          "事務局説明文を修正",
+          "Fixed",
+          "Replaced the secretariat definition.",
+        ],
+        [
+          "M-001",
+          "会員募集",
+          "ボランティア保険 適応対象→適用対象",
+          "Fixed",
+          "Corrected the wording in 会員になると.",
+        ],
+        [
+          "M-002",
+          "賛助会員一覧",
+          "賛助会員ホームページとリンクする",
+          "Blocked",
+          "No sponsor URL list was provided/found. Current table also needs a URL-rendering decision before links can be safely populated.",
+        ],
+      ];
+
+      const labels = ["Fixed", "Partial", "Blocked", "Already OK"];
+      const stats = document.getElementById("stats");
+      const tbody = document.getElementById("rows");
+      const search = document.getElementById("search");
+      const status = document.getElementById("status");
+
+      function renderStats(items) {
+        stats.innerHTML = "";
+        for (const label of labels) {
+          const count = items.filter((item) => item[3] === label).length;
+          const div = document.createElement("div");
+          div.className = "stat";
+          div.innerHTML = `<strong>${count}</strong><span>${label}</span>`;
+          stats.appendChild(div);
+        }
+        const total = document.createElement("div");
+        total.className = "stat";
+        total.innerHTML = `<strong>${items.length}</strong><span>Total TODOs</span>`;
+        stats.appendChild(total);
+      }
+
+      function renderRows() {
+        const q = search.value.trim().toLowerCase();
+        const selected = status.value;
+        const filtered = todos.filter((item) => {
+          const haystack = item.join(" ").toLowerCase();
+          return (!selected || item[3] === selected) && (!q || haystack.includes(q));
+        });
+        renderStats(filtered);
+        tbody.innerHTML = "";
+        for (const item of filtered) {
+          const tr = document.createElement("tr");
+          const labels = ["ID", "Area", "TODO from feedback", "Status", "Exactly how handled"];
+          item.forEach((value, index) => {
+            const td = document.createElement("td");
+            td.dataset.label = labels[index];
+            if (index === 3) {
+              const badge = document.createElement("span");
+              badge.className = `badge ${value.split(" ")[0]}`;
+              badge.textContent = value;
+              td.appendChild(badge);
+            } else {
+              td.textContent = value;
+            }
+            if (index === 1) td.className = "area";
+            if (index === 2) td.className = "request";
+            if (index === 4) td.className = "fix";
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        }
+      }
+
+      search.addEventListener("input", renderRows);
+      status.addEventListener("change", renderRows);
+      renderRows();
+    </script>
+  </body>
+</html>
