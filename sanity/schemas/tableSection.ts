@@ -45,6 +45,7 @@ export default defineType({
               options: {
                 list: [
                   { title: "テキスト (text)", value: "text" },
+                  { title: "リンク (hyperlink)", value: "hyperlink" },
                   { title: "ファイル (file)", value: "file" },
                 ],
               },
@@ -118,6 +119,28 @@ export default defineType({
                     defineField({ name: "assetRef", title: "アセット参照", type: "string" }),
                     defineField({ name: "fileType", title: "ファイル種別", type: "string" }),
                     defineField({ name: "filename", title: "ファイル名", type: "string" }),
+                  ],
+                },
+              ],
+            }),
+            defineField({
+              name: "hyperlinkCells",
+              title: "リンクセル",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    defineField({ name: "colKey", title: "列キー", type: "string" }),
+                    defineField({
+                      name: "href",
+                      title: "URL",
+                      type: "url",
+                      validation: (Rule) =>
+                        Rule.uri({
+                          scheme: ["http", "https", "mailto", "tel"],
+                        }),
+                    }),
                   ],
                 },
               ],

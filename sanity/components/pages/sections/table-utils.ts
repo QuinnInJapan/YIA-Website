@@ -2,7 +2,7 @@
 
 export type I18nArr = { _key: string; value: string }[];
 
-export type TableColumnType = "text" | "file";
+export type TableColumnType = "text" | "file" | "hyperlink";
 export type TableDisplayMode = "table" | "comparisonTable" | "scheduleList" | "scheduleDirectory";
 
 export interface TableColumnDraft {
@@ -19,11 +19,18 @@ export interface FileCellDraft {
   filename?: string | null;
 }
 
+export interface HyperlinkCellDraft {
+  _key: string;
+  colKey: string;
+  href?: string | null;
+}
+
 export interface TableRowDraft {
   _key: string;
   groupLabel?: I18nArr | null;
   cells?: I18nArr[] | null;
   fileCells?: FileCellDraft[];
+  hyperlinkCells?: HyperlinkCellDraft[];
 }
 
 export function emptyBilingual(): I18nArr {
@@ -48,7 +55,7 @@ export function padRowsForNewColumn(rows: TableRowDraft[]): TableRowDraft[] {
 /**
  * When column at colIndex is removed:
  * - Trim the positional cell from `cells`
- * - Remove the matching entry from `fileCells` (by colKey)
+ * - Remove the matching entry from `fileCells` / `hyperlinkCells` (by colKey)
  */
 export function trimRowsForRemovedColumn(
   rows: TableRowDraft[],
@@ -60,6 +67,7 @@ export function trimRowsForRemovedColumn(
     const cells = [...(row.cells ?? [])];
     cells.splice(colIndex, 1);
     const fileCells = (row.fileCells ?? []).filter((fc) => fc.colKey !== colKey);
-    return { ...row, cells, fileCells };
+    const hyperlinkCells = (row.hyperlinkCells ?? []).filter((hc) => hc.colKey !== colKey);
+    return { ...row, cells, fileCells, hyperlinkCells };
   });
 }

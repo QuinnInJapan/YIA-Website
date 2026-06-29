@@ -36,8 +36,10 @@ import {
   type TableColumnType,
   type TableRowDraft,
   type FileCellDraft,
+  type HyperlinkCellDraft,
 } from "./table-utils";
 import type { TableColumn, TableRow } from "@/lib/types";
+import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
 import type { SectionItem } from "../types";
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
@@ -93,6 +95,20 @@ const addRowButtonStyle: React.CSSProperties = {
   fontSize: fs.meta,
   cursor: "pointer",
 };
+
+const columnTypeOptions: { value: TableColumnType; label: string; shortLabel: string }[] = [
+  { value: "text", label: "テキスト", shortLabel: "" },
+  { value: "hyperlink", label: "リンク", shortLabel: "L" },
+  { value: "file", label: "ファイル", shortLabel: "F" },
+];
+
+function columnTypeLabel(type: TableColumnType | undefined): string {
+  return columnTypeOptions.find((option) => option.value === type)?.label ?? "テキスト";
+}
+
+function columnTypeShortLabel(type: TableColumnType | undefined): string {
+  return columnTypeOptions.find((option) => option.value === type)?.shortLabel ?? "";
+}
 
 // ─── Live preview ─────────────────────────────────────────────────────────────
 
@@ -183,22 +199,23 @@ function ColumnForm({
     >
       {/* Type selector */}
       <div style={{ display: "flex", gap: 4 }}>
-        {(["text", "file"] as TableColumnType[]).map((t) => (
+        {columnTypeOptions.map((option) => (
           <button
-            key={t}
+            key={option.value}
             type="button"
-            onClick={() => setType(t)}
+            onClick={() => setType(option.value)}
             style={{
               padding: "2px 10px",
-              border: `1px solid ${type === t ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
+              border: `1px solid ${type === option.value ? "var(--card-focus-ring-color, #5b9cf6)" : "var(--card-border-color)"}`,
               borderRadius: 3,
-              background: type === t ? "var(--card-focus-ring-color, #5b9cf6)" : "transparent",
-              color: type === t ? "#fff" : "var(--card-muted-fg-color)",
+              background:
+                type === option.value ? "var(--card-focus-ring-color, #5b9cf6)" : "transparent",
+              color: type === option.value ? "#fff" : "var(--card-muted-fg-color)",
               fontSize: fs.meta,
               cursor: "pointer",
             }}
           >
-            {t === "text" ? "テキスト" : "ファイル"}
+            {option.label}
           </button>
         ))}
       </div>
@@ -361,6 +378,7 @@ interface SortableRowProps {
   columns: TableColumnDraft[];
   onUpdateGroupLabel: (rowIndex: number, lang: "ja" | "en", value: string) => void;
   onUpdateCell: (rowIndex: number, colIndex: number, lang: "ja" | "en", value: string) => void;
+  onUpdateHyperlinkCell: (rowIndex: number, colKey: string, href: string) => void;
   onDeleteRow: (index: number) => void;
   onPickFile: (state: { rowIndex: number; colKey: string }) => void;
   onClearFileCell: (rowIndex: number, colKey: string) => void;
@@ -372,6 +390,7 @@ function SortableRow({
   columns,
   onUpdateGroupLabel,
   onUpdateCell,
+  onUpdateHyperlinkCell,
   onDeleteRow,
   onPickFile,
   onClearFileCell,
@@ -586,6 +605,7 @@ function SortableRow({
         {columns.map((col, colIndex) => {
           if (col.type === "file") return fileCellTd(col);
           const cell = row.cells?.[colIndex] ?? emptyBilingual();
+          const hyperlinkCell = (row.hyperlinkCells ?? []).find((hc) => hc.colKey === col._key);
           return (
             <td
               key={col._key}
@@ -604,6 +624,30 @@ function SortableRow({
                 placeholder="日本語"
                 style={cellInputStyle}
               />
+              {col.type === "hyperlink" && (
+                <div
+                  style={{
+                    borderTop: "1px solid var(--card-border-color)",
+                    padding: "4px 6px 6px",
+                  }}
+                >
+                  <TextInput
+                    fontSize={0}
+                    type="url"
+                    value={hyperlinkCell?.href ?? ""}
+                    onChange={(e) =>
+                      onUpdateHyperlinkCell(rowIndex, col._key, e.currentTarget.value)
+                    }
+                    onBlur={(e) => {
+                      const normalized = normalizePortableTextHrefInput(e.currentTarget.value);
+                      if (normalized && normalized !== e.currentTarget.value) {
+                        onUpdateHyperlinkCell(rowIndex, col._key, normalized);
+                      }
+                    }}
+                    placeholder="https://example.org"
+                  />
+                </div>
+              )}
             </td>
           );
         })}
@@ -744,13 +788,15 @@ export function TableEditorPanel({
 
   function requestDeleteColumn(index: number) {
     const col = columns[index];
-    const hasData = rows.some(
-      (row) =>
-        !row.groupLabel &&
-        ((col.type !== "file" && (row.cells?.[index] ?? []).some((c) => c.value !== "")) ||
-          (col.type === "file" &&
-            (row.fileCells ?? []).some((fc) => fc.colKey === col._key && fc.assetRef))),
-    );
+    const hasData = rows.some((row) => {
+      if (row.groupLabel) return false;
+      const hasTextData = (row.cells?.[index] ?? []).some((c) => c.value !== "");
+      const hasFileData = (row.fileCells ?? []).some((fc) => fc.colKey === col._key && fc.assetRef);
+      const hasHyperlinkData = (row.hyperlinkCells ?? []).some(
+        (hc) => hc.colKey === col._key && hc.href,
+      );
+      return hasTextData || hasFileData || hasHyperlinkData;
+    });
     if (!hasData) {
       const nextCols = columns.filter((_, i) => i !== index);
       const nextRows = trimRowsForRemovedColumn(rows, index, col._key);
@@ -815,6 +861,25 @@ export function TableEditorPanel({
       const cells = [...(row.cells ?? [])];
       cells[colIndex] = i18nSet(cells[colIndex] ?? emptyBilingual(), lang, value) as I18nArr;
       return { ...row, cells };
+    });
+    setRows(nextRows);
+    onUpdateField("rows", nextRows);
+  }
+
+  function updateHyperlinkCell(rowIndex: number, colKey: string, href: string) {
+    const value = href.trim();
+    const nextRows = rows.map((row, ri) => {
+      if (ri !== rowIndex) return row;
+      const existing = row.hyperlinkCells ?? [];
+      const current = existing.find((cell) => cell.colKey === colKey);
+      const filtered = existing.filter((cell) => cell.colKey !== colKey);
+      if (!value) return { ...row, hyperlinkCells: filtered };
+      const nextCell: HyperlinkCellDraft = {
+        _key: current?._key ?? crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        colKey,
+        href: value,
+      };
+      return { ...row, hyperlinkCells: [...filtered, nextCell] };
     });
     setRows(nextRows);
     onUpdateField("rows", nextRows);
@@ -1086,7 +1151,7 @@ export function TableEditorPanel({
                         {labelEn}
                       </span>
                     )}
-                    {col.type === "file" && (
+                    {col.type && col.type !== "text" && (
                       <span
                         style={{
                           fontSize: 8 /* intentional: tiny icon indicator */,
@@ -1095,7 +1160,7 @@ export function TableEditorPanel({
                           letterSpacing: 0,
                         }}
                       >
-                        ファイル
+                        {columnTypeLabel(col.type)}
                       </span>
                     )}
                     <button
@@ -1234,7 +1299,7 @@ export function TableEditorPanel({
                             }}
                           >
                             {i18nGet(col.label, "ja") || "—"}
-                            {col.type === "file" && (
+                            {columnTypeShortLabel(col.type) && (
                               <span
                                 style={{
                                   marginLeft: 4,
@@ -1243,7 +1308,7 @@ export function TableEditorPanel({
                                   fontWeight: 700,
                                 }}
                               >
-                                F
+                                {columnTypeShortLabel(col.type)}
                               </span>
                             )}
                           </th>
@@ -1269,6 +1334,7 @@ export function TableEditorPanel({
                           columns={columns}
                           onUpdateGroupLabel={updateGroupLabel}
                           onUpdateCell={updateCell}
+                          onUpdateHyperlinkCell={updateHyperlinkCell}
                           onDeleteRow={deleteRow}
                           onPickFile={setFilePicking}
                           onClearFileCell={clearFileCell}

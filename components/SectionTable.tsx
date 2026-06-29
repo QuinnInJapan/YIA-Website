@@ -1,12 +1,36 @@
 import React from "react";
 import { ja, en } from "@/lib/i18n";
 import { fileUrl } from "@/lib/sanity/image";
-import { getDisplayCellContent } from "./table-cell-content";
+import {
+  getDisplayCellContent,
+  getHyperlinkCellHref,
+  type DisplayCellContent,
+} from "./table-cell-content";
 import type { TableColumn, TableRow, FileCellItem } from "@/lib/types";
 
 interface SectionTableProps {
   columns: TableColumn[];
   rows: TableRow[];
+}
+
+function externalLinkProps(href: string) {
+  return /^https?:\/\//i.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : {};
+}
+
+function CellText({ cell }: { cell: DisplayCellContent }) {
+  return (
+    <>
+      <span className="data-table__primary">{cell.primary}</span>
+      {cell.secondary && (
+        <>
+          <br />
+          <span className="data-table__en" lang="en" translate="no">
+            {cell.secondary}
+          </span>
+        </>
+      )}
+    </>
+  );
 }
 
 export default function SectionTable({ columns, rows }: SectionTableProps) {
@@ -74,24 +98,22 @@ export default function SectionTable({ columns, rows }: SectionTableProps) {
                 }
 
                 const cell = getDisplayCellContent(row.cells?.[j]);
+                const href =
+                  col.type === "hyperlink"
+                    ? getHyperlinkCellHref(row.hyperlinkCells, col._key)
+                    : undefined;
                 return (
                   <td
                     className={cell.isSingle ? "data-table__cell--single" : undefined}
                     key={col._key}
                     data-type={col.type ?? "text"}
                   >
-                    {cell.primary ? (
-                      <>
-                        <span className="data-table__primary">{cell.primary}</span>
-                        {cell.secondary && (
-                          <>
-                            <br />
-                            <span className="data-table__en" lang="en" translate="no">
-                              {cell.secondary}
-                            </span>
-                          </>
-                        )}
-                      </>
+                    {cell.primary && href ? (
+                      <a className="data-table__link" href={href} {...externalLinkProps(href)}>
+                        <CellText cell={cell} />
+                      </a>
+                    ) : cell.primary ? (
+                      <CellText cell={cell} />
                     ) : null}
                   </td>
                 );

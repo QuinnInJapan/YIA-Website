@@ -66,7 +66,7 @@ export interface WarningsSection {
 export interface TableColumn {
   _key: string;
   label: I18nString;
-  type?: "text" | "file";
+  type?: "text" | "file" | "hyperlink";
 }
 
 export interface FileCellItem {
@@ -77,11 +77,18 @@ export interface FileCellItem {
   filename?: string | null;
 }
 
+export interface HyperlinkCellItem {
+  _key: string;
+  colKey: string;
+  href?: string | null;
+}
+
 export interface TableRow {
   _key: string;
   groupLabel?: I18nString;
   cells: I18nString[];
   fileCells?: FileCellItem[];
+  hyperlinkCells?: HyperlinkCellItem[];
 }
 
 export interface TableSection {

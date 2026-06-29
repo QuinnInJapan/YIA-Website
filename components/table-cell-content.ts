@@ -1,4 +1,10 @@
 type I18nString = { _key: string; value: string }[];
+type HyperlinkCell = {
+  colKey?: string | null;
+  href?: string | null;
+};
+
+const SAFE_HREF = /^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i;
 
 export interface DisplayCellContent {
   primary: string;
@@ -17,6 +23,14 @@ export function getDisplayCellContent(cell: I18nString | undefined): DisplayCell
     secondary: visibleSecondary,
     isSingle: !visibleSecondary,
   };
+}
+
+export function getHyperlinkCellHref(
+  cells: HyperlinkCell[] | null | undefined,
+  colKey: string,
+): string | undefined {
+  const href = cells?.find((cell) => cell.colKey === colKey)?.href?.trim() ?? "";
+  return SAFE_HREF.test(href) ? href : undefined;
 }
 
 function comparableText(value: string): string {
