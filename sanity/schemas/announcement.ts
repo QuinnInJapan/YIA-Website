@@ -8,12 +8,12 @@ export default defineType({
   icon: BellIcon,
   orderings: [
     {
-      title: "日付（新しい順）",
+      title: "掲載日（新しい順）",
       name: "dateDesc",
       by: [{ field: "date", direction: "desc" }],
     },
     {
-      title: "日付（古い順）",
+      title: "掲載日（古い順）",
       name: "dateAsc",
       by: [{ field: "date", direction: "asc" }],
     },
@@ -42,7 +42,7 @@ export default defineType({
     }),
     defineField({
       name: "slug",
-      title: "スラッグ",
+      title: "公開URL",
       type: "slug",
       options: {
         source: (doc: Record<string, unknown>) => {
@@ -57,8 +57,9 @@ export default defineType({
     }),
     defineField({
       name: "date",
-      title: "日付",
+      title: "掲載日",
       type: "date",
+      description: "お知らせ一覧に表示する日付です。自動公開の予約日時ではありません。",
       initialValue: () => new Date().toISOString().slice(0, 10),
       validation: (Rule) => Rule.required().error("日付は必須です"),
     }),

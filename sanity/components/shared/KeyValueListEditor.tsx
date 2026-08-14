@@ -291,7 +291,7 @@ export function KeyValueListEditor({
                     marginBottom: 3,
                   }}
                 >
-                  English
+                  英語
                 </div>
                 <TextInput
                   fontSize={0}
@@ -311,7 +311,7 @@ export function KeyValueListEditor({
                     marginBottom: 3,
                   }}
                 >
-                  English
+                  英語
                 </div>
                 <AutoTextarea
                   value={i18nGet(getI18n(item, valueField), "en")}

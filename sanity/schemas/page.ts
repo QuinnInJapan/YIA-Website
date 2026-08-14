@@ -36,7 +36,7 @@ export default defineType({
   fields: [
     defineField({
       name: "slug",
-      title: "スラッグ",
+      title: "公開URL",
       type: "string",
       fieldset: "settings",
       description: "このページのURL（変更するとリンクが壊れます。管理者のみ変更可能）",
@@ -46,7 +46,7 @@ export default defineType({
     defineField({ name: "template", title: "テンプレート", type: "string", hidden: true }),
     defineField({
       name: "categoryRef",
-      title: "カテゴリー",
+      title: "カテゴリ",
       type: "reference",
       to: [{ type: "category" }],
       fieldset: "settings",

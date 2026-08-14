@@ -3,7 +3,7 @@ import { TagIcon } from "@sanity/icons";
 
 export default defineType({
   name: "category",
-  title: "カテゴリー",
+  title: "カテゴリ",
   type: "document",
   icon: TagIcon,
   preview: {
@@ -18,21 +18,21 @@ export default defineType({
       name: "label",
       title: "ラベル",
       type: "internationalizedArrayString",
-      description: "カテゴリーの表示名。ナビゲーションやページヘッダーに表示されます。",
+      description: "カテゴリの表示名。ナビゲーションやページヘッダーに表示されます。",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "description",
       title: "説明文",
       type: "internationalizedArrayString",
-      description: "ホームページのカテゴリーバンドに表示される短い説明。",
+      description: "ホームページのカテゴリ欄に表示される短い説明。",
     }),
     defineField({
       name: "heroImage",
       title: "ヒーロー画像",
       type: "image",
       options: { hotspot: true },
-      description: "カテゴリーページ上部の背景画像。ホームページの注目カードにも使用されます。",
+      description: "カテゴリページ上部の背景画像。ホームページの注目カードにも使用されます。",
     }),
   ],
 });

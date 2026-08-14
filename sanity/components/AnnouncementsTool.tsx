@@ -18,6 +18,7 @@ import { AnnouncementPreview } from "./announcements/AnnouncementPreview";
 import { useDeepLink } from "./shared/useDeepLink";
 import { formatStudioDateOnly } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
+import { CollapsibleListPanel } from "./shared/PanelShells";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -166,6 +167,7 @@ export function AnnouncementsTool() {
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [listError, setListError] = useState<string | null>(null);
 
   // Search
   const [searchInput, setSearchInput] = useState("");
@@ -274,8 +276,12 @@ export function AnnouncementsTool() {
         .then(([results, count]) => {
           setItems(results);
           setTotalCount(count);
+          setListError(null);
         })
-        .catch(console.error)
+        .catch((err) => {
+          console.error(err);
+          setListError("お知らせを読み込めませんでした。再読み込みしてください。");
+        })
         .finally(() => setLoading(false));
     },
     [client],
@@ -311,6 +317,7 @@ export function AnnouncementsTool() {
 
   async function handleCreate() {
     try {
+      setListError(null);
       const id = crypto.randomUUID().replace(/-/g, "").slice(0, 22);
       await client.create({
         _id: `drafts.${id}`,
@@ -325,6 +332,7 @@ export function AnnouncementsTool() {
       setEditingId(id);
     } catch (err) {
       console.error("Create failed:", err);
+      setListError("お知らせを作成できませんでした。通信状況を確認して、もう一度お試しください。");
     }
   }
 
@@ -335,23 +343,14 @@ export function AnnouncementsTool() {
   const FILTERS: { mode: FilterMode; label: string }[] = [
     { mode: "all", label: "すべて" },
     { mode: "pinned", label: "固定" },
-    { mode: "upcoming", label: "今後" },
-    { mode: "past", label: "過去" },
+    { mode: "upcoming", label: "掲載日：今日以降" },
+    { mode: "past", label: "掲載日：過去" },
   ];
 
   return (
-    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+    <div className="studio-workspace">
       {/* ── Left: List sidebar ── */}
-      <div
-        style={{
-          width: 340,
-          flexShrink: 0,
-          borderRight: "1px solid var(--card-border-color)",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
+      <CollapsibleListPanel label="お知らせ一覧">
         {/* Sidebar header */}
         <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
           <Stack space={3}>
@@ -361,6 +360,7 @@ export function AnnouncementsTool() {
               </Text>
               <Button
                 icon={AddIcon}
+                aria-label="新しいお知らせを作成"
                 mode="bleed"
                 tone="primary"
                 fontSize={0}
@@ -393,6 +393,29 @@ export function AnnouncementsTool() {
 
         {/* List */}
         <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
+          {listError ? (
+            <div
+              role="alert"
+              style={{
+                padding: "8px 10px",
+                marginBottom: 8,
+                borderRadius: 6,
+                background: "rgba(204, 51, 51, 0.08)",
+                color: "#b42318",
+                fontSize: fs.meta,
+                lineHeight: 1.5,
+              }}
+            >
+              {listError}
+              <button
+                type="button"
+                onClick={() => fetchItems(page, searchQuery, filterMode)}
+                style={{ marginLeft: 8, border: 0, background: "transparent", color: "inherit", textDecoration: "underline", cursor: "pointer" }}
+              >
+                再読み込み
+              </button>
+            </div>
+          ) : null}
           {loading && (
             <div
               style={{
@@ -462,7 +485,7 @@ export function AnnouncementsTool() {
             onNext={() => setPage((p) => p + 1)}
           />
         </div>
-      </div>
+      </CollapsibleListPanel>
 
       {/* ── Center: Editor ── */}
       <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>

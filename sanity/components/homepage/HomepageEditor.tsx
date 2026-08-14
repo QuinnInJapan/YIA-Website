@@ -27,6 +27,11 @@ import type {
   ShowHotspotCropFn,
 } from "./types";
 import type { HomepageMergedState } from "./HomepagePreview";
+import {
+  PublishConfirmation,
+  StudioErrorBanner,
+  type PublishCheck,
+} from "../shared/PublishingUI";
 
 // ── Document state tracker ──────────────────────────
 
@@ -60,6 +65,8 @@ export function HomepageEditor({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"saved" | "dirty" | "saving" | "error">("saved");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Document states
@@ -268,7 +275,7 @@ export function HomepageEditor({
 
   const saveToSanity = useCallback(async () => {
     const pending = new Map(pendingEditsRef.current);
-    if (pending.size === 0) return;
+    if (pending.size === 0) return true;
     pendingEditsRef.current.clear();
 
     setSaving(true);
@@ -369,9 +376,17 @@ export function HomepageEditor({
       }
       await Promise.all(refreshes);
       setSaveStatus("saved");
+      setErrorMessage(null);
+      return true;
     } catch (err) {
       console.error("Save failed:", err);
+      for (const [key, edits] of pending) {
+        const queued = pendingEditsRef.current.get(key) ?? {};
+        pendingEditsRef.current.set(key, { ...edits, ...queued });
+      }
       setSaveStatus("error");
+      setErrorMessage("変更を保存できませんでした。通信状況を確認して、もう一度お試しください。");
+      return false;
     } finally {
       setSaving(false);
     }
@@ -427,6 +442,39 @@ export function HomepageEditor({
 
   // ── Publish all ──────────────────────────────────
 
+  const publishChanges = useMemo(() => {
+    const changes: string[] = [];
+    if (homepageState.draft || Object.keys(homepageState.edits).length > 0) changes.push("ヒーロー・活動");
+    if (aboutState.draft || Object.keys(aboutState.edits).length > 0) changes.push("YIAについて");
+    if (featuredState.draft || Object.keys(featuredState.edits).length > 0) changes.push("注目カテゴリ");
+    if (settingsState.draft || Object.keys(settingsState.edits).length > 0) changes.push("サイト設定");
+    if (sidebarState.draft || Object.keys(sidebarState.edits).length > 0) changes.push("サイドバー・フッター");
+    for (const [, state] of categoriesState) {
+      if (state.draft || Object.keys(state.edits).length > 0) changes.push("カテゴリ情報");
+    }
+    return changes;
+  }, [homepageState, aboutState, featuredState, settingsState, sidebarState, categoriesState]);
+
+  const publishChecks = useMemo<PublishCheck[]>(
+    () => [
+      {
+        label: `${publishChanges.length}件の変更`,
+        detail: publishChanges.join("、") || "公開する変更はありません。",
+        tone: publishChanges.length > 0 ? "ok" : "error",
+      },
+      {
+        label: "注目カテゴリ",
+        detail: featuredValid ? "4件選択済み" : "4件選択してください。",
+        tone: featuredValid ? "ok" : "error",
+      },
+    ],
+    [featuredValid, publishChanges],
+  );
+
+  function handleRequestPublish() {
+    setPublishOpen(true);
+  }
+
   async function handlePublish() {
     // Flush any pending saves first
     if (saveTimerRef.current) {
@@ -434,7 +482,8 @@ export function HomepageEditor({
       saveTimerRef.current = null;
     }
     if (pendingEditsRef.current.size > 0) {
-      await saveToSanity();
+      const saved = await saveToSanity();
+      if (!saved) return;
     }
 
     setSaving(true);
@@ -444,22 +493,23 @@ export function HomepageEditor({
       const toRefresh: Array<{ type: DocType; pubId: string; draftId: string }> = [];
 
       // Helper to publish a single doc
-      function queuePublish(docType: DocType, published: any, draft: any) {
-        if (!draft) return;
-        const pubId = draft._id.replace(/^drafts\./, "");
-        const { _rev, _updatedAt, ...rest } = draft;
-        transaction.createOrReplace({ ...rest, _id: pubId, _type: draft._type });
+      function queuePublish(docType: DocType, source: any, changed: boolean) {
+        if (!source || !changed) return;
+        const pubId = source._id.replace(/^drafts\./, "");
+        const { _rev, _updatedAt, ...rest } = source;
+        transaction.createOrReplace({ ...rest, _id: pubId, _type: source._type });
         transaction.delete(`drafts.${pubId}`);
         toRefresh.push({ type: docType, pubId, draftId: `drafts.${pubId}` });
       }
 
-      queuePublish("homepage", homepageState.published, homepageState.draft);
-      queuePublish("homepageAbout", aboutState.published, aboutState.draft);
-      queuePublish("homepageFeatured", featuredState.published, featuredState.draft);
-      queuePublish("siteSettings", settingsState.published, settingsState.draft);
-      queuePublish("sidebar", sidebarState.published, sidebarState.draft);
+      queuePublish("homepage", homepage, !!homepageState.draft || Object.keys(homepageState.edits).length > 0);
+      queuePublish("homepageAbout", about, !!aboutState.draft || Object.keys(aboutState.edits).length > 0);
+      queuePublish("homepageFeatured", featured, !!featuredState.draft || Object.keys(featuredState.edits).length > 0);
+      queuePublish("siteSettings", siteSettings, !!settingsState.draft || Object.keys(settingsState.edits).length > 0);
+      queuePublish("sidebar", sidebar, !!sidebarState.draft || Object.keys(sidebarState.edits).length > 0);
       for (const [pubId, catState] of categoriesState) {
-        queuePublish("category", catState.published, catState.draft);
+        const source = categories.find((category) => category._id.replace(/^drafts\./, "") === pubId);
+        queuePublish("category", source, !!catState.draft || Object.keys(catState.edits).length > 0);
       }
 
       if (toRefresh.length === 0) {
@@ -504,9 +554,14 @@ export function HomepageEditor({
       }
 
       setSaveStatus("saved");
+      setErrorMessage(null);
+      setPublishOpen(false);
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
+      setErrorMessage(
+        "公開できませんでした。下書きは残っています。通信状況を確認して、もう一度お試しください。",
+      );
     } finally {
       setSaving(false);
     }
@@ -583,11 +638,20 @@ export function HomepageEditor({
             tone="positive"
             fontSize={1}
             padding={2}
-            onClick={handlePublish}
+            onClick={handleRequestPublish}
             disabled={saving || !hasAnyDrafts || !featuredValid}
           />
         </Flex>
       </Box>
+
+      {errorMessage ? (
+        <StudioErrorBanner
+          message={errorMessage}
+          actionLabel="再試行"
+          onAction={saveToSanity}
+          onDismiss={() => setErrorMessage(null)}
+        />
+      ) : null}
 
       {/* Scrollable editor body */}
       <div ref={scrollRef} style={{ flex: 1, overflow: "auto" }}>
@@ -643,6 +707,16 @@ export function HomepageEditor({
           sidebar: sidebarState,
         })}
       />
+      {publishOpen ? (
+        <PublishConfirmation
+          title="ホームページの変更を公開しますか？"
+          description="表示中の変更だけでなく、下書きになっている関連設定もまとめて公開します。"
+          checks={publishChecks}
+          busy={saving}
+          onConfirm={handlePublish}
+          onClose={() => setPublishOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }

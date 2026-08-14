@@ -10,6 +10,7 @@ import { safePortableTextHref } from "./portable-text-link";
 
 interface ImageFileValue {
   file?: SanityImage;
+  alt?: I18nString;
   caption?: I18nString;
 }
 
@@ -38,7 +39,7 @@ export const ptComponents: PortableTextComponents = {
         <figure style={{ margin: "1em 0" }}>
           <img
             src={src}
-            alt="[記事内の画像]"
+            alt={value.alt?.trim() || ""}
             style={{ maxWidth: "100%", height: "auto", borderRadius: 4 }}
           />
         </figure>
@@ -61,7 +62,7 @@ export const ptComponents: PortableTextComponents = {
         .map((img) => ({
           src: imageUrl(img.file!),
           lqip: imageLqip(img.file!),
-          alt: ja(img.caption) || "",
+          alt: ja(img.alt) || ja(img.caption) || "",
           captionJa: ja(img.caption),
           captionEn: en(img.caption),
         }));

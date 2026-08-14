@@ -23,7 +23,7 @@ export default defineType({
     }),
     defineField({
       name: "titleEn",
-      title: "タイトル（English）",
+      title: "タイトル（英語）",
       type: "string",
       description: "セクションの見出し（英語）。",
     }),
@@ -45,7 +45,7 @@ export default defineType({
     }),
     defineField({
       name: "bodyEn",
-      title: "本文（English）",
+      title: "本文（英語）",
       type: "text",
       rows: 5,
       description: "英語の紹介文。",

@@ -19,6 +19,7 @@ import { CombinedGalleryPanel, type GalleryImageItem } from "./blog/GalleryPanel
 import { useDeepLink } from "./shared/useDeepLink";
 import { formatStudioDateTime } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
+import { CollapsibleListPanel } from "./shared/PanelShells";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -177,6 +178,7 @@ export function BlogPostsTool() {
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [listError, setListError] = useState<string | null>(null);
 
   // Search
   const [searchInput, setSearchInput] = useState("");
@@ -300,8 +302,12 @@ export function BlogPostsTool() {
         .then(([items, count]) => {
           setPosts(items);
           setTotalCount(count);
+          setListError(null);
         })
-        .catch(console.error)
+        .catch((err) => {
+          console.error(err);
+          setListError("ブログ記事を読み込めませんでした。再読み込みしてください。");
+        })
         .finally(() => setLoading(false));
     },
     [client],
@@ -337,6 +343,7 @@ export function BlogPostsTool() {
 
   async function handleCreate() {
     try {
+      setListError(null);
       const id = crypto.randomUUID().replace(/-/g, "").slice(0, 22);
       await client.create({
         _id: `drafts.${id}`,
@@ -349,6 +356,7 @@ export function BlogPostsTool() {
       setEditingId(id);
     } catch (err) {
       console.error("Create failed:", err);
+      setListError("ブログ記事を作成できませんでした。通信状況を確認して、もう一度お試しください。");
     }
   }
 
@@ -357,18 +365,9 @@ export function BlogPostsTool() {
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   return (
-    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+    <div className="studio-workspace">
       {/* ── Left: Post list sidebar ── */}
-      <div
-        style={{
-          width: 340,
-          flexShrink: 0,
-          borderRight: "1px solid var(--card-border-color)",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
+      <CollapsibleListPanel label="ブログ一覧">
         {/* Sidebar header */}
         <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
           <Stack space={3}>
@@ -378,6 +377,7 @@ export function BlogPostsTool() {
               </Text>
               <Button
                 icon={AddIcon}
+                aria-label="新しいブログ記事を作成"
                 mode="bleed"
                 tone="primary"
                 fontSize={0}
@@ -418,8 +418,31 @@ export function BlogPostsTool() {
           </Stack>
         </Box>
 
-        {/* Sidebar post list */}
-        <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
+      {/* Sidebar post list */}
+      <div style={{ flex: 1, overflow: "auto", padding: 8, position: "relative" }}>
+        {listError ? (
+          <div
+            role="alert"
+            style={{
+              padding: "8px 10px",
+              marginBottom: 8,
+              borderRadius: 6,
+              background: "rgba(204, 51, 51, 0.08)",
+              color: "#b42318",
+              fontSize: fs.meta,
+              lineHeight: 1.5,
+            }}
+          >
+            {listError}
+            <button
+              type="button"
+              onClick={() => fetchPosts(page, searchQuery, activeCategory)}
+              style={{ marginLeft: 8, border: 0, background: "transparent", color: "inherit", textDecoration: "underline", cursor: "pointer" }}
+            >
+              再読み込み
+            </button>
+          </div>
+        ) : null}
           {loading && (
             <div
               style={{
@@ -500,7 +523,7 @@ export function BlogPostsTool() {
             onNext={() => setPage((p) => p + 1)}
           />
         </div>
-      </div>
+      </CollapsibleListPanel>
 
       {/* ── Center: Editor ── */}
       <div
@@ -531,6 +554,7 @@ export function BlogPostsTool() {
             onOpenFilePicker={handleOpenFilePicker}
             onShowHotspotCrop={handleShowHotspotCrop}
             onOpenDocumentDetail={handleOpenDocumentDetail}
+            categoryOptions={categories}
           />
         ) : (
           <Flex

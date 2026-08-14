@@ -26,12 +26,14 @@ export function CategoryCreationForm({
   const [heroImageRef, setHeroImageRef] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [showImagePicker, setShowImagePicker] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const canSave = label.some((l) => l.value.trim()) && !!heroImageRef;
 
   const handleSave = useCallback(async () => {
     if (!canSave || saving) return;
     setSaving(true);
+    setError(null);
     try {
       const categoryId = `category-${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`;
       const heroImage = {
@@ -53,6 +55,7 @@ export function CategoryCreationForm({
       onCreated(categoryId, categoryDoc);
     } catch (err) {
       console.error("Failed to create category:", err);
+      setError("カテゴリを作成できませんでした。通信状況を確認して、もう一度お試しください。");
     } finally {
       setSaving(false);
     }
@@ -86,6 +89,21 @@ export function CategoryCreationForm({
       </Box>
       <div style={{ flex: 1, overflow: "auto", padding: 16 }}>
         <BilingualInput label="カテゴリ名" value={label} onChange={setLabel} />
+        {error ? (
+          <div
+            role="alert"
+            style={{
+              padding: "10px 12px",
+              marginBottom: 16,
+              borderRadius: 6,
+              background: "rgba(204, 51, 51, 0.08)",
+              color: "#b42318",
+              fontSize: fs.label,
+            }}
+          >
+            {error}
+          </div>
+        ) : null}
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
             ヒーロー画像 *

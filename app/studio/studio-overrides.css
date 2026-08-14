@@ -92,3 +92,112 @@
   height: unset;
   display: unset;
 }
+
+/* ── Responsive custom Studio workspace ───────────────── */
+.studio-workspace {
+  position: relative;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.studio-list-panel {
+  position: relative;
+  width: 340px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--card-border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 160ms ease;
+}
+
+.studio-list-panel--collapsed,
+.studio-right-panel--collapsed {
+  width: 44px !important;
+  min-width: 44px !important;
+}
+
+.studio-right-panel {
+  width: 50%;
+  max-width: 800px;
+  min-width: 400px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--card-border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg-color);
+  transition: width 160ms ease, min-width 160ms ease;
+}
+
+.studio-panel-collapse-button {
+  position: absolute;
+  z-index: 5;
+  top: 8px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--card-border-color);
+  border-radius: 6px;
+  background: var(--card-bg-color);
+  color: var(--card-fg-color);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.studio-panel-collapse-button--left {
+  right: 8px;
+}
+
+.studio-panel-collapse-button--right {
+  left: 8px;
+}
+
+.studio-panel-rail-button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--card-muted-fg-color);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+}
+
+.studio-panel-rail-button span {
+  writing-mode: vertical-rl;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 1200px) {
+  .studio-list-panel {
+    width: 280px;
+  }
+
+  .studio-right-panel {
+    width: 42%;
+    min-width: 340px;
+  }
+}
+
+@media (max-width: 960px) {
+  .studio-list-panel {
+    width: 240px;
+  }
+
+  .studio-right-panel:not(.studio-right-panel--collapsed) {
+    position: absolute;
+    z-index: 20;
+    inset: 0 0 0 auto;
+    width: min(520px, calc(100% - 88px));
+    min-width: 0;
+    max-width: none;
+    box-shadow: -12px 0 32px rgba(15, 25, 50, 0.18);
+  }
+}

@@ -21,6 +21,13 @@ import { formatStudioRelativeTime } from "../shared/date-format";
 import { BodyEditor } from "./PteEditor";
 import type { GalleryImageItem } from "./GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
+import { BilingualInput } from "../shared/BilingualInput";
+import {
+  PublishConfirmation,
+  ActionConfirmation,
+  StudioErrorBanner,
+  type PublishCheck,
+} from "../shared/PublishingUI";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -79,6 +86,7 @@ export function PostEditor({
   onOpenFilePicker,
   onShowHotspotCrop,
   onOpenDocumentDetail,
+  categoryOptions = [],
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
@@ -103,6 +111,7 @@ export function PostEditor({
     onUpdate: (doc: DocumentLinkItem) => void,
     onRemove: () => void,
   ) => void;
+  categoryOptions?: string[];
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
   const builder = createImageUrlBuilder(client);
@@ -114,6 +123,9 @@ export function PostEditor({
   const [saveStatus, setSaveStatus] = useState<
     "saved" | "dirty" | "saving" | "discarding" | "error"
   >("saved");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"discard" | "delete" | null>(null);
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
@@ -137,6 +149,13 @@ export function PostEditor({
   // Track local edits (only apply when viewing draft)
   const [edits, setEdits] = useState<Partial<BlogPostDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    },
+    [],
+  );
 
   // Merged doc = fetched + local edits
   const merged = useMemo(() => {
@@ -174,7 +193,7 @@ export function PostEditor({
   const saveToSanity = useCallback(
     async (updates: Partial<BlogPostDoc>) => {
       const baseDoc = draftDoc ?? publishedDoc;
-      if (!baseDoc) return;
+      if (!baseDoc) return false;
       setSaving(true);
       setSaveStatus("saving");
       try {
@@ -189,9 +208,13 @@ export function PostEditor({
         );
         if (updated) setDraftDoc(updated);
         setSaveStatus("saved");
+        setErrorMessage(null);
+        return true;
       } catch (err) {
         console.error("Save failed:", err);
         setSaveStatus("error");
+        setErrorMessage("変更を保存できませんでした。通信状況を確認して、もう一度お試しください。");
+        return false;
       } finally {
         setSaving(false);
       }
@@ -211,19 +234,64 @@ export function PostEditor({
 
   // ── Publish ────────────────────────────────────────────
 
+  const publishChecks = useMemo<PublishCheck[]>(() => {
+    if (!merged) return [];
+    const titleJa = i18nGet(merged.title, "ja").trim();
+    const altJa = i18nGet(merged.heroImage?.alt, "ja").trim();
+    const hasJapaneseBody = i18nGetBody(merged.body, "ja").length > 0;
+    return [
+      {
+        label: "日本語タイトル",
+        detail: titleJa || "日本語タイトルを入力してください。",
+        tone: titleJa ? "ok" : "error",
+      },
+      {
+        label: "公開URL",
+        detail: merged.slug?.current || "公開URLを入力してください。",
+        tone: merged.slug?.current ? "ok" : "error",
+      },
+      {
+        label: "公開日",
+        detail: merged.publishedAt ? merged.publishedAt.slice(0, 10) : "公開日を入力してください。",
+        tone: merged.publishedAt ? "ok" : "error",
+      },
+      {
+        label: "日本語本文",
+        detail: hasJapaneseBody ? "入力済み" : "日本語本文を入力してください。",
+        tone: hasJapaneseBody ? "ok" : "error",
+      },
+      ...(merged.heroImage?.asset?._ref
+        ? [
+            {
+              label: "画像の代替テキスト",
+              detail: altJa || "未入力（読み上げ利用者向けの説明を推奨します）",
+              tone: altJa ? ("ok" as const) : ("warning" as const),
+            },
+          ]
+        : []),
+    ];
+  }, [merged]);
+
+  function handleRequestPublish() {
+    setPublishOpen(true);
+  }
+
   async function handlePublish() {
     if (!merged) return;
+    const source = merged;
     try {
       setSaving(true);
       setSaveStatus("saving");
       const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
-      // Get latest draft
-      const draft = await client.fetch<BlogPostDoc | null>(
-        `*[_id == $draftId][0] ${DOC_PROJECTION}`,
-        { draftId },
-      );
-      const source = draft ?? merged;
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      if (Object.keys(edits).length > 0) {
+        const saved = await saveToSanity(edits);
+        if (!saved) return;
+      }
 
       // Create/replace published version
       await client.createOrReplace(publishedDocumentForDraft(source, pubId, "blogPost"));
@@ -239,10 +307,15 @@ export function PostEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setErrorMessage(null);
+      setPublishOpen(false);
       onDraftChange?.();
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
+      setErrorMessage(
+        "公開できませんでした。下書きは残っています。通信状況を確認して、もう一度お試しください。",
+      );
     } finally {
       setSaving(false);
     }
@@ -251,7 +324,6 @@ export function PostEditor({
   // ── Discard draft ──────────────────────────────────────
 
   async function handleDiscardDraft() {
-    if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
     const { publishedId: pubId, draftId } = documentPairIds(documentId);
@@ -265,6 +337,7 @@ export function PostEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setConfirmAction(null);
       onDraftChange?.();
     } catch (err) {
       console.error("Discard draft failed:", err);
@@ -277,12 +350,11 @@ export function PostEditor({
   // ── Delete post ───────────────────────────────────────
 
   async function handleDeletePost() {
-    const label = !publishedDoc ? "この下書き" : "この記事（公開版・下書き含む）";
-    if (!confirm(`${label}を完全に削除しますか？この操作は元に戻せません。`)) return;
     const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       await client.delete(pubId).catch(() => {});
+      setConfirmAction(null);
       onDelete();
     } catch (err) {
       console.error("Delete failed:", err);
@@ -417,17 +489,18 @@ export function PostEditor({
                 tone="caution"
                 fontSize={0}
                 padding={2}
-                onClick={handleDiscardDraft}
+                onClick={() => setConfirmAction("discard")}
                 disabled={saving}
               />
             )}
             <Button
               icon={TrashIcon}
+              aria-label="この記事を削除"
               mode="ghost"
               tone="critical"
               fontSize={0}
               padding={2}
-              onClick={handleDeletePost}
+              onClick={() => setConfirmAction("delete")}
               disabled={saving}
             />
             <Button
@@ -436,12 +509,21 @@ export function PostEditor({
               tone="positive"
               fontSize={1}
               padding={2}
-              onClick={handlePublish}
+              onClick={handleRequestPublish}
               disabled={saving || !hasDraft}
             />
           </Flex>
         </Flex>
       </Box>
+
+      {errorMessage ? (
+        <StudioErrorBanner
+          message={errorMessage}
+          actionLabel="再試行"
+          onAction={() => saveToSanity(edits)}
+          onDismiss={() => setErrorMessage(null)}
+        />
+      ) : null}
 
       {/* Content area — title, metadata, body editor */}
       {!merged ? (
@@ -537,6 +619,15 @@ export function PostEditor({
                   + 画像を追加
                 </button>
               )}
+              {merged.heroImage?.asset?._ref ? (
+                <div style={{ marginTop: 10 }}>
+                  <BilingualInput
+                    label="画像の代替テキスト（推奨）"
+                    value={merged.heroImage.alt}
+                    onChange={(alt) => updateField("heroImage", { ...merged.heroImage, alt })}
+                  />
+                </div>
+              ) : null}
             </div>
 
             {/* Title fields */}
@@ -558,7 +649,7 @@ export function PostEditor({
               <div
                 style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
               >
-                タイトル（English）
+                タイトル（英語）
               </div>
               <TextInput
                 fontSize={1}
@@ -589,7 +680,7 @@ export function PostEditor({
                     marginBottom: 6,
                   }}
                 >
-                  スラッグ
+                  公開URL
                 </div>
                 <TextInput
                   fontSize={0}
@@ -643,15 +734,24 @@ export function PostEditor({
                     marginBottom: 6,
                   }}
                 >
-                  カテゴリー
+                  カテゴリ
                 </div>
                 <TextInput
                   fontSize={0}
+                  list="blog-category-options"
                   value={i18nGet(merged.category, "ja")}
                   onChange={(e) =>
                     updateField("category", i18nSet(merged.category, "ja", e.currentTarget.value))
                   }
                 />
+                <datalist id="blog-category-options">
+                  {categoryOptions.map((category) => (
+                    <option key={category} value={category} />
+                  ))}
+                </datalist>
+                <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
+                  既存のカテゴリ名を選ぶと、表記ゆれを防げます。
+                </div>
               </div>
               <div style={{ gridColumn: "1 / -1" }}>
                 <div
@@ -730,7 +830,7 @@ export function PostEditor({
                           bodyLang === l ? "var(--card-bg-color)" : "var(--card-muted-fg-color)",
                       }}
                     >
-                      {l === "ja" ? "日本語" : "EN"}
+                      {l === "ja" ? "日本語" : "英語"}
                     </button>
                   ))}
                 </div>
@@ -769,6 +869,37 @@ export function PostEditor({
       )}
 
       {merged && <RawJsonButton getDocument={() => merged} />}
+      {publishOpen ? (
+        <PublishConfirmation
+          title="ブログ記事を公開しますか？"
+          description="保存中の変更を反映してから、この記事を公開します。"
+          checks={publishChecks}
+          busy={saving}
+          onConfirm={handlePublish}
+          onClose={() => setPublishOpen(false)}
+        />
+      ) : null}
+      {confirmAction === "discard" ? (
+        <ActionConfirmation
+          title="下書きを破棄しますか？"
+          description="未公開の変更を削除し、現在公開されている内容に戻します。この操作は元に戻せません。"
+          confirmLabel="下書きを破棄"
+          tone="caution"
+          busy={saving}
+          onConfirm={handleDiscardDraft}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
+      {confirmAction === "delete" ? (
+        <ActionConfirmation
+          title="この記事を削除しますか？"
+          description="公開版と下書きを完全に削除します。この操作は元に戻せません。"
+          confirmLabel="記事を削除"
+          busy={saving}
+          onConfirm={handleDeletePost}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
     </div>
   );
 }

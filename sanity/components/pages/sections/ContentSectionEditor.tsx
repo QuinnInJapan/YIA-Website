@@ -61,7 +61,7 @@ export function ContentSectionEditor({
               marginBottom: 3,
             }}
           >
-            English
+            英語
           </div>
           <SimpleBodyEditor
             initialValue={i18nGetBody(body, "en")}

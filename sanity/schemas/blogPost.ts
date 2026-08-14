@@ -51,9 +51,9 @@ export default defineType({
     }),
     defineField({
       name: "slug",
-      title: "スラッグ",
+      title: "公開URL",
       type: "slug",
-      description: "URLに使用されるスラッグ。タイトルから自動生成できます。",
+      description: "記事のURLに使用します。公開後に変更すると、以前のリンクが使えなくなります。",
       options: {
         source: (doc: Record<string, unknown>) => {
           const title = doc.title as { _key: string; value: string }[] | undefined;
@@ -72,7 +72,7 @@ export default defineType({
             .slice(0, 96),
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required().error("スラッグは必須です"),
+      validation: (Rule) => Rule.required().error("公開URLは必須です"),
     }),
     defineField({
       name: "author",
@@ -90,9 +90,9 @@ export default defineType({
     }),
     defineField({
       name: "category",
-      title: "カテゴリー",
+      title: "カテゴリ",
       type: "internationalizedArrayString",
-      description: "記事のカテゴリータグ（任意）。カード上にラベルとして表示されます。",
+      description: "記事のカテゴリ（任意）。既存の表記に合わせると一覧で探しやすくなります。",
     }),
     defineField({
       name: "heroImage",

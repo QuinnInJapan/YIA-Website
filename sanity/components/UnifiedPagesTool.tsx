@@ -27,6 +27,7 @@ import type { MiddlePanelState, NavItemRaw, PageDoc } from "./unified-pages/type
 import type { SectionTypeName, SectionItem } from "./pages/types";
 import { useClient } from "sanity";
 import { FocusProvider } from "./shared/FocusContext";
+import { CollapsibleListPanel } from "./shared/PanelShells";
 
 // Draft page IDs subscription query
 const DRAFT_PAGE_IDS_QUERY = `*[_id in path("drafts.page-*")]._id`;
@@ -427,18 +428,9 @@ export function UnifiedPagesTool() {
 
   return (
     <FocusProvider>
-      <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+      <div className="studio-workspace">
         {/* ── Left: Category tree ── */}
-        <div
-          style={{
-            width: 340,
-            flexShrink: 0,
-            borderRight: "1px solid var(--card-border-color)",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-          }}
-        >
+        <CollapsibleListPanel label="ページ一覧">
           <LeftPanel
             loading={navData.loading}
             saveStatus={navData.saveStatus}
@@ -454,7 +446,7 @@ export function UnifiedPagesTool() {
             onReorderCategories={navData.publishCategoryReorder}
             onReorderModeChange={setIsReorderMode}
           />
-        </div>
+        </CollapsibleListPanel>
 
         {/* ── Center: Middle panel ── */}
         <div

@@ -41,6 +41,7 @@ export interface Document {
 
 export interface ImageFile {
   file: SanityImage;
+  alt?: I18nString;
   caption?: I18nString;
 }
 

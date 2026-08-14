@@ -6,6 +6,7 @@ import { blogPostsPlugin } from "./sanity/components/blogPostsPlugin";
 import { announcementsPlugin } from "./sanity/components/announcementsPlugin";
 import { homepagePlugin } from "./sanity/components/homepagePlugin";
 import { unifiedPagesPlugin } from "./sanity/components/unifiedPagesPlugin";
+import { draftsPlugin } from "./sanity/components/draftsPlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 
@@ -21,11 +22,12 @@ export default defineConfig({
     announcementsPlugin(),
     blogPostsPlugin(),
     mediaPlugin(),
+    draftsPlugin(),
     jaJPLocale(),
     internationalizedArray({
       languages: [
         { id: "ja", title: "日本語" },
-        { id: "en", title: "English" },
+        { id: "en", title: "英語" },
       ],
       fieldTypes: [
         defineField({ name: "string", type: "string", title: " " }),
@@ -73,6 +75,14 @@ export default defineConfig({
             {
               type: "image",
               options: { hotspot: true, accept: "image/*" },
+              fields: [
+                defineField({
+                  name: "alt",
+                  type: "string",
+                  title: "代替テキスト",
+                  description: "画像が見えない場合に内容を伝える短い説明。日本語の入力を推奨します。",
+                }),
+              ],
             },
             {
               type: "object",

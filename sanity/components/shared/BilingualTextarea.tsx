@@ -95,7 +95,7 @@ export function BilingualTextarea({
               marginBottom: 3,
             }}
           >
-            English
+            英語
           </div>
           <AutoTextarea
             value={i18nGet(value, "en")}

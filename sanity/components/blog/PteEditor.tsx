@@ -708,6 +708,21 @@ export function BodyEditor({
   const updateGalleryImagesRef = useRef(updateGalleryImages);
   updateGalleryImagesRef.current = updateGalleryImages;
 
+  const [blockVersion, setBlockVersion] = useState(0);
+  const updateBlockField = useCallback(
+    (blockKey: string, field: string, fieldValue: unknown) => {
+      const next = valueRef.current.map((block) =>
+        block._key === blockKey
+          ? ({ ...block, [field]: fieldValue } as unknown as PortableTextBlock)
+          : block,
+      );
+      valueRef.current = next;
+      onChange(next);
+      setBlockVersion((version) => version + 1);
+    },
+    [onChange],
+  );
+
   const renderBlock: RenderBlockFunction = useCallback(
     (props) => {
       const selected = props.selected;
@@ -724,13 +739,14 @@ export function BodyEditor({
           | { _ref?: string }
           | undefined;
         const blockKey = (props.value as Record<string, unknown>)?._key as string | undefined;
+        const alt = ((props.value as Record<string, unknown>)?.alt as string) ?? "";
         if (asset?._ref) {
           const url = builder.image(asset._ref).width(800).auto("format").url();
           return (
             <div style={{ margin: "1em 0", position: "relative", ...selectionRing }}>
               <img
                 src={url}
-                alt=""
+                alt={alt}
                 style={{
                   display: "block",
                   maxWidth: "100%",
@@ -740,6 +756,31 @@ export function BodyEditor({
               {!readOnly && blockKey && (
                 <RemoveBlockButton blockKey={blockKey} onRemove={removeBlock} />
               )}
+              {!readOnly && selected && blockKey ? (
+                <label
+                  onMouseDown={(event) => event.stopPropagation()}
+                  style={{ display: "block", marginTop: 8, fontSize: fs.meta, lineHeight: 1.5 }}
+                >
+                  代替テキスト（推奨）
+                  <input
+                    type="text"
+                    value={alt}
+                    onChange={(event) => updateBlockField(blockKey, "alt", event.currentTarget.value)}
+                    placeholder="画像の内容を短く説明"
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      marginTop: 4,
+                      padding: "7px 9px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 4,
+                      background: "var(--card-bg-color)",
+                      color: "var(--card-fg-color)",
+                      font: "inherit",
+                    }}
+                  />
+                </label>
+              ) : null}
             </div>
           );
         }
@@ -912,7 +953,16 @@ export function BodyEditor({
       return <>{props.children}</>;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [builder, readOnly, removeBlock, onOpenGalleryEditor, galleryVersion, activeGalleryBlockKey],
+    [
+      builder,
+      readOnly,
+      removeBlock,
+      onOpenGalleryEditor,
+      galleryVersion,
+      activeGalleryBlockKey,
+      blockVersion,
+      updateBlockField,
+    ],
   );
 
   // Shrink + fade the drag ghost for block objects

@@ -66,10 +66,10 @@ export function ProgramCardsSection({
 
   return (
     <div onFocusCapture={() => setFocus("programCards")} onBlurCapture={clearFocus}>
-      <SectionWrapper id="section-programs" title="注目カテゴリー (Featured Categories)" onExpand={() => setFocus("programCards")}>
+      <SectionWrapper id="section-programs" title="注目カテゴリ" onExpand={() => setFocus("programCards")}>
         <Stack space={2}>
           <Text size={0} muted>
-            表示するカテゴリーを選択（ちょうど{MAX_FEATURED}
+            表示するカテゴリを選択（ちょうど{MAX_FEATURED}
             件必要）。順序はナビゲーションに従います。
           </Text>
           <Card border radius={2} padding={1}>

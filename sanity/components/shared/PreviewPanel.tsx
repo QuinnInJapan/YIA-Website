@@ -41,6 +41,7 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
               type="button"
               onClick={() => setMode("desktop")}
               title="デスクトップ"
+              aria-pressed={mode === "desktop"}
               style={{
                 padding: "2px 8px",
                 border: "none",
@@ -51,12 +52,13 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
                 lineHeight: 1.5,
               }}
             >
-              PC
+              パソコン
             </button>
             <button
               type="button"
               onClick={() => setMode("mobile")}
               title="モバイル"
+              aria-pressed={mode === "mobile"}
               style={{
                 padding: "2px 8px",
                 border: "none",
@@ -68,7 +70,7 @@ export function PreviewPanel({ children, onClose }: { children: ReactNode; onClo
                 lineHeight: 1.5,
               }}
             >
-              SP
+              スマホ
             </button>
           </div>
           {onClose && (

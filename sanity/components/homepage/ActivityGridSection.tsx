@@ -284,7 +284,7 @@ export function ActivityGridSection({
             }
           />
         </FieldLabel>
-        <FieldLabel label="統計ラベル（English）">
+        <FieldLabel label="統計ラベル（英語）">
           <TextInput
             fontSize={1}
             value={i18nGet(stat?.label, "en")}

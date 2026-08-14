@@ -26,6 +26,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "alt",
+      title: "代替テキスト",
+      type: "internationalizedArrayString",
+      description: "画像が見えない場合に内容を伝える短い説明。日本語の入力を推奨します。",
+    }),
+    defineField({
       name: "caption",
       title: "キャプション",
       type: "internationalizedArrayString",

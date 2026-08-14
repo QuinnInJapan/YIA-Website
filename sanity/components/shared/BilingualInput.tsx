@@ -54,7 +54,7 @@ export function BilingualInput({
               marginBottom: 3,
             }}
           >
-            English
+            英語
           </div>
           <TextInput
             fontSize={fontSize}

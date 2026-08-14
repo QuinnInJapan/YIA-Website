@@ -70,7 +70,7 @@ export function HomepageTool() {
 
   return (
     <FocusProvider>
-      <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+      <div className="studio-workspace">
         {/* Editor pane */}
         <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
           <HomepageEditor

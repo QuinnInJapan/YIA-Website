@@ -225,7 +225,7 @@ function ColumnForm({
         <TextInput autoFocus value={ja} onChange={(e) => setJa(e.currentTarget.value)} />
       </div>
       <div>
-        <div style={subLabelStyle}>English</div>
+        <div style={subLabelStyle}>英語</div>
         <TextInput value={en} onChange={(e) => setEn(e.currentTarget.value)} />
       </div>
 
@@ -501,7 +501,7 @@ function SortableRow({
                 type="text"
                 value={i18nGet(row.groupLabel, "en")}
                 onChange={(e) => onUpdateGroupLabel(rowIndex, "en", e.target.value)}
-                placeholder="Group name (English)"
+                placeholder="グループ名（英語）"
                 style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
               />
             </div>
@@ -673,7 +673,7 @@ function SortableRow({
               <AutoTextarea
                 value={i18nGet(cell, "en")}
                 onChange={(e) => onUpdateCell(rowIndex, colIndex, "en", e.target.value)}
-                placeholder="English"
+                placeholder="英語"
                 style={{ ...cellInputStyle, color: "var(--card-muted-fg-color)" }}
               />
             </td>
@@ -1035,7 +1035,7 @@ export function TableEditorPanel({
                 />
               </div>
               <div>
-                <div style={subLabelStyle}>English</div>
+                <div style={subLabelStyle}>英語</div>
                 <TextInput
                   value={i18nGet(title, "en")}
                   onChange={(e) => {

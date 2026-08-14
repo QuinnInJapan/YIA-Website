@@ -25,7 +25,8 @@ function PageRow({
   onSelect: () => void;
 }) {
   return (
-    <div
+    <button
+      type="button"
       style={{
         display: "flex",
         alignItems: "center",
@@ -35,6 +36,9 @@ function PageRow({
         background: isSelected ? "var(--card-border-color)" : "transparent",
         opacity: hidden ? 0.45 : 1,
         cursor: "pointer",
+        width: "100%",
+        border: "none",
+        textAlign: "left",
       }}
       onClick={onSelect}
     >
@@ -65,7 +69,7 @@ function PageRow({
           }}
         />
       )}
-    </div>
+    </button>
   );
 }
 
@@ -73,6 +77,7 @@ function CategoryRow({
   navCat,
   categoryDoc,
   pagesMap,
+  draftPageIds,
   selectedMiddle,
   isReorderMode,
   idx,
@@ -85,6 +90,7 @@ function CategoryRow({
   navCat: NavCategoryRaw;
   categoryDoc: CategoryDoc | undefined;
   pagesMap: Map<string, NavPageDoc>;
+  draftPageIds: Set<string>;
   selectedMiddle: MiddlePanelState;
   isReorderMode: boolean;
   idx: number;
@@ -199,7 +205,7 @@ function CategoryRow({
                 key={item._key}
                 pageId={item.pageRef._ref}
                 title={titleJa}
-                hasDraft={false}
+                hasDraft={draftPageIds.has(item.pageRef._ref)}
                 hidden={!!item.hidden}
                 isSelected={
                   selectedMiddle?.type === "page" && selectedMiddle.id === item.pageRef._ref
@@ -371,6 +377,7 @@ export function LeftPanel({
               navCat={navCat}
               categoryDoc={categoryDocs.get(navCat.categoryRef?._ref)}
               pagesMap={pagesMap}
+              draftPageIds={draftPageIds}
               selectedMiddle={selectedMiddle}
               isReorderMode={isReorderMode}
               idx={idx}

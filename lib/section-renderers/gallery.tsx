@@ -11,7 +11,7 @@ export function buildGalleryImages(images: ImageFile[] | undefined | null) {
     .map((img) => ({
       src: imageUrl(img.file),
       lqip: imageLqip(img.file),
-      alt: ja(img.caption) || "",
+      alt: ja(img.alt) || ja(img.caption) || "",
       captionJa: ja(img.caption),
       captionEn: en(img.caption),
     }));

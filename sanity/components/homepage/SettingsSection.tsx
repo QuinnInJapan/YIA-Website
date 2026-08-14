@@ -80,7 +80,7 @@ function I18nField({
             <AutoTextarea
               value={i18nGet(arr, lang)}
               onChange={(v) => onChange(i18nSet(arr, lang, v))}
-              placeholder={lang === "ja" ? "日本語" : "English"}
+              placeholder={lang === "ja" ? "日本語" : "英語"}
               style={{
                 width: "100%",
                 padding: "6px 10px",

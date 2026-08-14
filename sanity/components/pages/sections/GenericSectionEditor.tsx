@@ -236,7 +236,7 @@ function WarningsEditor({
                 updated[i] = { ...updated[i], value: val };
                 onChange(updated);
               }}
-              placeholder="English"
+              placeholder="英語"
               style={{
                 width: "100%",
                 padding: "6px 10px",
@@ -388,7 +388,7 @@ function GenericListEditor({
                           marginBottom: 2,
                         }}
                       >
-                        {field.label}（EN）
+                        {field.label}（英語）
                       </div>
                       <TextInput
                         fontSize={0}

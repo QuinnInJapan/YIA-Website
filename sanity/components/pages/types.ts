@@ -68,6 +68,7 @@ export interface ImageItem {
     hotspot?: { x: number; y: number; width: number; height: number };
     crop?: { top: number; bottom: number; left: number; right: number };
   };
+  alt?: { _key: string; value: string }[];
   caption?: { _key: string; value: string }[];
 }
 

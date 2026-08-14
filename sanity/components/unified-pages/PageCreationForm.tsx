@@ -6,8 +6,8 @@ import { useClient } from "sanity";
 import { Box, Button, Flex, Text, TextInput } from "@sanity/ui";
 import { fs } from "@/sanity/lib/studioTokens";
 
-function slugify(title: string): string {
-  return title
+function sanitizePath(value: string): string {
+  return value
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
     .trim()
@@ -29,14 +29,14 @@ export function PageCreationForm({
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
 
-  const [titleEn, setTitleEn] = useState("");
   const [titleJa, setTitleJa] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [slug, setSlug] = useState(() => `page-${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const slug = slugify(titleEn);
   const urlPreview = slug ? `/${categoryShortId}/${slug}` : "";
-  const canSave = titleEn.trim() && titleJa.trim() && slug;
+  const canSave = titleJa.trim() && slug;
 
   const handleCreate = useCallback(async () => {
     if (!canSave || saving) return;
@@ -92,18 +92,13 @@ export function PageCreationForm({
               marginBottom: 6,
             }}
           >
-            英語タイトル（URLの元になります）*
+            日本語タイトル *
           </label>
           <TextInput
-            value={titleEn}
-            onChange={(e) => setTitleEn((e.target as HTMLInputElement).value)}
-            placeholder="e.g. Japanese Classes"
+            value={titleJa}
+            onChange={(e) => setTitleJa((e.target as HTMLInputElement).value)}
+            placeholder="例：日本語クラス"
           />
-          {slug && (
-            <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
-              URL: <span style={{ fontFamily: "monospace" }}>{urlPreview}</span>
-            </div>
-          )}
         </div>
         <div style={{ marginBottom: 16 }}>
           <label
@@ -114,14 +109,43 @@ export function PageCreationForm({
               marginBottom: 6,
             }}
           >
-            日本語タイトル *
+            英語タイトル
           </label>
           <TextInput
-            value={titleJa}
-            onChange={(e) => setTitleJa((e.target as HTMLInputElement).value)}
-            placeholder="例：日本語クラス"
+            value={titleEn}
+            onChange={(e) => setTitleEn((e.target as HTMLInputElement).value)}
+            placeholder="例：Japanese Classes"
           />
+          <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
+            必要な場合は、作成後にも入力できます。
+          </div>
         </div>
+        <details style={{ marginBottom: 16 }}>
+          <summary style={{ cursor: "pointer", fontSize: fs.label, fontWeight: 600 }}>
+            詳細設定：公開URL
+          </summary>
+          <div style={{ paddingTop: 10 }}>
+            <label
+              style={{
+                display: "block",
+                fontSize: fs.label,
+                color: "var(--card-muted-fg-color)",
+                marginBottom: 6,
+              }}
+            >
+              公開URL
+            </label>
+            <TextInput
+              value={slug}
+              onChange={(e) => setSlug(sanitizePath((e.target as HTMLInputElement).value))}
+            />
+            <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
+              URL: <span style={{ fontFamily: "monospace" }}>{urlPreview}</span>
+              <br />
+              通常は変更不要です。公開後に変更すると、以前のリンクが使えなくなります。
+            </div>
+          </div>
+        </details>
         <div
           style={{
             padding: "10px 12px",

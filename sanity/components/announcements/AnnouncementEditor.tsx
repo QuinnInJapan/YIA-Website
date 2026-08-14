@@ -21,6 +21,13 @@ import { formatStudioRelativeTime } from "../shared/date-format";
 import { BodyEditor } from "../blog/PteEditor";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
+import { BilingualInput } from "../shared/BilingualInput";
+import {
+  PublishConfirmation,
+  ActionConfirmation,
+  StudioErrorBanner,
+  type PublishCheck,
+} from "../shared/PublishingUI";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -99,6 +106,9 @@ export function AnnouncementEditor({
   const [saveStatus, setSaveStatus] = useState<
     "saved" | "dirty" | "saving" | "discarding" | "error"
   >("saved");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"discard" | "delete" | null>(null);
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
@@ -119,6 +129,13 @@ export function AnnouncementEditor({
 
   const [edits, setEdits] = useState<Partial<AnnouncementDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    },
+    [],
+  );
 
   const merged = useMemo(() => {
     if (!doc) return null;
@@ -155,7 +172,7 @@ export function AnnouncementEditor({
   const saveToSanity = useCallback(
     async (updates: Partial<AnnouncementDoc>) => {
       const baseDoc = draftDoc ?? publishedDoc;
-      if (!baseDoc) return;
+      if (!baseDoc) return false;
       setSaving(true);
       setSaveStatus("saving");
       try {
@@ -168,9 +185,13 @@ export function AnnouncementEditor({
         );
         if (updated) setDraftDoc(updated);
         setSaveStatus("saved");
+        setErrorMessage(null);
+        return true;
       } catch (err) {
         console.error("Save failed:", err);
         setSaveStatus("error");
+        setErrorMessage("変更を保存できませんでした。通信状況を確認して、もう一度お試しください。");
+        return false;
       } finally {
         setSaving(false);
       }
@@ -190,18 +211,59 @@ export function AnnouncementEditor({
 
   // ── Publish ────────────────────────────────────────────
 
+  const publishChecks = useMemo<PublishCheck[]>(() => {
+    if (!merged) return [];
+    const titleJa = i18nGet(merged.title, "ja").trim();
+    const altJa = i18nGet(merged.heroImage?.alt, "ja").trim();
+    const hasJapaneseBody = i18nGetBody(merged.body, "ja").length > 0;
+    return [
+      {
+        label: "日本語タイトル",
+        detail: titleJa || "日本語タイトルを入力してください。",
+        tone: titleJa ? "ok" : "error",
+      },
+      {
+        label: "掲載日",
+        detail: merged.date || "掲載日を入力してください。",
+        tone: merged.date ? "ok" : "error",
+      },
+      {
+        label: "日本語本文",
+        detail: hasJapaneseBody ? "入力済み" : "未入力（短いお知らせでは省略できます）",
+        tone: hasJapaneseBody ? "ok" : "warning",
+      },
+      ...(merged.heroImage?.asset?._ref
+        ? [
+            {
+              label: "画像の代替テキスト",
+              detail: altJa || "未入力（読み上げ利用者向けの説明を推奨します）",
+              tone: altJa ? ("ok" as const) : ("warning" as const),
+            },
+          ]
+        : []),
+    ];
+  }, [merged]);
+
+  function handleRequestPublish() {
+    setPublishOpen(true);
+  }
+
   async function handlePublish() {
     if (!merged) return;
+    const source = merged;
     try {
       setSaving(true);
       setSaveStatus("saving");
       const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
-      const draft = await client.fetch<AnnouncementDoc | null>(
-        `*[_id == $draftId][0] ${DOC_PROJECTION}`,
-        { draftId },
-      );
-      const source = draft ?? merged;
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      if (Object.keys(edits).length > 0) {
+        const saved = await saveToSanity(edits);
+        if (!saved) return;
+      }
 
       await client.createOrReplace(publishedDocumentForDraft(source, pubId, "announcement"));
 
@@ -215,10 +277,15 @@ export function AnnouncementEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setErrorMessage(null);
+      setPublishOpen(false);
       onDraftChange?.();
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
+      setErrorMessage(
+        "公開できませんでした。下書きは残っています。通信状況を確認して、もう一度お試しください。",
+      );
     } finally {
       setSaving(false);
     }
@@ -227,7 +294,6 @@ export function AnnouncementEditor({
   // ── Discard draft ──────────────────────────────────────
 
   async function handleDiscardDraft() {
-    if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
     const { publishedId: pubId, draftId } = documentPairIds(documentId);
@@ -241,6 +307,7 @@ export function AnnouncementEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setConfirmAction(null);
       onDraftChange?.();
     } catch (err) {
       console.error("Discard draft failed:", err);
@@ -253,12 +320,11 @@ export function AnnouncementEditor({
   // ── Delete ─────────────────────────────────────────────
 
   async function handleDelete() {
-    const label = !publishedDoc ? "この下書き" : "このお知らせ（公開版・下書き含む）";
-    if (!confirm(`${label}を完全に削除しますか？この操作は元に戻せません。`)) return;
     const { publishedId: pubId, draftId } = documentPairIds(documentId);
     try {
       await client.delete(draftId).catch(() => {});
       await client.delete(pubId).catch(() => {});
+      setConfirmAction(null);
       onDelete();
     } catch (err) {
       console.error("Delete failed:", err);
@@ -369,17 +435,18 @@ export function AnnouncementEditor({
                 tone="caution"
                 fontSize={0}
                 padding={2}
-                onClick={handleDiscardDraft}
+                onClick={() => setConfirmAction("discard")}
                 disabled={saving}
               />
             )}
             <Button
               icon={TrashIcon}
+              aria-label="このお知らせを削除"
               mode="ghost"
               tone="critical"
               fontSize={0}
               padding={2}
-              onClick={handleDelete}
+              onClick={() => setConfirmAction("delete")}
               disabled={saving}
             />
             <Button
@@ -388,12 +455,21 @@ export function AnnouncementEditor({
               tone="positive"
               fontSize={1}
               padding={2}
-              onClick={handlePublish}
+              onClick={handleRequestPublish}
               disabled={saving || !hasDraft}
             />
           </Flex>
         </Flex>
       </Box>
+
+      {errorMessage ? (
+        <StudioErrorBanner
+          message={errorMessage}
+          actionLabel="再試行"
+          onAction={() => saveToSanity(edits)}
+          onDismiss={() => setErrorMessage(null)}
+        />
+      ) : null}
 
       {/* Content area */}
       {!merged ? (
@@ -484,6 +560,15 @@ export function AnnouncementEditor({
                   + 画像を追加
                 </button>
               )}
+              {merged.heroImage?.asset?._ref ? (
+                <div style={{ marginTop: 10 }}>
+                  <BilingualInput
+                    label="画像の代替テキスト（推奨）"
+                    value={merged.heroImage.alt}
+                    onChange={(alt) => updateField("heroImage", { ...merged.heroImage, alt })}
+                  />
+                </div>
+              ) : null}
             </div>
 
             {/* Title fields */}
@@ -505,7 +590,7 @@ export function AnnouncementEditor({
               <div
                 style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
               >
-                タイトル（English）
+                タイトル（英語）
               </div>
               <TextInput
                 fontSize={1}
@@ -536,7 +621,7 @@ export function AnnouncementEditor({
                     marginBottom: 6,
                   }}
                 >
-                  スラッグ
+                  公開URL
                 </div>
                 <TextInput
                   fontSize={0}
@@ -554,7 +639,7 @@ export function AnnouncementEditor({
                     marginBottom: 6,
                   }}
                 >
-                  日付
+                  掲載日
                 </div>
                 <TextInput
                   fontSize={0}
@@ -662,7 +747,7 @@ export function AnnouncementEditor({
                           bodyLang === l ? "var(--card-bg-color)" : "var(--card-muted-fg-color)",
                       }}
                     >
-                      {l === "ja" ? "日本語" : "EN"}
+                      {l === "ja" ? "日本語" : "英語"}
                     </button>
                   ))}
                 </div>
@@ -692,6 +777,37 @@ export function AnnouncementEditor({
       )}
 
       {merged && <RawJsonButton getDocument={() => merged} />}
+      {publishOpen ? (
+        <PublishConfirmation
+          title="お知らせを公開しますか？"
+          description="保存中の変更を反映してから、このお知らせを公開します。"
+          checks={publishChecks}
+          busy={saving}
+          onConfirm={handlePublish}
+          onClose={() => setPublishOpen(false)}
+        />
+      ) : null}
+      {confirmAction === "discard" ? (
+        <ActionConfirmation
+          title="下書きを破棄しますか？"
+          description="未公開の変更を削除し、現在公開されている内容に戻します。この操作は元に戻せません。"
+          confirmLabel="下書きを破棄"
+          tone="caution"
+          busy={saving}
+          onConfirm={handleDiscardDraft}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
+      {confirmAction === "delete" ? (
+        <ActionConfirmation
+          title="このお知らせを削除しますか？"
+          description="公開版と下書きを完全に削除します。この操作は元に戻せません。"
+          confirmLabel="お知らせを削除"
+          busy={saving}
+          onConfirm={handleDelete}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
     </div>
   );
 }

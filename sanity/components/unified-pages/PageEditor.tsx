@@ -24,6 +24,13 @@ import {
 } from "../shared/draft-documents";
 import { formatStudioRelativeTime } from "../shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
+import { BilingualInput } from "../shared/BilingualInput";
+import {
+  PublishConfirmation,
+  ActionConfirmation,
+  StudioErrorBanner,
+  type PublishCheck,
+} from "../shared/PublishingUI";
 
 // ── Constants ────────────────────────────────────────────
 
@@ -95,12 +102,24 @@ export function PageEditor({
   const [saveStatus, setSaveStatus] = useState<
     "saved" | "dirty" | "saving" | "discarding" | "error"
   >("saved");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [confirmAction, setConfirmAction] = useState<
+    { type: "discard" } | { type: "removeSection"; index: number } | null
+  >(null);
 
   const doc = draftDoc ?? publishedDoc;
   const hasDraft = draftDoc !== null;
 
   const [edits, setEdits] = useState<Partial<PageDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    },
+    [],
+  );
 
   const merged = useMemo(() => {
     if (!doc) return null;
@@ -141,7 +160,7 @@ export function PageEditor({
   const saveToSanity = useCallback(
     async (updates: Partial<PageDoc>) => {
       const baseDoc = draftDoc ?? publishedDoc;
-      if (!baseDoc) return;
+      if (!baseDoc) return false;
       setSaving(true);
       setSaveStatus("saving");
       try {
@@ -153,10 +172,14 @@ export function PageEditor({
         });
         if (updated) setDraftDoc(updated);
         setSaveStatus("saved");
+        setErrorMessage(null);
         onSave?.();
+        return true;
       } catch (err) {
         console.error("Save failed:", err);
         setSaveStatus("error");
+        setErrorMessage("変更を保存できませんでした。通信状況を確認して、もう一度お試しください。");
+        return false;
       } finally {
         setSaving(false);
       }
@@ -191,13 +214,17 @@ export function PageEditor({
   }
 
   function removeSection(index: number) {
-    if (!confirm("このセクションを削除しますか？")) return;
+    setConfirmAction({ type: "removeSection", index });
+  }
+
+  function executeRemoveSection(index: number) {
     const sections = [...(merged?.sections ?? [])];
     sections.splice(index, 1);
     updateField("sections", sections);
     if (expandedSection === merged?.sections?.[index]?._key) {
       setExpandedSection(null);
     }
+    setConfirmAction(null);
   }
 
   function addSection(type: SectionTypeName) {
@@ -227,17 +254,53 @@ export function PageEditor({
 
   // ── Publish ────────────────────────────────────────────
 
+  const publishChecks = useMemo<PublishCheck[]>(() => {
+    if (!merged) return [];
+    const titleJa = i18nGet(merged.title, "ja").trim();
+    const altJa = i18nGet(merged.images?.[0]?.alt, "ja").trim();
+    return [
+      {
+        label: "日本語タイトル",
+        detail: titleJa || "日本語タイトルを入力してください。",
+        tone: titleJa ? "ok" : "error",
+      },
+      {
+        label: "公開URL",
+        detail: merged.slug?.trim() || "公開URLが設定されていません。",
+        tone: merged.slug?.trim() ? "ok" : "error",
+      },
+      ...(merged.images?.[0]?.file?.asset?._ref
+        ? [
+            {
+              label: "画像の代替テキスト",
+              detail: altJa || "未入力（読み上げ利用者向けの説明を推奨します）",
+              tone: altJa ? ("ok" as const) : ("warning" as const),
+            },
+          ]
+        : []),
+    ];
+  }, [merged]);
+
+  function handleRequestPublish() {
+    setPublishOpen(true);
+  }
+
   async function handlePublish() {
     if (!merged) return;
+    const source = merged;
     try {
       setSaving(true);
       setSaveStatus("saving");
       const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
-      const draft = await client.fetch<PageDoc | null>(`*[_id == $draftId][0] ${DOC_PROJECTION}`, {
-        draftId,
-      });
-      const source = draft ?? merged;
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      if (Object.keys(edits).length > 0) {
+        const saved = await saveToSanity(edits);
+        if (!saved) return;
+      }
 
       await client.createOrReplace(publishedDocumentForDraft(source, pubId, "page"));
 
@@ -250,10 +313,15 @@ export function PageEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setErrorMessage(null);
+      setPublishOpen(false);
       onDraftChange?.();
     } catch (err) {
       console.error("Publish failed:", err);
       setSaveStatus("error");
+      setErrorMessage(
+        "公開できませんでした。下書きは残っています。通信状況を確認して、もう一度お試しください。",
+      );
     } finally {
       setSaving(false);
     }
@@ -262,7 +330,6 @@ export function PageEditor({
   // ── Discard draft ──────────────────────────────────────
 
   async function handleDiscardDraft() {
-    if (!confirm("下書きを破棄しますか？公開中の内容に戻ります。")) return;
     setSaving(true);
     setSaveStatus("discarding");
     const { publishedId: pubId, draftId } = documentPairIds(documentId);
@@ -275,6 +342,7 @@ export function PageEditor({
       setDraftDoc(null);
       setEdits({});
       setSaveStatus("saved");
+      setConfirmAction(null);
       onDraftChange?.();
     } catch (err) {
       console.error("Discard draft failed:", err);
@@ -291,8 +359,12 @@ export function PageEditor({
       const images = merged?.images ?? [];
       const newImage = {
         _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
-        _type: "imageFile" as const,
-        file: { _type: "image", asset: { _type: "reference", _ref: assetId } },
+      _type: "imageFile" as const,
+      file: { _type: "image", asset: { _type: "reference", _ref: assetId } },
+      alt: [
+        { _key: "ja", value: "" },
+        { _key: "en", value: "" },
+      ],
       };
       updateField("images", [newImage, ...images.slice(1)]);
     });
@@ -352,7 +424,7 @@ export function PageEditor({
                 tone="caution"
                 fontSize={0}
                 padding={2}
-                onClick={handleDiscardDraft}
+                onClick={() => setConfirmAction({ type: "discard" })}
                 disabled={saving}
               />
             )}
@@ -362,12 +434,21 @@ export function PageEditor({
               tone="positive"
               fontSize={1}
               padding={2}
-              onClick={handlePublish}
+              onClick={handleRequestPublish}
               disabled={saving || !hasDraft}
             />
           </Flex>
         </Flex>
       </Box>
+
+      {errorMessage ? (
+        <StudioErrorBanner
+          message={errorMessage}
+          actionLabel="再試行"
+          onAction={() => saveToSanity(edits)}
+          onDismiss={() => setErrorMessage(null)}
+        />
+      ) : null}
 
       {/* Content area */}
       {!merged ? (
@@ -440,6 +521,19 @@ export function PageEditor({
                   + 画像を追加
                 </button>
               )}
+              {merged.images?.[0]?.file?.asset?._ref ? (
+                <div style={{ marginTop: 10 }}>
+                  <BilingualInput
+                    label="画像の代替テキスト（推奨）"
+                    value={merged.images[0].alt}
+                    onChange={(alt) => {
+                      const images = [...(merged.images ?? [])];
+                      images[0] = { ...images[0], alt };
+                      updateField("images", images);
+                    }}
+                  />
+                </div>
+              ) : null}
             </div>
 
             {/* Title fields */}
@@ -461,7 +555,7 @@ export function PageEditor({
               <div
                 style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
               >
-                タイトル（English）
+                タイトル（英語）
               </div>
               <TextInput
                 fontSize={1}
@@ -482,7 +576,7 @@ export function PageEditor({
                     marginBottom: 6,
                   }}
                 >
-                  {lang === "ja" ? "説明（日本語）" : "説明（English）"}
+                  {lang === "ja" ? "説明（日本語）" : "説明（英語）"}
                 </div>
                 <AutoTextarea
                   value={i18nGet(merged.description, lang)}
@@ -611,6 +705,37 @@ export function PageEditor({
       )}
 
       {merged && <RawJsonButton getDocument={() => merged} />}
+      {publishOpen ? (
+        <PublishConfirmation
+          title="ページを公開しますか？"
+          description="保存中の変更を反映してから、このページを公開します。"
+          checks={publishChecks}
+          busy={saving}
+          onConfirm={handlePublish}
+          onClose={() => setPublishOpen(false)}
+        />
+      ) : null}
+      {confirmAction?.type === "discard" ? (
+        <ActionConfirmation
+          title="下書きを破棄しますか？"
+          description="未公開の変更を削除し、現在公開されている内容に戻します。この操作は元に戻せません。"
+          confirmLabel="下書きを破棄"
+          tone="caution"
+          busy={saving}
+          onConfirm={handleDiscardDraft}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
+      {confirmAction?.type === "removeSection" ? (
+        <ActionConfirmation
+          title="このセクションを削除しますか？"
+          description="セクション内の入力内容も削除されます。削除後、ページを公開するまでは公開中のページには影響しません。"
+          confirmLabel="セクションを削除"
+          busy={saving}
+          onConfirm={() => executeRemoveSection(confirmAction.index)}
+          onClose={() => setConfirmAction(null)}
+        />
+      ) : null}
     </div>
   );
 }

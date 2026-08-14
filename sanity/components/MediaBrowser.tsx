@@ -19,6 +19,7 @@ import {
 import { SearchIcon, UploadIcon, CloseIcon, DownloadIcon } from "@sanity/icons";
 import { FileTypeIcon, formatFileSize, getFileType } from "./shared/media-utils";
 import { RightPanel } from "./shared/RightPanel";
+import { fs } from "@/sanity/lib/studioTokens";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -512,6 +513,7 @@ export function MediaBrowser() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState("");
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // ── Fetch assets ──────────────────────────────────────
 
@@ -577,8 +579,10 @@ export function MediaBrowser() {
 
   async function handleUpload(files: FileList) {
     setUploading(true);
+    setUploadError(null);
     const total = files.length;
     let completed = 0;
+    const failed: string[] = [];
 
     for (const file of Array.from(files)) {
       setUploadProgress(`アップロード中… ${completed + 1}/${total}`);
@@ -587,12 +591,18 @@ export function MediaBrowser() {
         await client.assets.upload(type, file, { filename: file.name });
       } catch (err) {
         console.error(`Upload failed for ${file.name}:`, err);
+        failed.push(file.name);
       }
       completed++;
     }
 
     setUploading(false);
     setUploadProgress("");
+    if (failed.length > 0) {
+      setUploadError(
+        `${failed.length}件をアップロードできませんでした：${failed.join("、")}。ファイル形式と通信状況を確認してください。`,
+      );
+    }
     setPage(0);
     setSearchQuery("");
     setSearchInput("");
@@ -607,7 +617,7 @@ export function MediaBrowser() {
   // ── Render ────────────────────────────────────────────
 
   return (
-    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+    <div className="studio-workspace">
       {/* ── Left: Asset browser ── */}
       <div
         style={{
@@ -727,6 +737,21 @@ export function MediaBrowser() {
 
         {/* Asset list/grid */}
         <div style={{ flex: 1, overflow: "auto", position: "relative" }}>
+          {uploadError ? (
+            <div
+              role="alert"
+              style={{
+                margin: 12,
+                padding: "10px 12px",
+                borderRadius: 6,
+                background: "rgba(204, 51, 51, 0.08)",
+                color: "#b42318",
+                fontSize: fs.label,
+              }}
+            >
+              {uploadError}
+            </div>
+          ) : null}
           {loading && assets.length === 0 ? (
             <Box padding={5}>
               <Text muted>読み込み中…</Text>
