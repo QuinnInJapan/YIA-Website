@@ -366,7 +366,7 @@ export function UnifiedPagesTool() {
     }
 
     return (
-      <RightPanel>
+      <RightPanel mode={rightPanel.type === "tableEditor" ? "workspace" : "panel"}>
         {rightPanel.type === "imagePicker" ? (
           <ImagePickerPanel
             onSelect={(assetId) => {

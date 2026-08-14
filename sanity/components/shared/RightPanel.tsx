@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@sanity/icons";
 
-export function RightPanel({ children }: { children: React.ReactNode }) {
+export function RightPanel({
+  children,
+  mode = "panel",
+}: {
+  children: React.ReactNode;
+  mode?: "panel" | "workspace";
+}) {
   const [collapsed, setCollapsed] = useState(false);
 
-  if (collapsed) {
+  if (mode === "panel" && collapsed) {
     return (
       <div className="studio-right-panel studio-right-panel--collapsed">
         <button
@@ -25,22 +31,19 @@ export function RightPanel({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div
-      className="studio-right-panel"
-      style={{
-        position: "relative",
-      }}
-    >
-      <button
-        type="button"
-        className="studio-panel-collapse-button studio-panel-collapse-button--right"
-        aria-label="プレビュー・ツールパネルを閉じる"
-        title="プレビュー・ツールパネルを閉じる"
-        aria-expanded="true"
-        onClick={() => setCollapsed(true)}
-      >
-        <ChevronRightIcon />
-      </button>
+    <div className={`studio-right-panel studio-right-panel--${mode}`}>
+      {mode === "panel" ? (
+        <button
+          type="button"
+          className="studio-panel-collapse-button studio-panel-collapse-button--right"
+          aria-label="プレビュー・ツールパネルを閉じる"
+          title="プレビュー・ツールパネルを閉じる"
+          aria-expanded="true"
+          onClick={() => setCollapsed(true)}
+        >
+          <ChevronRightIcon />
+        </button>
+      ) : null}
       {children}
     </div>
   );
