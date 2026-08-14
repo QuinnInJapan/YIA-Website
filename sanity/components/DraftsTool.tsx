@@ -20,17 +20,17 @@ const DRAFTS_QUERY = `*[_id in path("drafts.**")] | order(_updatedAt desc) {
   _id, _type, _updatedAt, title, label
 }`;
 
-const TYPE_CONFIG: Record<string, { label: string; tool?: string }> = {
-  page: { label: "ページ", tool: "pages" },
-  announcement: { label: "お知らせ", tool: "announcements" },
-  blogPost: { label: "ブログ", tool: "blog" },
+const TYPE_CONFIG: Record<string, { label: string; tool?: string; deepLink?: boolean }> = {
+  page: { label: "ページ", tool: "pages", deepLink: true },
+  announcement: { label: "お知らせ", tool: "announcements", deepLink: true },
+  blogPost: { label: "ブログ", tool: "blog", deepLink: true },
   homepage: { label: "ホームページ", tool: "homepage" },
   homepageAbout: { label: "YIAについて", tool: "homepage" },
   homepageFeatured: { label: "注目カテゴリ", tool: "homepage" },
-  siteSettings: { label: "サイト設定", tool: "homepage" },
-  sidebar: { label: "サイドバー・フッター", tool: "homepage" },
-  category: { label: "カテゴリ" },
-  navigation: { label: "ナビゲーション" },
+  siteSettings: { label: "サイト設定", tool: "site-settings" },
+  sidebar: { label: "サイドバー・フッター", tool: "site-settings" },
+  category: { label: "カテゴリ", tool: "pages" },
+  navigation: { label: "ナビゲーション", tool: "pages" },
 };
 
 function japaneseValue(value?: { _key: string; value: string }[]) {
@@ -84,10 +84,12 @@ export function DraftsTool() {
   function openDraft(item: DraftItem) {
     const config = TYPE_CONFIG[item._type];
     if (!config?.tool) return;
-    window.__yiaNavigateTo = {
-      tool: config.tool,
-      docId: item._id.replace(/^drafts\./, ""),
-    };
+    window.__yiaNavigateTo = config.deepLink
+      ? {
+          tool: config.tool,
+          docId: item._id.replace(/^drafts\./, ""),
+        }
+      : undefined;
     window.location.href = window.location.pathname.replace(/\/[^/]+$/, `/${config.tool}`);
   }
 
