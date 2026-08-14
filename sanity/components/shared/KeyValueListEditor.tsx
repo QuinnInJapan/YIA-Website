@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TextInput } from "@sanity/ui";
 import { TrashIcon } from "@sanity/icons";
 import { fs } from "@/sanity/lib/studioTokens";
@@ -85,6 +85,7 @@ export function KeyValueListEditor({
 }) {
   const labelField = fieldNames.label;
   const valueField = fieldNames.value;
+  const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
   function getI18n(item: KeyValueItem, field: string) {
     return item[field] as { _key: string; value: string }[] | null | undefined;
@@ -100,14 +101,24 @@ export function KeyValueListEditor({
   }
 
   function removeItem(index: number) {
+    if (expandedKey === items[index]?._key) setExpandedKey(null);
     onChange(items.filter((_, i) => i !== index));
   }
 
+  function moveItem(index: number, direction: -1 | 1) {
+    const target = index + direction;
+    if (target < 0 || target >= items.length) return;
+    const updated = [...items];
+    [updated[index], updated[target]] = [updated[target], updated[index]];
+    onChange(updated);
+  }
+
   function addItem() {
+    const key = crypto.randomUUID().replace(/-/g, "").slice(0, 12);
     onChange([
       ...items,
       {
-        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        _key: key,
         [labelField]: [
           { _key: "ja", value: "" },
           { _key: "en", value: "" },
@@ -118,209 +129,168 @@ export function KeyValueListEditor({
         ],
       },
     ]);
+    setExpandedKey(key);
   }
 
   return (
     <div style={{ marginBottom: 12 }}>
+      {label ? (
+        <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}>
+          {label}
+        </div>
+      ) : null}
       {items.length > 0 && (
         <div
           style={{
-            border: "1px solid var(--card-border-color)",
-            borderRadius: 4,
-            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
             marginBottom: 8,
           }}
         >
-          {/* Header row */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1.6fr 24px",
-              gridTemplateRows: "auto auto",
-              background: "var(--card-bg2-color, var(--card-border-color))",
-              borderBottom: "1px solid var(--card-border-color)",
-            }}
-          >
-            <div
-              style={{
-                gridColumn: 1,
-                gridRow: 1,
-                padding: "5px 8px",
-                fontSize: fs.meta,
-                fontWeight: 600,
-                color: "var(--card-fg-color)",
-                borderRight: "1px solid var(--card-border-color)",
-                borderBottom: "1px solid var(--card-border-color)",
-              }}
-            >
-              {labelHeader}
-            </div>
-            <div
-              style={{
-                gridColumn: 2,
-                gridRow: 1,
-                padding: "5px 8px",
-                fontSize: fs.meta,
-                fontWeight: 600,
-                color: "var(--card-fg-color)",
-                borderBottom: "1px solid var(--card-border-color)",
-              }}
-            >
-              {valueHeader}
-            </div>
-            <div style={{ gridColumn: 3, gridRow: "1 / span 2" }} />
-            <div
-              style={{
-                gridColumn: 1,
-                gridRow: 2,
-                padding: "5px 8px",
-                fontSize: fs.meta,
-                fontWeight: 600,
-                color: "var(--card-muted-fg-color)",
-                borderRight: "1px solid var(--card-border-color)",
-              }}
-            >
-              {labelHeader === "ラベル" ? "Label" : labelHeader}
-            </div>
-            <div
-              style={{
-                gridColumn: 2,
-                gridRow: 2,
-                padding: "5px 8px",
-                fontSize: fs.meta,
-                fontWeight: 600,
-                color: "var(--card-muted-fg-color)",
-              }}
-            >
-              {valueHeader === "値" ? "Value" : valueHeader}
-            </div>
-          </div>
-
-          {/* Data rows */}
-          {items.map((item, index) => (
-            <div
-              key={item._key as string}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1.6fr 24px",
-                gridTemplateRows: "auto auto",
-                borderBottom:
-                  index < items.length - 1 ? "1px solid var(--card-border-color)" : undefined,
-              }}
-            >
-              {/* Japanese label input */}
+          {items.map((item, index) => {
+            const itemKey = item._key as string;
+            const isExpanded = expandedKey === itemKey;
+            const labelJa = i18nGet(getI18n(item, labelField), "ja") || `（${labelHeader}未入力）`;
+            const valueJa = i18nGet(getI18n(item, valueField), "ja");
+            return (
               <div
+                key={itemKey}
                 style={{
-                  gridColumn: 1,
-                  gridRow: 1,
-                  padding: "6px 8px 3px",
-                  borderRight: "1px solid var(--card-border-color)",
+                  border: "1px solid var(--card-border-color)",
+                  borderRadius: 4,
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
-                    fontSize: fs.label,
-                    fontWeight: 600,
-                    color: "var(--card-fg-color)",
-                    marginBottom: 3,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "8px 10px",
+                    background: isExpanded ? "var(--card-bg-color)" : "transparent",
                   }}
                 >
-                  日本語
+                  <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    onClick={() => setExpandedKey(isExpanded ? null : itemKey)}
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      padding: 0,
+                      border: "none",
+                      background: "transparent",
+                      color: "inherit",
+                      textAlign: "left",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <div style={{ fontSize: fs.body, fontWeight: 600 }}>{labelJa}</div>
+                    {valueJa ? (
+                      <div
+                        style={{
+                          marginTop: 2,
+                          fontSize: fs.meta,
+                          color: "var(--card-muted-fg-color)",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {valueJa}
+                      </div>
+                    ) : null}
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`${labelJa}を上へ移動`}
+                    disabled={index === 0}
+                    onClick={() => moveItem(index, -1)}
+                    style={{ border: "none", background: "transparent", opacity: index === 0 ? 0.3 : 1 }}
+                  >
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`${labelJa}を下へ移動`}
+                    disabled={index === items.length - 1}
+                    onClick={() => moveItem(index, 1)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      opacity: index === items.length - 1 ? 0.3 : 1,
+                    }}
+                  >
+                    ▼
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(index)}
+                    aria-label={`${labelJa}を削除`}
+                    style={{
+                      display: "flex",
+                      border: "none",
+                      background: "transparent",
+                      color: "var(--card-muted-fg-color)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <TrashIcon />
+                  </button>
                 </div>
-                <TextInput
-                  fontSize={0}
-                  value={i18nGet(getI18n(item, labelField), "ja")}
-                  placeholder={placeholders?.labelJa}
-                  onChange={(e) => updateItem(index, labelField, "ja", e.currentTarget.value)}
-                />
-              </div>
 
-              {/* Japanese value textarea */}
-              <div style={{ gridColumn: 2, gridRow: 1, padding: "6px 8px 3px" }}>
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    fontWeight: 600,
-                    color: "var(--card-fg-color)",
-                    marginBottom: 3,
-                  }}
-                >
-                  日本語
-                </div>
-                <AutoTextarea
-                  value={i18nGet(getI18n(item, valueField), "ja")}
-                  placeholder={placeholders?.valueJa}
-                  onChange={(text) => updateItem(index, valueField, "ja", text)}
-                />
+                {isExpanded ? (
+                  <div
+                    style={{
+                      padding: "10px 12px",
+                      borderTop: "1px solid var(--card-border-color)",
+                    }}
+                  >
+                    {(["ja", "en"] as const).map((lang) => (
+                      <div key={lang} style={{ marginBottom: lang === "ja" ? 12 : 0 }}>
+                        <div
+                          style={{
+                            marginBottom: 5,
+                            fontSize: fs.label,
+                            fontWeight: 600,
+                            color: "var(--card-muted-fg-color)",
+                          }}
+                        >
+                          {lang === "ja" ? "日本語" : "英語"}
+                        </div>
+                        <div
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "minmax(120px, 1fr) minmax(180px, 1.6fr)",
+                            gap: 8,
+                          }}
+                        >
+                          <TextInput
+                            fontSize={0}
+                            value={i18nGet(getI18n(item, labelField), lang)}
+                            placeholder={
+                              lang === "ja" ? placeholders?.labelJa : placeholders?.labelEn
+                            }
+                            onChange={(e) =>
+                              updateItem(index, labelField, lang, e.currentTarget.value)
+                            }
+                          />
+                          <AutoTextarea
+                            value={i18nGet(getI18n(item, valueField), lang)}
+                            placeholder={
+                              lang === "ja" ? placeholders?.valueJa : placeholders?.valueEn
+                            }
+                            onChange={(text) => updateItem(index, valueField, lang, text)}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
-
-              {/* Delete button — spans both rows */}
-              <button
-                type="button"
-                onClick={() => removeItem(index)}
-                title="削除"
-                style={{
-                  gridColumn: 3,
-                  gridRow: "1 / span 2",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "none",
-                  background: "transparent",
-                  color: "var(--card-muted-fg-color)",
-                  cursor: "pointer",
-                }}
-              >
-                <TrashIcon />
-              </button>
-
-              {/* English label input */}
-              <div
-                style={{
-                  gridColumn: 1,
-                  gridRow: 2,
-                  padding: "3px 8px 6px",
-                  borderRight: "1px solid var(--card-border-color)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    fontWeight: 600,
-                    color: "var(--card-fg-color)",
-                    marginBottom: 3,
-                  }}
-                >
-                  英語
-                </div>
-                <TextInput
-                  fontSize={0}
-                  value={i18nGet(getI18n(item, labelField), "en")}
-                  placeholder={placeholders?.labelEn}
-                  onChange={(e) => updateItem(index, labelField, "en", e.currentTarget.value)}
-                />
-              </div>
-
-              {/* English value textarea */}
-              <div style={{ gridColumn: 2, gridRow: 2, padding: "3px 8px 6px" }}>
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    fontWeight: 600,
-                    color: "var(--card-fg-color)",
-                    marginBottom: 3,
-                  }}
-                >
-                  英語
-                </div>
-                <AutoTextarea
-                  value={i18nGet(getI18n(item, valueField), "en")}
-                  placeholder={placeholders?.valueEn}
-                  onChange={(text) => updateItem(index, valueField, "en", text)}
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
