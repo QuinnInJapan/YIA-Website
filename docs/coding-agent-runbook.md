@@ -26,10 +26,22 @@ Update this file, `scripts/lib/sanity-tools.mjs`, and `scripts/sanity-script-tem
 npm test
 ```
 
-For UI/page changes:
+For UI/page changes, use the registered Project Control service. It owns the stable development
+endpoint at `http://127.0.0.1:4306` and launches Next.js with the webpack fallback because the
+default Next/SWC development server can accept TCP connections without returning HTTP responses in
+this project.
 
 ```bash
-./node_modules/.bin/next dev -H 127.0.0.1 -p 3000
+projectctl services yia-nextjs
+projectctl restart yia-nextjs web-next
+```
+
+Do not start a parallel raw development server while Project Control owns the endpoint. If Project
+Control is unavailable, diagnose it first; only use the direct fallback when the user explicitly
+authorizes bypassing managed service ownership:
+
+```bash
+./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3000
 ./node_modules/.bin/playwright test e2e/program-pages.spec.ts --grep "conversation-salon"
 ```
 
