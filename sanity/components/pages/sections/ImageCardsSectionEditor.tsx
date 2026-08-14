@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { PortableTextBlock } from "@portabletext/editor";
 import { TrashIcon } from "@sanity/icons";
+import { useClient } from "sanity";
+import createImageUrlBuilder from "@sanity/image-url";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../../shared/BilingualInput";
 import { SimpleBodyEditor } from "../../shared/SimpleBodyEditor";
@@ -29,6 +31,8 @@ export function ImageCardsSectionEditor({
   onUpdateField: (field: string, value: unknown) => void;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
 }) {
+  const client = useClient({ apiVersion: "2024-01-01" });
+  const builder = useMemo(() => createImageUrlBuilder(client), [client]);
   const items = (section.items as ImageCardItem[]) ?? [];
   const body = (section.body ?? null) as I18nBlocks | null;
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -44,6 +48,15 @@ export function ImageCardsSectionEditor({
     onUpdateField("items", updated);
     if (expandedIndex === index) setExpandedIndex(null);
     else if (expandedIndex !== null && expandedIndex > index) setExpandedIndex(expandedIndex - 1);
+  }
+
+  function moveItem(index: number, direction: -1 | 1) {
+    const target = index + direction;
+    if (target < 0 || target >= items.length) return;
+    const updated = [...items];
+    [updated[index], updated[target]] = [updated[target], updated[index]];
+    onUpdateField("items", updated);
+    setExpandedIndex(target);
   }
 
   function addItem() {
@@ -138,6 +151,7 @@ export function ImageCardsSectionEditor({
           {items.map((item, index) => {
             const isExpanded = expandedIndex === index;
             const nameJa = i18nGet(item.name, "ja") || "（名前なし）";
+            const countryJa = i18nGet(item.country, "ja");
             const hasImage = !!item.image?.asset?._ref;
 
             return (
@@ -161,15 +175,13 @@ export function ImageCardsSectionEditor({
                   }}
                   onClick={() => setExpandedIndex(isExpanded ? null : index)}
                 >
-                  {/* Image indicator */}
+                  {/* Image thumbnail */}
                   <div
                     style={{
                       width: 32,
                       height: 32,
                       borderRadius: 3,
-                      background: hasImage
-                        ? "var(--card-border-color)"
-                        : "var(--card-code-bg-color, rgba(0,0,0,0.05))",
+                      background: "var(--card-code-bg-color, rgba(0,0,0,0.05))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -178,19 +190,86 @@ export function ImageCardsSectionEditor({
                       flexShrink: 0,
                     }}
                   >
-                    {hasImage ? "🖼" : "画像なし"}
+                    {hasImage ? (
+                      <img
+                        src={builder
+                          .image(item.image!)
+                          .width(96)
+                          .height(96)
+                          .fit("crop")
+                          .auto("format")
+                          .url()}
+                        alt=""
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      "画像なし"
+                    )}
                   </div>
-                  <span
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontSize: fs.body,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {nameJa}
+                    </div>
+                    {countryJa ? (
+                      <div
+                        style={{
+                          marginTop: 2,
+                          fontSize: fs.meta,
+                          color: "var(--card-muted-fg-color)",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {countryJa}
+                      </div>
+                    ) : null}
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`${nameJa}を上へ移動`}
+                    disabled={index === 0}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      moveItem(index, -1);
+                    }}
                     style={{
-                      flex: 1,
-                      fontSize: fs.body,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
+                      padding: 4,
+                      border: "none",
+                      background: "transparent",
+                      color: "var(--card-muted-fg-color)",
+                      cursor: index === 0 ? "default" : "pointer",
+                      opacity: index === 0 ? 0.3 : 1,
                     }}
                   >
-                    {nameJa}
-                  </span>
+                    ▲
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`${nameJa}を下へ移動`}
+                    disabled={index === items.length - 1}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      moveItem(index, 1);
+                    }}
+                    style={{
+                      padding: 4,
+                      border: "none",
+                      background: "transparent",
+                      color: "var(--card-muted-fg-color)",
+                      cursor: index === items.length - 1 ? "default" : "pointer",
+                      opacity: index === items.length - 1 ? 0.3 : 1,
+                    }}
+                  >
+                    ▼
+                  </button>
                   <button
                     type="button"
                     onClick={(e) => {
@@ -234,21 +313,40 @@ export function ImageCardsSectionEditor({
                       >
                         画像
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleImagePick(index)}
-                        style={{
-                          padding: "6px 12px",
-                          border: "1px solid var(--card-border-color)",
-                          borderRadius: 4,
-                          background: "transparent",
-                          color: "var(--card-fg-color)",
-                          fontSize: fs.label,
-                          cursor: "pointer",
-                        }}
-                      >
-                        {hasImage ? "画像を変更" : "画像を選択"}
-                      </button>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button
+                          type="button"
+                          onClick={() => handleImagePick(index)}
+                          style={{
+                            padding: "6px 12px",
+                            border: "1px solid var(--card-border-color)",
+                            borderRadius: 4,
+                            background: "transparent",
+                            color: "var(--card-fg-color)",
+                            fontSize: fs.label,
+                            cursor: "pointer",
+                          }}
+                        >
+                          {hasImage ? "画像を変更" : "画像を選択"}
+                        </button>
+                        {hasImage ? (
+                          <button
+                            type="button"
+                            onClick={() => updateItem(index, { image: null })}
+                            style={{
+                              padding: "6px 12px",
+                              border: "1px solid var(--card-border-color)",
+                              borderRadius: 4,
+                              background: "transparent",
+                              color: "var(--card-muted-fg-color)",
+                              fontSize: fs.label,
+                              cursor: "pointer",
+                            }}
+                          >
+                            画像を外す
+                          </button>
+                        ) : null}
+                      </div>
                     </div>
 
                     {/* Name */}
