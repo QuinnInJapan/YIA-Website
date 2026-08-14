@@ -403,29 +403,49 @@ export function AnnouncementEditor({
     <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Header */}
       <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-        <Flex align="center" justify="space-between">
-          <Flex align="center" gap={2}>
-            <span
-              style={{
-                display: "inline-block",
-                padding: "2px 8px",
-                borderRadius: 10,
-                fontSize: fs.meta,
-                fontWeight: 600,
-                background: hasDraft ? "#f5a623" : "#4caf50",
-                color: "#fff",
-              }}
-            >
-              {hasDraft ? "下書き" : "公開済み"}
-            </span>
-            <Text size={0} style={{ color: statusTone[saveStatus] }}>
-              {statusLabel[saveStatus]}
-            </Text>
-            {draftDoc?._updatedAt && (
-              <Text size={0} muted>
-                {formatStudioRelativeTime(draftDoc._updatedAt)}
+        <Flex align="center" justify="space-between" gap={3}>
+          <Flex align="center" gap={3} style={{ minWidth: 0 }}>
+            <div style={{ minWidth: 0, width: 220 }}>
+              <Text size={0} muted style={{ display: "block", marginBottom: 2 }}>
+                お知らせ
               </Text>
-            )}
+              <Text
+                size={1}
+                weight="semibold"
+                title={i18nGet(merged?.title, "ja") || "（タイトルなし）"}
+                style={{
+                  display: "block",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {i18nGet(merged?.title, "ja") || "（タイトルなし）"}
+              </Text>
+            </div>
+            <Flex align="center" gap={2} style={{ flexShrink: 0 }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  padding: "2px 8px",
+                  borderRadius: 10,
+                  fontSize: fs.meta,
+                  fontWeight: 600,
+                  background: hasDraft ? "#f5a623" : "#4caf50",
+                  color: "#fff",
+                }}
+              >
+                {hasDraft ? "下書き" : "公開済み"}
+              </span>
+              <Text size={0} style={{ color: statusTone[saveStatus] }}>
+                {statusLabel[saveStatus]}
+              </Text>
+              {draftDoc?._updatedAt && (
+                <Text size={0} muted>
+                  {formatStudioRelativeTime(draftDoc._updatedAt)}
+                </Text>
+              )}
+            </Flex>
           </Flex>
           <Flex align="center" gap={2}>
             {hasDraft && publishedDoc && (
