@@ -44,12 +44,14 @@ interface DocState<T> {
 // ── HomepageEditor ──────────────────────────────────
 
 export function HomepageEditor({
+  scope = "homepage",
   onOpenImagePicker,
   onOpenFilePicker,
   onShowHotspotCrop,
   onOpenDocumentDetail,
   onMergedChange,
 }: {
+  scope?: "homepage" | "settings";
   onOpenImagePicker: OpenPickerFn;
   onOpenFilePicker: (onSelect: (assetId: string, filename: string, ext: string) => void) => void;
   onShowHotspotCrop: ShowHotspotCropFn;
@@ -61,6 +63,7 @@ export function HomepageEditor({
   onMergedChange?: (state: HomepageMergedState | null) => void;
 }) {
   const client = useClient({ apiVersion: "2024-01-01" });
+  const isSettingsScope = scope === "settings";
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -159,8 +162,8 @@ export function HomepageEditor({
       onMergedChange?.({
         homepage,
         about,
-        siteSettings,
-        sidebar,
+        siteSettings: isSettingsScope ? siteSettings : (settingsState.published ?? siteSettings),
+        sidebar: isSettingsScope ? sidebar : (sidebarState.published ?? sidebar),
         categories,
         navCategories,
         announcements,
@@ -179,6 +182,9 @@ export function HomepageEditor({
     announcements,
     featured,
     onMergedChange,
+    isSettingsScope,
+    settingsState.published,
+    sidebarState.published,
   ]);
 
   // ── Load all documents ───────────────────────────
@@ -444,16 +450,32 @@ export function HomepageEditor({
 
   const publishChanges = useMemo(() => {
     const changes: string[] = [];
-    if (homepageState.draft || Object.keys(homepageState.edits).length > 0) changes.push("ヒーロー・活動");
-    if (aboutState.draft || Object.keys(aboutState.edits).length > 0) changes.push("YIAについて");
-    if (featuredState.draft || Object.keys(featuredState.edits).length > 0) changes.push("注目カテゴリ");
-    if (settingsState.draft || Object.keys(settingsState.edits).length > 0) changes.push("サイト設定");
-    if (sidebarState.draft || Object.keys(sidebarState.edits).length > 0) changes.push("サイドバー・フッター");
-    for (const [, state] of categoriesState) {
-      if (state.draft || Object.keys(state.edits).length > 0) changes.push("カテゴリ情報");
+    if (isSettingsScope) {
+      if (settingsState.draft || Object.keys(settingsState.edits).length > 0)
+        changes.push("団体・連絡先設定");
+      if (sidebarState.draft || Object.keys(sidebarState.edits).length > 0)
+        changes.push("公開資料・フッター");
+    } else {
+      if (homepageState.draft || Object.keys(homepageState.edits).length > 0)
+        changes.push("ヒーロー・活動");
+      if (aboutState.draft || Object.keys(aboutState.edits).length > 0)
+        changes.push("YIAについて");
+      if (featuredState.draft || Object.keys(featuredState.edits).length > 0)
+        changes.push("注目カテゴリ");
+      for (const [, state] of categoriesState) {
+        if (state.draft || Object.keys(state.edits).length > 0) changes.push("カテゴリ情報");
+      }
     }
     return changes;
-  }, [homepageState, aboutState, featuredState, settingsState, sidebarState, categoriesState]);
+  }, [
+    homepageState,
+    aboutState,
+    featuredState,
+    settingsState,
+    sidebarState,
+    categoriesState,
+    isSettingsScope,
+  ]);
 
   const publishChecks = useMemo<PublishCheck[]>(
     () => [
@@ -462,13 +484,17 @@ export function HomepageEditor({
         detail: publishChanges.join("、") || "公開する変更はありません。",
         tone: publishChanges.length > 0 ? "ok" : "error",
       },
-      {
-        label: "注目カテゴリ",
-        detail: featuredValid ? "4件選択済み" : "4件選択してください。",
-        tone: featuredValid ? "ok" : "error",
-      },
+      ...(isSettingsScope
+        ? []
+        : [
+            {
+              label: "注目カテゴリ",
+              detail: featuredValid ? "4件選択済み" : "4件選択してください。",
+              tone: featuredValid ? ("ok" as const) : ("error" as const),
+            },
+          ]),
     ],
-    [featuredValid, publishChanges],
+    [featuredValid, publishChanges, isSettingsScope],
   );
 
   function handleRequestPublish() {
@@ -502,14 +528,43 @@ export function HomepageEditor({
         toRefresh.push({ type: docType, pubId, draftId: `drafts.${pubId}` });
       }
 
-      queuePublish("homepage", homepage, !!homepageState.draft || Object.keys(homepageState.edits).length > 0);
-      queuePublish("homepageAbout", about, !!aboutState.draft || Object.keys(aboutState.edits).length > 0);
-      queuePublish("homepageFeatured", featured, !!featuredState.draft || Object.keys(featuredState.edits).length > 0);
-      queuePublish("siteSettings", siteSettings, !!settingsState.draft || Object.keys(settingsState.edits).length > 0);
-      queuePublish("sidebar", sidebar, !!sidebarState.draft || Object.keys(sidebarState.edits).length > 0);
-      for (const [pubId, catState] of categoriesState) {
-        const source = categories.find((category) => category._id.replace(/^drafts\./, "") === pubId);
-        queuePublish("category", source, !!catState.draft || Object.keys(catState.edits).length > 0);
+      if (isSettingsScope) {
+        queuePublish(
+          "siteSettings",
+          siteSettings,
+          !!settingsState.draft || Object.keys(settingsState.edits).length > 0,
+        );
+        queuePublish(
+          "sidebar",
+          sidebar,
+          !!sidebarState.draft || Object.keys(sidebarState.edits).length > 0,
+        );
+      } else {
+        queuePublish(
+          "homepage",
+          homepage,
+          !!homepageState.draft || Object.keys(homepageState.edits).length > 0,
+        );
+        queuePublish(
+          "homepageAbout",
+          about,
+          !!aboutState.draft || Object.keys(aboutState.edits).length > 0,
+        );
+        queuePublish(
+          "homepageFeatured",
+          featured,
+          !!featuredState.draft || Object.keys(featuredState.edits).length > 0,
+        );
+        for (const [pubId, catState] of categoriesState) {
+          const source = categories.find(
+            (category) => category._id.replace(/^drafts\./, "") === pubId,
+          );
+          queuePublish(
+            "category",
+            source,
+            !!catState.draft || Object.keys(catState.edits).length > 0,
+          );
+        }
       }
 
       if (toRefresh.length === 0) {
@@ -570,16 +625,23 @@ export function HomepageEditor({
   // ── Check if any drafts exist ────────────────────
 
   const hasAnyDrafts = useMemo(() => {
+    if (isSettingsScope) return !!settingsState.draft || !!sidebarState.draft;
     if (homepageState.draft) return true;
     if (aboutState.draft) return true;
     if (featuredState.draft) return true;
-    if (settingsState.draft) return true;
-    if (sidebarState.draft) return true;
     for (const [, state] of categoriesState) {
       if (state.draft) return true;
     }
     return false;
-  }, [homepageState, aboutState, featuredState, settingsState, sidebarState, categoriesState]);
+  }, [
+    homepageState,
+    aboutState,
+    featuredState,
+    settingsState,
+    sidebarState,
+    categoriesState,
+    isSettingsScope,
+  ]);
 
   // ── Status labels ────────────────────────────────
 
@@ -626,7 +688,7 @@ export function HomepageEditor({
         <Flex align="center" justify="space-between">
           <Flex align="center" gap={2}>
             <Text size={1} weight="semibold">
-              ホームページ
+              {isSettingsScope ? "サイト設定" : "ホームページ"}
             </Text>
             <Text size={0} style={{ color: statusTone[saveStatus] }}>
               {statusLabel[saveStatus]}
@@ -634,12 +696,12 @@ export function HomepageEditor({
           </Flex>
           <Button
             icon={PublishIcon}
-            text="すべて公開"
+            text={isSettingsScope ? "設定を公開" : "ホームページを公開"}
             tone="positive"
             fontSize={1}
             padding={2}
             onClick={handleRequestPublish}
-            disabled={saving || !hasAnyDrafts || !featuredValid}
+            disabled={saving || !hasAnyDrafts || (!isSettingsScope && !featuredValid)}
           />
         </Flex>
       </Box>
@@ -656,61 +718,71 @@ export function HomepageEditor({
       {/* Scrollable editor body */}
       <div ref={scrollRef} style={{ flex: 1, overflow: "auto" }}>
         <div style={{ maxWidth: 720, width: "100%", margin: "0 auto", padding: "16px 16px" }}>
-          <HeroSection
-            homepage={homepage}
-            siteSettings={siteSettings}
-            updateField={updateField}
-            onOpenImagePicker={onOpenImagePicker}
-            onShowHotspotCrop={onShowHotspotCrop}
-          />
-
-          <ProgramCardsSection
-            featured={featured}
-            categories={categories}
-            navCategories={navCategories}
-            updateField={updateField}
-          />
-
-          {about && (
-            <AboutSection
-              about={about}
-              aboutId={aboutId}
+          {isSettingsScope ? (
+            <SettingsSection
+              siteSettings={siteSettings}
+              sidebar={sidebar}
               updateField={updateField}
-              onOpenImagePicker={onOpenImagePicker}
-              onShowHotspotCrop={onShowHotspotCrop}
+              onOpenFilePicker={onOpenFilePicker}
+              onOpenDocumentDetail={onOpenDocumentDetail}
             />
+          ) : (
+            <>
+              <HeroSection
+                homepage={homepage}
+                siteSettings={settingsState.published ?? siteSettings}
+                updateField={updateField}
+                onOpenImagePicker={onOpenImagePicker}
+                onShowHotspotCrop={onShowHotspotCrop}
+              />
+
+              <ProgramCardsSection
+                featured={featured}
+                categories={categories}
+                navCategories={navCategories}
+                updateField={updateField}
+              />
+
+              {about && (
+                <AboutSection
+                  about={about}
+                  aboutId={aboutId}
+                  updateField={updateField}
+                  onOpenImagePicker={onOpenImagePicker}
+                  onShowHotspotCrop={onShowHotspotCrop}
+                />
+              )}
+
+              <ActivityGridSection
+                homepage={homepage}
+                updateField={updateField}
+                onOpenImagePicker={onOpenImagePicker}
+                onShowHotspotCrop={onShowHotspotCrop}
+              />
+            </>
           )}
-
-          <ActivityGridSection
-            homepage={homepage}
-            updateField={updateField}
-            onOpenImagePicker={onOpenImagePicker}
-            onShowHotspotCrop={onShowHotspotCrop}
-          />
-
-          <SettingsSection
-            siteSettings={siteSettings}
-            sidebar={sidebar}
-            updateField={updateField}
-            onOpenFilePicker={onOpenFilePicker}
-            onOpenDocumentDetail={onOpenDocumentDetail}
-          />
         </div>
       </div>
 
       <RawJsonButton
         getDocument={() => ({
-          homepage: homepageState,
-          about: aboutState,
-          featured: featuredState,
-          settings: settingsState,
-          sidebar: sidebarState,
+          ...(isSettingsScope
+            ? { settings: settingsState, sidebar: sidebarState }
+            : { homepage: homepageState, about: aboutState, featured: featuredState }),
         })}
       />
       {publishOpen ? (
         <PublishConfirmation
-          title="ホームページの変更を公開しますか？"
-          description="表示中の変更だけでなく、下書きになっている関連設定もまとめて公開します。"
+          title={
+            isSettingsScope
+              ? "サイト全体の設定を公開しますか？"
+              : "ホームページの変更を公開しますか？"
+          }
+          description={
+            isSettingsScope
+              ? "団体情報、連絡先、公開資料、フッターの変更を公開します。"
+              : "ホームページのヒーロー、注目カテゴリ、YIAについて、活動グリッドの変更を公開します。"
+          }
           checks={publishChecks}
           busy={saving}
           onConfirm={handlePublish}
