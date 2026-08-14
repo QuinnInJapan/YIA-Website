@@ -357,14 +357,20 @@ export function PageEditor({
   function handleHeroImagePick() {
     onOpenImagePicker((assetId: string) => {
       const images = merged?.images ?? [];
+      const previousImage = images[0];
       const newImage = {
-        _key: crypto.randomUUID().replace(/-/g, "").slice(0, 12),
-      _type: "imageFile" as const,
-      file: { _type: "image", asset: { _type: "reference", _ref: assetId } },
-      alt: [
-        { _key: "ja", value: "" },
-        { _key: "en", value: "" },
-      ],
+        ...previousImage,
+        _key: previousImage?._key ?? crypto.randomUUID().replace(/-/g, "").slice(0, 12),
+        _type: "imageFile" as const,
+        file: {
+          ...previousImage?.file,
+          _type: "image",
+          asset: { _type: "reference", _ref: assetId },
+        },
+        alt: previousImage?.alt ?? [
+          { _key: "ja", value: "" },
+          { _key: "en", value: "" },
+        ],
       };
       updateField("images", [newImage, ...images.slice(1)]);
     });

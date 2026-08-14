@@ -70,7 +70,9 @@ export function ImageCardsSectionEditor({
 
   function handleImagePick(itemIndex: number) {
     onOpenImagePicker((assetId: string) => {
-      updateItem(itemIndex, { image: { asset: { _ref: assetId } } });
+      updateItem(itemIndex, {
+        image: { ...items[itemIndex]?.image, asset: { _ref: assetId } },
+      });
     });
   }
 

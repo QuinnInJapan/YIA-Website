@@ -336,6 +336,7 @@ export function AnnouncementEditor({
   function handleHeroImagePick() {
     onOpenImagePicker((assetId: string) => {
       updateField("heroImage", {
+        ...merged?.heroImage,
         _type: "image",
         asset: { _type: "reference", _ref: assetId },
       });

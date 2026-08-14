@@ -40,8 +40,9 @@ export function ActivityGridSection({
       const newImages = [...images];
       while (newImages.length <= index) newImages.push({} as ImageField);
       newImages[index] = {
+        ...newImages[index],
         _type: "image",
-        _key: `img${index}`,
+        _key: newImages[index]?._key ?? `img${index}`,
         asset: { _type: "reference", _ref: assetId },
       };
       updateField("homepage", "homepage", "activityGrid", {

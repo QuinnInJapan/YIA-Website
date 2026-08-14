@@ -31,6 +31,7 @@ export function AboutSection({
   function handlePickImage() {
     onOpenImagePicker((assetId: string) => {
       updateField("homepageAbout", aboutId, "image", {
+        ...about.image,
         _type: "image",
         asset: { _type: "reference", _ref: assetId },
       });

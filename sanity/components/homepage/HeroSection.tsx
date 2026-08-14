@@ -36,7 +36,11 @@ export function HeroSection({
     onOpenImagePicker((assetId: string) => {
       updateField("homepage", "homepage", "hero", {
         ...homepage.hero,
-        image: { _type: "image", asset: { _type: "reference", _ref: assetId } },
+        image: {
+          ...heroImage,
+          _type: "image",
+          asset: { _type: "reference", _ref: assetId },
+        },
       });
     });
   }
