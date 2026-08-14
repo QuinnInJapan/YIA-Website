@@ -6,6 +6,45 @@ import { i18nGet } from "../shared/i18n";
 import type { SectionItem, SectionTypeName } from "./types";
 import { SECTION_TYPE_LABELS } from "./types";
 
+function listLength(value: unknown) {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+function sectionSummary(section: SectionItem) {
+  switch (section._type) {
+    case "content": {
+      const body = Array.isArray(section.body)
+        ? section.body.find(
+            (entry) =>
+              typeof entry === "object" &&
+              entry !== null &&
+              "_key" in entry &&
+              entry._key === "ja",
+          )
+        : null;
+      const blockCount =
+        body && typeof body === "object" && "value" in body ? listLength(body.value) : 0;
+      return blockCount > 0 ? `本文 ${blockCount}ブロック` : "本文未入力";
+    }
+    case "gallery":
+      return `画像 ${listLength(section.images)}枚`;
+    case "table":
+      return `${listLength(section.columns)}列・${listLength(section.rows)}行`;
+    case "labelTable":
+      return `${listLength(section.rows)}項目`;
+    case "links":
+      return `リンク ${listLength(section.items)}件`;
+    case "warnings":
+      return `注意事項 ${listLength(section.items)}件`;
+    case "infoCards":
+      return `カード ${listLength(section.items)}件`;
+    case "imageCards":
+      return `画像カード ${listLength(section.items)}件`;
+    default:
+      return "";
+  }
+}
+
 export function SectionBar({
   section,
   index,
@@ -30,6 +69,7 @@ export function SectionBar({
   const typeLabel = SECTION_TYPE_LABELS[section._type as SectionTypeName] ?? section._type;
   const title = i18nGet(section.title, "ja");
   const titleless = ["gallery", "warnings"].includes(section._type);
+  const summary = sectionSummary(section);
 
   return (
     <div
@@ -85,6 +125,19 @@ export function SectionBar({
       >
         {title || (titleless ? "" : "（タイトルなし）")}
       </span>
+
+      {summary && (
+        <span
+          style={{
+            flexShrink: 0,
+            fontSize: fs.meta,
+            color: "var(--card-muted-fg-color)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {summary}
+        </span>
+      )}
 
       {/* Right-panel editing indicator */}
       {editingInPanel && (
