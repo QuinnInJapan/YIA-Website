@@ -432,117 +432,214 @@ function PteToolbar({
   onInsertGallery?: () => void;
 }) {
   const editor = useEditor();
+  const [linkEditorOpen, setLinkEditorOpen] = useState(false);
+  const [linkHref, setLinkHref] = useState("");
+  const [linkError, setLinkError] = useState<string | null>(null);
 
   const isStrong = useEditorSelector(editor, (s) => s.decoratorState["strong"] ?? false);
   const isEm = useEditorSelector(editor, (s) => s.decoratorState["em"] ?? false);
-  const isLink = useEditorSelector(
-    editor,
-    selectors.isActiveAnnotation("link", { mode: "partial" }),
+  const activeLink = useEditorSelector(editor, (s) =>
+    selectors
+      .getActiveAnnotations(s)
+      .find((annotation) => annotation._type === "link"),
   );
+  const isLink = Boolean(activeLink);
+
+  const applyLink = useCallback(() => {
+    const href = normalizePortableTextHrefInput(linkHref);
+    if (!href) {
+      setLinkError("URLを入力してください");
+      return;
+    }
+    editor.send({ type: "focus" });
+    if (isLink) {
+      editor.send({ type: "annotation.remove", annotation: { name: "link" } });
+    }
+    editor.send({ type: "annotation.add", annotation: { name: "link", value: { href } } });
+    setLinkEditorOpen(false);
+    setLinkError(null);
+  }, [editor, isLink, linkHref]);
+
+  const removeLink = useCallback(() => {
+    editor.send({ type: "focus" });
+    editor.send({ type: "annotation.remove", annotation: { name: "link" } });
+    setLinkEditorOpen(false);
+    setLinkError(null);
+  }, [editor]);
 
   return (
-    <Flex
-      align="center"
-      gap={1}
-      paddingBottom={2}
+    <div
       style={{
         borderBottom: "1px solid var(--card-border-color)",
         marginBottom: 8,
         flexShrink: 0,
       }}
     >
-      <StyleDropdown />
-      <span style={DIVIDER} />
-      <button
-        type="button"
-        style={isStrong ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "decorator.toggle", decorator: "strong" });
-        }}
-        title="太字 (⌘B)"
-      >
-        <IconBold />
-      </button>
-      <button
-        type="button"
-        style={isEm ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "decorator.toggle", decorator: "em" });
-        }}
-        title="斜体 (⌘I)"
-      >
-        <IconItalic />
-      </button>
-      <button
-        type="button"
-        style={isLink ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          if (isLink) {
-            editor.send({ type: "annotation.remove", annotation: { name: "link" } });
-            editor.send({ type: "focus" });
-            return;
-          }
-          const href = normalizePortableTextHrefInput(window.prompt("リンクURL", "") ?? "");
-          if (!href) return;
-          editor.send({ type: "annotation.add", annotation: { name: "link", value: { href } } });
-          editor.send({ type: "focus" });
-        }}
-        title="リンク"
-      >
-        <IconLink />
-      </button>
-      <span style={DIVIDER} />
-      <button
-        type="button"
-        style={TOOLBAR_BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "list item.toggle", listItem: "bullet" });
-        }}
-        title="箇条書き"
-      >
-        <IconBulletList />
-      </button>
-      <button
-        type="button"
-        style={TOOLBAR_BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "list item.toggle", listItem: "number" });
-        }}
-        title="番号付き"
-      >
-        <IconNumberList />
-      </button>
-      <span style={DIVIDER} />
-      <button
-        type="button"
-        style={TOOLBAR_BTN}
-        disabled={!onInsertImage}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          onInsertImage?.();
-        }}
-        title="画像を挿入"
-      >
-        <IconImage />
-      </button>
-      <button
-        type="button"
-        style={TOOLBAR_BTN}
-        disabled={!onInsertGallery}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          onInsertGallery?.();
-        }}
-        title="ギャラリーを挿入"
-      >
-        <IconGallery />
-      </button>
-    </Flex>
+      <Flex align="center" gap={1} paddingBottom={2}>
+        <StyleDropdown />
+        <span style={DIVIDER} />
+        <button
+          type="button"
+          style={isStrong ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.send({ type: "decorator.toggle", decorator: "strong" });
+          }}
+          title="太字 (⌘B)"
+        >
+          <IconBold />
+        </button>
+        <button
+          type="button"
+          style={isEm ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.send({ type: "decorator.toggle", decorator: "em" });
+          }}
+          title="斜体 (⌘I)"
+        >
+          <IconItalic />
+        </button>
+        <button
+          type="button"
+          style={isLink || linkEditorOpen ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
+          aria-expanded={linkEditorOpen}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setLinkHref(typeof activeLink?.href === "string" ? activeLink.href : "");
+            setLinkError(null);
+            setLinkEditorOpen((open) => !open);
+          }}
+          title="リンク"
+        >
+          <IconLink />
+        </button>
+        <span style={DIVIDER} />
+        <button
+          type="button"
+          style={TOOLBAR_BTN}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.send({ type: "list item.toggle", listItem: "bullet" });
+          }}
+          title="箇条書き"
+        >
+          <IconBulletList />
+        </button>
+        <button
+          type="button"
+          style={TOOLBAR_BTN}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.send({ type: "list item.toggle", listItem: "number" });
+          }}
+          title="番号付き"
+        >
+          <IconNumberList />
+        </button>
+        <span style={DIVIDER} />
+        <button
+          type="button"
+          style={TOOLBAR_BTN}
+          disabled={!onInsertImage}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onInsertImage?.();
+          }}
+          title="画像を挿入"
+        >
+          <IconImage />
+        </button>
+        <button
+          type="button"
+          style={TOOLBAR_BTN}
+          disabled={!onInsertGallery}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onInsertGallery?.();
+          }}
+          title="ギャラリーを挿入"
+        >
+          <IconGallery />
+        </button>
+      </Flex>
+      {linkEditorOpen && (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            applyLink();
+          }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "0 0 8px",
+          }}
+        >
+          <label htmlFor="pte-link-href" style={{ fontSize: fs.meta, fontWeight: 600 }}>
+            リンク先
+          </label>
+          <input
+            id="pte-link-href"
+            type="text"
+            inputMode="url"
+            autoFocus
+            value={linkHref}
+            onChange={(event) => {
+              setLinkHref(event.currentTarget.value);
+              setLinkError(null);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setLinkEditorOpen(false);
+                setLinkError(null);
+              }
+            }}
+            placeholder="https://… または /ページ"
+            aria-invalid={Boolean(linkError)}
+            aria-describedby={linkError ? "pte-link-error" : undefined}
+            style={{
+              flex: 1,
+              minWidth: 160,
+              height: 32,
+              padding: "0 9px",
+              border: `1px solid ${linkError ? "#c53030" : "var(--card-border-color)"}`,
+              borderRadius: 4,
+              background: "var(--card-bg-color)",
+              color: "var(--card-fg-color)",
+              fontSize: fs.body,
+            }}
+          />
+          <button type="submit" style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 10px" }}>
+            適用
+          </button>
+          {isLink && (
+            <button
+              type="button"
+              onClick={removeLink}
+              style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 8px", color: "#b42318" }}
+            >
+              解除
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              setLinkEditorOpen(false);
+              setLinkError(null);
+            }}
+            style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 8px" }}
+          >
+            閉じる
+          </button>
+          {linkError && (
+            <span id="pte-link-error" role="alert" style={{ color: "#b42318", fontSize: fs.meta }}>
+              {linkError}
+            </span>
+          )}
+        </form>
+      )}
+    </div>
   );
 }
 
