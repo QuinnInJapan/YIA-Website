@@ -20,10 +20,10 @@ const HANDLE_HOTSPOT = 16;
 const MIN_CROP = 0.05;
 
 export const PREVIEW_RATIOS = [
-  { label: "3:4", w: 3, h: 4 },
-  { label: "正方形", w: 1, h: 1 },
-  { label: "16:9", w: 16, h: 9 },
-  { label: "パノラマ", w: 4, h: 1 },
+  { label: "縦長カード (3:4)", w: 3, h: 4 },
+  { label: "正方形サムネイル", w: 1, h: 1 },
+  { label: "記事・カード (16:9)", w: 16, h: 9 },
+  { label: "ページ見出し (4:1)", w: 4, h: 1 },
 ];
 
 // ── Helpers ──────────────────────────────────────────────
@@ -610,7 +610,7 @@ export function HotspotCropTool({
       {imgSize && (
         <div style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--card-border-color)" }}>
           <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginBottom: 8 }}>
-            プレビュー
+            掲載先での見え方
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
             {PREVIEW_RATIOS.map(({ label, w, h }) => {
