@@ -13,6 +13,9 @@ export interface SanityImageAsset {
   _id: string;
   url: string;
   originalFilename: string | null;
+  title?: string | null;
+  altText?: string | null;
+  description?: string | null;
   metadata: { dimensions?: { width: number; height: number } } | null;
 }
 
@@ -119,14 +122,21 @@ export function ImagePickerPanel({
         .split(/\s+/)
         .map((t) => `"${t}*"`)
         .join(", ");
-      filter += ` && (originalFilename match [${terms}])`;
+      filter += ` && (
+        originalFilename match [${terms}] ||
+        title match [${terms}] ||
+        altText match [${terms}] ||
+        description match [${terms}]
+      )`;
     }
     const start = page * PICKER_PAGE;
     const end = start + PICKER_PAGE;
 
     Promise.all([
       client.fetch<SanityImageAsset[]>(
-        `*[${filter}] | order(_createdAt desc) [${start}...${end}] { _id, url, originalFilename, metadata { dimensions } }`,
+        `*[${filter}] | order(_createdAt desc) [${start}...${end}] {
+          _id, url, originalFilename, title, altText, description, metadata { dimensions }
+        }`,
       ),
       client.fetch<number>(`count(*[${filter}])`),
     ])
@@ -170,6 +180,9 @@ export function ImagePickerPanel({
             _id: asset._id,
             url: asset.url,
             originalFilename: asset.originalFilename ?? file.name,
+            title: asset.title ?? null,
+            altText: asset.altText ?? null,
+            description: asset.description ?? null,
             metadata: asset.metadata ?? null,
           };
           setAssets((prev) => [uploadedAsset, ...prev.filter((item) => item._id !== asset._id)]);
@@ -222,7 +235,7 @@ export function ImagePickerPanel({
             <div style={{ flex: 1 }}>
               <TextInput
                 icon={SearchIcon}
-                placeholder="ファイル名で検索…"
+                placeholder="ファイル名・説明で検索…"
                 value={search}
                 onChange={(e) => handleSearchChange(e.currentTarget.value)}
                 fontSize={0}
@@ -382,6 +395,7 @@ export function ImagePickerPanel({
               }}
             >
               {assets.map((asset) => {
+                const dimensions = asset.metadata?.dimensions;
                 const isInGallery = galleryMode?.selectedAssetIds.includes(asset._id);
                 const isSelected = galleryMode
                   ? isInGallery
@@ -409,7 +423,8 @@ export function ImagePickerPanel({
                       aspectRatio: "1",
                       position: "relative",
                     }}
-                    title={asset.originalFilename ?? asset._id}
+                    title={`${asset.originalFilename ?? asset._id}${dimensions ? ` (${dimensions.width} × ${dimensions.height})` : ""}`}
+                    aria-label={`${asset.title || asset.originalFilename || "画像"}${dimensions ? `、${dimensions.width} × ${dimensions.height}ピクセル` : ""}`}
                     onMouseEnter={(e) => {
                       if (!isSelected)
                         (e.currentTarget as HTMLElement).style.borderColor =
