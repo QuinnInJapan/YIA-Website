@@ -166,7 +166,15 @@ export function ImagePickerPanel({
         } else if (mode === "multi") {
           setSelectedIds((prev) => (prev.includes(asset._id) ? prev : [...prev, asset._id]));
         } else {
-          onSelect?.(asset._id);
+          const uploadedAsset: SanityImageAsset = {
+            _id: asset._id,
+            url: asset.url,
+            originalFilename: asset.originalFilename ?? file.name,
+            metadata: asset.metadata ?? null,
+          };
+          setAssets((prev) => [uploadedAsset, ...prev.filter((item) => item._id !== asset._id)]);
+          setTotal((prev) => prev + 1);
+          setSelectedId(asset._id);
         }
       } catch (err) {
         console.error("Upload failed:", err);
