@@ -16,6 +16,7 @@ import { PagePreview } from "./pages/PagePreview";
 import { LeftPanel } from "./unified-pages/LeftPanel";
 import { PageEditor } from "./unified-pages/PageEditor";
 import { TableEditorPanel } from "./pages/sections/TableEditorPanel";
+import { HotspotCropTool } from "./shared/HotspotCropTool";
 import { CategoryManagement } from "./unified-pages/CategoryManagement";
 import { PageCreationForm } from "./unified-pages/PageCreationForm";
 import { CategoryCreationForm } from "./unified-pages/CategoryCreationForm";
@@ -81,6 +82,12 @@ export function UnifiedPagesTool() {
       }
     | { type: "sectionPicker"; onSelect: (type: SectionTypeName) => void }
     | {
+        type: "hotspotCrop";
+        imageUrl: string;
+        value: { hotspot: any; crop: any };
+        onChange: (value: { hotspot: any; crop: any }) => void;
+      }
+    | {
         type: "documentDetail";
         doc: SharedDocumentLinkItem;
         onUpdate: (doc: SharedDocumentLinkItem) => void;
@@ -107,6 +114,16 @@ export function UnifiedPagesTool() {
   const handleOpenSectionPicker = useCallback((onSelect: (type: SectionTypeName) => void) => {
     setRightPanel({ type: "sectionPicker", onSelect });
   }, []);
+  const handleShowHotspotCrop = useCallback(
+    (
+      imageUrl: string,
+      value: { hotspot: any; crop: any },
+      onChange: (nextValue: { hotspot: any; crop: any }) => void,
+    ) => {
+      setRightPanel({ type: "hotspotCrop", imageUrl, value, onChange });
+    },
+    [],
+  );
   const handleOpenGalleryEditor = useCallback(
     (
       sectionKey: string,
@@ -224,6 +241,7 @@ export function UnifiedPagesTool() {
             key={middlePanel.id}
             documentId={middlePanel.id}
             onOpenImagePicker={handleOpenImagePicker}
+            onShowHotspotCrop={handleShowHotspotCrop}
             onOpenFilePicker={handleOpenFilePicker}
             onOpenSectionPicker={handleOpenSectionPicker}
             onOpenGalleryEditor={handleOpenGalleryEditor}
@@ -378,6 +396,13 @@ export function UnifiedPagesTool() {
               rightPanel.onSelect(type);
               setRightPanel(null);
             }}
+            onClose={() => setRightPanel(null)}
+          />
+        ) : rightPanel.type === "hotspotCrop" ? (
+          <HotspotCropTool
+            imageUrl={rightPanel.imageUrl}
+            value={rightPanel.value}
+            onChange={rightPanel.onChange}
             onClose={() => setRightPanel(null)}
           />
         ) : rightPanel.type === "documentDetail" ? (

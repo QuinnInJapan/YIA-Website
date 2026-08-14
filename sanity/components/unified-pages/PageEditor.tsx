@@ -25,6 +25,7 @@ import {
 import { formatStudioRelativeTime } from "../shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../shared/BilingualInput";
+import { DEFAULT_CROP, DEFAULT_HOTSPOT } from "../shared/HotspotCropTool";
 import {
   PublishConfirmation,
   ActionConfirmation,
@@ -50,6 +51,7 @@ const DOC_PROJECTION = `{
 export function PageEditor({
   documentId,
   onOpenImagePicker,
+  onShowHotspotCrop,
   onOpenSectionPicker,
   onOpenGalleryEditor,
   activeGallerySectionKey,
@@ -66,6 +68,11 @@ export function PageEditor({
 }: {
   documentId: string;
   onOpenImagePicker: (onSelect: (assetId: string) => void) => void;
+  onShowHotspotCrop?: (
+    imageUrl: string,
+    value: { hotspot: any; crop: any },
+    onChange: (value: { hotspot: any; crop: any }) => void,
+  ) => void;
   onOpenSectionPicker?: (onSelect: (type: SectionTypeName) => void) => void;
   onOpenGalleryEditor?: (
     sectionKey: string,
@@ -483,6 +490,32 @@ export function PageEditor({
                   buttons={
                     <>
                       <OverlayButton label="変更" onClick={handleHeroImagePick} />
+                      <OverlayButton
+                        label="切り抜き"
+                        onClick={() => {
+                          const heroImage = merged.images?.[0];
+                          if (!heroImage?.file?.asset?._ref) return;
+                          onShowHotspotCrop?.(
+                            builder.image(heroImage.file).width(1200).auto("format").url(),
+                            {
+                              hotspot: heroImage.file.hotspot ?? DEFAULT_HOTSPOT,
+                              crop: heroImage.file.crop ?? DEFAULT_CROP,
+                            },
+                            ({ hotspot, crop }) => {
+                              const images = [...(merged.images ?? [])];
+                              images[0] = {
+                                ...heroImage,
+                                file: {
+                                  ...heroImage.file,
+                                  hotspot: { _type: "sanity.imageHotspot", ...hotspot },
+                                  crop: { _type: "sanity.imageCrop", ...crop },
+                                },
+                              };
+                              updateField("images", images);
+                            },
+                          );
+                        }}
+                      />
                       <OverlayButton
                         label="削除"
                         onClick={() => updateField("images", (merged.images ?? []).slice(1))}
