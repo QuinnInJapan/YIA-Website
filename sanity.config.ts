@@ -9,6 +9,7 @@ import { unifiedPagesPlugin } from "./sanity/components/unifiedPagesPlugin";
 import { draftsPlugin } from "./sanity/components/draftsPlugin";
 import { schemaTypes } from "./sanity/schemas";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
+import { yiaStudioTheme } from "./sanity/lib/studioTheme";
 
 export default defineConfig({
   name: "yia-website",
@@ -16,6 +17,7 @@ export default defineConfig({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
   basePath: "/studio",
+  theme: yiaStudioTheme,
   plugins: [
     homepagePlugin(),
     unifiedPagesPlugin(),
