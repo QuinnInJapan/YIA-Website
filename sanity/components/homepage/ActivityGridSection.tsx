@@ -110,9 +110,9 @@ export function ActivityGridSection({
             style={{
               width: "100%",
               height: "100%",
-              border: "2px dashed #ccc",
+              border: "2px dashed var(--card-border-color)",
               background: "transparent",
-              color: "#999",
+              color: "var(--card-muted-fg-color)",
               cursor: "pointer",
               fontSize: fs.body,
               display: "flex",

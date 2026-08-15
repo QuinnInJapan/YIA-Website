@@ -127,7 +127,7 @@ function CategoryRow({
               background: "transparent",
               cursor: "pointer",
               fontSize: fs.meta,
-              opacity: 0.5,
+              opacity: 0.8,
               padding: 0,
               color: "var(--card-fg-color)",
               flexShrink: 0,

@@ -100,6 +100,17 @@
   height: 100%;
   overflow: hidden;
   font-weight: 500;
+  line-height: 1.5;
+}
+
+.studio-workspace :where(button, input, textarea, select) {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.studio-workspace :where(input, textarea)::placeholder {
+  color: var(--input-placeholder-color);
+  opacity: 1;
 }
 
 .studio-list-panel {
