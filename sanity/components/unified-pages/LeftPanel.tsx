@@ -27,6 +27,7 @@ function PageRow({
   return (
     <button
       type="button"
+      title={title}
       style={{
         display: "flex",
         alignItems: "center",
@@ -43,14 +44,12 @@ function PageRow({
       onClick={onSelect}
     >
       <span
+        className="studio-page-title"
         style={{
           flex: 1,
           minWidth: 0,
           fontSize: fs.body,
           color: hidden ? "var(--card-muted-fg-color)" : "var(--card-fg-color)",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
           fontWeight: isSelected ? 600 : 400,
         }}
       >

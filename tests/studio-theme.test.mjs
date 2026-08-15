@@ -38,3 +38,15 @@ test("keeps custom Studio controls and placeholders legible", () => {
     /:where\(input, textarea\)::placeholder[^}]*color:\s*var\(--input-placeholder-color\);[^}]*opacity:\s*1;/s,
   );
 });
+
+test("keeps narrow Studio previews from partially covering editor titles", () => {
+  assert.match(
+    studioCss,
+    /@media \(max-width: 960px\)[\s\S]*\.studio-right-panel:not\(\.studio-right-panel--collapsed\)\s*\{[^}]*inset:\s*0;[^}]*width:\s*auto;/,
+  );
+  assert.match(
+    studioCss,
+    /\.studio-list-panel\s*~\s*\.studio-right-panel:not\(\.studio-right-panel--collapsed\)\s*\{[^}]*left:\s*240px;/,
+  );
+  assert.match(studioCss, /\.studio-page-title\s*\{[^}]*-webkit-line-clamp:\s*2;/s);
+});
