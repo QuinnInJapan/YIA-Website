@@ -114,9 +114,7 @@ export default function GoogleTranslate() {
   }, [active]);
 
   // Skip GT entirely when inside an iframe (e.g. Sanity Presentation tool)
-  const [inIframe] = useState(() =>
-    typeof window !== "undefined" && window.self !== window.top,
-  );
+  const [inIframe] = useState(() => typeof window !== "undefined" && window.self !== window.top);
 
   const gtLoadedRef = useRef(false);
 
@@ -148,8 +146,7 @@ export default function GoogleTranslate() {
     if (!document.getElementById("google-translate-script")) {
       const script = document.createElement("script");
       script.id = "google-translate-script";
-      script.src =
-        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
     }
@@ -161,7 +158,9 @@ export default function GoogleTranslate() {
     if (!code) {
       // Reset: clear cookie and reload
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname;
+      document.cookie =
+        "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+        window.location.hostname;
       window.location.reload();
       return;
     }
@@ -171,9 +170,7 @@ export default function GoogleTranslate() {
     document.cookie = `googtrans=/ja/${code}; path=/; domain=.${window.location.hostname}`;
 
     // Drive the hidden GT select element
-    const gtSelect = document.querySelector<HTMLSelectElement>(
-      "#google_translate_element select",
-    );
+    const gtSelect = document.querySelector<HTMLSelectElement>("#google_translate_element select");
     if (gtSelect) {
       gtSelect.value = code;
       gtSelect.dispatchEvent(new Event("change"));
@@ -183,7 +180,7 @@ export default function GoogleTranslate() {
   }
 
   const activeLabel = active
-    ? LANGUAGES.find((l) => l.code === active)?.label ?? active
+    ? (LANGUAGES.find((l) => l.code === active)?.label ?? active)
     : "翻訳 Translate";
 
   if (inIframe || dismissed) return null;
@@ -193,14 +190,24 @@ export default function GoogleTranslate() {
       {/* Hidden GT widget — still needed for initialization */}
       <div
         id="google_translate_element"
-        style={{ position: "absolute", opacity: 0, pointerEvents: "none", height: 0, overflow: "hidden" }}
+        style={{
+          position: "absolute",
+          opacity: 0,
+          pointerEvents: "none",
+          height: 0,
+          overflow: "hidden",
+        }}
       />
 
       <button
         className="gtranslate__trigger"
-        onClick={() => { loadGoogleTranslate(); setOpen((o) => !o); }}
+        onClick={() => {
+          loadGoogleTranslate();
+          setOpen((o) => !o);
+        }}
         aria-expanded={open}
         aria-haspopup="true"
+        aria-label={activeLabel}
         type="button"
       >
         <svg
@@ -221,12 +228,20 @@ export default function GoogleTranslate() {
       </button>
       <button
         className="gtranslate__close"
-        onClick={(e) => { e.stopPropagation(); setDismissed(true); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setDismissed(true);
+        }}
         aria-label="翻訳ボタンを非表示 Hide translate"
         type="button"
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M3 3l8 8M11 3l-8 8"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       </button>
 

@@ -330,6 +330,27 @@ ruby rt {
   margin-top: var(--spacing-xs);
 }
 
+@media (max-width: 720px) {
+  .page-hero--described:not(.page-hero--solid) {
+    min-height: 0;
+    padding: 180px var(--site-gutter) 0;
+  }
+
+  .page-hero--described:not(.page-hero--solid) .page-hero__description {
+    max-width: none;
+    width: auto;
+    margin: var(--spacing-md) calc(-1 * var(--site-gutter)) 0;
+    padding: var(--spacing-lg) var(--site-gutter) var(--spacing-xl);
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-shadow: none;
+  }
+
+  .page-hero--described:not(.page-hero--solid) .page-hero__description-en {
+    color: var(--color-text-muted);
+  }
+}
+
 /* -- Page Section System -- */
 
 .page-section {
@@ -571,13 +592,16 @@ body {
 
 @media (max-width: 480px) {
   .gtranslate {
-    bottom: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
     right: 12px;
   }
 
   .gtranslate__trigger {
-    padding: 8px 12px;
-    border-radius: 20px;
+    justify-content: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    padding: 0;
+    border-radius: 50%;
   }
 
   .gtranslate__icon {
@@ -587,6 +611,10 @@ body {
 
   .gtranslate__menu {
     min-width: 180px;
+  }
+
+  .gtranslate__label {
+    display: none;
   }
 }
 
@@ -5600,6 +5628,10 @@ html:has(:target) {
   line-height: 1.7;
 }
 
+.cat-item__more {
+  display: none;
+}
+
 .cat-item__meta {
   display: flex;
   align-items: center;
@@ -5642,6 +5674,35 @@ html:has(:target) {
 
   .cat-item__img-wrap {
     aspect-ratio: 16 / 9;
+  }
+
+  .cat-item__desc .bilingual-block__ja,
+  .cat-item__desc .bilingual-block__en {
+    overflow: hidden;
+  }
+
+  .cat-item__desc .bilingual-block__ja {
+    max-height: 7em;
+  }
+
+  .cat-item__desc .bilingual-block__en {
+    max-height: 5.1em;
+  }
+
+  .cat-item__more {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-sm);
+    color: var(--color-link);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+  }
+
+  .cat-item__more span {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
   }
 }
 

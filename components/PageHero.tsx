@@ -42,9 +42,10 @@ export default function PageHero({
   const heroFile = images?.[0]?.file;
   const heroImg = heroFile ? imageUrl(heroFile) : "";
   const heroPosition = heroFile ? hotspotPosition(heroFile) : undefined;
+  const descriptionClass = descHtml ? " page-hero--described" : "";
   if (heroImg) {
     return (
-      <div className="page-hero">
+      <div className={`page-hero${descriptionClass}`}>
         <Image
           src={heroImg}
           alt=""
@@ -54,7 +55,9 @@ export default function PageHero({
           style={heroPosition ? { objectPosition: heroPosition } : undefined}
         />
         <h1 className="page-hero__title">{titleJa}</h1>
-        <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
+        <p className="page-hero__subtitle" lang="en" translate="no">
+          {titleEn || ""}
+        </p>
         {descHtml}
       </div>
     );
@@ -62,9 +65,11 @@ export default function PageHero({
 
   // Solid hero fallback
   return (
-    <div className="page-hero page-hero--solid">
+    <div className={`page-hero page-hero--solid${descriptionClass}`}>
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en" translate="no">
+        {titleEn || ""}
+      </p>
       {descHtml}
     </div>
   );
@@ -82,7 +87,9 @@ export function SolidHero({
   return (
     <div className={`page-hero page-hero--solid${narrow ? " page-hero--narrow" : ""}`}>
       <h1 className="page-hero__title">{titleJa}</h1>
-      <p className="page-hero__subtitle" lang="en" translate="no">{titleEn || ""}</p>
+      <p className="page-hero__subtitle" lang="en" translate="no">
+        {titleEn || ""}
+      </p>
     </div>
   );
 }

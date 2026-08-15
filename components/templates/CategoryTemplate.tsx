@@ -12,9 +12,7 @@ interface CategoryTemplateProps {
   categoryId: string;
 }
 
-export default async function CategoryTemplate({
-  categoryId,
-}: CategoryTemplateProps) {
+export default async function CategoryTemplate({ categoryId }: CategoryTemplateProps) {
   const nav = await getEnrichedNavigation();
   const navCat = nav.categories.find((c) => c.categoryId === categoryId);
 
@@ -25,7 +23,7 @@ export default async function CategoryTemplate({
     navCat.items.map(async (item) => {
       const page = item.slug ? await getPage(item.slug) : undefined;
       return { item, page };
-    })
+    }),
   );
 
   const categoryHeroImage = navCat.heroImage;
@@ -34,9 +32,7 @@ export default async function CategoryTemplate({
     <PageHero
       titleJa={ja(navCat.label)}
       titleEn={en(navCat.label)}
-      images={
-        categoryHeroImage ? [{ file: categoryHeroImage }] : undefined
-      }
+      images={categoryHeroImage ? [{ file: categoryHeroImage }] : undefined}
     />
   );
 
@@ -50,7 +46,10 @@ export default async function CategoryTemplate({
         const pos = pageImage ? hotspotPosition(pageImage) : undefined;
 
         return (
-          <article className={`cat-item${img ? "" : " cat-item--no-img"}`} key={stegaClean(item.id)}>
+          <article
+            className={`cat-item${img ? "" : " cat-item--no-img"}`}
+            key={stegaClean(item.id)}
+          >
             {img && (
               <div className="cat-item__img-wrap">
                 <LazyImage
@@ -74,10 +73,15 @@ export default async function CategoryTemplate({
                 )}
               </h2>
               {page?.description && (
-                <BilingualPortableText
-                  field={page.description}
-                  className="cat-item__desc"
-                />
+                <>
+                  <BilingualPortableText field={page.description} className="cat-item__desc" />
+                  <span className="cat-item__more" aria-hidden="true">
+                    詳細を見る
+                    <span lang="en" translate="no">
+                      View details
+                    </span>
+                  </span>
+                </>
               )}
             </div>
           </article>
@@ -86,11 +90,5 @@ export default async function CategoryTemplate({
     </div>
   );
 
-  return (
-    <PageLayout
-      heroHtml={heroHtml}
-      sectionHtml={sectionHtml}
-      mainClass="layout-category"
-    />
-  );
+  return <PageLayout heroHtml={heroHtml} sectionHtml={sectionHtml} mainClass="layout-category" />;
 }
