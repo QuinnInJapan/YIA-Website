@@ -27,8 +27,8 @@ const TYPE_CONFIG: Record<string, { label: string; tool?: string; deepLink?: boo
   homepage: { label: "ホームページ", tool: "homepage" },
   homepageAbout: { label: "YIAについて", tool: "homepage" },
   homepageFeatured: { label: "注目カテゴリ", tool: "homepage" },
-  siteSettings: { label: "サイト設定", tool: "site-settings" },
-  sidebar: { label: "サイドバー・フッター", tool: "site-settings" },
+  siteSettings: { label: "サイト設定" },
+  sidebar: { label: "サイドバー・フッター" },
   category: { label: "カテゴリ", tool: "pages" },
   navigation: { label: "ナビゲーション", tool: "pages" },
 };
