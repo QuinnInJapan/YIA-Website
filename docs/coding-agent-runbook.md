@@ -47,6 +47,8 @@ authorizes bypassing managed service ownership:
 
 Capture screenshots with Playwright when UI changes.
 
+Use `npm run ui:verify -- --base-url http://127.0.0.1:4306` for the manifest-driven route and viewport sweep. It records screenshots plus bounded console, network, server-error, and accessibility evidence under `.git/ui-verification`.
+
 ## Build
 
 ```bash

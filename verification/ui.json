@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "project": "yia-nextjs",
+  "viewports": [
+    {"id": "desktop", "width": 1440, "height": 1000},
+    {"id": "mobile", "width": 390, "height": 844}
+  ],
+  "routes": [
+    {"id": "home", "path": "/"},
+    {"id": "conversation-salon", "path": "/classes/conversation-salon"},
+    {"id": "studio", "path": "/studio"}
+  ]
+}

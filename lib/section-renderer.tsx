@@ -1,6 +1,6 @@
 import React from "react";
 import type { PageSection, TocEntry, TocLevel } from "@/lib/types";
-import { tocId } from "@/lib/helpers";
+import { tocId } from "@/lib/toc-id";
 import { ja, en } from "@/lib/i18n";
 import { sectionHandlers } from "./section-renderers";
 import SectionHeader from "@/components/SectionHeader";
@@ -17,6 +17,7 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
   const groups: React.ReactNode[] = [];
   let current: React.ReactNode[] = [];
   const tocEntries: TocEntry[] = [];
+  const tocOccurrences = new Map<string, number>();
 
   let currentSectionId: string | undefined;
   let currentSectionKey: string | undefined;
@@ -49,7 +50,10 @@ export function renderSections(sections: PageSection[]): SectionBuilderResult {
 
   function addTocHeader(textJa: string, textEn: string = "") {
     if (!textJa) return;
-    const id = tocId(textJa);
+    const baseId = tocId(textJa);
+    const occurrence = tocOccurrences.get(baseId) ?? 0;
+    tocOccurrences.set(baseId, occurrence + 1);
+    const id = tocId(textJa, occurrence);
     if (currentTocLevel !== "hidden") {
       tocEntries.push({
         id,

@@ -9,7 +9,8 @@
     "test:e2e": "playwright test",
     "test:unit": "node --test --experimental-strip-types tests/*.test.mjs",
     "test": "npm run typecheck && npm run test:unit",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ui:verify": "node scripts/verify-ui.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

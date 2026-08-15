@@ -1,4 +1,5 @@
 import React from "react";
+export { tocId } from "./toc-id";
 
 /** Convert \n to React nodes with <br /> */
 export function Nl2br({ text }: { text: string }) {
@@ -14,9 +15,4 @@ export function Nl2br({ text }: { text: string }) {
       ))}
     </>
   );
-}
-
-/** Generate a section ID from heading text */
-export function tocId(text: string): string {
-  return `sec-${text.replace(/\s+/g, "-")}`;
 }
