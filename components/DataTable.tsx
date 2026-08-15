@@ -7,11 +7,7 @@ interface DataTableProps {
   rows: (string[] | { ja: string; en: string }[])[];
 }
 
-export default function DataTable({
-  columns,
-  columnsEn,
-  rows,
-}: DataTableProps) {
+export default function DataTable({ columns, columnsEn, rows }: DataTableProps) {
   const headers = columns.map((c, i) => (
     <th key={i} scope="col">
       {c}
@@ -30,30 +26,48 @@ export default function DataTable({
         {cells.map((v, j) => {
           if (typeof v === "object" && v !== null && "ja" in v && "en" in v) {
             const cell = v as BilingualCell;
+            const CellTag = j === 0 ? "th" : "td";
             return (
-              <td key={j}>
+              <CellTag
+                key={j}
+                data-label={[columns[j], columnsEn?.[j]].filter(Boolean).join(" / ")}
+                scope={j === 0 ? "row" : undefined}
+              >
                 {cell.ja}
                 {cell.en && (
                   <>
                     <br />
-                    <span className="data-table__en" lang="en" translate="no">{cell.en}</span>
+                    <span className="data-table__en" lang="en" translate="no">
+                      {cell.en}
+                    </span>
                   </>
                 )}
-              </td>
+              </CellTag>
             );
           }
-          return <td key={j}>{String(v)}</td>;
+          const CellTag = j === 0 ? "th" : "td";
+          return (
+            <CellTag
+              key={j}
+              data-label={[columns[j], columnsEn?.[j]].filter(Boolean).join(" / ")}
+              scope={j === 0 ? "row" : undefined}
+            >
+              {String(v)}
+            </CellTag>
+          );
         })}
       </tr>
     );
   });
 
   return (
-    <table className="data-table">
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody>{bodyRows}</tbody>
-    </table>
+    <div className="data-table-container">
+      <table className="data-table">
+        <thead>
+          <tr>{headers}</tr>
+        </thead>
+        <tbody>{bodyRows}</tbody>
+      </table>
+    </div>
   );
 }

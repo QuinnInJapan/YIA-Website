@@ -102,6 +102,37 @@ const columnTypeOptions: { value: TableColumnType; label: string; shortLabel: st
   { value: "file", label: "ファイル", shortLabel: "F" },
 ];
 
+const tableDisplayOptions: {
+  value: TableDisplayMode;
+  label: string;
+  description: string;
+}[] = [
+  {
+    value: "table",
+    label: "通常の一覧",
+    description: "どんな内容にも使えます。スマートフォンでは行ごとのカードになります。",
+  },
+  {
+    value: "comparisonTable",
+    label: "項目を比較",
+    description: "各行の違いを見比べる内容に向いています。",
+  },
+  {
+    value: "scheduleList",
+    label: "シンプルな一覧",
+    description: "名前を中心に、補足情報やファイルを並べます。",
+  },
+  {
+    value: "scheduleDirectory",
+    label: "曜日・時間の一覧",
+    description: "曜日、時間、名称、詳細を読みやすく整理します。",
+  },
+];
+
+function tableDisplayLabel(display: TableDisplayMode): string {
+  return tableDisplayOptions.find((option) => option.value === display)?.label ?? "通常の一覧";
+}
+
 function columnTypeLabel(type: TableColumnType | undefined): string {
   return columnTypeOptions.find((option) => option.value === type)?.label ?? "テキスト";
 }
@@ -151,13 +182,7 @@ function TablePreview({
       )}
       {display !== "table" && (
         <div style={{ marginTop: 6, color: "#666", fontSize: fs.meta }}>
-          公開ページでは
-          {display === "comparisonTable"
-            ? "比較テーブル"
-            : display === "scheduleDirectory"
-              ? "スケジュールディレクトリ"
-              : "スケジュールリスト"}
-          形式で表示されます。編集する内容はテーブルの列・行・ファイルセルです。
+          {`公開ページでは「${tableDisplayLabel(display)}」形式で表示されます。編集する内容は同じ列・行です。`}
         </div>
       )}
     </div>
@@ -1050,13 +1075,14 @@ export function TableEditorPanel({
 
           <div>
             <div style={sectionLabelStyle}>表示形式</div>
-            <div style={{ display: "flex", gap: 6 }}>
-              {[
-                { value: "table" as const, label: "テーブル" },
-                { value: "comparisonTable" as const, label: "比較テーブル" },
-                { value: "scheduleList" as const, label: "スケジュールリスト" },
-                { value: "scheduleDirectory" as const, label: "スケジュールディレクトリ" },
-              ].map((option) => (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: 6,
+              }}
+            >
+              {tableDisplayOptions.map((option) => (
                 <button
                   key={option.value}
                   type="button"
@@ -1065,7 +1091,7 @@ export function TableEditorPanel({
                     onUpdateField("display", option.value);
                   }}
                   style={{
-                    padding: "5px 10px",
+                    padding: "8px 10px",
                     border: `1px solid ${
                       display === option.value
                         ? "var(--card-focus-ring-color, #5b9cf6)"
@@ -1077,11 +1103,28 @@ export function TableEditorPanel({
                         ? "var(--card-focus-ring-color, #5b9cf6)"
                         : "transparent",
                     color: display === option.value ? "#fff" : "var(--card-muted-fg-color)",
-                    fontSize: fs.meta,
                     cursor: "pointer",
+                    textAlign: "left",
+                    fontFamily: "inherit",
                   }}
                 >
-                  {option.label}
+                  <span style={{ display: "block", fontSize: fs.label, fontWeight: 700 }}>
+                    {option.label}
+                  </span>
+                  <span
+                    style={{
+                      display: "block",
+                      marginTop: 2,
+                      fontSize: fs.meta,
+                      lineHeight: 1.35,
+                      color:
+                        display === option.value
+                          ? "rgba(255, 255, 255, 0.82)"
+                          : "var(--card-muted-fg-color)",
+                    }}
+                  >
+                    {option.description}
+                  </span>
                 </button>
               ))}
             </div>

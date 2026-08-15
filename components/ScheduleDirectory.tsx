@@ -42,6 +42,10 @@ function labelFor(col: TableColumn): string {
   return labelEn ? `${labelJa} / ${labelEn}` : labelJa;
 }
 
+function labelOr(column: MappedColumn | undefined, fallback: string): string {
+  return column ? labelFor(column.col) : fallback;
+}
+
 function shortLabelFor(col: TableColumn): string {
   const labelEn = en(col.label);
   const labelJa = ja(col.label);
@@ -161,17 +165,22 @@ export default function ScheduleDirectory({ columns, rows }: ScheduleDirectoryPr
   const detailColumns = mappedColumns
     .filter((column) => ROLE_ORDER.includes(column.role))
     .sort((a, b) => ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role));
-  const hasFileColumns = mappedColumns.some((column) => column.role === "file");
+  const fileColumn = mappedColumns.find((column) => column.role === "file");
+  const dayLabel = labelOr(dayColumn, "曜日 / Day");
+  const timeLabel = labelOr(timeColumn, "時間 / Time");
+  const nameLabel = labelOr(nameColumn, "項目 / Item");
+  const detailsLabel = "詳細 / Details";
+  const filesLabel = labelOr(fileColumn, "ファイル / Files");
 
   return (
     <div className="schedule-directory">
       <div className="schedule-directory__grid" role="list">
         <div className="schedule-directory__head" aria-hidden="true">
-          <div>Day</div>
-          <div>Time</div>
-          <div>Class</div>
-          <div>Details</div>
-          <div>Files</div>
+          <div>{dayLabel}</div>
+          <div>{timeLabel}</div>
+          <div>{nameLabel}</div>
+          <div>{detailsLabel}</div>
+          <div>{filesLabel}</div>
         </div>
         {rows.map((row) => {
           if (row.groupLabel) {
@@ -197,22 +206,22 @@ export default function ScheduleDirectory({ columns, rows }: ScheduleDirectoryPr
 
           return (
             <article key={row._key} className="schedule-directory__entry" role="listitem">
-              <div className="schedule-directory__day" data-label="Day">
+              <div className="schedule-directory__day" data-label={dayLabel}>
                 <CellText cell={dayCell} />
               </div>
-              <div className="schedule-directory__time" data-label="Time">
+              <div className="schedule-directory__time" data-label={timeLabel}>
                 <CellText cell={timeCell} />
               </div>
               <div className="schedule-directory__name">
                 <CellText cell={nameCell} />
               </div>
-              <div className="schedule-directory__details" data-label="Details">
+              <div className="schedule-directory__details" data-label={detailsLabel}>
                 {detailColumns.map((column) => (
                   <Detail key={column.col._key} row={row} column={column} />
                 ))}
               </div>
-              <div className="schedule-directory__actions" data-label="Files">
-                {hasFileColumns && <FileActions row={row} columns={mappedColumns} />}
+              <div className="schedule-directory__actions" data-label={filesLabel}>
+                {fileColumn ? <FileActions row={row} columns={mappedColumns} /> : null}
               </div>
             </article>
           );
