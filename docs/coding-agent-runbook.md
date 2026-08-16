@@ -33,16 +33,19 @@ this project.
 
 ```bash
 projectctl services yia-nextjs
-projectctl restart yia-nextjs web-next
+projectctl start yia-nextjs web-next --checkout CHECKOUT_ID --wait
+projectctl restart yia-nextjs web-next --checkout CHECKOUT_ID --run RUN_ID --wait
 ```
 
-Do not start a parallel raw development server while Project Control owns the endpoint. If Project
-Control is unavailable, diagnose it first; only use the direct fallback when the user explicitly
-authorizes bypassing managed service ownership:
+Use only the lifecycle action advertised by the current service response: `start` when stopped or
+`restart` with the exact current run ID when running. Do not start a parallel raw development
+server. Replace `CHECKOUT_ID` and `RUN_ID` with the exact returned values. If Project Control is
+unavailable, run `projectctl doctor`; continue only with portless work
+until coordination is restored. Run Playwright against the managed endpoint:
 
 ```bash
-./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3000
-./node_modules/.bin/playwright test e2e/program-pages.spec.ts --grep "conversation-salon"
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4306 \
+  ./node_modules/.bin/playwright test e2e/program-pages.spec.ts --grep "conversation-salon"
 ```
 
 Capture screenshots with Playwright when UI changes.

@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Local coding agents must use the registered Project Control service described in
+`docs/coding-agent-runbook.md`; they must not run the following raw server commands. These commands
+are retained only for isolated CI or human environments where Project Control is not installed:
 
 ```bash
 npm run dev
@@ -14,7 +16,9 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For local agent work, open the managed endpoint with `projectctl open yia-nextjs web-next`. In an
+isolated human or CI environment using the raw commands above, open
+[http://localhost:3000](http://localhost:3000).
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

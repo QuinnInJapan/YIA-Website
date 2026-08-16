@@ -1,5 +1,10 @@
 import { defineConfig } from "@playwright/test";
 
+const isCI = Boolean(process.env.CI);
+const baseURL =
+  process.env.PLAYWRIGHT_BASE_URL ??
+  (isCI ? "http://127.0.0.1:3000" : "http://127.0.0.1:4306");
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -8,7 +13,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL,
     trace: "on-first-retry",
   },
   projects: [
@@ -17,10 +22,14 @@ export default defineConfig({
       use: { browserName: "chromium" },
     },
   ],
-  webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  // Local agents use Project Control's managed service. CI owns an isolated runner and may
+  // start its own server because no workstation coordinator exists there.
+  webServer: isCI
+    ? {
+        command: "npm run dev -- --hostname 127.0.0.1 --port 3000",
+        url: baseURL,
+        reuseExistingServer: false,
+        timeout: 120_000,
+      }
+    : undefined,
 });
