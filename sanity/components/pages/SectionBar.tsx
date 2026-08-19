@@ -74,9 +74,10 @@ export function SectionBar({
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
+        display: "grid",
+        gridTemplateColumns: "auto minmax(0, 1fr) auto",
+        alignItems: "start",
+        gap: 8,
         padding: "8px 12px",
         borderRadius: 4,
         background: isExpanded
@@ -95,67 +96,54 @@ export function SectionBar({
         {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
       </span>
 
-      {/* Type badge */}
-      <span
-        style={{
-          flexShrink: 0,
-          padding: "1px 6px",
-          borderRadius: 3,
-          fontSize: fs.meta,
-          fontWeight: 600,
-          background: "var(--card-border-color)",
-          color: "var(--card-muted-fg-color)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {typeLabel}
-      </span>
-
-      {/* Title */}
-      <span
-        style={{
-          flex: 1,
-          minWidth: 0,
-          fontSize: fs.body,
-          fontWeight: 500,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {title || (titleless ? "" : "（タイトルなし）")}
-      </span>
-
-      {summary && (
+      <div style={{ minWidth: 0 }}>
         <span
           style={{
-            flexShrink: 0,
-            fontSize: fs.meta,
-            color: "var(--card-muted-fg-color)",
-            whiteSpace: "nowrap",
+            display: "block",
+            minWidth: 0,
+            fontSize: fs.body,
+            fontWeight: 600,
+            lineHeight: 1.35,
+            overflowWrap: "anywhere",
           }}
         >
-          {summary}
+          {title || (titleless ? typeLabel : "（タイトルなし）")}
         </span>
-      )}
-
-      {/* Right-panel editing indicator */}
-      {editingInPanel && (
-        <span
-          style={{
-            flexShrink: 0,
-            fontSize: fs.meta,
-            color: "var(--card-focus-ring-color, #4a90d9)",
-            fontWeight: 500,
-            whiteSpace: "nowrap",
-          }}
-        >
-          右パネルで編集中
-        </span>
-      )}
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 4 }}>
+          <span
+            style={{
+              padding: "1px 6px",
+              borderRadius: 3,
+              fontSize: fs.meta,
+              fontWeight: 600,
+              background: "var(--card-border-color)",
+              color: "var(--card-muted-fg-color)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {typeLabel}
+          </span>
+          {summary ? (
+            <span style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)" }}>
+              {summary}
+            </span>
+          ) : null}
+          {editingInPanel ? (
+            <span
+              style={{
+                fontSize: fs.meta,
+                color: "var(--card-focus-ring-color, #4a90d9)",
+                fontWeight: 600,
+              }}
+            >
+              右パネルで編集中
+            </span>
+          ) : null}
+        </div>
+      </div>
 
       {/* Action buttons */}
-      <div style={{ display: "flex", gap: 2, flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+      <div style={{ display: "flex", gap: 2 }} onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           onClick={onMoveUp}

@@ -594,7 +594,7 @@ export function PageEditor({
               <div
                 style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
               >
-                タイトル（英語）
+                タイトル（英語・任意／運用検討中）
               </div>
               <TextInput
                 fontSize={1}
@@ -615,7 +615,7 @@ export function PageEditor({
                     marginBottom: 6,
                   }}
                 >
-                  {lang === "ja" ? "説明（日本語）" : "説明（英語）"}
+                  {lang === "ja" ? "説明（日本語）" : "説明（英語・任意／運用検討中）"}
                 </div>
                 <AutoTextarea
                   value={i18nGet(merged.description, lang)}

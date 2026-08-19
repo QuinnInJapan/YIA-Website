@@ -388,7 +388,7 @@ function GenericListEditor({
                           marginBottom: 2,
                         }}
                       >
-                        {field.label}（英語）
+                        {field.label}（英語・任意／運用検討中）
                       </div>
                       <TextInput
                         fontSize={0}

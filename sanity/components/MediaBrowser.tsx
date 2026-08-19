@@ -671,7 +671,14 @@ export function MediaBrowser() {
             {/* Search + type filter + view toggle */}
             <Flex gap={3} align="center" wrap="wrap">
               <Box flex={1} style={{ minWidth: 200 }}>
+                <label
+                  htmlFor="media-library-search"
+                  style={{ display: "block", marginBottom: 5, fontSize: fs.meta, fontWeight: 600 }}
+                >
+                  ファイルを検索
+                </label>
                 <TextInput
+                  id="media-library-search"
                   icon={SearchIcon}
                   placeholder="ファイル名で検索…"
                   value={searchInput}

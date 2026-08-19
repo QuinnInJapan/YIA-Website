@@ -109,7 +109,7 @@ export function PageCreationForm({
               marginBottom: 6,
             }}
           >
-            英語タイトル
+            英語タイトル（任意・運用検討中）
           </label>
           <TextInput
             value={titleEn}
@@ -117,7 +117,7 @@ export function PageCreationForm({
             placeholder="例：Japanese Classes"
           />
           <div style={{ fontSize: fs.meta, color: "var(--card-muted-fg-color)", marginTop: 4 }}>
-            必要な場合は、作成後にも入力できます。
+            必要な場合は、作成後にも入力できます。現在、英語入力の運用方針は検討中です。
           </div>
         </div>
         <details style={{ marginBottom: 16 }}>

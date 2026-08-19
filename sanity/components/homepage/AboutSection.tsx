@@ -70,7 +70,7 @@ export function AboutSection({
             }
           />
         </FieldLabel>
-        <FieldLabel label="タイトル（英語）">
+        <FieldLabel label="タイトル（英語・任意／運用検討中）">
           <TextInput
             fontSize={1}
             value={about.titleEn ?? ""}
@@ -130,7 +130,7 @@ export function AboutSection({
             }}
           />
         </FieldLabel>
-        <FieldLabel label="本文（英語）">
+        <FieldLabel label="本文（英語・任意／運用検討中）">
           <AutoTextarea
             value={about.bodyEn ?? ""}
             onChange={(v) => updateField("homepageAbout", aboutId, "bodyEn", v)}

@@ -219,7 +219,7 @@ export function HeroSection({
             }
           />
         </FieldLabel>
-        <FieldLabel label="キャッチコピー（英語）">
+        <FieldLabel label="キャッチコピー（英語・任意／運用検討中）">
           <TextInput
             fontSize={1}
             value={i18nGet(homepage.hero?.tagline, "en")}
@@ -245,7 +245,7 @@ export function HeroSection({
             }
           />
         </FieldLabel>
-        <FieldLabel label="団体名（英語）">
+        <FieldLabel label="団体名（英語・任意／運用検討中）">
           <TextInput
             fontSize={1}
             value={i18nGet(siteSettings.org?.name, "en")}

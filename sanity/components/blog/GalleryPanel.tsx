@@ -315,7 +315,7 @@ export function CombinedGalleryPanel({
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <span style={{ fontSize: fs.meta, fontWeight: 600, width: 24, flexShrink: 0 }}>
-                    英語:
+                    英語（任意・運用検討中）:
                   </span>
                   <input
                     type="text"
@@ -328,7 +328,7 @@ export function CombinedGalleryPanel({
                       );
                       commitImages(next);
                     }}
-                    placeholder="キャプション（英語）"
+                    placeholder="キャプション（英語・運用検討中）"
                     style={{
                       flex: 1,
                       fontSize: fs.label,

@@ -250,7 +250,7 @@ function ColumnForm({
         <TextInput autoFocus value={ja} onChange={(e) => setJa(e.currentTarget.value)} />
       </div>
       <div>
-        <div style={subLabelStyle}>英語</div>
+        <div style={subLabelStyle}>英語（任意・運用検討中）</div>
         <TextInput value={en} onChange={(e) => setEn(e.currentTarget.value)} />
       </div>
 
@@ -1060,7 +1060,7 @@ export function TableEditorPanel({
                 />
               </div>
               <div>
-                <div style={subLabelStyle}>英語</div>
+                <div style={subLabelStyle}>英語（任意・運用検討中）</div>
                 <TextInput
                   value={i18nGet(title, "en")}
                   onChange={(e) => {

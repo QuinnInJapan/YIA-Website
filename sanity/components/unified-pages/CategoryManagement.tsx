@@ -379,17 +379,19 @@ export function CategoryManagement({
                   <button
                     type="button"
                     onClick={() => onRemovePage(item._key)}
-                    title="このカテゴリから削除"
+                    title="ページは削除せず、このカテゴリからのみ外します"
                     style={{
                       fontSize: fs.meta,
-                      padding: "2px 4px",
-                      border: "none",
+                      padding: "2px 6px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 3,
                       background: "transparent",
                       cursor: "pointer",
                       color: "var(--card-muted-fg-color)",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    ✕
+                    カテゴリから外す
                   </button>
                 )}
               </div>

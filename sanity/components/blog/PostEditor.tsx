@@ -670,7 +670,7 @@ export function PostEditor({
               <div
                 style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
               >
-                タイトル（英語）
+                タイトル（英語・任意／運用検討中）
               </div>
               <TextInput
                 fontSize={1}

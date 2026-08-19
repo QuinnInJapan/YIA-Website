@@ -16,7 +16,20 @@ interface DraftItem {
   label?: { _key: string; value: string }[];
 }
 
-const DRAFTS_QUERY = `*[_id in path("drafts.**")] | order(_updatedAt desc) {
+const EDITABLE_DRAFT_TYPES = [
+  "page",
+  "announcement",
+  "blogPost",
+  "homepage",
+  "homepageAbout",
+  "homepageFeatured",
+  "category",
+] as const;
+
+const DRAFTS_QUERY = `*[
+  _id in path("drafts.**") &&
+  _type in $editableTypes
+] | order(_updatedAt desc) {
   _id, _type, _updatedAt, title, label
 }`;
 
@@ -55,7 +68,9 @@ export function DraftsTool() {
   const fetchDrafts = useCallback(async () => {
     setLoading(true);
     try {
-      const drafts = await client.fetch<DraftItem[]>(DRAFTS_QUERY);
+      const drafts = await client.fetch<DraftItem[]>(DRAFTS_QUERY, {
+        editableTypes: EDITABLE_DRAFT_TYPES,
+      });
       setItems(drafts);
       setError(null);
     } catch (err) {
@@ -68,7 +83,11 @@ export function DraftsTool() {
 
   useEffect(() => {
     fetchDrafts();
-    const subscription = client.listen('*[_id in path("drafts.**")]').subscribe(fetchDrafts);
+    const subscription = client
+      .listen('*[_id in path("drafts.**") && _type in $editableTypes]', {
+        editableTypes: EDITABLE_DRAFT_TYPES,
+      })
+      .subscribe(fetchDrafts);
     return () => subscription.unsubscribe();
   }, [client, fetchDrafts]);
 

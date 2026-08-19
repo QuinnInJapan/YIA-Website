@@ -388,8 +388,8 @@ export function ImagePickerPanel({
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
-                gap: 8,
+                gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                gap: 10,
                 opacity: loading ? 0.5 : 1,
                 transition: "opacity 150ms ease",
               }}
@@ -414,14 +414,14 @@ export function ImagePickerPanel({
                           : setSelectedId(asset._id)
                     }
                     style={{
-                      padding: 0,
+                      padding: 4,
                       border: `2px solid ${isSelected ? "var(--card-focus-ring-color, #1e3a5f)" : "transparent"}`,
-                      borderRadius: 4,
+                      borderRadius: 6,
                       overflow: "hidden",
                       cursor: "pointer",
-                      background: "var(--card-border-color)",
-                      aspectRatio: "1",
-                      position: "relative",
+                      background: "var(--card-bg-color)",
+                      minWidth: 0,
+                      textAlign: "left",
                     }}
                     title={`${asset.originalFilename ?? asset._id}${dimensions ? ` (${dimensions.width} × ${dimensions.height})` : ""}`}
                     aria-label={`${asset.title || asset.originalFilename || "画像"}${dimensions ? `、${dimensions.width} × ${dimensions.height}ピクセル` : ""}`}
@@ -435,68 +435,102 @@ export function ImagePickerPanel({
                         (e.currentTarget as HTMLElement).style.borderColor = "transparent";
                     }}
                   >
-                    <img
-                      src={builder
-                        .image(asset._id)
-                        .width(320)
-                        .height(320)
-                        .fit("crop")
-                        .auto("format")
-                        .url()}
-                      alt={asset.originalFilename ?? ""}
+                    <div
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        display: "block",
+                        aspectRatio: "1",
+                        position: "relative",
+                        overflow: "hidden",
+                        borderRadius: 3,
+                        background: "var(--card-border-color)",
                       }}
-                    />
-                    {/* Gallery mode: numbered badge for images in gallery */}
-                    {galleryMode && isInGallery && (
+                    >
+                      <img
+                        src={builder
+                          .image(asset._id)
+                          .width(320)
+                          .height(320)
+                          .fit("crop")
+                          .auto("format")
+                          .url()}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                      {/* Gallery mode: numbered badge for images in gallery */}
+                      {galleryMode && isInGallery && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 4,
+                            right: 4,
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            background: "var(--card-focus-ring-color, #1e3a5f)",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: fs.label,
+                            fontWeight: 700,
+                            pointerEvents: "none",
+                          }}
+                        >
+                          {galleryMode.selectedAssetIds.indexOf(asset._id) + 1}
+                        </div>
+                      )}
+                      {/* Multi-select mode: numbered badge */}
+                      {!galleryMode && mode === "multi" && isSelected && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 4,
+                            right: 4,
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            background: "var(--card-focus-ring-color, #1e3a5f)",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: fs.label,
+                            fontWeight: 700,
+                            pointerEvents: "none",
+                          }}
+                        >
+                          {selectedIds.indexOf(asset._id) + 1}
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 6,
+                        padding: "0 2px 2px",
+                        fontSize: fs.meta,
+                        color: "var(--card-fg-color)",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {asset.title || asset.originalFilename || "ファイル名なし"}
+                    </div>
+                    {dimensions ? (
                       <div
                         style={{
-                          position: "absolute",
-                          top: 4,
-                          right: 4,
-                          width: 24,
-                          height: 24,
-                          borderRadius: 12,
-                          background: "var(--card-focus-ring-color, #1e3a5f)",
-                          color: "#fff",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: fs.label,
-                          fontWeight: 700,
-                          pointerEvents: "none",
+                          padding: "0 2px 2px",
+                          fontSize: fs.meta,
+                          color: "var(--card-muted-fg-color)",
                         }}
                       >
-                        {galleryMode.selectedAssetIds.indexOf(asset._id) + 1}
+                        {dimensions.width} × {dimensions.height}
                       </div>
-                    )}
-                    {/* Multi-select mode: numbered badge */}
-                    {!galleryMode && mode === "multi" && isSelected && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: 4,
-                          right: 4,
-                          width: 24,
-                          height: 24,
-                          borderRadius: 12,
-                          background: "var(--card-focus-ring-color, #1e3a5f)",
-                          color: "#fff",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: fs.label,
-                          fontWeight: 700,
-                          pointerEvents: "none",
-                        }}
-                      >
-                        {selectedIds.indexOf(asset._id) + 1}
-                      </div>
-                    )}
+                    ) : null}
                   </button>
                 );
               })}
