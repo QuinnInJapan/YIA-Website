@@ -141,7 +141,18 @@
   display: flex;
   flex-direction: column;
   background: var(--card-bg-color);
-  transition: width 160ms ease, min-width 160ms ease;
+  transition:
+    width 160ms ease,
+    min-width 160ms ease;
+}
+
+.studio-right-panel--resized {
+  max-width: none;
+  min-width: 320px;
+}
+
+.studio-right-panel[data-resizing="true"] {
+  transition: none;
 }
 
 .studio-right-panel.studio-right-panel--workspace {
@@ -177,6 +188,34 @@
 
 .studio-panel-collapse-button--right {
   left: 8px;
+}
+
+.studio-panel-resize-handle {
+  position: absolute;
+  z-index: 4;
+  inset: 0 auto 0 0;
+  width: 12px;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.studio-panel-resize-handle::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--card-border-color);
+  transition:
+    width 120ms ease,
+    background-color 120ms ease;
+}
+
+.studio-panel-resize-handle:hover::before,
+.studio-panel-resize-handle:focus-visible::before,
+.studio-right-panel[data-resizing="true"] .studio-panel-resize-handle::before {
+  width: 3px;
+  background: var(--card-focus-ring-color, #1e3a5f);
 }
 
 .studio-panel-rail-button {
@@ -228,7 +267,7 @@
     position: absolute;
     z-index: 20;
     inset: 0;
-    width: auto;
+    width: auto !important;
     min-width: 0;
     max-width: none;
     box-shadow: -12px 0 32px rgba(15, 25, 50, 0.18);
@@ -240,5 +279,9 @@
 
   .studio-list-panel--collapsed ~ .studio-right-panel:not(.studio-right-panel--collapsed) {
     left: 44px;
+  }
+
+  .studio-panel-resize-handle {
+    display: none;
   }
 }

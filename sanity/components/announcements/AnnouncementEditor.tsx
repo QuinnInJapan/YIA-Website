@@ -403,27 +403,34 @@ export function AnnouncementEditor({
     <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Header */}
       <Box padding={3} style={{ borderBottom: "1px solid var(--card-border-color)" }}>
-        <Flex align="center" justify="space-between" gap={3}>
-          <Flex align="center" gap={3} style={{ minWidth: 0 }}>
-            <div style={{ minWidth: 0, width: 220 }}>
-              <Text size={0} muted style={{ display: "block", marginBottom: 2 }}>
-                お知らせ
-              </Text>
-              <Text
-                size={1}
-                weight="semibold"
-                title={i18nGet(merged?.title, "ja") || "（タイトルなし）"}
-                style={{
-                  display: "block",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {i18nGet(merged?.title, "ja") || "（タイトルなし）"}
-              </Text>
+        <Flex align="center" gap={3} style={{ flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 420px", minWidth: 0 }}>
+            <div
+              style={{
+                color: "var(--card-muted-fg-color)",
+                fontSize: fs.meta,
+                lineHeight: "18px",
+              }}
+            >
+              お知らせ
             </div>
-            <Flex align="center" gap={2} style={{ flexShrink: 0 }}>
+            <h1
+              title={i18nGet(merged?.title, "ja") || "（タイトルなし）"}
+              style={{
+                display: "block",
+                margin: "4px 0 0",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: "var(--card-fg-color)",
+                fontSize: fs.title,
+                fontWeight: 600,
+                lineHeight: "24px",
+              }}
+            >
+              {i18nGet(merged?.title, "ja") || "（タイトルなし）"}
+            </h1>
+            <Flex align="center" gap={2} style={{ flexWrap: "wrap", marginTop: 8, minHeight: 20 }}>
               <span
                 style={{
                   display: "inline-block",
@@ -431,45 +438,74 @@ export function AnnouncementEditor({
                   borderRadius: 10,
                   fontSize: fs.meta,
                   fontWeight: 600,
-                  background: hasDraft ? "#f5a623" : "#4caf50",
+                  background: hasDraft ? "#9a5700" : "#2e7d32",
                   color: "#fff",
                 }}
               >
                 {hasDraft ? "下書き" : "公開済み"}
               </span>
-              <Text size={0} style={{ color: statusTone[saveStatus] }}>
+              <span
+                role="status"
+                aria-live="polite"
+                style={{
+                  color: statusTone[saveStatus],
+                  fontSize: fs.meta,
+                  lineHeight: "18px",
+                }}
+              >
                 {statusLabel[saveStatus]}
-              </Text>
+              </span>
               {draftDoc?._updatedAt && (
-                <Text size={0} muted>
+                <span
+                  style={{
+                    color: "var(--card-muted-fg-color)",
+                    fontSize: fs.meta,
+                    lineHeight: "18px",
+                  }}
+                >
                   {formatStudioRelativeTime(draftDoc._updatedAt)}
-                </Text>
+                </span>
               )}
             </Flex>
-          </Flex>
-          <Flex align="center" gap={2}>
-            {hasDraft && publishedDoc && (
+          </div>
+          <Flex
+            align="center"
+            gap={2}
+            role="group"
+            aria-label="お知らせの操作"
+            style={{ flex: "0 0 auto", marginLeft: "auto" }}
+          >
+            <Flex
+              align="center"
+              gap={1}
+              style={{
+                paddingRight: 8,
+                borderRight: "1px solid var(--card-border-color)",
+              }}
+            >
+              {hasDraft && publishedDoc && (
+                <Button
+                  icon={RevertIcon}
+                  text="下書きを破棄"
+                  mode="ghost"
+                  tone="caution"
+                  fontSize={0}
+                  padding={2}
+                  onClick={() => setConfirmAction("discard")}
+                  disabled={saving}
+                />
+              )}
               <Button
-                icon={RevertIcon}
-                text="下書きを破棄"
+                icon={TrashIcon}
+                text="削除"
                 mode="ghost"
-                tone="caution"
+                tone="critical"
                 fontSize={0}
                 padding={2}
-                onClick={() => setConfirmAction("discard")}
+                onClick={() => setConfirmAction("delete")}
                 disabled={saving}
               />
-            )}
-            <Button
-              icon={TrashIcon}
-              aria-label="このお知らせを削除"
-              mode="ghost"
-              tone="critical"
-              fontSize={0}
-              padding={2}
-              onClick={() => setConfirmAction("delete")}
-              disabled={saving}
-            />
+            </Flex>
             <Button
               icon={PublishIcon}
               text="公開"
