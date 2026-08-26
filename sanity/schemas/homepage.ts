@@ -77,12 +77,12 @@ export default defineType({
     }),
     defineField({
       name: "announcementRefs",
-      title: "お知らせ",
+      title: "お知らせ（旧設定）",
       type: "array",
       group: "content",
       of: [{ type: "reference", to: [{ type: "announcement" }] }],
-      description:
-        "ホームページに表示するお知らせを選択します。ここで選んだお知らせがトップページに表示されます。",
+      description: "現在は使用していません。ホームページには固定・掲載日順で自動表示されます。",
+      hidden: true,
     }),
   ],
 });

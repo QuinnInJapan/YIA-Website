@@ -9,6 +9,7 @@ import {
   loadSanityEnv,
   parseScriptFlags,
   patchWithRevision,
+  validateAnnouncementForMutation,
 } from "../scripts/lib/sanity-tools.mjs";
 
 test("parseScriptFlags defaults to dry-run", () => {
@@ -90,6 +91,41 @@ test("formatFailure wraps unexpected errors with a default fix", () => {
   assert.match(formatted, /FIX/);
   assert.match(formatted, /CONTEXT/);
   assert.match(formatted, /ENOTFOUND/);
+});
+
+test("announcement mutation validation accepts both supported destination shapes", () => {
+  assert.deepEqual(validateAnnouncementForMutation({ slug: { current: "summer-event" } }), {
+    destinationType: "detail",
+    slug: "summer-event",
+  });
+  assert.deepEqual(
+    validateAnnouncementForMutation({
+      destinationType: "internalPage",
+      targetPage: { _type: "reference", _ref: "page-foreign-language" },
+      targetAnchor: "sec-申込み方法",
+    }),
+    { destinationType: "internalPage", targetAnchor: "sec-申込み方法" },
+  );
+});
+
+test("announcement mutation validation rejects full URLs and missing page references", () => {
+  assert.throws(
+    () => validateAnnouncementForMutation({ slug: { current: "https://yia.jp/page" } }),
+    /invalid slug/,
+  );
+  assert.throws(
+    () => validateAnnouncementForMutation({ destinationType: "internalPage" }),
+    /missing targetPage/,
+  );
+  assert.throws(
+    () =>
+      validateAnnouncementForMutation({
+        destinationType: "internalPage",
+        targetPage: { _ref: "page-foreign-language" },
+        targetAnchor: "申込み方法",
+      }),
+    /invalid targetAnchor/,
+  );
 });
 
 test("patchWithRevision prevents writes in dry-run mode", async () => {

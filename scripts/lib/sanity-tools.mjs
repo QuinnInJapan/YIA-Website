@@ -191,6 +191,40 @@ export function findRowByJaLabel(rows, label, { required = true } = {}) {
   return row;
 }
 
+export function validateAnnouncementForMutation(document) {
+  const destinationType = document?.destinationType === "internalPage" ? "internalPage" : "detail";
+
+  if (destinationType === "internalPage") {
+    if (!document?.targetPage?._ref) {
+      throw fail("Internal-page announcement is missing targetPage.", {
+        fix: "Set targetPage to a published page reference before mutating or publishing the announcement.",
+        context: { docId: document?._id, destinationType, targetPage: document?.targetPage },
+      });
+    }
+    if (document?.targetAnchor && !/^sec-[^#]+$/u.test(document.targetAnchor)) {
+      throw fail("Internal-page announcement has an invalid targetAnchor.", {
+        fix: "Copy targetAnchor from the selected page's current table-of-contents id, or omit it to link to the page top.",
+        context: { docId: document?._id, destinationType, targetAnchor: document.targetAnchor },
+      });
+    }
+    return {
+      destinationType,
+      ...(document?.targetAnchor ? { targetAnchor: document.targetAnchor } : {}),
+    };
+  }
+
+  const slug =
+    typeof document?.slug === "string" ? document.slug.trim() : document?.slug?.current?.trim();
+  if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw fail("Detail-page announcement has an invalid slug.", {
+      fix: "Set slug.current to the URL suffix only, using lowercase letters, numbers, and hyphens (for example: summer-event).",
+      context: { docId: document?._id, destinationType, slug: document?.slug },
+    });
+  }
+
+  return { destinationType, slug };
+}
+
 export async function patchWithRevision(
   client,
   doc,

@@ -29,6 +29,7 @@ interface AnnouncementItem {
   date: string | null;
   pinned: boolean | null;
   slug: string | null;
+  destinationType: "detail" | "internalPage" | null;
   hasDraft: boolean;
 }
 
@@ -55,6 +56,7 @@ const LIST_PROJECTION = `{
   date,
   pinned,
   "slug": slug.current,
+  destinationType,
   "hasDraft": select(
     _id in path("drafts.**") => true,
     defined(*[_id == "drafts." + ^._id][0])
@@ -126,6 +128,7 @@ function SidebarRow({
           }}
         >
           {item.pinned && "📌 "}
+          {item.destinationType === "internalPage" && "↗ "}
           {item.titleJa ?? "（タイトルなし）"}
         </div>
         <div
@@ -328,6 +331,7 @@ export function AnnouncementsTool() {
         ],
         date: todayStr(),
         pinned: false,
+        destinationType: "detail",
       });
       setEditingId(id);
     } catch (err) {
@@ -410,7 +414,14 @@ export function AnnouncementsTool() {
               <button
                 type="button"
                 onClick={() => fetchItems(page, searchQuery, filterMode)}
-                style={{ marginLeft: 8, border: 0, background: "transparent", color: "inherit", textDecoration: "underline", cursor: "pointer" }}
+                style={{
+                  marginLeft: 8,
+                  border: 0,
+                  background: "transparent",
+                  color: "inherit",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
               >
                 再読み込み
               </button>

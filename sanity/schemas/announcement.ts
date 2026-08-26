@@ -1,5 +1,11 @@
 import { defineType, defineField } from "sanity";
 import { BellIcon } from "@sanity/icons";
+import {
+  ANNOUNCEMENT_DESTINATION_DETAIL,
+  ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+  announcementDestination,
+  announcementSlugError,
+} from "../../lib/announcement-fields";
 
 export default defineType({
   name: "announcement",
@@ -41,9 +47,65 @@ export default defineType({
       validation: (Rule) => Rule.required().error("タイトルは必須です"),
     }),
     defineField({
+      name: "destinationType",
+      title: "リンク先",
+      type: "string",
+      initialValue: ANNOUNCEMENT_DESTINATION_DETAIL,
+      options: {
+        layout: "radio",
+        list: [
+          { title: "お知らせの詳細ページを作る", value: ANNOUNCEMENT_DESTINATION_DETAIL },
+          {
+            title: "サイト内の既存ページへ案内する",
+            value: ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+          },
+        ],
+      },
+      description: "未設定の既存のお知らせは詳細ページとして扱われます。",
+    }),
+    defineField({
+      name: "targetPage",
+      title: "リンク先ページ",
+      type: "reference",
+      to: [{ type: "page" }],
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) !==
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (
+            announcementDestination(context.document?.destinationType) !==
+            ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE
+          ) {
+            return true;
+          }
+          return value ? true : "リンク先ページを選択してください";
+        }),
+    }),
+    defineField({
+      name: "targetAnchor",
+      title: "目次の項目（任意）",
+      type: "string",
+      description: "未指定の場合はページの先頭へ移動します。お知らせ編集画面で選択してください。",
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) !==
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+      validation: (Rule) =>
+        Rule.custom((value) =>
+          !value || (typeof value === "string" && /^sec-[^#]+$/u.test(value))
+            ? true
+            : "お知らせ編集画面で目次の項目を選び直してください",
+        ),
+    }),
+    defineField({
       name: "slug",
-      title: "公開URL",
+      title: "公開URL（末尾の文字）",
       type: "slug",
+      description:
+        "URL全体ではなく、https://yia.jp/announcements/ の後に入る半角小文字の英数字とハイフンだけを入力します。例：summer-event",
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) ===
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
       options: {
         source: (doc: Record<string, unknown>) => {
           const title = doc.title as { _key: string; value: string }[] | undefined;
@@ -54,6 +116,16 @@ export default defineType({
           );
         },
       },
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (
+            announcementDestination(context.document?.destinationType) ===
+            ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE
+          ) {
+            return true;
+          }
+          return announcementSlugError(value) ?? true;
+        }),
     }),
     defineField({
       name: "date",
@@ -74,22 +146,34 @@ export default defineType({
       title: "ヒーロー画像",
       type: "image",
       options: { hotspot: true },
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) ===
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
     }),
     defineField({
       name: "excerpt",
       title: "抜粋",
       type: "internationalizedArrayText",
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) ===
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
     }),
     defineField({
       name: "body",
       title: "本文",
       type: "internationalizedArrayBlockContent",
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) ===
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
     }),
     defineField({
       name: "documents",
       title: "資料",
       type: "array",
       of: [{ type: "documentLink" }],
+      hidden: ({ document }) =>
+        announcementDestination(document?.destinationType) ===
+        ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
     }),
     // Legacy fields — kept for backward compatibility
     defineField({

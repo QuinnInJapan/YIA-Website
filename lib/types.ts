@@ -208,10 +208,18 @@ export interface Announcement {
   slug?: string;
   date?: string;
   pinned?: boolean;
+  destinationType?: "detail" | "internalPage";
+  targetPage?: { _ref: string };
+  targetAnchor?: string;
+  targetPageData?: {
+    _id?: string;
+    slug?: string;
+    categoryId?: string;
+  };
   title: I18nString;
   heroImage?: SanityImage;
   excerpt?: I18nString;
-  body: I18nBlocks;
+  body?: I18nBlocks;
   documents?: Document[];
   /** @deprecated Use body */
   content?: I18nString | I18nBlocks;

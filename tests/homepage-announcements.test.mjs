@@ -8,7 +8,7 @@ import {
 
 const title = (value) => [{ _key: "ja", value }];
 
-test("uses curated homepage announcement refs before global latest announcements", () => {
+test("uses pinned/latest announcements even when legacy curated refs exist", () => {
   const curatedFirst = {
     _id: "announcement-website-renewal-2026",
     date: "2026-03-11",
@@ -38,7 +38,11 @@ test("uses curated homepage announcement refs before global latest announcements
 
   assert.deepEqual(
     selected.map((announcement) => announcement._id),
-    ["announcement-website-renewal-2026", "announcement-patchwork-sale"],
+    [
+      "announcement-counseling-schedule-change",
+      "announcement-website-renewal-2026",
+      "announcement-patchwork-sale",
+    ],
   );
 });
 
@@ -84,5 +88,34 @@ test("falls back to announcement id when slug is missing", () => {
       _id: "announcement-website-renewal-2026",
     }),
     "/announcements/announcement-website-renewal-2026",
+  );
+});
+
+test("links an internal-page announcement directly to its selected site page", () => {
+  assert.equal(
+    announcementPath({
+      _id: "internal-link-announcement",
+      destinationType: "internalPage",
+      targetPageData: {
+        slug: "foreign-language",
+        categoryId: "category-classes",
+      },
+    }),
+    "/classes/foreign-language",
+  );
+});
+
+test("can link an internal-page announcement to a selected table-of-contents entry", () => {
+  assert.equal(
+    announcementPath({
+      _id: "internal-link-announcement",
+      destinationType: "internalPage",
+      targetPageData: {
+        slug: "foreign-language",
+        categoryId: "category-classes",
+      },
+      targetAnchor: "sec-申込み方法",
+    }),
+    "/classes/foreign-language#sec-申込み方法",
   );
 });

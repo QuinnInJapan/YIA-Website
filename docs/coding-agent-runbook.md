@@ -92,6 +92,17 @@ New mutation scripts should:
 - print loud failures with `ERROR`, `WHY`, `FIX`, and `CONTEXT`
 - revalidate after live content mutations when user-visible pages changed
 
+Announcement mutation scripts must preserve the destination contract and call
+`validateAnnouncementForMutation` before writing:
+
+- `destinationType: "detail"` requires `slug.current` to contain only the URL suffix in lowercase
+  letters, numbers, and hyphens; never store a full URL.
+- `destinationType: "internalPage"` requires `targetPage` to be a published `page` reference. Body,
+  image, excerpt, and attachments are not used for this destination type.
+- `targetAnchor` is optional for internal-page announcements. Omit it to link to the page top; when
+  present, copy a current `sec-...` id from that page's table of contents instead of inventing one.
+- Missing `destinationType` is treated as `detail` for backward compatibility.
+
 ## Revalidation
 
 Content-only Sanity changes should go live through webhook/revalidation. Code changes need commit, push, and deploy.

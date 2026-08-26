@@ -10,6 +10,9 @@ import {
   runSanityScript,
 } from "./lib/sanity-tools.mjs";
 
+// Announcement mutation scripts must also import validateAnnouncementForMutation
+// and call it on the final document shape before patching or publishing.
+
 function argValue(args, name, fallback) {
   const index = args.indexOf(name);
   if (index === -1) return fallback;

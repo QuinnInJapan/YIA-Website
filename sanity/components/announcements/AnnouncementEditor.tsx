@@ -23,11 +23,24 @@ import type { GalleryImageItem } from "../blog/GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../shared/BilingualInput";
 import {
+  InternalPagePicker,
+  internalPagePath,
+  pageTocOptions,
+  type InternalPageOption,
+} from "./InternalPagePicker";
+import {
   PublishConfirmation,
   ActionConfirmation,
   StudioErrorBanner,
   type PublishCheck,
 } from "../shared/PublishingUI";
+import {
+  ANNOUNCEMENT_DESTINATION_DETAIL,
+  ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+  announcementDestination,
+  announcementSlugError,
+  type AnnouncementDestination,
+} from "../../../lib/announcement-fields";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -39,6 +52,10 @@ export interface AnnouncementDoc {
   slug: { current: string } | null;
   date: string | null;
   pinned: boolean | null;
+  destinationType?: AnnouncementDestination | null;
+  targetPage?: { _type?: "reference"; _ref: string } | null;
+  targetAnchor?: string | null;
+  targetPageData?: InternalPageOption | null;
   heroImage: {
     asset?: { _ref: string };
     alt?: { _key: string; value: string }[];
@@ -53,7 +70,12 @@ export interface AnnouncementDoc {
 // ── Constants ────────────────────────────────────────────
 
 export const DOC_PROJECTION = `{
-  _id, _rev, _updatedAt, title, slug, date, pinned,
+  _id, _rev, _updatedAt, title, slug, date, pinned, destinationType, targetPage, targetAnchor,
+  "targetPageData": targetPage->{
+    _id, title, description, images, slug,
+    "categoryId": categoryRef->_id, "categoryTitle": categoryRef->label,
+    sections
+  },
   heroImage, excerpt, body, documents
 }`;
 
@@ -109,6 +131,9 @@ export function AnnouncementEditor({
   const [publishOpen, setPublishOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmAction, setConfirmAction] = useState<"discard" | "delete" | null>(null);
+  const [internalPages, setInternalPages] = useState<InternalPageOption[]>([]);
+  const [internalPagesLoading, setInternalPagesLoading] = useState(true);
+  const [internalPagesError, setInternalPagesError] = useState(false);
   const [bodyLang, setBodyLang] = useState<"ja" | "en">("ja");
   const bodyContainerRef = useRef<HTMLDivElement>(null);
   const [frozenHeight, setFrozenHeight] = useState<number | null>(null);
@@ -139,8 +164,11 @@ export function AnnouncementEditor({
 
   const merged = useMemo(() => {
     if (!doc) return null;
-    return { ...doc, ...edits } as AnnouncementDoc;
-  }, [doc, edits]);
+    const result = { ...doc, ...edits } as AnnouncementDoc;
+    const selectedPage = internalPages.find((page) => page._id === result.targetPage?._ref);
+    if (selectedPage) result.targetPageData = selectedPage;
+    return result;
+  }, [doc, edits, internalPages]);
 
   // Notify parent of merged doc changes for preview
   useEffect(() => {
@@ -167,6 +195,27 @@ export function AnnouncementEditor({
       .finally(() => setLoading(false));
   }, [client, documentId]);
 
+  useEffect(() => {
+    setInternalPagesLoading(true);
+    client
+      .fetch<InternalPageOption[]>(
+        `*[_type == "page" && !(_id in path("drafts.**"))] | order(title[_key == "ja"][0].value asc) {
+          _id, title, description, images, slug,
+          "categoryId": categoryRef->_id, "categoryTitle": categoryRef->label,
+          sections
+        }`,
+      )
+      .then((pages) => {
+        setInternalPages(pages.filter((page) => page.slug && page.categoryId));
+        setInternalPagesError(false);
+      })
+      .catch((error) => {
+        console.error("Page options failed:", error);
+        setInternalPagesError(true);
+      })
+      .finally(() => setInternalPagesLoading(false));
+  }, [client]);
+
   // ── Auto-save ──────────────────────────────────────────
 
   const saveToSanity = useCallback(
@@ -177,7 +226,8 @@ export function AnnouncementEditor({
       setSaveStatus("saving");
       try {
         const { draftId } = documentPairIds(documentId);
-        await client.createIfNotExists(draftDocumentForBase(baseDoc, draftId, "announcement"));
+        const { targetPageData: _targetPageData, ...baseForDraft } = baseDoc;
+        await client.createIfNotExists(draftDocumentForBase(baseForDraft, draftId, "announcement"));
         await client.patch(draftId).set(updates).commit();
         const updated = await client.fetch<AnnouncementDoc | null>(
           `*[_id == $id][0] ${DOC_PROJECTION}`,
@@ -199,14 +249,18 @@ export function AnnouncementEditor({
     [client, documentId, draftDoc, publishedDoc],
   );
 
-  function updateField(field: string, value: unknown) {
-    setEdits((prev) => ({ ...prev, [field]: value }));
+  function updateFields(updates: Partial<AnnouncementDoc>) {
+    setEdits((prev) => ({ ...prev, ...updates }));
     setSaveStatus("dirty");
 
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {
-      saveToSanity({ ...edits, [field]: value });
+      saveToSanity({ ...edits, ...updates });
     }, 1500);
+  }
+
+  function updateField(field: keyof AnnouncementDoc, value: unknown) {
+    updateFields({ [field]: value });
   }
 
   // ── Publish ────────────────────────────────────────────
@@ -216,6 +270,13 @@ export function AnnouncementEditor({
     const titleJa = i18nGet(merged.title, "ja").trim();
     const altJa = i18nGet(merged.heroImage?.alt, "ja").trim();
     const hasJapaneseBody = i18nGetBody(merged.body, "ja").length > 0;
+    const destination = announcementDestination(merged.destinationType);
+    const isInternalPage = destination === ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE;
+    const slugValidationError = isInternalPage ? null : announcementSlugError(merged.slug);
+    const targetTitle = i18nGet(merged.targetPageData?.title, "ja").trim();
+    const tocOptions = pageTocOptions(merged.targetPageData);
+    const targetToc = tocOptions.find((option) => option.id === merged.targetAnchor);
+    const targetAnchorIsValid = !merged.targetAnchor || Boolean(targetToc);
     return [
       {
         label: "日本語タイトル",
@@ -227,12 +288,38 @@ export function AnnouncementEditor({
         detail: merged.date || "掲載日を入力してください。",
         tone: merged.date ? "ok" : "error",
       },
-      {
-        label: "日本語本文",
-        detail: hasJapaneseBody ? "入力済み" : "未入力（短いお知らせでは省略できます）",
-        tone: hasJapaneseBody ? "ok" : "warning",
-      },
-      ...(merged.heroImage?.asset?._ref
+      ...(isInternalPage
+        ? [
+            {
+              label: "リンク先ページ",
+              detail: targetTitle || "リンク先ページを選択してください。",
+              tone: targetTitle ? ("ok" as const) : ("error" as const),
+            },
+            ...(targetTitle
+              ? [
+                  {
+                    label: "ページ内の移動先",
+                    detail: targetAnchorIsValid
+                      ? targetToc?.title || "ページの先頭"
+                      : "選択した目次項目が見つかりません。選び直してください。",
+                    tone: targetAnchorIsValid ? ("ok" as const) : ("error" as const),
+                  },
+                ]
+              : []),
+          ]
+        : [
+            {
+              label: "公開URL",
+              detail: slugValidationError ?? `/announcements/${merged.slug?.current}`,
+              tone: slugValidationError ? ("error" as const) : ("ok" as const),
+            },
+            {
+              label: "日本語本文",
+              detail: hasJapaneseBody ? "入力済み" : "未入力（短いお知らせでは省略できます）",
+              tone: hasJapaneseBody ? ("ok" as const) : ("warning" as const),
+            },
+          ]),
+      ...(!isInternalPage && merged.heroImage?.asset?._ref
         ? [
             {
               label: "画像の代替テキスト",
@@ -250,7 +337,7 @@ export function AnnouncementEditor({
 
   async function handlePublish() {
     if (!merged) return;
-    const source = merged;
+    const { targetPageData: _targetPageData, ...source } = merged;
     try {
       setSaving(true);
       setSaveStatus("saving");
@@ -398,6 +485,22 @@ export function AnnouncementEditor({
     discarding: "#b08000",
     error: "#cc3333",
   };
+  const destinationType = announcementDestination(merged?.destinationType);
+  const isInternalPageAnnouncement = destinationType === ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE;
+  const slugValidationError = isInternalPageAnnouncement
+    ? null
+    : announcementSlugError(merged?.slug);
+  const selectedInternalPage = internalPages.find((page) => page._id === merged?.targetPage?._ref);
+  const selectedPageTocOptions = pageTocOptions(
+    selectedInternalPage ?? merged?.targetPageData ?? null,
+  );
+  const selectedTocOption = selectedPageTocOptions.find(
+    (option) => option.id === merged?.targetAnchor,
+  );
+  const selectedPageForPath = selectedInternalPage ?? merged?.targetPageData;
+  const selectedInternalPagePath = selectedPageForPath
+    ? `${internalPagePath(selectedPageForPath)}${merged?.targetAnchor ? `#${merged.targetAnchor}` : ""}`
+    : "";
 
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -543,90 +646,291 @@ export function AnnouncementEditor({
               padding: "16px 24px",
             }}
           >
-            {/* Hero image */}
-            <div style={{ marginBottom: 16 }}>
+            <fieldset
+              style={{
+                margin: "0 0 20px",
+                padding: 16,
+                border: "1px solid var(--card-border-color)",
+                borderRadius: 6,
+              }}
+            >
+              <legend style={{ padding: "0 6px", fontSize: fs.label, fontWeight: 600 }}>
+                お知らせをクリックしたときの移動先
+              </legend>
               <div
-                style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)", marginBottom: 6 }}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                  gap: 8,
+                }}
               >
-                ヒーロー画像
-              </div>
-              {merged.heroImage?.asset?._ref ? (
-                <ImageOverlayActions
-                  buttons={
-                    <>
-                      <OverlayButton label="変更" onClick={handleHeroImagePick} />
-                      <OverlayButton
-                        label="切り抜き"
-                        onClick={() => {
-                          if (merged?.heroImage?.asset?._ref) {
-                            onShowHotspotCrop?.(
-                              builder.image(merged.heroImage).width(1200).auto("format").url(),
-                              {
-                                hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
-                                crop: merged.heroImage.crop ?? DEFAULT_CROP,
-                              },
-                              ({ hotspot, crop }) => {
-                                updateField("heroImage", {
-                                  ...merged.heroImage,
-                                  hotspot: { _type: "sanity.imageHotspot", ...hotspot },
-                                  crop: { _type: "sanity.imageCrop", ...crop },
-                                });
-                              },
-                            );
-                          }
-                        }}
-                      />
-                      <OverlayButton label="削除" onClick={() => updateField("heroImage", null)} />
-                    </>
-                  }
-                >
-                  <div style={{ borderRadius: 6, overflow: "hidden", lineHeight: 0 }}>
-                    <img
-                      src={builder
-                        .image(merged.heroImage)
-                        .width(720)
-                        .height(180)
-                        .fit("crop")
-                        .auto("format")
-                        .url()}
-                      alt=""
+                {(
+                  [
+                    {
+                      value: ANNOUNCEMENT_DESTINATION_DETAIL,
+                      title: "お知らせの詳細ページ",
+                      description: "本文・画像・添付資料を掲載する",
+                    },
+                    {
+                      value: ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+                      title: "サイト内の既存ページ",
+                      description: "本文は作らず、選んだページへ直接案内する",
+                    },
+                  ] as const
+                ).map((option) => {
+                  const checked = destinationType === option.value;
+                  return (
+                    <label
+                      key={option.value}
                       style={{
-                        width: "100%",
-                        maxHeight: 180,
-                        objectFit: "cover",
-                        display: "block",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 10,
+                        padding: 12,
+                        border: `2px solid ${checked ? "var(--card-focus-ring-color, #1e3a5f)" : "var(--card-border-color)"}`,
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        background: checked ? "rgba(30, 58, 95, 0.06)" : "transparent",
                       }}
-                    />
-                  </div>
-                </ImageOverlayActions>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleHeroImagePick}
+                    >
+                      <input
+                        type="radio"
+                        name={`announcement-destination-${merged._id}`}
+                        value={option.value}
+                        checked={checked}
+                        onChange={() => updateField("destinationType", option.value)}
+                        style={{ marginTop: 3 }}
+                      />
+                      <span>
+                        <span style={{ display: "block", fontSize: fs.body, fontWeight: 600 }}>
+                          {option.title}
+                        </span>
+                        <span
+                          style={{
+                            display: "block",
+                            marginTop: 3,
+                            color: "var(--card-muted-fg-color)",
+                            fontSize: fs.meta,
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {option.description}
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+
+              {isInternalPageAnnouncement ? (
+                <div
                   style={{
-                    width: "100%",
-                    padding: "20px 0",
-                    border: "1px dashed var(--card-border-color)",
-                    borderRadius: 6,
-                    background: "transparent",
-                    color: "var(--card-muted-fg-color)",
-                    fontSize: fs.body,
-                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 18,
+                    marginTop: 16,
+                    paddingTop: 16,
+                    borderTop: "1px solid var(--card-border-color)",
                   }}
                 >
-                  + 画像を追加
-                </button>
-              )}
-              {merged.heroImage?.asset?._ref ? (
-                <div style={{ marginTop: 10 }}>
-                  <BilingualInput
-                    label="画像の代替テキスト（推奨）"
-                    value={merged.heroImage.alt}
-                    onChange={(alt) => updateField("heroImage", { ...merged.heroImage, alt })}
+                  <InternalPagePicker
+                    pages={internalPages}
+                    selectedPage={selectedPageForPath}
+                    loading={internalPagesLoading}
+                    error={internalPagesError}
+                    onSelect={(pageId) =>
+                      updateFields({
+                        targetPage: { _type: "reference", _ref: pageId },
+                        targetAnchor: null,
+                      })
+                    }
                   />
+
+                  {merged.targetPage?._ref ? (
+                    <div>
+                      <label
+                        htmlFor={`announcement-target-anchor-${merged._id}`}
+                        style={{
+                          display: "block",
+                          marginBottom: 6,
+                          fontSize: fs.label,
+                          fontWeight: 600,
+                        }}
+                      >
+                        2. ページ内の移動先を選ぶ
+                      </label>
+                      <select
+                        id={`announcement-target-anchor-${merged._id}`}
+                        value={merged.targetAnchor ?? ""}
+                        onChange={(event) =>
+                          updateField("targetAnchor", event.currentTarget.value || null)
+                        }
+                        aria-invalid={Boolean(merged.targetAnchor && !selectedTocOption)}
+                        aria-describedby={`announcement-target-anchor-help-${merged._id}`}
+                        style={{
+                          width: "100%",
+                          minHeight: 36,
+                          padding: "7px 10px",
+                          border: `1px solid ${merged.targetAnchor && !selectedTocOption ? "#b42318" : "var(--card-border-color)"}`,
+                          borderRadius: 4,
+                          background: "var(--card-bg-color)",
+                          color: "var(--card-fg-color)",
+                          font: "inherit",
+                        }}
+                      >
+                        <option value="">ページの先頭</option>
+                        {merged.targetAnchor && !selectedTocOption ? (
+                          <option value={merged.targetAnchor}>
+                            選択中の項目は見つかりません（選び直してください）
+                          </option>
+                        ) : null}
+                        {selectedPageTocOptions.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.level === "subsection" ? "　↳ " : ""}
+                            {option.title}
+                          </option>
+                        ))}
+                      </select>
+                      <div
+                        id={`announcement-target-anchor-help-${merged._id}`}
+                        role={merged.targetAnchor && !selectedTocOption ? "alert" : undefined}
+                        style={{
+                          marginTop: 6,
+                          color:
+                            merged.targetAnchor && !selectedTocOption
+                              ? "#b42318"
+                              : "var(--card-muted-fg-color)",
+                          fontSize: fs.meta,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {merged.targetAnchor && !selectedTocOption
+                          ? "ページの見出しが変更または削除されています。移動先を選び直してください。"
+                          : selectedPageTocOptions.length > 0
+                            ? "ページの先頭、または目次にある見出しを選べます。"
+                            : "このページには目次がないため、ページの先頭へ移動します。"}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {selectedInternalPagePath ? (
+                    <div
+                      style={{
+                        padding: "8px 10px",
+                        borderRadius: 4,
+                        background: "var(--card-code-bg-color, rgba(0, 0, 0, 0.04))",
+                        color: "var(--card-muted-fg-color)",
+                        fontSize: fs.meta,
+                        lineHeight: 1.5,
+                        overflowWrap: "anywhere",
+                      }}
+                    >
+                      <span style={{ fontWeight: 600, color: "var(--card-fg-color)" }}>
+                        実際の移動先
+                      </span>
+                      <br />
+                      <code style={{ fontFamily: "ui-monospace, monospace" }}>
+                        {selectedInternalPagePath}
+                      </code>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
-            </div>
+            </fieldset>
+
+            {/* Hero image */}
+            {!isInternalPageAnnouncement ? (
+              <div style={{ marginBottom: 16 }}>
+                <div
+                  style={{
+                    fontSize: fs.label,
+                    color: "var(--card-muted-fg-color)",
+                    marginBottom: 6,
+                  }}
+                >
+                  ヒーロー画像
+                </div>
+                {merged.heroImage?.asset?._ref ? (
+                  <ImageOverlayActions
+                    buttons={
+                      <>
+                        <OverlayButton label="変更" onClick={handleHeroImagePick} />
+                        <OverlayButton
+                          label="切り抜き"
+                          onClick={() => {
+                            if (merged?.heroImage?.asset?._ref) {
+                              onShowHotspotCrop?.(
+                                builder.image(merged.heroImage).width(1200).auto("format").url(),
+                                {
+                                  hotspot: merged.heroImage.hotspot ?? DEFAULT_HOTSPOT,
+                                  crop: merged.heroImage.crop ?? DEFAULT_CROP,
+                                },
+                                ({ hotspot, crop }) => {
+                                  updateField("heroImage", {
+                                    ...merged.heroImage,
+                                    hotspot: { _type: "sanity.imageHotspot", ...hotspot },
+                                    crop: { _type: "sanity.imageCrop", ...crop },
+                                  });
+                                },
+                              );
+                            }
+                          }}
+                        />
+                        <OverlayButton
+                          label="削除"
+                          onClick={() => updateField("heroImage", null)}
+                        />
+                      </>
+                    }
+                  >
+                    <div style={{ borderRadius: 6, overflow: "hidden", lineHeight: 0 }}>
+                      <img
+                        src={builder
+                          .image(merged.heroImage)
+                          .width(720)
+                          .height(180)
+                          .fit("crop")
+                          .auto("format")
+                          .url()}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          maxHeight: 180,
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    </div>
+                  </ImageOverlayActions>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleHeroImagePick}
+                    style={{
+                      width: "100%",
+                      padding: "20px 0",
+                      border: "1px dashed var(--card-border-color)",
+                      borderRadius: 6,
+                      background: "transparent",
+                      color: "var(--card-muted-fg-color)",
+                      fontSize: fs.body,
+                      cursor: "pointer",
+                    }}
+                  >
+                    + 画像を追加
+                  </button>
+                )}
+                {merged.heroImage?.asset?._ref ? (
+                  <div style={{ marginTop: 10 }}>
+                    <BilingualInput
+                      label="画像の代替テキスト（推奨）"
+                      value={merged.heroImage.alt}
+                      onChange={(alt) => updateField("heroImage", { ...merged.heroImage, alt })}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
 
             {/* Title fields */}
             <div style={{ marginBottom: 16 }}>
@@ -670,24 +974,48 @@ export function AnnouncementEditor({
                 marginBottom: 16,
               }}
             >
-              <div>
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    color: "var(--card-muted-fg-color)",
-                    marginBottom: 6,
-                  }}
-                >
-                  公開URL
+              {!isInternalPageAnnouncement ? (
+                <div>
+                  <div
+                    style={{
+                      fontSize: fs.label,
+                      color: "var(--card-muted-fg-color)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    公開URL（末尾の文字）
+                  </div>
+                  <TextInput
+                    fontSize={0}
+                    value={merged.slug?.current ?? ""}
+                    placeholder="summer-event"
+                    aria-invalid={Boolean(slugValidationError)}
+                    aria-describedby={`announcement-slug-help-${merged._id}`}
+                    style={
+                      slugValidationError
+                        ? { borderColor: "#b42318", boxShadow: "0 0 0 1px #b42318" }
+                        : undefined
+                    }
+                    onChange={(e) =>
+                      updateField("slug", { _type: "slug", current: e.currentTarget.value })
+                    }
+                  />
+                  <div
+                    id={`announcement-slug-help-${merged._id}`}
+                    role={slugValidationError ? "alert" : undefined}
+                    style={{
+                      marginTop: 6,
+                      color: slugValidationError ? "#b42318" : "var(--card-muted-fg-color)",
+                      fontSize: fs.meta,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {slugValidationError ?? (
+                      <>公開URL：https://yia.jp/announcements/{merged.slug?.current}</>
+                    )}
+                  </div>
                 </div>
-                <TextInput
-                  fontSize={0}
-                  value={merged.slug?.current ?? ""}
-                  onChange={(e) =>
-                    updateField("slug", { _type: "slug", current: e.currentTarget.value })
-                  }
-                />
-              </div>
+              ) : null}
               <div>
                 <div
                   style={{
@@ -733,102 +1061,112 @@ export function AnnouncementEditor({
                   上部に固定
                 </label>
               </div>
-              <div style={{ gridColumn: "1 / -1" }}>
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    color: "var(--card-muted-fg-color)",
-                    marginBottom: 6,
-                  }}
-                >
-                  抜粋（日本語）
+              {!isInternalPageAnnouncement ? (
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <div
+                    style={{
+                      fontSize: fs.label,
+                      color: "var(--card-muted-fg-color)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    抜粋（日本語）
+                  </div>
+                  <textarea
+                    rows={1}
+                    value={i18nGet(merged.excerpt, "ja")}
+                    onChange={(e) =>
+                      updateField("excerpt", i18nSet(merged.excerpt, "ja", e.target.value))
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "6px 10px",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 4,
+                      fontSize: fs.body,
+                      fontFamily: "inherit",
+                      resize: "vertical",
+                      background: "transparent",
+                      color: "inherit",
+                    }}
+                  />
                 </div>
-                <textarea
-                  rows={1}
-                  value={i18nGet(merged.excerpt, "ja")}
-                  onChange={(e) =>
-                    updateField("excerpt", i18nSet(merged.excerpt, "ja", e.target.value))
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "6px 10px",
-                    border: "1px solid var(--card-border-color)",
-                    borderRadius: 4,
-                    fontSize: fs.body,
-                    fontFamily: "inherit",
-                    resize: "vertical",
-                    background: "transparent",
-                    color: "inherit",
-                  }}
-                />
-              </div>
+              ) : null}
             </div>
 
             {/* Body editor with language toggle */}
-            <div ref={bodyContainerRef} style={{ minHeight: frozenHeight ?? undefined }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  paddingBottom: 6,
-                }}
-              >
-                <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)" }}>本文</div>
+            {!isInternalPageAnnouncement ? (
+              <div ref={bodyContainerRef} style={{ minHeight: frozenHeight ?? undefined }}>
                 <div
                   style={{
-                    display: "inline-flex",
-                    border: "1px solid var(--card-border-color)",
-                    borderRadius: 4,
-                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    paddingBottom: 6,
                   }}
                 >
-                  {(["ja", "en"] as const).map((l) => (
-                    <button
-                      key={l}
-                      type="button"
-                      onClick={() => handleBodyLangChange(l)}
-                      style={{
-                        display: "block",
-                        padding: "3px 0",
-                        width: 44,
-                        textAlign: "center",
-                        border: "none",
-                        margin: 0,
-                        cursor: "pointer",
-                        fontSize: fs.meta,
-                        lineHeight: "18px",
-                        fontWeight: bodyLang === l ? 600 : 400,
-                        background: bodyLang === l ? "var(--card-fg-color)" : "transparent",
-                        color:
-                          bodyLang === l ? "var(--card-bg-color)" : "var(--card-muted-fg-color)",
-                      }}
-                    >
-                      {l === "ja" ? "日本語" : "英語"}
-                    </button>
-                  ))}
+                  <div style={{ fontSize: fs.label, color: "var(--card-muted-fg-color)" }}>
+                    本文
+                  </div>
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      border: "1px solid var(--card-border-color)",
+                      borderRadius: 4,
+                      overflow: "hidden",
+                    }}
+                  >
+                    {(["ja", "en"] as const).map((l) => (
+                      <button
+                        key={l}
+                        type="button"
+                        onClick={() => handleBodyLangChange(l)}
+                        style={{
+                          display: "block",
+                          padding: "3px 0",
+                          width: 44,
+                          textAlign: "center",
+                          border: "none",
+                          margin: 0,
+                          cursor: "pointer",
+                          fontSize: fs.meta,
+                          lineHeight: "18px",
+                          fontWeight: bodyLang === l ? 600 : 400,
+                          background: bodyLang === l ? "var(--card-fg-color)" : "transparent",
+                          color:
+                            bodyLang === l ? "var(--card-bg-color)" : "var(--card-muted-fg-color)",
+                        }}
+                      >
+                        {l === "ja" ? "日本語" : "英語"}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+                <BodyEditor
+                  key={`${merged._id}-${bodyLang}`}
+                  initialValue={i18nGetBody(merged.body, bodyLang)}
+                  onChange={(value) =>
+                    updateField("body", i18nSetBody(merged.body, bodyLang, value))
+                  }
+                  onOpenImagePicker={onOpenImagePicker}
+                  onOpenGalleryEditor={onOpenGalleryEditor}
+                  activeGalleryBlockKey={activeGalleryBlockKey}
+                  onDeselectGallery={onDeselectGallery}
+                />
               </div>
-              <BodyEditor
-                key={`${merged._id}-${bodyLang}`}
-                initialValue={i18nGetBody(merged.body, bodyLang)}
-                onChange={(value) => updateField("body", i18nSetBody(merged.body, bodyLang, value))}
-                onOpenImagePicker={onOpenImagePicker}
-                onOpenGalleryEditor={onOpenGalleryEditor}
-                activeGalleryBlockKey={activeGalleryBlockKey}
-                onDeselectGallery={onDeselectGallery}
-              />
-            </div>
+            ) : null}
 
             {/* Documents section */}
-            <DocumentsSection
-              documents={merged.documents ?? []}
-              onRemove={handleRemoveDocument}
-              onUpdate={handleUpdateDocument}
-              onAddUrl={handleAddUrlDocument}
-              onPickFile={handleFilePick}
-              onOpenDocumentDetail={onOpenDocumentDetail}
-            />
+            {!isInternalPageAnnouncement ? (
+              <DocumentsSection
+                documents={merged.documents ?? []}
+                onRemove={handleRemoveDocument}
+                onUpdate={handleUpdateDocument}
+                onAddUrl={handleAddUrlDocument}
+                onPickFile={handleFilePick}
+                onOpenDocumentDetail={onOpenDocumentDetail}
+              />
+            ) : null}
           </div>
         </div>
       )}

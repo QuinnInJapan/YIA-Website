@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   fetchAnnouncementById,
   fetchAnnouncementBySlug,
@@ -13,6 +13,11 @@ import PageLayout from "@/components/PageLayout";
 import DocList from "@/components/DocList";
 import BilingualPortableText from "@/components/BilingualPortableText";
 import type { Announcement } from "@/lib/types";
+import { announcementPath } from "@/components/templates/homepage-announcements";
+import {
+  ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
+  announcementDestination,
+} from "@/lib/announcement-fields";
 
 export const revalidate = 60;
 
@@ -55,6 +60,13 @@ export default async function AnnouncementDetailPage({
   const { id } = await params;
   const ann = await fetchAnnouncement(id);
   if (!ann) notFound();
+  if (
+    announcementDestination(ann.destinationType) === ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE &&
+    ann.targetPageData?.categoryId &&
+    ann.targetPageData?.slug
+  ) {
+    redirect(announcementPath(ann));
+  }
 
   const dateStr = ann.date ? formatDateDot(ann.date) : "";
   const bodyField = ann.body ?? ann.content;

@@ -6,6 +6,7 @@ import PageLayout from "@/components/PageLayout";
 import Pagination from "@/components/Pagination";
 import { fetchAnnouncements, fetchAnnouncementCount } from "@/lib/sanity/queries";
 import type { Announcement } from "@/lib/types";
+import { announcementPath } from "./homepage-announcements";
 
 const PAGE_SIZE = 10;
 
@@ -33,11 +34,7 @@ export default async function AnnouncementsPageTemplate({ page = 1 }: Props) {
               const dateStr = a.date ? formatDateDot(a.date) : "";
 
               return (
-                <Link
-                  href={`/announcements/${a.slug || a._id}`}
-                  className="oshirase-item"
-                  key={a._id}
-                >
+                <Link href={announcementPath(a)} className="oshirase-item" key={a._id}>
                   <span className="oshirase-date">
                     {dateStr}
                     {a.pinned && <span className="oshirase-pin">固定 Pinned</span>}

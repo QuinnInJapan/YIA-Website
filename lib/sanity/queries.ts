@@ -33,11 +33,19 @@ export async function fetchSiteData() {
             items[]{ ..., pageRef-> }
           }
         },
-        "announcements": *[_type == "announcement"] | order(date desc) { ..., "slug": slug.current },
+        "announcements": *[_type == "announcement"] | order(date desc) {
+          ...,
+          "slug": slug.current,
+          "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
+        },
         "sidebar": *[_type == "sidebar"][0]{ ... },
         "homepage": *[_type == "homepage"][0]{
           ...,
-          announcementRefs[]->{ ..., "slug": slug.current }
+          announcementRefs[]->{
+            ...,
+            "slug": slug.current,
+            "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
+          }
         },
         "homepageFeatured": *[_type == "homepageFeatured"][0]{
           categories[]->
@@ -148,7 +156,8 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
     return client.fetch(
       `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end] {
         ...,
-        "slug": slug.current
+        "slug": slug.current,
+        "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
       }`,
       { start, end },
       sanityFetchOptions,
@@ -165,7 +174,11 @@ export async function fetchAnnouncementCount() {
 export async function fetchAnnouncementById(id: string) {
   return timed(`announcement[${id}]`, async () => {
     return client.fetch(
-      `*[_type == "announcement" && _id == $id][0] { ..., "slug": slug.current }`,
+      `*[_type == "announcement" && _id == $id][0] {
+        ...,
+        "slug": slug.current,
+        "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
+      }`,
       { id },
       sanityFetchOptions,
     );
@@ -175,7 +188,11 @@ export async function fetchAnnouncementById(id: string) {
 export async function fetchAnnouncementBySlug(slug: string) {
   return timed(`announcement[slug:${slug}]`, async () => {
     return client.fetch(
-      `*[_type == "announcement" && slug.current == $slug][0] { ..., "slug": slug.current }`,
+      `*[_type == "announcement" && slug.current == $slug][0] {
+        ...,
+        "slug": slug.current,
+        "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
+      }`,
       { slug },
       sanityFetchOptions,
     );
@@ -184,7 +201,10 @@ export async function fetchAnnouncementBySlug(slug: string) {
 
 export function fetchAllAnnouncementIdsStatic() {
   return client.fetch<{ _id: string; slug?: string }[]>(
-    `*[_type == "announcement"]{ _id, "slug": slug.current }`,
+    `*[_type == "announcement" && coalesce(destinationType, "detail") != "internalPage"]{
+      _id,
+      "slug": slug.current
+    }`,
     {},
     sanityFetchOptions,
   );
