@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
 import { categoryPath, categorySegment, pagePath } from "@/lib/routes";
 import { client } from "@/lib/sanity/client";
-import { fetchNavigationRouteDocument, navigationRouteGroups } from "@/lib/sanity/navigation-routes";
+import {
+  fetchNavigationRouteDocument,
+  navigationRouteGroups,
+} from "@/lib/sanity/navigation-routes";
 
-const BASE_URL = "https://yia.or.jp";
+const BASE_URL = "https://yia.jp";
 
 export const revalidate = 60;
 

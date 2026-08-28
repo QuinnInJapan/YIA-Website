@@ -116,6 +116,6 @@ test("can link an internal-page announcement to a selected table-of-contents ent
       },
       targetAnchor: "sec-申込み方法",
     }),
-    "/classes/foreign-language#sec-申込み方法",
+    "/classes/foreign-language#sec-%E7%94%B3%E8%BE%BC%E3%81%BF%E6%96%B9%E6%B3%95",
   );
 });

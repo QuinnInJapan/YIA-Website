@@ -23,7 +23,7 @@ export function announcementPath(
 function anchorValue(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
   const anchor = value.trim().replace(/^#/, "");
-  return anchor && !anchor.includes("#") ? anchor : undefined;
+  return anchor && !anchor.includes("#") ? encodeURIComponent(anchor) : undefined;
 }
 
 export function selectHomepageAnnouncements({
