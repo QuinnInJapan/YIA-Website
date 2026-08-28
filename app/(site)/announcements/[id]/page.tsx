@@ -18,6 +18,7 @@ import {
   ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
   announcementDestination,
 } from "@/lib/announcement-fields";
+import { socialMetadata } from "@/lib/site-metadata";
 
 export const revalidate = 60;
 
@@ -46,9 +47,12 @@ export async function generateMetadata({
   const { id } = await params;
   const ann = await fetchAnnouncement(id);
   if (!ann) return {};
+  const title = `${ja(ann.title)} | お知らせ`;
+  const description = en(ann.title) || "横須賀国際交流協会からのお知らせです。";
   return {
-    title: `${ja(ann.title)} | お知らせ | 横須賀国際交流協会`,
-    description: en(ann.title) || undefined,
+    title,
+    description,
+    ...socialMetadata({ title, description, pathname: `/announcements/${id}` }),
   };
 }
 

@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
 import { getSiteData } from "@/lib/data";
 import { ja } from "@/lib/i18n";
+import { socialMetadata } from "@/lib/site-metadata";
 import HomepageTemplateAbout from "@/components/templates/HomepageTemplateAbout";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();
+  const description = ja(data.site.org.description);
   return {
     title: "HOME",
-    description: ja(data.site.org.description),
-    openGraph: {
-      title: `HOME — ${ja(data.site.org.name)}`,
-      description: ja(data.site.org.description),
-    },
+    description,
+    ...socialMetadata({ title: "HOME", description, pathname: "/" }),
   };
 }
 

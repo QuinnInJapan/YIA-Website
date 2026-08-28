@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSiteData, getPage, getEnrichedNavigation } from "@/lib/data";
 import { ja } from "@/lib/i18n";
+import { socialMetadata } from "@/lib/site-metadata";
 import { categorySegment } from "@/lib/routes";
 import { fetchNavigationPageParamsStatic } from "@/lib/sanity/navigation-routes";
 import PageTemplate from "@/components/templates/PageTemplate";
@@ -21,8 +22,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const data = await getSiteData();
+  const { category, slug } = await params;
 
   const pg = await getPage(slug);
   if (!pg) return {};
@@ -32,10 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    openGraph: {
-      title: `${title} — ${ja(data.site.org.name)}`,
-      description,
-    },
+    ...socialMetadata({ title, description, pathname: `/${category}/${slug}` }),
   };
 }
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSiteData, getCategoryIndex, getCategoryIds, getCategoryIdsStatic } from "@/lib/data";
+import { getCategoryIndex, getCategoryIds, getCategoryIdsStatic } from "@/lib/data";
 import { ja } from "@/lib/i18n";
+import { socialMetadata } from "@/lib/site-metadata";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
@@ -20,7 +21,6 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category } = await params;
-  const data = await getSiteData();
   const categoryIds = await getCategoryIds();
 
   let title = "";
@@ -41,10 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    openGraph: {
-      title: `${title} — ${ja(data.site.org.name)}`,
-      description,
-    },
+    ...socialMetadata({ title, description, pathname: `/${category}` }),
   };
 }
 

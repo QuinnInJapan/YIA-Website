@@ -10,15 +10,22 @@ import PageLayout from "@/components/PageLayout";
 import LazyImage from "@/components/LazyImage";
 import Pagination from "@/components/Pagination";
 import type { BlogPost } from "@/lib/types";
+import { socialMetadata } from "@/lib/site-metadata";
 
 const PAGE_SIZE = 10;
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "ブログ | 横須賀国際交流協会",
+  title: "ブログ",
   description:
     "横須賀国際交流協会のブログ記事一覧。イベントレポート、文化、コミュニティの話題をお届けします。",
+  ...socialMetadata({
+    title: "ブログ",
+    description:
+      "横須賀国際交流協会のブログ記事一覧。イベントレポート、文化、コミュニティの話題をお届けします。",
+    pathname: "/blog",
+  }),
 };
 
 interface PageProps {

@@ -16,6 +16,7 @@ import BlogPostNavAsync from "@/components/BlogPostNavAsync";
 import BlogTocWrapper from "./BlogTocWrapper";
 import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
+import { socialMetadata } from "@/lib/site-metadata";
 
 export const revalidate = 60;
 
@@ -32,9 +33,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = (await fetchBlogPostBySlug(slug)) as BlogPost | null;
   if (!post) return {};
+  const title = `${ja(post.title)} | ブログ`;
+  const description = ja(post.excerpt) || undefined;
   return {
-    title: `${ja(post.title)} | ブログ | 横須賀国際交流協会`,
-    description: ja(post.excerpt) || undefined,
+    title,
+    description,
+    ...socialMetadata({ title, description, pathname: `/blog/${slug}` }),
   };
 }
 

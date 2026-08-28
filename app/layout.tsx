@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
+import { DEFAULT_SITE_DESCRIPTION, SITE_NAME, SITE_URL, socialMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -10,16 +11,13 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "横須賀国際交流協会",
-    template: "%s — 横須賀国際交流協会",
+    default: SITE_NAME,
+    template: `%s — ${SITE_NAME}`,
   },
-  description:
-    "横須賀の多文化共生を支える国際交流の拠点。生活相談、日本語教室、文化交流、防災支援など幅広い活動を行っています。",
-  openGraph: {
-    type: "website",
-    locale: "ja_JP",
-  },
+  description: DEFAULT_SITE_DESCRIPTION,
+  ...socialMetadata({ title: SITE_NAME, pathname: "/" }),
   icons: {
     icon: [
       { url: "/favicon-128x128.png", sizes: "128x128", type: "image/png" },
