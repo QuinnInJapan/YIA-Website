@@ -22,6 +22,9 @@ import { BodyEditor } from "./PteEditor";
 import type { GalleryImageItem } from "./GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../shared/BilingualInput";
+import { SlugInput } from "../shared/SlugInput";
+import { useSlugUniqueness } from "../shared/useSlugUniqueness";
+import { recommendedSlugDefault, studioSlugError } from "../../../lib/studio-slug";
 import {
   PublishConfirmation,
   ActionConfirmation,
@@ -163,6 +166,16 @@ export function PostEditor({
     return { ...doc, ...edits } as BlogPostDoc;
   }, [doc, edits]);
 
+  const blogSlug = merged?.slug?.current ?? "";
+  const blogSlugFormatError = studioSlugError(merged?.slug);
+  const slugUniqueness = useSlugUniqueness({
+    client,
+    documentType: "blogPost",
+    documentId,
+    slug: blogSlug,
+    enabled: Boolean(merged) && !blogSlugFormatError,
+  });
+
   // Notify parent of merged doc changes for preview
   useEffect(() => {
     onMergedChange?.(merged);
@@ -239,6 +252,15 @@ export function PostEditor({
     const titleJa = i18nGet(merged.title, "ja").trim();
     const altJa = i18nGet(merged.heroImage?.alt, "ja").trim();
     const hasJapaneseBody = i18nGetBody(merged.body, "ja").length > 0;
+    const slugError = studioSlugError(merged.slug);
+    const slugUniquenessError =
+      slugUniqueness.status === "collision"
+        ? "この公開URLは別のブログ記事で使用されています。"
+        : slugUniqueness.status === "error"
+          ? "公開URLの重複を確認できませんでした。"
+          : slugUniqueness.status === "checking" || slugUniqueness.status === "idle"
+            ? "公開URLの重複を確認しています。"
+            : null;
     return [
       {
         label: "日本語タイトル",
@@ -247,8 +269,8 @@ export function PostEditor({
       },
       {
         label: "公開URL",
-        detail: merged.slug?.current || "公開URLを入力してください。",
-        tone: merged.slug?.current ? "ok" : "error",
+        detail: slugError ?? slugUniquenessError ?? `/blog/${merged.slug?.current}`,
+        tone: slugError || slugUniquenessError ? "error" : "ok",
       },
       {
         label: "公開日",
@@ -270,7 +292,7 @@ export function PostEditor({
           ]
         : []),
     ];
-  }, [merged]);
+  }, [merged, slugUniqueness.status]);
 
   function handleRequestPublish() {
     setPublishOpen(true);
@@ -282,6 +304,22 @@ export function PostEditor({
     try {
       setSaving(true);
       setSaveStatus("saving");
+      const slugError = studioSlugError(merged.slug);
+      if (slugError) {
+        setSaveStatus("dirty");
+        setErrorMessage(slugError);
+        return;
+      }
+      const uniqueness = await slugUniqueness.checkNow();
+      if (uniqueness !== "available") {
+        setSaveStatus("dirty");
+        setErrorMessage(
+          uniqueness === "collision"
+            ? "この公開URLは別のブログ記事で使用されています。別の文字列に変更してください。"
+            : "公開URLの重複を確認できませんでした。通信状況を確認して、もう一度お試しください。",
+        );
+        return;
+      }
       const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
       if (saveTimerRef.current) {
@@ -678,6 +716,15 @@ export function PostEditor({
                 onChange={(e) =>
                   updateField("title", i18nSet(merged.title, "en", e.currentTarget.value))
                 }
+                onBlur={(event) => {
+                  const defaultSlug = recommendedSlugDefault(
+                    merged.slug,
+                    event.currentTarget.value,
+                  );
+                  if (defaultSlug) {
+                    updateField("slug", { _type: "slug", current: defaultSlug });
+                  }
+                }}
               />
             </div>
 
@@ -693,24 +740,16 @@ export function PostEditor({
                 marginBottom: 16,
               }}
             >
-              <div>
-                <div
-                  style={{
-                    fontSize: fs.label,
-                    color: "var(--card-muted-fg-color)",
-                    marginBottom: 6,
-                  }}
-                >
-                  公開URL
-                </div>
-                <TextInput
-                  fontSize={0}
-                  value={merged.slug?.current ?? ""}
-                  onChange={(e) =>
-                    updateField("slug", { _type: "slug", current: e.currentTarget.value })
-                  }
-                />
-              </div>
+              <SlugInput
+                id={`blog-slug-${merged._id}`}
+                label="公開URL"
+                value={merged.slug?.current ?? ""}
+                publicUrlPrefix="https://yia.jp/blog/"
+                formatError={blogSlugFormatError}
+                uniquenessStatus={slugUniqueness.status}
+                onChange={(slug) => updateField("slug", { _type: "slug", current: slug })}
+                onRetry={() => void slugUniqueness.checkNow()}
+              />
               <div>
                 <div
                   style={{

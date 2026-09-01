@@ -22,6 +22,8 @@ import { BodyEditor } from "../blog/PteEditor";
 import type { GalleryImageItem } from "../blog/GalleryPanel";
 import { fs } from "@/sanity/lib/studioTokens";
 import { BilingualInput } from "../shared/BilingualInput";
+import { SlugInput } from "../shared/SlugInput";
+import { useSlugUniqueness } from "../shared/useSlugUniqueness";
 import {
   InternalPagePicker,
   internalPagePath,
@@ -41,6 +43,7 @@ import {
   announcementSlugError,
   type AnnouncementDestination,
 } from "../../../lib/announcement-fields";
+import { recommendedSlugDefault } from "../../../lib/studio-slug";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -170,6 +173,17 @@ export function AnnouncementEditor({
     return result;
   }, [doc, edits, internalPages]);
 
+  const detailPageSlug = merged?.slug?.current ?? "";
+  const isDetailPage =
+    announcementDestination(merged?.destinationType) !== ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE;
+  const slugUniqueness = useSlugUniqueness({
+    client,
+    documentType: "announcement",
+    documentId,
+    slug: detailPageSlug,
+    enabled: Boolean(merged) && isDetailPage && !announcementSlugError(merged?.slug),
+  });
+
   // Notify parent of merged doc changes for preview
   useEffect(() => {
     onMergedChange?.(merged);
@@ -273,6 +287,14 @@ export function AnnouncementEditor({
     const destination = announcementDestination(merged.destinationType);
     const isInternalPage = destination === ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE;
     const slugValidationError = isInternalPage ? null : announcementSlugError(merged.slug);
+    const slugUniquenessError =
+      slugUniqueness.status === "collision"
+        ? "この公開URLは別のお知らせで使用されています。"
+        : slugUniqueness.status === "error"
+          ? "公開URLの重複を確認できませんでした。"
+          : slugUniqueness.status === "checking" || slugUniqueness.status === "idle"
+            ? "公開URLの重複を確認しています。"
+            : null;
     const targetTitle = i18nGet(merged.targetPageData?.title, "ja").trim();
     const tocOptions = pageTocOptions(merged.targetPageData);
     const targetToc = tocOptions.find((option) => option.id === merged.targetAnchor);
@@ -310,8 +332,14 @@ export function AnnouncementEditor({
         : [
             {
               label: "公開URL",
-              detail: slugValidationError ?? `/announcements/${merged.slug?.current}`,
-              tone: slugValidationError ? ("error" as const) : ("ok" as const),
+              detail:
+                slugValidationError ??
+                slugUniquenessError ??
+                `/announcements/${merged.slug?.current}`,
+              tone:
+                slugValidationError || slugUniquenessError
+                  ? ("error" as const)
+                  : ("ok" as const),
             },
             {
               label: "日本語本文",
@@ -329,7 +357,7 @@ export function AnnouncementEditor({
           ]
         : []),
     ];
-  }, [merged]);
+  }, [merged, slugUniqueness.status]);
 
   function handleRequestPublish() {
     setPublishOpen(true);
@@ -341,6 +369,26 @@ export function AnnouncementEditor({
     try {
       setSaving(true);
       setSaveStatus("saving");
+      if (
+        announcementDestination(merged.destinationType) !== ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE
+      ) {
+        const slugError = announcementSlugError(merged.slug);
+        if (slugError) {
+          setSaveStatus("dirty");
+          setErrorMessage(slugError);
+          return;
+        }
+        const uniqueness = await slugUniqueness.checkNow();
+        if (uniqueness !== "available") {
+          setSaveStatus("dirty");
+          setErrorMessage(
+            uniqueness === "collision"
+              ? "この公開URLは別のお知らせで使用されています。別の文字列に変更してください。"
+              : "公開URLの重複を確認できませんでした。通信状況を確認して、もう一度お試しください。",
+          );
+          return;
+        }
+      }
       const { publishedId: pubId, draftId } = documentPairIds(documentId);
 
       if (saveTimerRef.current) {
@@ -959,6 +1007,20 @@ export function AnnouncementEditor({
                 onChange={(e) =>
                   updateField("title", i18nSet(merged.title, "en", e.currentTarget.value))
                 }
+                onBlur={(event) => {
+                  if (
+                    announcementDestination(merged.destinationType) ===
+                    ANNOUNCEMENT_DESTINATION_DETAIL
+                  ) {
+                    const defaultSlug = recommendedSlugDefault(
+                      merged.slug,
+                      event.currentTarget.value,
+                    );
+                    if (defaultSlug) {
+                      updateField("slug", { _type: "slug", current: defaultSlug });
+                    }
+                  }
+                }}
               />
             </div>
 
@@ -975,46 +1037,16 @@ export function AnnouncementEditor({
               }}
             >
               {!isInternalPageAnnouncement ? (
-                <div>
-                  <div
-                    style={{
-                      fontSize: fs.label,
-                      color: "var(--card-muted-fg-color)",
-                      marginBottom: 6,
-                    }}
-                  >
-                    公開URL（末尾の文字）
-                  </div>
-                  <TextInput
-                    fontSize={0}
-                    value={merged.slug?.current ?? ""}
-                    placeholder="summer-event"
-                    aria-invalid={Boolean(slugValidationError)}
-                    aria-describedby={`announcement-slug-help-${merged._id}`}
-                    style={
-                      slugValidationError
-                        ? { borderColor: "#b42318", boxShadow: "0 0 0 1px #b42318" }
-                        : undefined
-                    }
-                    onChange={(e) =>
-                      updateField("slug", { _type: "slug", current: e.currentTarget.value })
-                    }
-                  />
-                  <div
-                    id={`announcement-slug-help-${merged._id}`}
-                    role={slugValidationError ? "alert" : undefined}
-                    style={{
-                      marginTop: 6,
-                      color: slugValidationError ? "#b42318" : "var(--card-muted-fg-color)",
-                      fontSize: fs.meta,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {slugValidationError ?? (
-                      <>公開URL：https://yia.jp/announcements/{merged.slug?.current}</>
-                    )}
-                  </div>
-                </div>
+                <SlugInput
+                  id={`announcement-slug-${merged._id}`}
+                  label="公開URL（末尾の文字）"
+                  value={merged.slug?.current ?? ""}
+                  publicUrlPrefix="https://yia.jp/announcements/"
+                  formatError={slugValidationError}
+                  uniquenessStatus={slugUniqueness.status}
+                  onChange={(slug) => updateField("slug", { _type: "slug", current: slug })}
+                  onRetry={() => void slugUniqueness.checkNow()}
+                />
               ) : null}
               <div>
                 <div
