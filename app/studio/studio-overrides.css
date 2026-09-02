@@ -113,6 +113,15 @@
   opacity: 1;
 }
 
+/* Sanity's typography reset inherits the workspace weight into rich-text previews. */
+.studio-workspace :where(strong, b) {
+  font-weight: 700;
+}
+
+.studio-workspace :where(em, i) {
+  font-style: italic;
+}
+
 .studio-list-panel {
   position: relative;
   width: 340px;

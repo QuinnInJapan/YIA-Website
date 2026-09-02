@@ -16,6 +16,7 @@ import {
 } from "@portabletext/editor";
 import * as selectors from "@portabletext/editor/selectors";
 import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
+import { RichTextToolbarButton } from "./RichTextToolbarButton";
 
 // ── Schema ───────────────────────────────────────────────
 
@@ -128,25 +129,6 @@ function IconLink() {
 
 // ── Toolbar ──────────────────────────────────────────────
 
-const BTN: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 32,
-  height: 32,
-  border: "1px solid transparent",
-  borderRadius: 4,
-  background: "transparent",
-  cursor: "pointer",
-  color: "var(--card-fg-color)",
-};
-
-const BTN_ACTIVE: React.CSSProperties = {
-  ...BTN,
-  background: "var(--card-border-color)",
-  borderColor: "var(--card-border-color)",
-};
-
 const DIVIDER: React.CSSProperties = {
   width: 1,
   alignSelf: "stretch",
@@ -156,11 +138,29 @@ const DIVIDER: React.CSSProperties = {
 
 function Toolbar() {
   const editor = useEditor();
-  const isStrong = useEditorSelector(editor, (s) => s.decoratorState["strong"] ?? false);
-  const isEm = useEditorSelector(editor, (s) => s.decoratorState["em"] ?? false);
+  const isStrong = useEditorSelector(editor, selectors.isActiveDecorator("strong"));
+  const isEm = useEditorSelector(editor, selectors.isActiveDecorator("em"));
+  const isBulletList = useEditorSelector(editor, selectors.isActiveListItem("bullet"));
+  const isNumberList = useEditorSelector(editor, selectors.isActiveListItem("number"));
   const isLink = useEditorSelector(
     editor,
     selectors.isActiveAnnotation("link", { mode: "partial" }),
+  );
+
+  const toggleDecorator = useCallback(
+    (decorator: "strong" | "em") => {
+      editor.send({ type: "focus" });
+      editor.send({ type: "decorator.toggle", decorator });
+    },
+    [editor],
+  );
+
+  const toggleListItem = useCallback(
+    (listItem: "bullet" | "number") => {
+      editor.send({ type: "focus" });
+      editor.send({ type: "list item.toggle", listItem });
+    },
+    [editor],
   );
 
   return (
@@ -174,33 +174,24 @@ function Toolbar() {
         marginBottom: 6,
       }}
     >
-      <button
-        type="button"
-        style={isStrong ? BTN_ACTIVE : BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "decorator.toggle", decorator: "strong" });
-        }}
-        title="太字"
+      <RichTextToolbarButton
+        label="太字"
+        pressed={isStrong}
+        onActivate={() => toggleDecorator("strong")}
       >
         <IconBold />
-      </button>
-      <button
-        type="button"
-        style={isEm ? BTN_ACTIVE : BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "decorator.toggle", decorator: "em" });
-        }}
-        title="斜体"
+      </RichTextToolbarButton>
+      <RichTextToolbarButton
+        label="斜体"
+        pressed={isEm}
+        onActivate={() => toggleDecorator("em")}
       >
         <IconItalic />
-      </button>
-      <button
-        type="button"
-        style={isLink ? BTN_ACTIVE : BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
+      </RichTextToolbarButton>
+      <RichTextToolbarButton
+        label="リンク"
+        pressed={isLink}
+        onActivate={() => {
           if (isLink) {
             editor.send({ type: "annotation.remove", annotation: { name: "link" } });
             editor.send({ type: "focus" });
@@ -211,33 +202,24 @@ function Toolbar() {
           editor.send({ type: "annotation.add", annotation: { name: "link", value: { href } } });
           editor.send({ type: "focus" });
         }}
-        title="リンク"
       >
         <IconLink />
-      </button>
+      </RichTextToolbarButton>
       <span style={DIVIDER} />
-      <button
-        type="button"
-        style={BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "list item.toggle", listItem: "bullet" });
-        }}
-        title="箇条書き"
+      <RichTextToolbarButton
+        label="箇条書き"
+        pressed={isBulletList}
+        onActivate={() => toggleListItem("bullet")}
       >
         <IconBulletList />
-      </button>
-      <button
-        type="button"
-        style={BTN}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.send({ type: "list item.toggle", listItem: "number" });
-        }}
-        title="番号付き"
+      </RichTextToolbarButton>
+      <RichTextToolbarButton
+        label="番号付き"
+        pressed={isNumberList}
+        onActivate={() => toggleListItem("number")}
       >
         <IconNumberList />
-      </button>
+      </RichTextToolbarButton>
     </div>
   );
 }
@@ -277,6 +259,7 @@ function Inner({ onChange }: { onChange: (value: PortableTextBlock[]) => void })
           border: "1px solid var(--card-border-color)",
           borderRadius: 4,
           fontSize: fs.body,
+          fontWeight: 400,
           lineHeight: 1.7,
           color: "var(--card-fg-color)",
           outline: "none",

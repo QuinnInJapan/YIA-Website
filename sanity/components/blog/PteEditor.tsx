@@ -21,6 +21,7 @@ import {
 import * as selectors from "@portabletext/editor/selectors";
 import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
 import type { GalleryImageItem } from "./GalleryPanel";
+import { RichTextToolbarButton } from "../shared/RichTextToolbarButton";
 
 // ── PTE Schema ───────────────────────────────────────────
 
@@ -214,9 +215,14 @@ function StyleDropdown() {
     <div ref={ref} style={{ position: "relative" }}>
       <button
         type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
         onMouseDown={(e) => {
           e.preventDefault();
-          setOpen((o) => !o);
+          if (e.button === 0) setOpen((o) => !o);
+        }}
+        onClick={(e) => {
+          if (e.detail === 0) setOpen((o) => !o);
         }}
         style={{
           display: "flex",
@@ -239,6 +245,7 @@ function StyleDropdown() {
 
       {open && (
         <div
+          role="menu"
           style={{
             position: "absolute",
             top: "calc(100% + 4px)",
@@ -256,8 +263,17 @@ function StyleDropdown() {
             <button
               key={item.value}
               type="button"
+              role="menuitemradio"
+              aria-checked={item.value === activeStyle}
               onMouseDown={(e) => {
                 e.preventDefault();
+                if (e.button !== 0) return;
+                editor.send({ type: "style.toggle", style: item.value });
+                setOpen(false);
+              }}
+              onClick={(e) => {
+                if (e.detail !== 0) return;
+                editor.send({ type: "focus" });
                 editor.send({ type: "style.toggle", style: item.value });
                 setOpen(false);
               }}
@@ -398,23 +414,19 @@ function IconGallery() {
 
 // ── PTE Toolbar ──────────────────────────────────────────
 
-const TOOLBAR_BTN: React.CSSProperties = {
+const TOOLBAR_ACTION: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   width: 32,
   height: 32,
-  border: "1px solid transparent",
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: "transparent",
   borderRadius: 4,
   background: "transparent",
   cursor: "pointer",
   color: "var(--card-fg-color)",
-};
-
-const TOOLBAR_BTN_ACTIVE: React.CSSProperties = {
-  ...TOOLBAR_BTN,
-  background: "var(--card-border-color)",
-  borderColor: "var(--card-border-color)",
 };
 
 const DIVIDER: React.CSSProperties = {
@@ -436,14 +448,32 @@ function PteToolbar({
   const [linkHref, setLinkHref] = useState("");
   const [linkError, setLinkError] = useState<string | null>(null);
 
-  const isStrong = useEditorSelector(editor, (s) => s.decoratorState["strong"] ?? false);
-  const isEm = useEditorSelector(editor, (s) => s.decoratorState["em"] ?? false);
+  const isStrong = useEditorSelector(editor, selectors.isActiveDecorator("strong"));
+  const isEm = useEditorSelector(editor, selectors.isActiveDecorator("em"));
+  const isBulletList = useEditorSelector(editor, selectors.isActiveListItem("bullet"));
+  const isNumberList = useEditorSelector(editor, selectors.isActiveListItem("number"));
   const activeLink = useEditorSelector(editor, (s) =>
     selectors
       .getActiveAnnotations(s)
       .find((annotation) => annotation._type === "link"),
   );
   const isLink = Boolean(activeLink);
+
+  const toggleDecorator = useCallback(
+    (decorator: "strong" | "em") => {
+      editor.send({ type: "focus" });
+      editor.send({ type: "decorator.toggle", decorator });
+    },
+    [editor],
+  );
+
+  const toggleListItem = useCallback(
+    (listItem: "bullet" | "number") => {
+      editor.send({ type: "focus" });
+      editor.send({ type: "list item.toggle", listItem });
+    },
+    [editor],
+  );
 
   const applyLink = useCallback(() => {
     const href = normalizePortableTextHrefInput(linkHref);
@@ -478,90 +508,64 @@ function PteToolbar({
       <Flex align="center" gap={1} paddingBottom={2}>
         <StyleDropdown />
         <span style={DIVIDER} />
-        <button
-          type="button"
-          style={isStrong ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            editor.send({ type: "decorator.toggle", decorator: "strong" });
-          }}
+        <RichTextToolbarButton
+          label="太字"
           title="太字 (⌘B)"
+          pressed={isStrong}
+          onActivate={() => toggleDecorator("strong")}
         >
           <IconBold />
-        </button>
-        <button
-          type="button"
-          style={isEm ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            editor.send({ type: "decorator.toggle", decorator: "em" });
-          }}
+        </RichTextToolbarButton>
+        <RichTextToolbarButton
+          label="斜体"
           title="斜体 (⌘I)"
+          pressed={isEm}
+          onActivate={() => toggleDecorator("em")}
         >
           <IconItalic />
-        </button>
-        <button
-          type="button"
-          style={isLink || linkEditorOpen ? TOOLBAR_BTN_ACTIVE : TOOLBAR_BTN}
-          aria-expanded={linkEditorOpen}
-          onMouseDown={(e) => {
-            e.preventDefault();
+        </RichTextToolbarButton>
+        <RichTextToolbarButton
+          label="リンク"
+          pressed={isLink || linkEditorOpen}
+          expanded={linkEditorOpen}
+          onActivate={() => {
             setLinkHref(typeof activeLink?.href === "string" ? activeLink.href : "");
             setLinkError(null);
             setLinkEditorOpen((open) => !open);
           }}
-          title="リンク"
         >
           <IconLink />
-        </button>
+        </RichTextToolbarButton>
         <span style={DIVIDER} />
-        <button
-          type="button"
-          style={TOOLBAR_BTN}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            editor.send({ type: "list item.toggle", listItem: "bullet" });
-          }}
-          title="箇条書き"
+        <RichTextToolbarButton
+          label="箇条書き"
+          pressed={isBulletList}
+          onActivate={() => toggleListItem("bullet")}
         >
           <IconBulletList />
-        </button>
-        <button
-          type="button"
-          style={TOOLBAR_BTN}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            editor.send({ type: "list item.toggle", listItem: "number" });
-          }}
-          title="番号付き"
+        </RichTextToolbarButton>
+        <RichTextToolbarButton
+          label="番号付き"
+          pressed={isNumberList}
+          onActivate={() => toggleListItem("number")}
         >
           <IconNumberList />
-        </button>
+        </RichTextToolbarButton>
         <span style={DIVIDER} />
-        <button
-          type="button"
-          style={TOOLBAR_BTN}
+        <RichTextToolbarButton
+          label="画像を挿入"
           disabled={!onInsertImage}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            onInsertImage?.();
-          }}
-          title="画像を挿入"
+          onActivate={() => onInsertImage?.()}
         >
           <IconImage />
-        </button>
-        <button
-          type="button"
-          style={TOOLBAR_BTN}
+        </RichTextToolbarButton>
+        <RichTextToolbarButton
+          label="ギャラリーを挿入"
           disabled={!onInsertGallery}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            onInsertGallery?.();
-          }}
-          title="ギャラリーを挿入"
+          onActivate={() => onInsertGallery?.()}
         >
           <IconGallery />
-        </button>
+        </RichTextToolbarButton>
       </Flex>
       {linkEditorOpen && (
         <form
@@ -610,14 +614,14 @@ function PteToolbar({
               fontSize: fs.body,
             }}
           />
-          <button type="submit" style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 10px" }}>
+          <button type="submit" style={{ ...TOOLBAR_ACTION, width: "auto", padding: "0 10px" }}>
             適用
           </button>
           {isLink && (
             <button
               type="button"
               onClick={removeLink}
-              style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 8px", color: "#b42318" }}
+              style={{ ...TOOLBAR_ACTION, width: "auto", padding: "0 8px", color: "#b42318" }}
             >
               解除
             </button>
@@ -628,7 +632,7 @@ function PteToolbar({
               setLinkEditorOpen(false);
               setLinkError(null);
             }}
-            style={{ ...TOOLBAR_BTN, width: "auto", padding: "0 8px" }}
+            style={{ ...TOOLBAR_ACTION, width: "auto", padding: "0 8px" }}
           >
             閉じる
           </button>
@@ -1129,6 +1133,7 @@ function BodyEditorInner({
           borderRadius: 4,
           outline: "none",
           fontSize: fs.body,
+          fontWeight: 400,
           lineHeight: 1.8,
           color: "#1a2030",
           opacity: readOnly ? 0.7 : 1,
