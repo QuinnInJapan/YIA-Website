@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {post.documents && post.documents.length > 0 && (
           <div className="blog-post__docs">
-            <DocList docs={resolveDocs(post.documents)} />
+            <DocList docs={resolveDocs(post.documents)} openFilesInNewTab />
           </div>
         )}
 

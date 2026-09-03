@@ -4,32 +4,27 @@ import { useMemo, useState, useCallback } from "react";
 import { stegaClean } from "next-sanity";
 import type { Document } from "@/lib/types";
 import { ja, en } from "@/lib/i18n";
+import { documentTypeLabel, isPdfDocument, pdfViewerPath } from "@/lib/document-links";
 import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
 
 interface DocListProps {
   docs: Document[];
   sidebar?: boolean;
-}
-
-const PDF_TYPES = new Set(["pdf", "PDF"]);
-
-function isPdf(doc: Document): boolean {
-  const t = (doc.type || "PDF").toUpperCase();
-  return PDF_TYPES.has(t);
+  openFilesInNewTab?: boolean;
 }
 
 function docTitle(doc: Document): string {
   return ja(doc.label) + (en(doc.label) ? ` / ${en(doc.label)}` : "");
 }
 
-export default function DocList({ docs, sidebar }: DocListProps) {
+export default function DocList({ docs, sidebar, openFilesInNewTab = false }: DocListProps) {
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   // Build navigable PDF items list with their original doc indices
   const pdfItems = useMemo(() => {
     const items: (PdfViewerItem & { docIndex: number })[] = [];
     docs.forEach((d, i) => {
-      if (isPdf(d)) {
+      if (isPdfDocument(d)) {
         items.push({
           url: stegaClean(d.url) || "",
           title: docTitle(d),
@@ -54,7 +49,7 @@ export default function DocList({ docs, sidebar }: DocListProps) {
   }, []);
 
   function handleClick(e: React.MouseEvent, doc: Document, docIndex: number) {
-    if (!isPdf(doc)) return;
+    if (!isPdfDocument(doc) || openFilesInNewTab) return;
 
     e.preventDefault();
 
@@ -71,17 +66,28 @@ export default function DocList({ docs, sidebar }: DocListProps) {
   return (
     <>
       <ul className={`doc-list${sidebar ? " doc-list--sidebar" : ""}`}>
-        {docs.map((d, i) => (
-          <li className="doc-list__item" key={i}>
-            <a href={stegaClean(d.url) || ""} onClick={(e) => handleClick(e, d, i)}>
-              <span className="doc-list__label">
-                {ja(d.label)}
-                {en(d.label) ? ` / ${en(d.label)}` : ""}
-              </span>{" "}
-              <span className="doc-list__type">({d.type || "PDF"})</span>
-            </a>
-          </li>
-        ))}
+        {docs.map((d, i) => {
+          const url = stegaClean(d.url) || "";
+          const title = docTitle(d);
+          const href = openFilesInNewTab && isPdfDocument(d) ? pdfViewerPath(url, title) : url;
+
+          return (
+            <li className="doc-list__item" key={i}>
+              <a
+                href={href}
+                target={openFilesInNewTab ? "_blank" : undefined}
+                rel={openFilesInNewTab ? "noopener noreferrer" : undefined}
+                onClick={(e) => handleClick(e, d, i)}
+              >
+                <span className="doc-list__label">
+                  {ja(d.label)}
+                  {en(d.label) ? ` / ${en(d.label)}` : ""}
+                </span>{" "}
+                <span className="doc-list__type">({documentTypeLabel(d)})</span>
+              </a>
+            </li>
+          );
+        })}
       </ul>
       <PdfViewer
         items={pdfItems}
