@@ -106,7 +106,7 @@ export default async function AnnouncementDetailPage({
           <BilingualPortableText field={bodyField} />
           {ann.documents && ann.documents.length > 0 && (
             <div className="announcement-detail__docs">
-              <DocList docs={resolveDocs(ann.documents)} openFilesInNewTab />
+              <DocList docs={resolveDocs(ann.documents)} />
             </div>
           )}
         </article>
