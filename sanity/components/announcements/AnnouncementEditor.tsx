@@ -44,6 +44,7 @@ import {
   type AnnouncementDestination,
 } from "../../../lib/announcement-fields";
 import { recommendedSlugDefault } from "../../../lib/studio-slug";
+import { announcementPublicationState } from "./publication-state";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -172,6 +173,9 @@ export function AnnouncementEditor({
     if (selectedPage) result.targetPageData = selectedPage;
     return result;
   }, [doc, edits, internalPages]);
+
+  const publicationState = announcementPublicationState(publishedDoc, merged);
+  const hasUnpublishedChanges = publicationState === "published-with-changes";
 
   const detailPageSlug = merged?.slug?.current ?? "";
   const isDetailPage =
@@ -337,9 +341,7 @@ export function AnnouncementEditor({
                 slugUniquenessError ??
                 `/announcements/${merged.slug?.current}`,
               tone:
-                slugValidationError || slugUniquenessError
-                  ? ("error" as const)
-                  : ("ok" as const),
+                slugValidationError || slugUniquenessError ? ("error" as const) : ("ok" as const),
             },
             {
               label: "日本語本文",
@@ -533,6 +535,13 @@ export function AnnouncementEditor({
     discarding: "#b08000",
     error: "#cc3333",
   };
+  const publicationStatus = {
+    unpublished: { label: "未公開", background: "#9a5700" },
+    published: { label: "公開済み", background: "#2e7d32" },
+    "published-with-changes": { label: "未公開の変更あり", background: "#9a5700" },
+  }[publicationState];
+  const statusUpdatedAt =
+    publicationState === "published" ? publishedDoc?._updatedAt : draftDoc?._updatedAt;
   const destinationType = announcementDestination(merged?.destinationType);
   const isInternalPageAnnouncement = destinationType === ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE;
   const slugValidationError = isInternalPageAnnouncement
@@ -589,11 +598,11 @@ export function AnnouncementEditor({
                   borderRadius: 10,
                   fontSize: fs.meta,
                   fontWeight: 600,
-                  background: hasDraft ? "#9a5700" : "#2e7d32",
+                  background: publicationStatus.background,
                   color: "#fff",
                 }}
               >
-                {hasDraft ? "下書き" : "公開済み"}
+                {publicationStatus.label}
               </span>
               <span
                 role="status"
@@ -606,7 +615,7 @@ export function AnnouncementEditor({
               >
                 {statusLabel[saveStatus]}
               </span>
-              {draftDoc?._updatedAt && (
+              {statusUpdatedAt && (
                 <span
                   style={{
                     color: "var(--card-muted-fg-color)",
@@ -614,7 +623,7 @@ export function AnnouncementEditor({
                     lineHeight: "18px",
                   }}
                 >
-                  {formatStudioRelativeTime(draftDoc._updatedAt)}
+                  {formatStudioRelativeTime(statusUpdatedAt)}
                 </span>
               )}
             </Flex>
@@ -634,7 +643,7 @@ export function AnnouncementEditor({
                 borderRight: "1px solid var(--card-border-color)",
               }}
             >
-              {hasDraft && publishedDoc && (
+              {hasDraft && publishedDoc && hasUnpublishedChanges && (
                 <Button
                   icon={RevertIcon}
                   text="下書きを破棄"
@@ -659,12 +668,18 @@ export function AnnouncementEditor({
             </Flex>
             <Button
               icon={PublishIcon}
-              text="公開"
+              text={
+                publicationState === "published-with-changes"
+                  ? "変更を公開"
+                  : publicationState === "published"
+                    ? "公開済み"
+                    : "公開"
+              }
               tone="positive"
               fontSize={1}
               padding={2}
               onClick={handleRequestPublish}
-              disabled={saving || !hasDraft}
+              disabled={saving || publicationState === "published"}
             />
           </Flex>
         </Flex>

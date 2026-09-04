@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { shouldUseNativePdfViewer } from "@/lib/document-links";
 import type { PdfViewerItem } from "./PdfViewer";
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), { ssr: false });
@@ -20,15 +21,21 @@ export default function PdfLink({ href, title, children, className }: PdfLinkPro
 
   const handleNavigate = useCallback(() => {}, []);
 
-  function handleClick(e: React.MouseEvent) {
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     if (!href) return;
-    e.preventDefault();
 
-    if (window.innerWidth <= 768) {
-      window.open(href, "_blank");
+    if (
+      shouldUseNativePdfViewer({
+        viewportWidth: window.innerWidth,
+        hasCoarsePointer: window.matchMedia("(pointer: coarse)").matches,
+      })
+    ) {
+      e.currentTarget.target = "_blank";
+      e.currentTarget.rel = "noopener noreferrer";
       return;
     }
 
+    e.preventDefault();
     setIsOpen(true);
   }
 

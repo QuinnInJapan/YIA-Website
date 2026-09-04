@@ -31,6 +31,16 @@ export function isPdfDocument(doc: Document): boolean {
   return documentTypeLabel(doc).toUpperCase() === "PDF";
 }
 
+export function shouldUseNativePdfViewer({
+  viewportWidth,
+  hasCoarsePointer = false,
+}: {
+  viewportWidth: number;
+  hasCoarsePointer?: boolean;
+}): boolean {
+  return viewportWidth <= 1024 || hasCoarsePointer;
+}
+
 export function safeViewerFileUrl(value: unknown): string | undefined {
   const url = cleanValue(value);
   if (!url) return undefined;

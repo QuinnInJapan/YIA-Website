@@ -19,6 +19,11 @@ import { useDeepLink } from "./shared/useDeepLink";
 import { formatStudioDateOnly } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
 import { CollapsibleListPanel } from "./shared/PanelShells";
+import {
+  ANNOUNCEMENT_PUBLICATION_PROJECTION,
+  announcementPublicationState,
+  type AnnouncementPublicationState,
+} from "./announcements/publication-state";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -30,8 +35,10 @@ interface AnnouncementItem {
   pinned: boolean | null;
   slug: string | null;
   destinationType: "detail" | "internalPage" | null;
-  hasDraft: boolean;
+  publicationState: AnnouncementPublicationState;
 }
+
+type AnnouncementListResult = Omit<AnnouncementItem, "publicationState">;
 
 // ── Constants ────────────────────────────────────────────
 
@@ -57,10 +64,6 @@ const LIST_PROJECTION = `{
   pinned,
   "slug": slug.current,
   destinationType,
-  "hasDraft": select(
-    _id in path("drafts.**") => true,
-    defined(*[_id == "drafts." + ^._id][0])
-  )
 }`;
 
 function buildFilter(search: string, filterMode: FilterMode): string {
@@ -141,17 +144,16 @@ function SidebarRow({
             gap: 4,
           }}
         >
-          {item.hasDraft && (
+          {item.publicationState !== "published" && (
             <span
               style={{
-                display: "inline-block",
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#e6a317",
+                color: "#9a5700",
+                fontWeight: 600,
                 flexShrink: 0,
               }}
-            />
+            >
+              {item.publicationState === "unpublished" ? "未公開" : "変更あり"}
+            </span>
           )}
           {formatStudioDateOnly(item.date)}
         </div>
@@ -264,28 +266,45 @@ export function AnnouncementsTool() {
   // ── Fetch items ────────────────────────────────────────
 
   const fetchItems = useCallback(
-    (currentPage: number, search: string, filter: FilterMode) => {
+    async (currentPage: number, search: string, filter: FilterMode) => {
       setLoading(true);
       const f = buildFilter(search, filter);
       const start = currentPage * PAGE_SIZE;
       const end = start + PAGE_SIZE;
 
-      Promise.all([
-        client.fetch<AnnouncementItem[]>(
-          `*[${f}] | order(select(_id in path("drafts.**") => true, defined(*[_id == "drafts." + ^._id][0])) desc, pinned desc, date desc) [${start}...${end}] ${LIST_PROJECTION}`,
-        ),
-        client.fetch<number>(`count(*[${f}])`),
-      ])
-        .then(([results, count]) => {
-          setItems(results);
-          setTotalCount(count);
-          setListError(null);
-        })
-        .catch((err) => {
-          console.error(err);
-          setListError("お知らせを読み込めませんでした。再読み込みしてください。");
-        })
-        .finally(() => setLoading(false));
+      try {
+        const [results, count] = await Promise.all([
+          client.fetch<AnnouncementListResult[]>(
+            `*[${f}] | order(select(_id in path("drafts.**") => true, defined(*[_id == "drafts." + ^._id][0])) desc, pinned desc, date desc) [${start}...${end}] ${LIST_PROJECTION}`,
+          ),
+          client.fetch<number>(`count(*[${f}])`),
+        ]);
+        const ids = results.map((item) => item._id);
+        const stateDocuments = ids.length
+          ? await client.fetch<Array<{ _id: string } & Record<string, unknown>>>(
+              `*[_type == "announcement" && (_id in $ids || string::split(_id, "drafts.")[1] in $ids)] ${ANNOUNCEMENT_PUBLICATION_PROJECTION}`,
+              { ids },
+            )
+          : [];
+        const stateById = new Map(stateDocuments.map((document) => [document._id, document]));
+
+        setItems(
+          results.map((item) => ({
+            ...item,
+            publicationState: announcementPublicationState(
+              stateById.get(item._id),
+              stateById.get(`drafts.${item._id}`),
+            ),
+          })),
+        );
+        setTotalCount(count);
+        setListError(null);
+      } catch (err) {
+        console.error(err);
+        setListError("お知らせを読み込めませんでした。再読み込みしてください。");
+      } finally {
+        setLoading(false);
+      }
     },
     [client],
   );

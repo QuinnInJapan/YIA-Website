@@ -7,6 +7,12 @@ import { useClient } from "sanity";
 import { LoadingDots } from "./shared/ui";
 import { formatStudioRelativeTime } from "./shared/date-format";
 import { fs } from "@/sanity/lib/studioTokens";
+import {
+  ANNOUNCEMENT_PUBLICATION_FIELD_LIST,
+  ANNOUNCEMENT_PUBLICATION_PROJECTION,
+  announcementPublicationState,
+  type AnnouncementPublicationState,
+} from "./announcements/publication-state";
 
 interface DraftItem {
   _id: string;
@@ -14,6 +20,8 @@ interface DraftItem {
   _updatedAt?: string;
   title?: { _key: string; value: string }[];
   label?: { _key: string; value: string }[];
+  publicationState?: AnnouncementPublicationState;
+  [key: string]: unknown;
 }
 
 const EDITABLE_DRAFT_TYPES = [
@@ -30,7 +38,8 @@ const DRAFTS_QUERY = `*[
   _id in path("drafts.**") &&
   _type in $editableTypes
 ] | order(_updatedAt desc) {
-  _id, _type, _updatedAt, title, label
+  _id, _type, _updatedAt, label,
+  ${ANNOUNCEMENT_PUBLICATION_FIELD_LIST}
 }`;
 
 const TYPE_CONFIG: Record<string, { label: string; tool?: string; deepLink?: boolean }> = {
@@ -71,7 +80,26 @@ export function DraftsTool() {
       const drafts = await client.fetch<DraftItem[]>(DRAFTS_QUERY, {
         editableTypes: EDITABLE_DRAFT_TYPES,
       });
-      setItems(drafts);
+      const announcementIds = drafts
+        .filter((item) => item._type === "announcement")
+        .map((item) => item._id.replace(/^drafts\./, ""));
+      const publishedAnnouncements = announcementIds.length
+        ? await client.fetch<Array<{ _id: string } & Record<string, unknown>>>(
+            `*[_type == "announcement" && _id in $ids] ${ANNOUNCEMENT_PUBLICATION_PROJECTION}`,
+            { ids: announcementIds },
+          )
+        : [];
+      const publishedById = new Map(
+        publishedAnnouncements.map((document) => [document._id, document]),
+      );
+      const visibleDrafts = drafts.flatMap((item) => {
+        if (item._type !== "announcement") return [item];
+        const publishedId = item._id.replace(/^drafts\./, "");
+        const publicationState = announcementPublicationState(publishedById.get(publishedId), item);
+        return publicationState === "published" ? [] : [{ ...item, publicationState }];
+      });
+
+      setItems(visibleDrafts);
       setError(null);
     } catch (err) {
       console.error("Failed to load drafts:", err);
@@ -180,8 +208,14 @@ export function DraftsTool() {
                                 marginTop: 4,
                               }}
                             >
-                              下書きあり
-                              {item._updatedAt ? `・${formatStudioRelativeTime(item._updatedAt)}` : ""}
+                              {item.publicationState === "unpublished"
+                                ? "未公開"
+                                : item.publicationState === "published-with-changes"
+                                  ? "未公開の変更あり"
+                                  : "下書きあり"}
+                              {item._updatedAt
+                                ? `・${formatStudioRelativeTime(item._updatedAt)}`
+                                : ""}
                             </div>
                           </div>
                           {canOpen ? (

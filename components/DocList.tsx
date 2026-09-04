@@ -4,7 +4,12 @@ import { useMemo, useState, useCallback } from "react";
 import { stegaClean } from "next-sanity";
 import type { Document } from "@/lib/types";
 import { ja, en } from "@/lib/i18n";
-import { documentTypeLabel, isPdfDocument, pdfViewerPath } from "@/lib/document-links";
+import {
+  documentTypeLabel,
+  isPdfDocument,
+  pdfViewerPath,
+  shouldUseNativePdfViewer,
+} from "@/lib/document-links";
 import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
 
 interface DocListProps {
@@ -48,17 +53,25 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
     setViewerIndex(index);
   }, []);
 
-  function handleClick(e: React.MouseEvent, doc: Document, docIndex: number) {
-    if (!isPdfDocument(doc) || openFilesInNewTab) return;
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, doc: Document, docIndex: number) {
+    if (!isPdfDocument(doc)) return;
 
-    e.preventDefault();
-
-    // Mobile fallback — iOS Safari can't render PDFs in iframes
-    if (window.innerWidth <= 768) {
-      window.open(stegaClean(doc.url) || "", "_blank");
+    // Mobile/tablet fallback — iOS Safari can't reliably render PDFs in iframes.
+    if (
+      shouldUseNativePdfViewer({
+        viewportWidth: window.innerWidth,
+        hasCoarsePointer: window.matchMedia("(pointer: coarse)").matches,
+      })
+    ) {
+      e.currentTarget.href = stegaClean(doc.url) || "";
+      e.currentTarget.target = "_blank";
+      e.currentTarget.rel = "noopener noreferrer";
       return;
     }
 
+    if (openFilesInNewTab) return;
+
+    e.preventDefault();
     const pdfIdx = docIndexToPdfIndex.get(docIndex);
     if (pdfIdx !== undefined) setViewerIndex(pdfIdx);
   }

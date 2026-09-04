@@ -5,6 +5,7 @@ import {
   isPdfDocument,
   pdfViewerPath,
   safeViewerFileUrl,
+  shouldUseNativePdfViewer,
 } from "../lib/document-links.ts";
 
 test("recognizes newly uploaded PDFs from fileType metadata", () => {
@@ -35,6 +36,13 @@ test("keeps non-PDF file labels and types intact", () => {
   const document = { label: [], type: "document", fileType: "docx" };
   assert.equal(isPdfDocument(document), false);
   assert.equal(documentTypeLabel(document), "DOCX");
+});
+
+test("uses the native PDF viewer on phones, tablets, and coarse-pointer devices", () => {
+  assert.equal(shouldUseNativePdfViewer({ viewportWidth: 390 }), true);
+  assert.equal(shouldUseNativePdfViewer({ viewportWidth: 820 }), true);
+  assert.equal(shouldUseNativePdfViewer({ viewportWidth: 1366, hasCoarsePointer: true }), true);
+  assert.equal(shouldUseNativePdfViewer({ viewportWidth: 1366 }), false);
 });
 
 test("builds a same-origin viewer URL for a PDF tab", () => {
