@@ -60,6 +60,7 @@ export function formatFailure(error) {
 export function parseScriptFlags(argv = process.argv.slice(2), { defaultLive = false } = {}) {
   const dryRun = argv.includes("--dry-run");
   const live = argv.includes("--live");
+  const allowProduction = argv.includes("--allow-production");
 
   if (dryRun && live) {
     throw fail("Choose either --dry-run or --live, not both.", {
@@ -71,8 +72,20 @@ export function parseScriptFlags(argv = process.argv.slice(2), { defaultLive = f
   return {
     dryRun: dryRun || (!live && !defaultLive),
     live: live || (!dryRun && defaultLive),
-    args: argv.filter((arg) => arg !== "--dry-run" && arg !== "--live"),
+    allowProduction,
+    args: argv.filter(
+      (arg) => arg !== "--dry-run" && arg !== "--live" && arg !== "--allow-production",
+    ),
   };
+}
+
+export function assertLiveDatasetAllowed({ live, dataset, allowProduction = false }) {
+  if (!live || dataset !== "production" || allowProduction) return;
+
+  throw fail("Live writes to the production dataset require explicit confirmation.", {
+    fix: "Inspect the dry-run output, then rerun with both --live and --allow-production if the production write is intentional.",
+    context: { dataset, live, allowProduction },
+  });
 }
 
 export function loadSanityEnv({
@@ -131,10 +144,18 @@ export async function runSanityScript({
     }
 
     const env = requireEnv ? loadSanityEnv() : null;
+    if (env) {
+      assertLiveDatasetAllowed({
+        live: flags.live,
+        dataset: env.dataset,
+        allowProduction: flags.allowProduction,
+      });
+    }
     const client = requireEnv ? createSanityClient({ envValues: env }) : null;
 
     console.log(`${name ?? "Sanity script"} (${modeLabel})`);
     if (description) console.log(description);
+    if (env) console.log(`Dataset: ${env.dataset}`);
     console.log("");
 
     await handler({ ...flags, client, env, modeLabel });

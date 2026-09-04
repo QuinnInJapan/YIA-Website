@@ -76,6 +76,12 @@ Live run for a task-specific script:
 node scripts/<task-specific-script>.mjs --live
 ```
 
+Live writes to `production` require a second explicit confirmation:
+
+```bash
+node scripts/<task-specific-script>.mjs --live --allow-production
+```
+
 The template itself refuses `--live`; copy it first and replace the placeholder mutation.
 
 Live scripts require `.env.local` with:
@@ -84,6 +90,10 @@ Live scripts require `.env.local` with:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `SANITY_TOKEN`
 
+Local development must use `NEXT_PUBLIC_SANITY_DATASET=development`. The Sanity CLI reads the same
+`.env.local` values; do not hardcode a dataset in `sanity.cli.ts` or new maintenance scripts. Vercel
+Production uses `production`; Vercel Preview and Development use `development`.
+
 New mutation scripts should:
 
 - default to dry-run
@@ -91,6 +101,24 @@ New mutation scripts should:
 - use revision-guarded patches
 - print loud failures with `ERROR`, `WHY`, `FIX`, and `CONTEXT`
 - revalidate after live content mutations when user-visible pages changed
+
+To refresh the disposable public development dataset from production, first preview the operation:
+
+```bash
+npm run sanity:sync-dev -- --dry-run
+```
+
+Then explicitly replace development. This exports production first and includes published documents,
+drafts, images, and files. It never writes to production:
+
+```bash
+npm run sanity:sync-dev -- --live --reset-development
+```
+
+The sync uses Sanity export/import because direct cloud dataset cloning is unavailable on the Free
+plan. If the import fails, the command reports and retains the temporary export for recovery. Existing
+legacy migration scripts that hardcode `production` are historical and must not be reused; create a
+new script from the maintained template instead.
 
 Announcement mutation scripts must preserve the destination contract and call
 `validateAnnouncementForMutation` before writing:

@@ -11,7 +11,8 @@ import {
 } from "./lib/sanity-tools.mjs";
 
 // Announcement mutation scripts must also import validateAnnouncementForMutation
-// and call it on the final document shape before patching or publishing.
+// and call it on the final document shape before patching or publishing. Live
+// production writes additionally require --allow-production.
 
 function argValue(args, name, fallback) {
   const index = args.indexOf(name);
@@ -32,7 +33,7 @@ await runSanityScript({
   async handler({ client, dryRun, args }) {
     if (!dryRun) {
       throw fail("The Sanity script template cannot run live.", {
-        fix: "Copy this file to a task-specific script, replace the placeholder mutation, then run that script with --live.",
+        fix: "Copy this file to a task-specific script, replace the placeholder mutation, then run that script with --live. If it intentionally targets production, also pass --allow-production.",
       });
     }
 

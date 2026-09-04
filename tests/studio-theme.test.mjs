@@ -8,6 +8,10 @@ const studioCss = await readFile(
   new URL("../app/studio/studio-overrides.css", import.meta.url),
   "utf8",
 );
+const studioConfig = await readFile(
+  new URL("../sanity.config.ts", import.meta.url),
+  "utf8",
+);
 
 test("uses a Japanese-first Studio font stack with readable body weight", () => {
   assert.match(yiaStudioTheme.fonts.text.family, /Hiragino Sans/);
@@ -53,4 +57,10 @@ test("keeps narrow Studio previews from partially covering editor titles", () =>
     studioCss,
     /@media \(max-width: 960px\)[\s\S]*\.studio-panel-resize-handle\s*\{[^}]*display:\s*none;/,
   );
+});
+
+test("identifies the development dataset in the native Studio title", () => {
+  assert.match(studioConfig, /NEXT_PUBLIC_SANITY_DATASET/);
+  assert.match(studioConfig, /sanityDataset === "production"/);
+  assert.match(studioConfig, /開発｜横須賀国際交流協会/);
 });

@@ -12,11 +12,17 @@ import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 import { yiaStudioTheme } from "./sanity/lib/studioTheme";
 import { YiaStudioNavbar } from "./sanity/components/YiaStudioNavbar";
 
+const sanityDataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
+const studioTitle =
+  sanityDataset === "production"
+    ? "横須賀国際交流協会"
+    : "開発｜横須賀国際交流協会";
+
 export default defineConfig({
   name: "yia-website",
-  title: "横須賀国際交流協会",
+  title: studioTitle,
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
+  dataset: sanityDataset,
   basePath: "/studio",
   theme: yiaStudioTheme,
   studio: {

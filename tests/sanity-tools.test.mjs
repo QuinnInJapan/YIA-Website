@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 import {
+  assertLiveDatasetAllowed,
   cell,
   fail,
   formatFailure,
@@ -13,18 +14,25 @@ import {
 } from "../scripts/lib/sanity-tools.mjs";
 
 test("parseScriptFlags defaults to dry-run", () => {
-  assert.deepEqual(parseScriptFlags([]), { dryRun: true, live: false, args: [] });
+  assert.deepEqual(parseScriptFlags([]), {
+    dryRun: true,
+    live: false,
+    allowProduction: false,
+    args: [],
+  });
 });
 
 test("parseScriptFlags can preserve a legacy live default", () => {
   assert.deepEqual(parseScriptFlags([], { defaultLive: true }), {
     dryRun: false,
     live: true,
+    allowProduction: false,
     args: [],
   });
   assert.deepEqual(parseScriptFlags(["--dry-run", "page-id"], { defaultLive: true }), {
     dryRun: true,
     live: false,
+    allowProduction: false,
     args: ["page-id"],
   });
 });
@@ -33,6 +41,16 @@ test("parseScriptFlags requires --live for live mode", () => {
   assert.deepEqual(parseScriptFlags(["--live", "page-id"]), {
     dryRun: false,
     live: true,
+    allowProduction: false,
+    args: ["page-id"],
+  });
+});
+
+test("parseScriptFlags separates production confirmation from task arguments", () => {
+  assert.deepEqual(parseScriptFlags(["--live", "--allow-production", "page-id"]), {
+    dryRun: false,
+    live: true,
+    allowProduction: true,
     args: ["page-id"],
   });
 });
@@ -58,6 +76,27 @@ test("runSanityScript formats flag errors from the real template entrypoint", ()
   assert.doesNotMatch(result.stderr, /SanityScriptError:/);
 });
 
+test("development refresh refuses a live reset without its dedicated confirmation", () => {
+  const result = spawnSync(
+    process.execPath,
+    ["scripts/sync-production-to-development.mjs", "--live"],
+    {
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        NEXT_PUBLIC_SANITY_PROJECT_ID: "test-project",
+        NEXT_PUBLIC_SANITY_DATASET: "development",
+        SANITY_TOKEN: "test-token",
+      },
+    },
+  );
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Replacing the development dataset requires explicit confirmation/);
+  assert.match(result.stderr, /--reset-development/);
+  assert.doesNotMatch(result.stderr, /Temporary export retained/);
+});
+
 test("i18n and cell create standard bilingual arrays", () => {
   assert.deepEqual(i18n("日本語", "English"), [
     { _key: "ja", value: "日本語" },
@@ -71,6 +110,21 @@ test("loadSanityEnv fails loudly when env is missing", () => {
     () => loadSanityEnv({ env: {}, envPath: "/tmp/does-not-matter.env", loadDotenv: false }),
     /Missing required Sanity environment variables/,
   );
+});
+
+test("live production writes require a separate confirmation", () => {
+  assert.throws(
+    () => assertLiveDatasetAllowed({ live: true, dataset: "production" }),
+    /production dataset require explicit confirmation/,
+  );
+  assert.doesNotThrow(() =>
+    assertLiveDatasetAllowed({
+      live: true,
+      dataset: "production",
+      allowProduction: true,
+    }),
+  );
+  assert.doesNotThrow(() => assertLiveDatasetAllowed({ live: true, dataset: "development" }));
 });
 
 test("formatFailure prints loud actionable sections", () => {
