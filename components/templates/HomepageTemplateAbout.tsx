@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteData, getHomepageFeatured } from "@/lib/data";
+import { getHomepageData, getHomepageFeatured } from "@/lib/data";
 import { fetchHomepageAbout } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
@@ -19,7 +19,7 @@ import { resolveHomepageAboutContent } from "./homepage-about-content";
  * section is replaced with an "About YIA" mission block + framed photo.
  */
 export default async function HomepageTemplateAbout() {
-  const data = await getSiteData();
+  const data = await getHomepageData();
   const hp = data.homepage;
   const featured = await getHomepageFeatured();
   const sidebar = data.sidebar;

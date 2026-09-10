@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getSiteData } from "@/lib/data";
+import { fetchSocialImageData } from "@/lib/sanity/queries";
 import { en, ja } from "@/lib/i18n";
 import { urlFor } from "@/lib/sanity/image";
 import { SITE_URL, SOCIAL_IMAGE_ALT } from "@/lib/site-metadata";
@@ -24,8 +24,8 @@ async function imageDataUrl(url: string) {
 }
 
 export default async function OpenGraphImage() {
-  const data = await getSiteData();
-  const heroImage = data.homepage.hero.image;
+  const data = await fetchSocialImageData();
+  const heroImage = data.heroImage;
   const heroImageUrl = heroImage
     ? urlFor(heroImage)
         .width(size.width)
@@ -35,9 +35,9 @@ export default async function OpenGraphImage() {
         .quality(90)
         .url()
     : "";
-  const titleJa = ja(data.site.org.name) || "横須賀国際交流協会";
-  const titleEn = en(data.site.org.name) || "Yokosuka International Association";
-  const abbreviation = data.site.org.abbreviation || "YIA";
+  const titleJa = ja(data.org?.name) || "横須賀国際交流協会";
+  const titleEn = en(data.org?.name) || "Yokosuka International Association";
+  const abbreviation = data.org?.abbreviation || "YIA";
   const markDataUrl = await imageDataUrl(
     new URL("/favicon-512x512.png", SITE_URL).toString(),
   );

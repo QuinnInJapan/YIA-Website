@@ -8,6 +8,11 @@ const DEFAULT_API_VERSION = "2024-01-01";
 // Public routes have no timed cache refresh. After a live content mutation,
 // verify the publish webhook or call the authenticated /api/revalidate endpoint
 // before reporting the change live (see docs/coding-agent-runbook.md).
+// Prefer {schemaVersion: 1, before, after} with complete documents when manually
+// refreshing a content mutation; before/after null represents create/delete.
+// The configured webhook sends a bounded field snapshot with the same contract.
+// Explicit {paths: [...]} retains the emergency full data purge and should not
+// be used for routine publishes.
 const REQUIRED_ENV = [
   "NEXT_PUBLIC_SANITY_PROJECT_ID",
   "NEXT_PUBLIC_SANITY_DATASET",

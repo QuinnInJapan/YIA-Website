@@ -1,10 +1,10 @@
 import { stegaClean } from "next-sanity";
-import { getSiteData } from "@/lib/data";
+import { getSiteSettings } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import LazyMap from "./LazyMap";
 
 export default async function AccessSection() {
-  const { site } = await getSiteData();
+  const site = await getSiteSettings();
 
   return (
     <section id="access" className="home-section home-section--tinted">

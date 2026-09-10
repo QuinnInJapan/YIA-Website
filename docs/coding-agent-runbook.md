@@ -137,17 +137,50 @@ Content-only Sanity changes should go live through webhook/revalidation. Code ch
 
 Public pages, the sitemap, and the Open Graph image use on-demand ISR only
 (`revalidate = false`). All server-side Sanity queries must use
-`sanityFetchOptions` from `lib/sanity/revalidation.ts`: an indefinite cache tagged
-`sanity:site-data`. Do not add a short route or fetch TTL: the lowest TTL can
+`sanityFetchOptions(...dependencyTags)` from `lib/sanity/revalidation.ts`: an
+indefinite cache with specific dependency tags. `sanity:site-data` remains on
+every query solely for an authenticated manual/emergency purge. Do not add a short route or fetch TTL: the lowest TTL can
 reintroduce regeneration across routes sharing data.
 
 The production Sanity webhook `YIA Next.js revalidation` POSTs to
 `https://yia-nextjs.vercel.app/api/revalidate`. Keep it enabled for published
 creates, updates, and deletes, excluding drafts. Its authentication must match
 Vercel Production's `SANITY_REVALIDATE_SECRET`; never log the secret. The handler
-expires the shared data tag with `{ expire: 0 }` and invalidates affected paths.
+expires affected dependency tags with `{ expire: 0 }`. Fetch tags invalidate
+the dependent route output too; normal publishes do not call `revalidatePath`.
 Regeneration happens when a route is next requested, not eagerly for every page.
-The shared tag deliberately covers cross-document references and metadata too.
+
+Queries are split into settings, sidebar, navigation (titles/URLs only), homepage,
+page details/summaries, announcement lists/details, blog lists/details/count/
+related cards/adjacency, and metadata. A page body edit expires its own detail
+keys. A title or slug change also expires navigation; renames and deletions cover
+old and new keys and incoming announcement links. Blog count changes only on
+create/delete. The social image has its own minimal query and only expires when
+the homepage hero image or organization name/abbreviation changes.
+
+The hook's `rule.projection` must use the versioned before/after snapshot in
+`scripts/lib/sanity-webhook.mjs`. Keep snapshot fields aligned with the resolver
+and test it with GROQ evaluation. Both null lifecycle values matter: `before:
+null` means create and `after: null` means delete. Legacy single-document payloads
+still work conservatively by invalidating their document type and dependencies.
+Drafts, version documents, unknown types and invalid payloads are ignored.
+
+After deploying the compatible handler, configure the existing hook through a
+Sanity CLI session with webhook permissions, through the checkout's managed
+command prefix. The script resolves the CLI from the working directory so it
+uses the token injected by `--with-user-token`. Inspect the dry run first:
+
+```bash
+npx sanity exec scripts/configure-sanity-revalidation.cjs --with-user-token -- --dry-run
+npx sanity exec scripts/configure-sanity-revalidation.cjs --with-user-token -- --live --allow-production
+```
+
+The script changes only the projection, preserving credentials, destination,
+filters and all three publish events, and verifies by read-back. Add `--rollback`
+to restore the prior projection if needed. It never changes Sanity content.
+Manual refreshes should send complete `{schemaVersion: 1, before, after}`
+documents. Explicit `{paths: [...]}` requests retain the old full data purge
+contract for emergency maintenance; avoid them for normal edits.
 
 There is no timed fallback. After live content scripts, verify webhook delivery
 or POST the authenticated revalidation request yourself, then request affected

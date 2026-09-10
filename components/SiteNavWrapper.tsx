@@ -1,12 +1,12 @@
-import { getEnrichedNavigation, getSiteData } from "@/lib/data";
+import { getEnrichedNavigation, getSiteSettings } from "@/lib/data";
 import { fetchBlogPostCount } from "@/lib/sanity/queries";
 import SiteNav from "./SiteNav";
 import { ja, en } from "@/lib/i18n";
 
 export default async function SiteNavWrapper() {
-  const [nav, { site }, blogPostCount] = await Promise.all([
+  const [nav, site, blogPostCount] = await Promise.all([
     getEnrichedNavigation(),
-    getSiteData(),
+    getSiteSettings(),
     fetchBlogPostCount(),
   ]);
 

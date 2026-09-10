@@ -1,9 +1,9 @@
 import { stegaClean } from "next-sanity";
-import { getSiteData } from "@/lib/data";
+import { getSiteSettings } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 
 export default async function ContactBlock() {
-  const { site } = await getSiteData();
+  const site = await getSiteSettings();
   const { org, contact } = site;
 
   return (

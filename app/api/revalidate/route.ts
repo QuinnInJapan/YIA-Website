@@ -1,6 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveSanityRevalidationTargets, SANITY_SITE_DATA_TAG } from "@/lib/sanity/revalidation";
+import { resolveSanityRevalidationPlan } from "@/lib/sanity/revalidation";
 
 export const runtime = "nodejs";
 
@@ -24,19 +24,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const targets = resolveSanityRevalidationTargets(payload);
+  const { tags, paths } = resolveSanityRevalidationPlan(payload);
 
   // A publish webhook expires the data before the next render. Serving stale
   // data here could rebuild an indefinitely cached page from the old document.
-  revalidateTag(SANITY_SITE_DATA_TAG, { expire: 0 });
-  for (const target of targets) {
+  for (const tag of tags) revalidateTag(tag, { expire: 0 });
+  for (const target of paths) {
     revalidatePath(target.path, target.type);
   }
 
   return NextResponse.json({
     ok: true,
-    revalidated: targets,
-    tag: SANITY_SITE_DATA_TAG,
+    revalidated: paths,
+    tags,
   });
 }
 

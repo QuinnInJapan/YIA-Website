@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { categoryPath, categorySegment, pagePath } from "@/lib/routes";
 import { client } from "@/lib/sanity/client";
-import { sanityFetchOptions } from "@/lib/sanity/revalidation";
+import { sanityFetchOptions, sanityTags } from "@/lib/sanity/revalidation";
 import {
   fetchNavigationRouteDocument,
   navigationRouteGroups,
@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     client.fetch<{ slug: string; updatedAt: string }[]>(
       `*[_type == "blogPost"]{ "slug": slug.current, "updatedAt": _updatedAt }`,
       {},
-      sanityFetchOptions,
+      sanityFetchOptions(sanityTags.blogRoutes),
     ),
   ]);
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
-import { getEnrichedNavigation, getPage } from "@/lib/data";
+import { getEnrichedNavigation, getPageSummary } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import PageHero from "@/components/PageHero";
@@ -18,10 +18,10 @@ export default async function CategoryTemplate({ categoryId }: CategoryTemplateP
 
   if (!navCat) return null;
 
-  // Resolve full page data for each nav item (nav is the source of truth for what belongs in a category)
+  // Cards depend on summaries, so body-only edits leave the category cached.
   const items = await Promise.all(
     navCat.items.map(async (item) => {
-      const page = item.slug ? await getPage(item.slug) : undefined;
+      const page = item.slug ? await getPageSummary(item.slug) : undefined;
       return { item, page };
     }),
   );

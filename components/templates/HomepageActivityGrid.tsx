@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSiteData, pageUrl } from "@/lib/data";
+import { getHomepage, pageUrl } from "@/lib/data";
 import { fetchBlogPostCount } from "@/lib/sanity/queries";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl } from "@/lib/sanity/image";
@@ -7,13 +7,12 @@ import LazyImage from "@/components/LazyImage";
 import CounterTile from "@/components/CounterTile";
 
 export default async function HomepageActivityGrid() {
-  const [data, blogPostCount, aboutUrl, membershipUrl] = await Promise.all([
-    getSiteData(),
+  const [hp, blogPostCount, aboutUrl, membershipUrl] = await Promise.all([
+    getHomepage(),
     fetchBlogPostCount(),
     pageUrl("about"),
     pageUrl("membership"),
   ]);
-  const hp = data.homepage;
   const showBlog = (blogPostCount as number) > 0;
 
   const galleryImages = hp.activityGrid.images;

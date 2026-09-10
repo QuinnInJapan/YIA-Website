@@ -16,6 +16,9 @@ import {
 // Public pages use on-demand revalidation only. After live mutations, verify
 // webhook delivery or POST to /api/revalidate with the configured secret, then
 // request the affected pages before reporting the content live.
+// If manually refreshing, send {schemaVersion: 1, before, after} using the
+// complete fetched/patched documents (null for create/delete). This preserves
+// targeted invalidation and old slugs; {paths: [...]} is a full-cache fallback.
 
 function argValue(args, name, fallback) {
   const index = args.indexOf(name);

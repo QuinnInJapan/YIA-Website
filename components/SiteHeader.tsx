@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { stegaClean } from "next-sanity";
-import { getSiteData } from "@/lib/data";
+import { getSiteSettings } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import GoogleTranslate from "./GoogleTranslate";
 
 export default async function SiteHeader() {
-  const { site } = await getSiteData();
+  const site = await getSiteSettings();
   const { org, contact } = site;
 
   return (

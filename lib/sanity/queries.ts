@@ -1,6 +1,18 @@
 import { cache } from "react";
 import { client } from "./client";
-import { sanityFetchOptions } from "./revalidation";
+import { sanityFetchOptions, sanityTags as tags, sanityDocumentTag } from "./revalidation";
+import type {
+  SiteSettings,
+  Sidebar,
+  Homepage,
+  HomepageFeatured,
+  Category,
+  Navigation,
+  Page,
+  Announcement,
+  SanityImage,
+} from "../types";
+import type { I18nString } from "../i18n";
 
 // ── Timing helper ───────────────────────────────────────────────
 async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
@@ -11,46 +23,64 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
   return result;
 }
 
-// ── Full site data (single composite GROQ query) ────────────────
-export async function fetchSiteData() {
-  return timed("fetchSiteData (1 query)", async () => {
-    return client.fetch(
-      `{
-        "site": *[_type == "siteSettings"][0],
-        "categories": *[_type == "category"] | order(_id asc),
-        "navigation": *[_type == "navigation"][0]{
-          ...,
-          categories[]{
-            ...,
-            categoryRef->,
-            items[]{ ..., pageRef-> }
-          }
-        },
-        "announcements": *[_type == "announcement"] | order(date desc) {
-          ...,
-          "slug": slug.current,
-          "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
-        },
-        "sidebar": *[_type == "sidebar"][0]{ ... },
-        "homepage": *[_type == "homepage"][0]{
-          ...,
-          announcementRefs[]->{
-            ...,
-            "slug": slug.current,
-            "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
-          }
-        },
-        "homepageFeatured": *[_type == "homepageFeatured"][0]{
-          categories[]->
-        },
-        // NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
-        "pages": *[_type == "page"] | order(_id asc)
-      }`,
-      {},
-      sanityFetchOptions,
-    );
-  });
-}
+// Each query describes one independently invalidated dependency. Navigation
+// deliberately projects titles/URLs only, never referenced page bodies.
+export const fetchSiteSettings = () =>
+  client.fetch<SiteSettings | null>(
+    `*[_type == "siteSettings"][0]`,
+    {},
+    sanityFetchOptions(tags.settings),
+  );
+export const fetchSidebar = () =>
+  client.fetch<Sidebar | null>(`*[_type == "sidebar"][0]`, {}, sanityFetchOptions(tags.sidebar));
+export const fetchCategories = () =>
+  client.fetch<Category[]>(
+    `*[_type == "category"] | order(_id asc)`,
+    {},
+    sanityFetchOptions(tags.categories),
+  );
+export const fetchNavigation = () =>
+  client.fetch<Navigation | null>(
+    `*[_type == "navigation"][0]{_type, categories[]{
+    categoryRef->{_id, _type, label, description, heroImage},
+    items[]{hidden, pageRef->{_id, slug, title}}
+  }}`,
+    {},
+    sanityFetchOptions(tags.navigation),
+  );
+export const fetchHomepage = () =>
+  client.fetch<Homepage | null>(`*[_type == "homepage"][0]`, {}, sanityFetchOptions(tags.homepage));
+export const fetchHomepageFeatured = () =>
+  client.fetch<HomepageFeatured | null>(
+    `*[_type == "homepageFeatured"][0]{_type, categories[]->{_id, _type, label, heroImage}}`,
+    {},
+    sanityFetchOptions(tags.featured),
+  );
+export const fetchSocialImageData = () =>
+  client.fetch<{
+    heroImage: SanityImage | null;
+    org: { name?: I18nString; abbreviation?: string } | null;
+  }>(
+    `{
+  "heroImage": *[_type == "homepage"][0].hero.image,
+  "org": *[_type == "siteSettings"][0].org{name, abbreviation}
+}`,
+    {},
+    sanityFetchOptions(tags.social),
+  );
+
+// The homepage displays the five newest pinned-first announcement links. It
+// does not render their bodies or use the retired announcementRefs selection.
+export const fetchHomepageAnnouncements = () =>
+  client.fetch<Announcement[]>(
+    `*[_type == "announcement"] | order(coalesce(pinned, false) desc, date desc) [0...5] {
+    _id, _type, title, date, pinned, destinationType, targetAnchor,
+    "slug": slug.current,
+    "targetPageData": targetPage->{_id, slug, "categoryId": categoryRef->_id}
+  }`,
+    {},
+    sanityFetchOptions(tags.announcements, tags.announcementTargets),
+  );
 
 // ── Homepage "About" variant (standalone singleton) ─────────────
 export async function fetchHomepageAbout() {
@@ -58,7 +88,7 @@ export async function fetchHomepageAbout() {
     return client.fetch(
       `*[_type == "homepageAbout" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`,
       {},
-      sanityFetchOptions,
+      sanityFetchOptions(tags.homepageAbout),
     );
   });
 }
@@ -66,16 +96,32 @@ export async function fetchHomepageAbout() {
 // ── Single page fetch ───────────────────────────────────────────
 // NOTE: full document fetch — sections[]._key must be present for StudioRegion studioId matching
 export async function fetchPageBySlug(slug: string) {
-  return client.fetch(`*[_type == "page" && slug == $slug][0]`, { slug }, sanityFetchOptions);
+  return client.fetch<Page | null>(
+    `*[_type == "page" && (slug == $slug || array::join(string::split(_id, "-")[1..-1], "-") == $slug || _id == $slug)] | order(_id asc)[0]`,
+    { slug },
+    sanityFetchOptions(tags.pages, sanityDocumentTag("page", slug)),
+  );
 }
 
+export type PageSummary = Pick<Page, "_id" | "title" | "slug" | "description" | "images">;
+export const fetchPageSummary = (slug: string) =>
+  client.fetch<PageSummary | null>(
+    `*[_type == "page" && (slug == $slug || array::join(string::split(_id, "-")[1..-1], "-") == $slug || _id == $slug)] | order(_id asc)[0]{_id, title, slug, description, images}`,
+    { slug },
+    sanityFetchOptions(tags.pageSummaries, sanityDocumentTag("page-summary", slug)),
+  );
+
 export async function fetchAllPageSlugs() {
-  return client.fetch(`*[_type == "page"]{ slug }`, {}, sanityFetchOptions);
+  return client.fetch(`*[_type == "page"]{ slug }`, {}, sanityFetchOptions(tags.pageRoutes));
 }
 
 // Static version for generateStaticParams (no draftMode dependency)
 export function fetchAllPageSlugsStatic() {
-  return client.fetch<{ slug: string }[]>(`*[_type == "page"]{ slug }`, {}, sanityFetchOptions);
+  return client.fetch<{ slug: string }[]>(
+    `*[_type == "page"]{ slug }`,
+    {},
+    sanityFetchOptions(tags.pageRoutes),
+  );
 }
 
 // ── Blog Posts ──────────────────────────────────────────────────
@@ -89,7 +135,7 @@ export async function fetchBlogPosts(page = 1, pageSize = 10) {
         "slug": slug.current
       }`,
       { start, end },
-      sanityFetchOptions,
+      sanityFetchOptions(tags.blogList),
     );
   });
 }
@@ -97,15 +143,17 @@ export async function fetchBlogPosts(page = 1, pageSize = 10) {
 // Deduped with cache() so generateMetadata + page component share one fetch
 export const fetchBlogPostBySlug = cache(async (slug: string) => {
   return timed(`blogPost[${slug}]`, async () => {
-    return client.fetch(
+    const post = await client.fetch(
       `*[_type == "blogPost" && slug.current == $slug][0] {
         ...,
         "slug": slug.current,
-        relatedPosts[]-> { ..., "slug": slug.current }
+        relatedPosts[]-> { _id, title, heroImage, publishedAt, category, "slug": slug.current }
       }`,
       { slug },
-      sanityFetchOptions,
+      sanityFetchOptions(tags.blogDocuments, sanityDocumentTag("blog", slug), tags.blogRelated),
     );
+    // A deleted/unpublished reference dereferences to null.
+    return post && { ...post, relatedPosts: post.relatedPosts?.filter(Boolean) };
   });
 });
 
@@ -127,7 +175,7 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
         }
       }`,
       { publishedAt, slug },
-      sanityFetchOptions,
+      sanityFetchOptions(tags.blogAdjacent),
     )) as {
       prev: { title: { _key: string; value: string }[]; slug: string } | null;
       next: { title: { _key: string; value: string }[]; slug: string } | null;
@@ -137,7 +185,7 @@ export async function fetchAdjacentBlogPosts(publishedAt: string, slug: string) 
 
 export async function fetchBlogPostCount() {
   return timed("blogPostCount", async () => {
-    return client.fetch(`count(*[_type == "blogPost"])`, {}, sanityFetchOptions);
+    return client.fetch(`count(*[_type == "blogPost"])`, {}, sanityFetchOptions(tags.blogCount));
   });
 }
 
@@ -153,14 +201,18 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
       }`,
       { start, end },
-      sanityFetchOptions,
+      sanityFetchOptions(tags.announcements, tags.announcementTargets),
     );
   });
 }
 
 export async function fetchAnnouncementCount() {
   return timed("announcementCount", async () => {
-    return client.fetch(`count(*[_type == "announcement"])`, {}, sanityFetchOptions);
+    return client.fetch(
+      `count(*[_type == "announcement"])`,
+      {},
+      sanityFetchOptions(tags.announcementCount),
+    );
   });
 }
 
@@ -173,7 +225,11 @@ export async function fetchAnnouncementById(id: string) {
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
       }`,
       { id },
-      sanityFetchOptions,
+      sanityFetchOptions(
+        tags.announcementDocuments,
+        sanityDocumentTag("announcement", id),
+        tags.announcementTargets,
+      ),
     );
   });
 }
@@ -187,7 +243,11 @@ export async function fetchAnnouncementBySlug(slug: string) {
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
       }`,
       { slug },
-      sanityFetchOptions,
+      sanityFetchOptions(
+        tags.announcementDocuments,
+        sanityDocumentTag("announcement", slug),
+        tags.announcementTargets,
+      ),
     );
   });
 }
@@ -199,7 +259,7 @@ export function fetchAllAnnouncementIdsStatic() {
       "slug": slug.current
     }`,
     {},
-    sanityFetchOptions,
+    sanityFetchOptions(tags.announcements),
   );
 }
 
@@ -207,6 +267,6 @@ export function fetchAllBlogSlugsStatic() {
   return client.fetch<{ slug: string }[]>(
     `*[_type == "blogPost"]{ "slug": slug.current }`,
     {},
-    sanityFetchOptions,
+    sanityFetchOptions(tags.blogRoutes),
   );
 }

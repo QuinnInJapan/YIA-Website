@@ -1,5 +1,5 @@
 import { stegaClean } from "next-sanity";
-import { getSiteData } from "@/lib/data";
+import { getSiteSettings, getSidebar } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { formatDateDot } from "@/lib/date-format";
 import { fileUrl } from "@/lib/sanity/image";
@@ -11,7 +11,7 @@ interface SiteFooterProps {
 }
 
 export default async function SiteFooter({ documents }: SiteFooterProps) {
-  const { site, sidebar } = await getSiteData();
+  const [site, sidebar] = await Promise.all([getSiteSettings(), getSidebar()]);
   const { org } = site;
   const docs = documents ?? sidebar.documents;
 

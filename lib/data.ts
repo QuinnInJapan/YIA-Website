@@ -2,9 +2,25 @@ import { cache } from "react";
 import { stegaClean } from "next-sanity";
 import type { SiteData, SanityImage, Page, Category } from "./types";
 import type { I18nString } from "@/lib/i18n";
-import { fetchSiteData, fetchAllPageSlugsStatic } from "./sanity/queries";
+import {
+  fetchSiteSettings,
+  fetchSidebar,
+  fetchHomepage,
+  fetchHomepageFeatured,
+  fetchCategories,
+  fetchNavigation,
+  fetchHomepageAnnouncements,
+  fetchPageBySlug,
+  fetchPageSummary,
+  fetchAllPageSlugsStatic,
+} from "./sanity/queries";
 import { fetchNavigationCategorySegmentsStatic } from "./sanity/navigation-routes";
-import { categoryPath, categorySegment, documentIdSegment, pagePath as buildPagePath } from "./routes";
+import {
+  categoryPath,
+  categorySegment,
+  documentIdSegment,
+  pagePath as buildPagePath,
+} from "./routes";
 
 /** Strip the type prefix from a Sanity _id (e.g. "category-support" → "support") */
 export function shortId(docId: string | undefined): string {
@@ -80,39 +96,27 @@ const emptySiteData: SiteData = {
   },
 };
 
-/**
- * Fetch and return the full site data from Sanity.
- *
- * Wrapped in React `cache()` so that multiple calls within the same
- * server-request are deduplicated automatically — no prop-drilling needed.
- * Every page/layout that calls `getSiteData()` shares the same promise.
- */
-export const getSiteData = cache(async (): Promise<SiteData> => {
-  const start = performance.now();
-  const raw = await fetchSiteData();
-  const ms = (performance.now() - start).toFixed(1);
-  console.log(`⏱ [data] getSiteData: ${ms}ms`);
-  // If Sanity is empty, return defaults so the site still builds
-  if (!raw || !raw.site) return emptySiteData;
-  return {
-    ...emptySiteData,
-    ...raw,
-    categories: raw.categories || [],
-    announcements: raw.announcements || [],
-    pages: raw.pages || [],
-    navigation: raw.navigation || emptySiteData.navigation,
-    sidebar: raw.sidebar || emptySiteData.sidebar,
-    homepage: raw.homepage || emptySiteData.homepage,
-    homepageFeatured: raw.homepageFeatured || emptySiteData.homepageFeatured,
-  } as SiteData;
+// React cache deduplicates each dependency within a render. The Sanity fetch
+// tags independently retain it between requests until a relevant publish.
+export const getSiteSettings = cache(async () => (await fetchSiteSettings()) ?? emptySiteData.site);
+export const getSidebar = cache(async () => (await fetchSidebar()) ?? emptySiteData.sidebar);
+export const getHomepage = cache(async () => (await fetchHomepage()) ?? emptySiteData.homepage);
+export const getHomepageData = cache(async () => {
+  const [site, sidebar, homepage, announcements] = await Promise.all([
+    getSiteSettings(),
+    getSidebar(),
+    getHomepage(),
+    fetchHomepageAnnouncements(),
+  ]);
+  return { site, sidebar, homepage, announcements: announcements ?? [] };
 });
 
 // ── Category index ──────────────────────────────────────────────
 
 export async function getCategoryIndex(): Promise<Record<string, Category>> {
-  const data = await getSiteData();
+  const categories = await fetchCategories();
   const index: Record<string, Category> = {};
-  for (const cat of data.categories) {
+  for (const cat of categories ?? []) {
     index[shortId(cat._id)] = cat;
   }
   return index;
@@ -141,9 +145,9 @@ interface EnrichedNavigation {
 }
 
 export const getEnrichedNavigation = cache(async (): Promise<EnrichedNavigation> => {
-  const data = await getSiteData();
+  const navigation = (await fetchNavigation()) ?? emptySiteData.navigation;
 
-  const categories: EnrichedNavCategory[] = data.navigation.categories.map((navCat) => {
+  const categories: EnrichedNavCategory[] = (navigation.categories ?? []).map((navCat) => {
     const cat = navCat.categoryRef;
     const catId = shortId(cat?._id);
     return {
@@ -181,9 +185,8 @@ export interface FeaturedCard {
 }
 
 export const getHomepageFeatured = cache(async (): Promise<FeaturedCard[]> => {
-  const data = await getSiteData();
-  const nav = await getEnrichedNavigation();
-  const categories = data.homepageFeatured.categories ?? [];
+  const [featured, nav] = await Promise.all([fetchHomepageFeatured(), getEnrichedNavigation()]);
+  const categories = (featured?.categories ?? []).filter(Boolean);
 
   return categories.map((cat) => {
     const catId = shortId(cat._id);
@@ -216,27 +219,18 @@ export async function getCategoryIdsStatic(): Promise<string[]> {
 
 // ── Pages ────────────────────────────────────────────────────────
 
-export async function getPage(slug: string): Promise<Page | undefined> {
-  const data = await getSiteData();
-  return data.pages.find((pg) => shortId(pg._id) === slug || stegaClean(pg.slug) === slug);
-}
+export const getPage = cache(
+  async (slug: string): Promise<Page | undefined> =>
+    (await fetchPageBySlug(stegaClean(slug))) ?? undefined,
+);
+export const getPageSummary = cache(
+  async (slug: string) => (await fetchPageSummary(stegaClean(slug))) ?? undefined,
+);
 
 export async function getAllPageSlugs(): Promise<string[]> {
   // Uses raw client to avoid draftMode() dependency in generateStaticParams
   const pages = await fetchAllPageSlugsStatic();
   return pages.map((pg) => pg.slug);
-}
-
-export async function getAllPages(): Promise<Page[]> {
-  const data = await getSiteData();
-  return data.pages;
-}
-
-// ── Pages by category ───────────────────────────────────────────
-
-export async function getPagesByCategory(categoryId: string): Promise<Page[]> {
-  const data = await getSiteData();
-  return data.pages.filter((pg) => stegaClean(pg.categoryRef?._ref) === `category-${categoryId}`);
 }
 
 // ── URL builder ─────────────────────────────────────────────

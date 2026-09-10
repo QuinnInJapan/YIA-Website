@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSiteData, getPage, getEnrichedNavigation } from "@/lib/data";
+import { getPage, getEnrichedNavigation } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import { socialMetadata } from "@/lib/site-metadata";
 import { categorySegment } from "@/lib/routes";
@@ -53,7 +53,6 @@ export default async function CategorySlugPage({ params }: PageProps) {
 
   // Contact page uses a special template
   if (pg.template === "contact") {
-    const data = await getSiteData();
     return (
       <>
         <SolidHero titleJa="お問い合わせ" titleEn="Contact" />
@@ -61,7 +60,7 @@ export default async function CategorySlugPage({ params }: PageProps) {
           <ContactForm />
           <AccessSection />
         </main>
-        <SiteFooter documents={data.sidebar.documents} />
+        <SiteFooter />
       </>
     );
   }

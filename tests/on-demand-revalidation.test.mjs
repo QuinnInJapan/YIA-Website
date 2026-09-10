@@ -9,8 +9,9 @@ const root = new URL("../", import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), "utf8");
 
 test("public route configs cannot reintroduce timed ISR", () => {
-  const files = readdirSync(new URL("app/", root), { recursive: true })
-    .filter((path) => /\.(ts|tsx)$/.test(path));
+  const files = readdirSync(new URL("app/", root), { recursive: true }).filter((path) =>
+    /\.(ts|tsx)$/.test(path),
+  );
   let configs = 0;
   for (const path of files) {
     const source = ts.createSourceFile(path, read("app/" + path), ts.ScriptTarget.Latest, true);
@@ -24,18 +25,31 @@ test("public route configs cannot reintroduce timed ISR", () => {
     }
   }
   assert.ok(configs >= 9, "include public pages, layout, sitemap, and social image");
-  assert.equal(revalidation.sanityFetchOptions.next.revalidate, false);
-  assert.deepEqual(revalidation.sanityFetchOptions.next.tags, [revalidation.SANITY_SITE_DATA_TAG]);
+  assert.equal(revalidation.sanityFetchOptions("sanity:test").next.revalidate, false);
+  assert.deepEqual(revalidation.sanityFetchOptions("sanity:test").next.tags, [
+    revalidation.SANITY_SITE_DATA_TAG,
+    "sanity:test",
+  ]);
 });
 
 test("page and sitemap Sanity reads all participate in webhook invalidation", () => {
-  for (const file of ["lib/sanity/queries.ts", "lib/sanity/navigation-routes.ts", "app/sitemap.ts"]) {
+  for (const file of [
+    "lib/sanity/queries.ts",
+    "lib/sanity/navigation-routes.ts",
+    "app/sitemap.ts",
+  ]) {
     const source = ts.createSourceFile(file, read(file), ts.ScriptTarget.Latest, true);
     let calls = 0;
     function visit(node) {
       if (ts.isCallExpression(node) && node.expression.getText(source) === "client.fetch") {
         calls++;
-        assert.equal(node.arguments[2]?.getText(source), "sanityFetchOptions", file);
+        const options = node.arguments[2];
+        assert.ok(options && ts.isCallExpression(options), file);
+        assert.equal(options.expression.getText(source), "sanityFetchOptions", file);
+        assert.ok(
+          options.arguments.length > 0,
+          "each query must have a specific dependency: " + file,
+        );
       }
       ts.forEachChild(node, visit);
     }
@@ -54,10 +68,11 @@ function loadHandler(secret = "test-secret") {
     exports,
     process: { env: { SANITY_REVALIDATE_SECRET: secret } },
     require(name) {
-      if (name === "next/cache") return {
-        revalidateTag: (...args) => calls.push(["tag", ...args]),
-        revalidatePath: (...args) => calls.push(["path", ...args]),
-      };
+      if (name === "next/cache")
+        return {
+          revalidateTag: (...args) => calls.push(["tag", ...args]),
+          revalidatePath: (...args) => calls.push(["path", ...args]),
+        };
       if (name === "next/server") return { NextResponse: Response };
       if (name === "@/lib/sanity/revalidation") return revalidation;
       throw new Error("Unexpected dependency: " + name);
@@ -72,15 +87,19 @@ function request(headers, body = '{"_type":"page","slug":"test","category":"even
   return req;
 }
 
-test("a publish expires shared data before invalidating the affected pages", async () => {
+test("a body publish expires only its document cache and uses no broad path purge", async () => {
   const { post, calls } = loadHandler();
-  const response = await post(request({ "x-sanity-revalidate-secret": "test-secret" }));
+  const doc = { _id: "page-test", _type: "page", slug: "test", title: [] };
+  const response = await post(
+    request(
+      { "x-sanity-revalidate-secret": "test-secret" },
+      JSON.stringify({ schemaVersion: 1, before: doc, after: { ...doc, sections: ["new body"] } }),
+    ),
+  );
   assert.equal(response.status, 200);
   assert.deepEqual(JSON.parse(JSON.stringify(calls)), [
-    ["tag", revalidation.SANITY_SITE_DATA_TAG, { expire: 0 }],
-    ["path", "/", "page"],
-    ["path", "/events", "page"],
-    ["path", "/events/test", "page"],
+    ["tag", revalidation.sanityDocumentTag("page", "test"), { expire: 0 }],
+    ["tag", revalidation.sanityDocumentTag("page", "page-test"), { expire: 0 }],
   ]);
   assert.equal((await response.json()).ok, true);
 });

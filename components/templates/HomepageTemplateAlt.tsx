@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteData, getEnrichedNavigation, shortId, pageUrl } from "@/lib/data";
+import { getHomepageData, getEnrichedNavigation, shortId, pageUrl } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
 import { imageUrl, hotspotPosition } from "@/lib/sanity/image";
 import { formatDateDot } from "@/lib/date-format";
@@ -11,7 +11,7 @@ import LazyImage from "@/components/LazyImage";
 import { announcementPath, selectHomepageAnnouncements } from "./homepage-announcements";
 
 export default async function HomepageTemplateAlt() {
-  const data = await getSiteData();
+  const data = await getHomepageData();
   const hp = data.homepage;
   const nav = await getEnrichedNavigation();
   const sidebar = data.sidebar;

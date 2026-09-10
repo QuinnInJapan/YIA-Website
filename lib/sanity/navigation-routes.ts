@@ -72,8 +72,12 @@ export function navigationRouteGroups(
 
 export async function fetchNavigationRouteDocument() {
   const { client } = await import("./client");
-  const { sanityFetchOptions } = await import("./revalidation");
-  return client.fetch<NavigationRouteDocument | null>(navigationRouteQuery, {}, sanityFetchOptions);
+  const { sanityFetchOptions, sanityTags } = await import("./revalidation");
+  return client.fetch<NavigationRouteDocument | null>(
+    navigationRouteQuery,
+    {},
+    sanityFetchOptions(sanityTags.navigationRoutes),
+  );
 }
 
 export async function fetchNavigationCategorySegmentsStatic(
