@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
 
   const targets = resolveSanityRevalidationTargets(payload);
 
-  revalidateTag(SANITY_SITE_DATA_TAG, "max");
+  // A publish webhook expires the data before the next render. Serving stale
+  // data here could rebuild an indefinitely cached page from the old document.
+  revalidateTag(SANITY_SITE_DATA_TAG, { expire: 0 });
   for (const target of targets) {
     revalidatePath(target.path, target.type);
   }

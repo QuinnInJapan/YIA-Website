@@ -1,5 +1,13 @@
 export const SANITY_SITE_DATA_TAG = "sanity:site-data";
-export const SANITY_REVALIDATE_SECONDS = 60;
+
+// Keep all public Sanity reads cached until a publish webhook invalidates the
+// tag. Metadata routes must use the same policy as page queries.
+export const sanityFetchOptions = {
+  next: {
+    revalidate: false as const,
+    tags: [SANITY_SITE_DATA_TAG],
+  },
+};
 
 export type RevalidationTarget = {
   path: string;

@@ -20,7 +20,8 @@ import {
 } from "@/lib/announcement-fields";
 import { socialMetadata } from "@/lib/site-metadata";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 /** Try slug first, fall back to _id lookup */
 async function fetchAnnouncement(id: string): Promise<Announcement | null> {

@@ -3,7 +3,8 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteNavWrapper from "@/components/SiteNavWrapper";
 import styles from "./layout.module.css";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   return (

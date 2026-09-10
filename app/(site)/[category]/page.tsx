@@ -6,7 +6,8 @@ import { socialMetadata } from "@/lib/site-metadata";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 interface PageProps {
   params: Promise<{ category: string }>;

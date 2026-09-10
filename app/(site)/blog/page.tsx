@@ -14,7 +14,8 @@ import { socialMetadata } from "@/lib/site-metadata";
 
 const PAGE_SIZE = 10;
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "ブログ",

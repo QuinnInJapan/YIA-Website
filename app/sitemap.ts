@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { categoryPath, categorySegment, pagePath } from "@/lib/routes";
 import { client } from "@/lib/sanity/client";
+import { sanityFetchOptions } from "@/lib/sanity/revalidation";
 import {
   fetchNavigationRouteDocument,
   navigationRouteGroups,
@@ -8,7 +9,8 @@ import {
 
 const BASE_URL = "https://yia.jp";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch all routes in parallel
@@ -16,6 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchNavigationRouteDocument(),
     client.fetch<{ slug: string; updatedAt: string }[]>(
       `*[_type == "blogPost"]{ "slug": slug.current, "updatedAt": _updatedAt }`,
+      {},
+      sanityFetchOptions,
     ),
   ]);
 

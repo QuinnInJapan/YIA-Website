@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 import { createClient } from "@sanity/client";
 
 const DEFAULT_API_VERSION = "2024-01-01";
+// Public routes have no timed cache refresh. After a live content mutation,
+// verify the publish webhook or call the authenticated /api/revalidate endpoint
+// before reporting the change live (see docs/coding-agent-runbook.md).
 const REQUIRED_ENV = [
   "NEXT_PUBLIC_SANITY_PROJECT_ID",
   "NEXT_PUBLIC_SANITY_DATASET",

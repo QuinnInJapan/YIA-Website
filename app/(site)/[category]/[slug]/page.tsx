@@ -11,7 +11,8 @@ import ContactForm from "@/components/ContactForm";
 import AccessSection from "@/components/AccessSection";
 import SiteFooter from "@/components/SiteFooter";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 interface PageProps {
   params: Promise<{ category: string; slug: string }>;

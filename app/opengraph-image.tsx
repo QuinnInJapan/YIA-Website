@@ -7,7 +7,8 @@ import { SITE_URL, SOCIAL_IMAGE_ALT } from "@/lib/site-metadata";
 export const alt = SOCIAL_IMAGE_ALT;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 async function imageDataUrl(url: string) {
   try {

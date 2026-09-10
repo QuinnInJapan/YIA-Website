@@ -135,10 +135,37 @@ Announcement mutation scripts must preserve the destination contract and call
 
 Content-only Sanity changes should go live through webhook/revalidation. Code changes need commit, push, and deploy.
 
+Public pages, the sitemap, and the Open Graph image use on-demand ISR only
+(`revalidate = false`). All server-side Sanity queries must use
+`sanityFetchOptions` from `lib/sanity/revalidation.ts`: an indefinite cache tagged
+`sanity:site-data`. Do not add a short route or fetch TTL: the lowest TTL can
+reintroduce regeneration across routes sharing data.
+
+The production Sanity webhook `YIA Next.js revalidation` POSTs to
+`https://yia-nextjs.vercel.app/api/revalidate`. Keep it enabled for published
+creates, updates, and deletes, excluding drafts. Its authentication must match
+Vercel Production's `SANITY_REVALIDATE_SECRET`; never log the secret. The handler
+expires the shared data tag with `{ expire: 0 }` and invalidates affected paths.
+Regeneration happens when a route is next requested, not eagerly for every page.
+The shared tag deliberately covers cross-document references and metadata too.
+
+There is no timed fallback. After live content scripts, verify webhook delivery
+or POST the authenticated revalidation request yourself, then request affected
+pages. A failed webhook must be fixed/retried before reporting content live.
+Inspect recent deliveries with `sanity hook logs 'YIA Next.js revalidation'`
+through the checkout's managed command prefix.
+
+For ISR quota checks, use Vercel's team Usage dashboard, group ISR Writes by
+project, and compare daily growth with the remaining allowance and reset date.
+On-demand ISR reduces repeated regeneration but is not a hard quota cap: writes
+can still occur on invalidation and cache misses. Do not repeatedly purge caches
+or crawl every route to check usage. CLI billing/metrics may be unavailable on
+Hobby; a failed API query is not evidence of zero usage.
+
 Local revalidation requires `SANITY_REVALIDATE_SECRET` in the server environment:
 
 ```bash
-curl -sS -X POST http://127.0.0.1:3000/api/revalidate \
+curl -sS -X POST http://127.0.0.1:4306/api/revalidate \
   -H "content-type: application/json" \
   -H "x-sanity-revalidate-secret: $SANITY_REVALIDATE_SECRET" \
   --data '{"_type":"page","categoryRef":{"_ref":"category-classes"},"slug":{"current":"conversation-salon"}}'

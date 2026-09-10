@@ -1,13 +1,6 @@
 import { cache } from "react";
 import { client } from "./client";
-import { SANITY_REVALIDATE_SECONDS, SANITY_SITE_DATA_TAG } from "./revalidation";
-
-const sanityFetchOptions = {
-  next: {
-    revalidate: SANITY_REVALIDATE_SECONDS,
-    tags: [SANITY_SITE_DATA_TAG],
-  },
-};
+import { sanityFetchOptions } from "./revalidation";
 
 // ── Timing helper ───────────────────────────────────────────────
 async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {

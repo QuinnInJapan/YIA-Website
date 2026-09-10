@@ -13,6 +13,9 @@ import {
 // Announcement mutation scripts must also import validateAnnouncementForMutation
 // and call it on the final document shape before patching or publishing. Live
 // production writes additionally require --allow-production.
+// Public pages use on-demand revalidation only. After live mutations, verify
+// webhook delivery or POST to /api/revalidate with the configured secret, then
+// request the affected pages before reporting the content live.
 
 function argValue(args, name, fallback) {
   const index = args.indexOf(name);

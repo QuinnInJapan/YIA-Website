@@ -4,7 +4,8 @@ import { ja } from "@/lib/i18n";
 import { socialMetadata } from "@/lib/site-metadata";
 import HomepageTemplateAbout from "@/components/templates/HomepageTemplateAbout";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();

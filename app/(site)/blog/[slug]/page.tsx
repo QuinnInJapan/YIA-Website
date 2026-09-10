@@ -18,7 +18,8 @@ import type { BlogPost } from "@/lib/types";
 import type { I18nBlocks } from "@/lib/i18n";
 import { socialMetadata } from "@/lib/site-metadata";
 
-export const revalidate = 60;
+// Refresh through the authenticated Sanity webhook, not on a timer.
+export const revalidate = false;
 
 export async function generateStaticParams() {
   const slugs = await fetchAllBlogSlugsStatic();
