@@ -179,10 +179,18 @@ Regeneration happens when a route is next requested, not eagerly for every page.
 Queries are split into settings, sidebar, navigation (titles/URLs only), homepage,
 page details/summaries, announcement lists/details, blog lists/details/count/
 related cards/adjacency, and metadata. A page body edit expires its own detail
-keys. A title or slug change also expires navigation; renames and deletions cover
+keys and `sanity:sitemap-pages` so its sitemap modification date stays current.
+That sitemap-only query must not be reused by page/navigation rendering.
+A title or slug change also expires navigation; renames and deletions cover
 old and new keys and incoming announcement links. Blog count changes only on
 create/delete. The social image has its own minimal query and only expires when
 the homepage hero image or organization name/abbreviation changes.
+
+The sitemap advertises canonical published detail announcements (slug, falling
+back to document ID) and uses their `_updatedAt` values. Redirect-only announcements
+are excluded. The existing announcement tag refreshes this query on every publish;
+no new webhook projection or broad route purge is needed. Navigation determines
+page inclusion, while the separate sitemap page query supplies `_updatedAt` only.
 
 The hook's `rule.projection` must use the versioned before/after snapshot in
 `scripts/lib/sanity-webhook.mjs`. Keep snapshot fields aligned with the resolver

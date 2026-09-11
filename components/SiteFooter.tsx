@@ -1,7 +1,6 @@
 import { stegaClean } from "next-sanity";
 import { getSiteSettings, getSidebar } from "@/lib/data";
 import { ja, en } from "@/lib/i18n";
-import { formatDateDot } from "@/lib/date-format";
 import { fileUrl } from "@/lib/sanity/image";
 import type { Document } from "@/lib/types";
 import PdfLink from "./PdfLink";
@@ -32,9 +31,6 @@ export default async function SiteFooter({ documents }: SiteFooterProps) {
           </div>
         </div>
       )}
-      <div className="site-footer__updated">
-        最終更新日 Last Updated: {formatDateDot(org.lastUpdated)}
-      </div>
       <div className="site-footer__copyright">
         &copy;{" "}
         <span lang="en" translate="no">

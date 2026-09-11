@@ -89,7 +89,7 @@ function request(headers, body = '{"_type":"page","slug":"test","category":"even
   return req;
 }
 
-test("a body publish expires only its document cache and uses no broad path purge", async () => {
+test("a body publish expires its document and sitemap date without a broad path purge", async () => {
   const { post, calls } = loadHandler();
   const doc = { _id: "page-test", _type: "page", slug: "test", title: [] };
   const response = await post(
@@ -102,6 +102,7 @@ test("a body publish expires only its document cache and uses no broad path purg
   assert.deepEqual(JSON.parse(JSON.stringify(calls)), [
     ["tag", revalidation.sanityDocumentTag("page", "test"), { expire: 0 }],
     ["tag", revalidation.sanityDocumentTag("page", "page-test"), { expire: 0 }],
+    ["tag", revalidation.sanityTags.sitemapPages, { expire: 0 }],
   ]);
   assert.equal((await response.json()).ok, true);
 });

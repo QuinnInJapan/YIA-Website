@@ -11,6 +11,8 @@ const DEFAULT_API_VERSION = "2024-01-01";
 // Prefer {schemaVersion: 1, before, after} with complete documents when manually
 // refreshing a content mutation; before/after null represents create/delete.
 // The configured webhook sends a bounded field snapshot with the same contract.
+// Page and announcement publishes also refresh sitemap dates; verify sitemap.xml
+// when checking a publish that changes sitemap membership or modification dates.
 // Explicit {paths: [...]} retains the emergency full data purge and should not
 // be used for routine publishes.
 const REQUIRED_ENV = [

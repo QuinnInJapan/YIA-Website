@@ -20,11 +20,11 @@ const has = (result, ...tags) => tags.forEach((tag) => assert.ok(result.tags.inc
 const excludes = (result, ...tags) =>
   tags.forEach((tag) => assert.ok(!result.tags.includes(tag), tag));
 
-test("page body edits only expire the changed page, including its legacy ID lookup", () => {
+test("page body edits expire the changed page and its sitemap date, not other pages", () => {
   const result = update(page, { sections: [{ _key: "preserved", body: "new" }] });
   assert.deepEqual(
     new Set(result.tags),
-    new Set([key("page", "youth-forum"), key("page", "page-forum"), key("page", "forum")]),
+    new Set([key("page", "youth-forum"), key("page", "page-forum"), key("page", "forum"), t.sitemapPages]),
   );
   assert.deepEqual(result.paths, []);
 });

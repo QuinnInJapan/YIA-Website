@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCategoryIndex, getCategoryIds, getCategoryIdsStatic } from "@/lib/data";
 import { ja } from "@/lib/i18n";
-import { socialMetadata } from "@/lib/site-metadata";
+import { pageMetadata } from "@/lib/site-metadata";
 import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
@@ -39,11 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  return {
-    title,
-    description,
-    ...socialMetadata({ title, description, pathname: `/${category}` }),
-  };
+  return pageMetadata({ title, description, pathname: `/${category}` });
 }
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {

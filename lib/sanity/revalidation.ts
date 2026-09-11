@@ -26,6 +26,7 @@ export const sanityTags = {
   pages: "sanity:pages",
   pageSummaries: "sanity:page-summaries",
   pageRoutes: "sanity:page-routes",
+  sitemapPages: "sanity:sitemap-pages",
   blogList: "sanity:blog-list",
   blogDocuments: "sanity:blog-documents",
   blogRelated: "sanity:blog-related",
@@ -127,6 +128,8 @@ export function resolveSanityRevalidationPlan(payload: unknown): RevalidationPla
         break;
       case "page":
         keys("page");
+        // A body edit changes the page's sitemap lastModified, without expiring navigation.
+        add(sanityTags.sitemapPages);
         // Unversioned hooks cannot identify the old slug, so invalidate the type.
         if (!versioned) add(sanityTags.pages);
         if (changed("title", "slug", "description", "images")) {

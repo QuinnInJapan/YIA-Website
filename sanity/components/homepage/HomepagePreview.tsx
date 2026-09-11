@@ -445,9 +445,6 @@ export function HomepagePreview({ state }: { state: HomepageMergedState }) {
             </div>
           </div>
         )}
-        <div className="site-footer__updated">
-          最終更新日 Last Updated: {(org?.lastUpdated as string) ?? ""}
-        </div>
         <div className="site-footer__copyright">
           &copy;{" "}
           <span lang="en" translate="no">

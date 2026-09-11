@@ -3,4 +3,4 @@ Allow: /
 Disallow: /studio
 Disallow: /api/
 
-Sitemap: https://yia.or.jp/sitemap.xml
+Sitemap: https://yia.jp/sitemap.xml

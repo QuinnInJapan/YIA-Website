@@ -18,7 +18,7 @@ import {
   ANNOUNCEMENT_DESTINATION_INTERNAL_PAGE,
   announcementDestination,
 } from "@/lib/announcement-fields";
-import { socialMetadata } from "@/lib/site-metadata";
+import { contentDescription, socialMetadata } from "@/lib/site-metadata";
 
 // Refresh through the authenticated Sanity webhook, not on a timer.
 export const revalidate = false;
@@ -49,7 +49,9 @@ export async function generateMetadata({
   const ann = await fetchAnnouncement(id);
   if (!ann) return {};
   const title = `${ja(ann.title)} | お知らせ`;
-  const description = en(ann.title) || "横須賀国際交流協会からのお知らせです。";
+  const description =
+    contentDescription(ann.excerpt, ann.body, ann.content) ||
+    `${ja(ann.title)}。横須賀国際交流協会からのお知らせです。`;
   return {
     title,
     description,

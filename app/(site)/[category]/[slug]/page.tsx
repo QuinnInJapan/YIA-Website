@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPage, getEnrichedNavigation } from "@/lib/data";
 import { ja } from "@/lib/i18n";
-import { socialMetadata } from "@/lib/site-metadata";
+import { pageMetadata } from "@/lib/site-metadata";
 import { categorySegment } from "@/lib/routes";
 import { fetchNavigationPageParamsStatic } from "@/lib/sanity/navigation-routes";
 import PageTemplate from "@/components/templates/PageTemplate";
@@ -30,11 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = ja(pg.title);
   const description = ja(pg.description);
-  return {
-    title,
-    description,
-    ...socialMetadata({ title, description, pathname: `/${category}/${slug}` }),
-  };
+  return pageMetadata({ title, description, pathname: `/${category}/${slug}` });
 }
 
 export default async function CategorySlugPage({ params }: PageProps) {

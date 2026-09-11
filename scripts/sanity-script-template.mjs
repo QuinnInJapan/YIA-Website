@@ -16,6 +16,8 @@ import {
 // Public pages use on-demand revalidation only. After live mutations, verify
 // webhook delivery or POST to /api/revalidate with the configured secret, then
 // request the affected pages before reporting the content live.
+// Page/announcement publishes also refresh sitemap membership and modification
+// dates; include sitemap.xml in verification when those values change.
 // During credential rotation, use the current primary secret. The receiver's
 // previous-secret overlap expires at an explicit deadline; see the runbook.
 // If manually refreshing, send {schemaVersion: 1, before, after} using the

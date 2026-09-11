@@ -980,12 +980,6 @@ body {
   color: var(--color-white);
 }
 
-.site-footer__updated {
-  margin-top: var(--spacing-md);
-  font-size: var(--font-size-xs);
-  opacity: 0.75;
-}
-
 .site-footer__copyright {
   margin-top: var(--spacing-sm);
   font-size: var(--font-size-xs);
