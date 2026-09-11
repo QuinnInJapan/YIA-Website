@@ -16,6 +16,8 @@ import {
 // Public pages use on-demand revalidation only. After live mutations, verify
 // webhook delivery or POST to /api/revalidate with the configured secret, then
 // request the affected pages before reporting the content live.
+// During credential rotation, use the current primary secret. The receiver's
+// previous-secret overlap expires at an explicit deadline; see the runbook.
 // If manually refreshing, send {schemaVersion: 1, before, after} using the
 // complete fetched/patched documents (null for create/delete). This preserves
 // targeted invalidation and old slugs; {paths: [...]} is a full-cache fallback.

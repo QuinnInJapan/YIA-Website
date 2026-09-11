@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { test } from "node:test";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
+import * as crypto from "node:crypto";
 import * as revalidation from "../lib/sanity/revalidation.ts";
 
 const root = new URL("../", import.meta.url);
@@ -58,7 +59,7 @@ test("page and sitemap Sanity reads all participate in webhook invalidation", ()
   }
 });
 
-function loadHandler(secret = "test-secret") {
+function loadHandler(secret = "test-secret", extraEnv = {}) {
   const calls = [];
   const exports = {};
   const code = ts.transpileModule(read("app/api/revalidate/route.ts"), {
@@ -66,8 +67,9 @@ function loadHandler(secret = "test-secret") {
   }).outputText;
   runInNewContext(code, {
     exports,
-    process: { env: { SANITY_REVALIDATE_SECRET: secret } },
+    process: { env: { SANITY_REVALIDATE_SECRET: secret, ...extraEnv } },
     require(name) {
+      if (name === "node:crypto") return crypto;
       if (name === "next/cache")
         return {
           revalidateTag: (...args) => calls.push(["tag", ...args]),
@@ -121,4 +123,43 @@ test("the existing Sanity Bearer header remains supported", async () => {
   const { post, calls } = loadHandler();
   assert.equal((await post(request({ authorization: "Bearer test-secret" }))).status, 200);
   assert.equal(calls[0][0], "tag");
+});
+
+test("rotation accepts both credentials only during the configured overlap", async () => {
+  const future = new Date(Date.now() + 60_000).toISOString();
+  for (const value of ["new-secret", "old-secret"]) {
+    const { post, calls } = loadHandler("new-secret", {
+      SANITY_REVALIDATE_SECRET_PREVIOUS: "old-secret",
+      SANITY_REVALIDATE_SECRET_PREVIOUS_UNTIL: future,
+    });
+    assert.equal((await post(request({ authorization: `Bearer ${value}` }, "{}"))).status, 200);
+    assert.deepEqual(calls, []);
+  }
+});
+
+test("expired, absent or malformed overlap deadlines reject the old credential", async () => {
+  for (const deadline of [undefined, "", "invalid", new Date(Date.now() - 1000).toISOString()]) {
+    const { post, calls } = loadHandler("new-secret", {
+      SANITY_REVALIDATE_SECRET_PREVIOUS: "old-secret",
+      SANITY_REVALIDATE_SECRET_PREVIOUS_UNTIL: deadline,
+    });
+    assert.equal((await post(request({ authorization: "Bearer old-secret" }))).status, 401);
+    assert.equal((await post(request({ authorization: "Bearer new-secret" }, "{}"))).status, 200);
+    assert.deepEqual(calls, []);
+  }
+});
+
+test("overlap never permits missing credentials, arbitrary credentials or missing primary configuration", async () => {
+  const env = {
+    SANITY_REVALIDATE_SECRET_PREVIOUS: "old-secret",
+    SANITY_REVALIDATE_SECRET_PREVIOUS_UNTIL: new Date(Date.now() + 60_000).toISOString(),
+  };
+  for (const headers of [{}, { authorization: "Bearer wrong" }]) {
+    const { post, calls } = loadHandler("new-secret", env);
+    assert.equal((await post(request(headers))).status, 401);
+    assert.deepEqual(calls, []);
+  }
+  const { post, calls } = loadHandler("", env);
+  assert.equal((await post(request({ authorization: "Bearer old-secret" }))).status, 500);
+  assert.deepEqual(calls, []);
 });

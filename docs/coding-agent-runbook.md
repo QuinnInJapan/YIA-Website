@@ -133,6 +133,32 @@ Announcement mutation scripts must preserve the destination contract and call
 
 ## Revalidation
 
+### Credential rotation
+
+Inventory production variable names without printing values. For webhook rotation,
+deploy receiver support first with the existing primary secret unchanged. Then set
+`SANITY_REVALIDATE_SECRET` to a cryptographically random replacement and set
+`SANITY_REVALIDATE_SECRET_PREVIOUS` to the old value with an explicit ISO UTC
+`SANITY_REVALIDATE_SECRET_PREVIOUS_UNTIL` deadline. Missing or invalid deadlines
+disable the previous credential. Keep overlap short and complete the sender cutover
+before the deadline; monitor delivery retries throughout it.
+
+Vercel environment edits require a new deployment. Verify both credentials on the
+production receiver using `{}` (authenticated, no cache invalidation), and verify
+an invalid credential returns 401 before changing the existing Sanity webhook header.
+Preserve the webhook identity, events, filter and projection. Read back its settings
+without printing credentials, and verify real webhook delivery. Remove the previous
+variables and deploy again after in-flight deliveries have drained; verify the old
+credential now returns 401 and the new one 200. Never roll back to a deployment
+containing only a retired credential; rebuild the reviewed rollback revision with
+current credentials. A no-op authentication probe does not prove content invalidation.
+
+Rotate provider API tokens by creating and verifying a replacement before updating
+every consumer, then revoke the identified old token at the provider. Removing an
+environment variable does not revoke a provider credential. Investigate unreferenced
+variables and consumers before removal. Never log values, put them in command-line
+arguments, or commit secret files.
+
 Content-only Sanity changes should go live through webhook/revalidation. Code changes need commit, push, and deploy.
 
 Public pages, the sitemap, and the Open Graph image use on-demand ISR only

@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { resolveSanityRevalidationPlan } from "@/lib/sanity/revalidation";
@@ -13,7 +14,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (submittedSecret(request) !== expectedSecret) {
+  const submitted = submittedSecret(request);
+  const previous = process.env.SANITY_REVALIDATE_SECRET_PREVIOUS;
+  const previousUntil = Date.parse(process.env.SANITY_REVALIDATE_SECRET_PREVIOUS_UNTIL ?? "");
+  const matches = (secret: string) =>
+    submitted !== null && timingSafeEqual(
+      createHash("sha256").update(submitted).digest(),
+      createHash("sha256").update(secret).digest(),
+    );
+  if (!matches(expectedSecret) && !(previous && Date.now() < previousUntil && matches(previous))) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 

@@ -96,6 +96,8 @@ export function assertLiveDatasetAllowed({ live, dataset, allowProduction = fals
   });
 }
 
+// SANITY_TOKEN is a provider credential: replace all consumers before provider
+// revocation. Webhook secret overlap is managed separately by the receiver.
 export function loadSanityEnv({
   env = process.env,
   envPath = ".env.local",
