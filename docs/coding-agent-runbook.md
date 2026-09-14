@@ -255,6 +255,28 @@ Keep unrelated dirty files unstaged unless the user explicitly asks to include t
 
 ## Vercel CLI
 
+### Optional public-site analytics
+
+The public `(site)` layout includes `@vercel/analytics/next` and
+`@vercel/speed-insights/next` only when `VERCEL_ENV=production`. Studio, local
+development, and preview deployments do not collect these metrics. The SDKs load
+browser scripts independently; rendering, navigation, and Sanity revalidation do
+not wait for telemetry requests.
+
+Enable the free Web Analytics and Speed Insights features in the Vercel project
+dashboard before deploying this integration. Do not enable paid Plus upgrades as
+part of this setup. After deployment, verify collection in the dashboard and
+check that public pages still render and navigate when `/_vercel/insights/*` and
+`/_vercel/speed-insights/*` requests are blocked (also block any additional
+collection path exposed by the deployed SDK).
+
+Exhausting either free telemetry allowance pauses collection, not hosting.
+This does not remove Hobby hosting resource limits, which can still interrupt
+service. See the current [Web Analytics limits](https://vercel.com/docs/analytics/limits-and-pricing)
+and [Speed Insights limits](https://vercel.com/docs/speed-insights/limits-and-pricing)
+before changing plans or collection settings. Vercel's built-in Observability and
+runtime logs require no additional SDK for basic platform data.
+
 The installed Vercel CLI is outdated. Recommend upgrading for best compatibility and newer agentic features:
 
 ```bash

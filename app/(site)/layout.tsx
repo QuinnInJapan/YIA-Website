@@ -1,4 +1,6 @@
 import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteNavWrapper from "@/components/SiteNavWrapper";
 import styles from "./layout.module.css";
@@ -16,6 +18,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteHeader />
       <SiteNavWrapper />
       {children}
+      {/* Optional browser telemetry: page rendering never waits for collection. */}
+      {process.env.VERCEL_ENV === "production" && (
+        <>
+          <Analytics />
+          <SpeedInsights />
+        </>
+      )}
     </>
   );
 }
