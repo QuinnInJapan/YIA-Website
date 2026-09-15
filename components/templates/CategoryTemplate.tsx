@@ -56,6 +56,7 @@ export default async function CategoryTemplate({ categoryId }: CategoryTemplateP
                   src={img}
                   alt=""
                   fill
+                  sizes="(max-width: 768px) calc(100vw - 4rem), 280px"
                   className="cat-item__img"
                   style={pos ? { objectPosition: pos } : undefined}
                 />

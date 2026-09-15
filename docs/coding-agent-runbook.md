@@ -168,6 +168,12 @@ indefinite cache with specific dependency tags. `sanity:site-data` remains on
 every query solely for an authenticated manual/emergency purge. Do not add a short route or fetch TTL: the lowest TTL can
 reintroduce regeneration across routes sharing data.
 
+Keep query-string pagination in its explicit route (`/announcements`), not the
+shared `/[category]` route. Reading `searchParams` makes a page render on demand
+even with `revalidate = false`; normal category pages must stay prerendered and
+refresh through their existing Sanity dependency tags. Verify this distinction
+in the production build route table after routing changes.
+
 The production Sanity webhook `YIA Next.js revalidation` POSTs to
 `https://yia-nextjs.vercel.app/api/revalidate`. Keep it enabled for published
 creates, updates, and deletes, excluding drafts. Its authentication must match

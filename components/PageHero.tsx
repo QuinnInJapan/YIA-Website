@@ -51,6 +51,7 @@ export default function PageHero({
           alt=""
           fill
           sizes="100vw"
+          preload
           className="page-hero__img"
           style={heroPosition ? { objectPosition: heroPosition } : undefined}
         />

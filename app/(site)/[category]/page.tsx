@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { getCategoryIndex, getCategoryIds, getCategoryIdsStatic } from "@/lib/data";
 import { ja } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/site-metadata";
-import AnnouncementsPageTemplate from "@/components/templates/AnnouncementsPageTemplate";
 import CategoryTemplate from "@/components/templates/CategoryTemplate";
 
 // Refresh through the authenticated Sanity webhook, not on a timer.
@@ -11,13 +10,12 @@ export const revalidate = false;
 
 interface PageProps {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateStaticParams() {
   const categoryIds = await getCategoryIdsStatic();
 
-  return [{ category: "announcements" }, ...categoryIds.map((s) => ({ category: s }))];
+  return categoryIds.filter((s) => s !== "announcements").map((s) => ({ category: s }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -27,10 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   let title = "";
   let description = "";
 
-  if (category === "announcements") {
-    title = "お知らせ";
-    description = "横須賀国際交流協会からのお知らせ一覧";
-  } else if (categoryIds.includes(category)) {
+  if (categoryIds.includes(category)) {
     const catIndex = await getCategoryIndex();
     const cat = catIndex[category];
     if (cat) {
@@ -42,14 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata({ title, description, pathname: `/${category}` });
 }
 
-export default async function CategoryPage({ params, searchParams }: PageProps) {
+export default async function CategoryPage({ params }: PageProps) {
   const { category } = await params;
-  const { page: pageParam } = await searchParams;
-
-  if (category === "announcements") {
-    const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
-    return <AnnouncementsPageTemplate page={page} />;
-  }
 
   const categoryIds = await getCategoryIds();
   if (categoryIds.includes(category)) {

@@ -10,6 +10,7 @@ interface LazyImageProps {
   loading?: "lazy" | "eager";
   priority?: boolean;
   fill?: boolean;
+  sizes?: string;
   style?: React.CSSProperties;
 }
 
@@ -20,6 +21,7 @@ export default function LazyImage({
   loading,
   priority,
   fill,
+  sizes = "(max-width: 768px) 100vw, 50vw",
   style,
 }: LazyImageProps) {
   const [loaded, setLoaded] = useState(false);
@@ -36,7 +38,7 @@ export default function LazyImage({
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes={sizes}
         className={cls}
         loading={priority ? undefined : loading || "lazy"}
         priority={priority}
@@ -52,7 +54,7 @@ export default function LazyImage({
       alt={alt}
       width={800}
       height={600}
-      sizes="(max-width: 768px) 100vw, 50vw"
+      sizes={sizes}
       className={cls}
       loading={priority ? undefined : loading || "lazy"}
       priority={priority}
