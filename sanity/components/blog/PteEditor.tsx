@@ -22,11 +22,12 @@ import * as selectors from "@portabletext/editor/selectors";
 import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
 import type { GalleryImageItem } from "./GalleryPanel";
 import { RichTextToolbarButton } from "../shared/RichTextToolbarButton";
+import { RedText, RedTextIcon } from "@/lib/portable-text-decorators";
 
 // ── PTE Schema ───────────────────────────────────────────
 
 export const pteSchema = defineSchema({
-  decorators: [{ name: "strong" }, { name: "em" }],
+  decorators: [{ name: "strong" }, { name: "em" }, { name: "red" }],
   styles: [{ name: "normal" }, { name: "h2" }, { name: "h3" }, { name: "h4" }],
   annotations: [{ name: "link", fields: [{ name: "href", type: "string" }] }],
   lists: [{ name: "bullet" }, { name: "number" }],
@@ -64,6 +65,7 @@ export const pteSchema = defineSchema({
 // ── PTE Render functions ─────────────────────────────────
 
 const renderDecorator: RenderDecoratorFunction = (props) => {
+  if (props.value === "red") return <RedText>{props.children}</RedText>;
   if (props.value === "strong") return <span style={{ fontWeight: 700 }}>{props.children}</span>;
   if (props.value === "em") return <span style={{ fontStyle: "italic" }}>{props.children}</span>;
   return <>{props.children}</>;
@@ -450,6 +452,7 @@ function PteToolbar({
 
   const isStrong = useEditorSelector(editor, selectors.isActiveDecorator("strong"));
   const isEm = useEditorSelector(editor, selectors.isActiveDecorator("em"));
+  const isRed = useEditorSelector(editor, selectors.isActiveDecorator("red"));
   const isBulletList = useEditorSelector(editor, selectors.isActiveListItem("bullet"));
   const isNumberList = useEditorSelector(editor, selectors.isActiveListItem("number"));
   const activeLink = useEditorSelector(editor, (s) =>
@@ -460,7 +463,7 @@ function PteToolbar({
   const isLink = Boolean(activeLink);
 
   const toggleDecorator = useCallback(
-    (decorator: "strong" | "em") => {
+    (decorator: "strong" | "em" | "red") => {
       editor.send({ type: "focus" });
       editor.send({ type: "decorator.toggle", decorator });
     },
@@ -523,6 +526,14 @@ function PteToolbar({
           onActivate={() => toggleDecorator("em")}
         >
           <IconItalic />
+        </RichTextToolbarButton>
+        <RichTextToolbarButton
+          label="赤字"
+          title="赤字（もう一度押すと解除）"
+          pressed={isRed}
+          onActivate={() => toggleDecorator("red")}
+        >
+          <RedTextIcon />
         </RichTextToolbarButton>
         <RichTextToolbarButton
           label="リンク"

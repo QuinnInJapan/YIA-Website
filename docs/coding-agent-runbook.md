@@ -62,6 +62,11 @@ If this fails while fetching Google Fonts through `next/font`, report it as a re
 
 ## Sanity Scripts
 
+Rich text supports the `red` span decorator in addition to bold and italic. Keep
+the registered block schema, both custom editors, and the shared public renderer
+aligned when changing decorators. Editors select text and toggle 「赤字」; toggling
+again removes the color. Existing content needs no migration.
+
 Use `scripts/lib/sanity-tools.mjs`. New scripts should use `runSanityScript`.
 
 Dry run:

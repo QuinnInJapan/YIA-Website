@@ -17,11 +17,12 @@ import {
 import * as selectors from "@portabletext/editor/selectors";
 import { normalizePortableTextHrefInput } from "@/lib/portable-text-link";
 import { RichTextToolbarButton } from "./RichTextToolbarButton";
+import { RedText, RedTextIcon } from "@/lib/portable-text-decorators";
 
 // ── Schema ───────────────────────────────────────────────
 
 const simpleSchema = defineSchema({
-  decorators: [{ name: "strong" }, { name: "em" }],
+  decorators: [{ name: "strong" }, { name: "em" }, { name: "red" }],
   styles: [{ name: "normal" }],
   annotations: [{ name: "link", fields: [{ name: "href", type: "string" }] }],
   lists: [{ name: "bullet" }, { name: "number" }],
@@ -30,6 +31,7 @@ const simpleSchema = defineSchema({
 // ── Renderers ────────────────────────────────────────────
 
 const renderDecorator: RenderDecoratorFunction = (props) => {
+  if (props.value === "red") return <RedText>{props.children}</RedText>;
   if (props.value === "strong") return <span style={{ fontWeight: 700 }}>{props.children}</span>;
   if (props.value === "em") return <span style={{ fontStyle: "italic" }}>{props.children}</span>;
   return <>{props.children}</>;
@@ -140,6 +142,7 @@ function Toolbar() {
   const editor = useEditor();
   const isStrong = useEditorSelector(editor, selectors.isActiveDecorator("strong"));
   const isEm = useEditorSelector(editor, selectors.isActiveDecorator("em"));
+  const isRed = useEditorSelector(editor, selectors.isActiveDecorator("red"));
   const isBulletList = useEditorSelector(editor, selectors.isActiveListItem("bullet"));
   const isNumberList = useEditorSelector(editor, selectors.isActiveListItem("number"));
   const isLink = useEditorSelector(
@@ -148,7 +151,7 @@ function Toolbar() {
   );
 
   const toggleDecorator = useCallback(
-    (decorator: "strong" | "em") => {
+    (decorator: "strong" | "em" | "red") => {
       editor.send({ type: "focus" });
       editor.send({ type: "decorator.toggle", decorator });
     },
@@ -187,6 +190,14 @@ function Toolbar() {
         onActivate={() => toggleDecorator("em")}
       >
         <IconItalic />
+      </RichTextToolbarButton>
+      <RichTextToolbarButton
+        label="赤字"
+        title="赤字（もう一度押すと解除）"
+        pressed={isRed}
+        onActivate={() => toggleDecorator("red")}
+      >
+        <RedTextIcon />
       </RichTextToolbarButton>
       <RichTextToolbarButton
         label="リンク"

@@ -11,6 +11,7 @@ import { schemaTypes } from "./sanity/schemas";
 import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 import { yiaStudioTheme } from "./sanity/lib/studioTheme";
 import { YiaStudioNavbar } from "./sanity/components/YiaStudioNavbar";
+import { RedText, RedTextIcon } from "./lib/portable-text-decorators";
 
 const sanityDataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 const studioTitle =
@@ -63,6 +64,7 @@ export default defineConfig({
                 decorators: [
                   { title: "太字", value: "strong" },
                   { title: "斜体", value: "em" },
+                  { title: "赤字", value: "red", icon: RedTextIcon, component: RedText },
                 ],
                 annotations: [
                   {

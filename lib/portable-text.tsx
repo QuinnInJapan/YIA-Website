@@ -7,6 +7,7 @@ import PhotoGalleryWrapper from "@/components/PhotoGalleryWrapper";
 import type { I18nString } from "@/lib/i18n";
 import type { SanityImage } from "@/lib/types";
 import { safePortableTextHref } from "./portable-text-link";
+import { RedText } from "./portable-text-decorators";
 
 interface ImageFileValue {
   file?: SanityImage;
@@ -16,6 +17,7 @@ interface ImageFileValue {
 
 export const ptComponents: PortableTextComponents = {
   marks: {
+    red: RedText,
     link: ({ children, value }) => {
       const href = safePortableTextHref(value?.href);
       if (!href) return <>{children}</>;
