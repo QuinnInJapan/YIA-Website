@@ -255,6 +255,24 @@ Prefer revalidation first. If generated route artifacts are stale, move only rou
 
 ## Git
 
+Managed task commits must use the user's configured Git identity. Never override
+author/committer identity with `agent@project-control.local` or another placeholder.
+Projects supplies agent attribution in its task record. Its coordinator must include
+the configured-identity fix before relying on managed checkpoints; older installed
+versions override even a correct local/global Git configuration.
+
+Before committing, check `git var GIT_AUTHOR_IDENT` and `git var GIT_COMMITTER_IDENT`.
+After checkpointing, verify `git log -1 --format=fuller`; the email must belong to
+the Git account connected to Vercel. A configuration change does not alter old commits.
+Do not rewrite published history merely to repair author identity.
+
+Treat commit, integration, deployment, and production promotion as separate outcomes.
+After an authorized deployment, inspect `vercel ls yia-nextjs` and
+`vercel inspect https://yia-nextjs.vercel.app`, confirm the expected revision and
+production aliases, and check the affected page before reporting the change live.
+A blocked deployment never proves delivery; a Ready deployment for an older revision
+does not prove the latest change is live.
+
 ```bash
 git status --short
 git add <intended files only>
