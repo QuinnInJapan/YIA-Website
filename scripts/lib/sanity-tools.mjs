@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { createClient } from "@sanity/client";
 
 const DEFAULT_API_VERSION = "2024-01-01";
+// Attachment headings are format-neutral (資料 / Materials); retain actual file extensions.
 // Rich-text span marks may include "red"; content patches must preserve decorators.
 // Public routes have no timed cache refresh. After a live content mutation,
 // verify the publish webhook or call the authenticated /api/revalidate endpoint

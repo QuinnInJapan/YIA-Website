@@ -998,7 +998,7 @@ function DocumentsSection({
   }
 
   const typeLabels: Record<string, string> = {
-    document: "PDF",
+    document: "資料",
     youtube: "YouTube",
     website: "Web",
   };

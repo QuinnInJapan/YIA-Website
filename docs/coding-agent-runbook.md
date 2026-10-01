@@ -62,6 +62,12 @@ If this fails while fetching Google Fonts through `next/font`, report it as a re
 
 ## Sanity Scripts
 
+Attachment headings use 「資料 / Materials」 for mixed formats. Keep the actual
+extension on individual file links; do not label generic attachments or unknown
+file types as PDF. Preserve this distinction in published content, drafts, Studio
+help text, and migration scripts. Copy corrections must patch both published and
+existing draft documents so a later publish does not restore outdated labels.
+
 Rich text supports the `red` span decorator in addition to bold and italic. Keep
 the registered block schema, both custom editors, and the shared public renderer
 aligned when changing decorators. Editors select text and toggle 「赤字」; toggling

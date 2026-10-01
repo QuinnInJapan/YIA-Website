@@ -5,7 +5,7 @@ export default defineType({
   name: "documentLink",
   title: "資料リンク",
   type: "object",
-  description: "PDFファイルのアップロードまたは外部サイトへのリンク。",
+  description: "資料ファイル（PDF・画像・書類）の添付または外部サイトへのリンク。",
   preview: {
     select: { label: "label", type: "type", fileType: "fileType" },
     prepare: ({ label, type, fileType }: { label?: { _key: string; value: string }[]; type?: string; fileType?: string }) => ({
@@ -33,7 +33,7 @@ export default defineType({
       name: "file",
       title: "ファイル",
       type: "file",
-      description: "アップロードファイル（PDF等）。外部リンクの場合は空のままにしてください。",
+      description: "資料ファイル（PDF・画像・書類）。外部リンクの場合は空のままにしてください。",
     }),
     defineField({
       name: "url",
@@ -58,7 +58,7 @@ export default defineType({
       name: "fileType",
       title: "ファイル種類",
       type: "string",
-      description: "ファイルの拡張子（PDF, DOC, XLS など）。リンクの横に表示されます。",
+      description: "ファイルの拡張子（PDF、JPG、PNG、DOCX、XLSXなど）。リンクの横に表示されます。",
     }),
   ],
 });

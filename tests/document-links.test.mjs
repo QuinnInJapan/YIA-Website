@@ -38,6 +38,13 @@ test("keeps non-PDF file labels and types intact", () => {
   assert.equal(documentTypeLabel(document), "DOCX");
 });
 
+test("does not call an unknown attachment a PDF", () => {
+  for (const document of [{ label: [] }, { label: [], type: "document" }]) {
+    assert.equal(documentTypeLabel(document), "FILE");
+    assert.equal(isPdfDocument(document), false);
+  }
+});
+
 test("uses the native PDF viewer on phones, tablets, and coarse-pointer devices", () => {
   assert.equal(shouldUseNativePdfViewer({ viewportWidth: 390 }), true);
   assert.equal(shouldUseNativePdfViewer({ viewportWidth: 820 }), true);

@@ -128,7 +128,7 @@ export default defineType({
       type: "array",
       fieldset: "attachments",
       of: [{ type: "documentLink" }],
-      description: "記事に添付するPDFや外部リンク（任意）。",
+      description: "記事に添付する資料ファイル（PDF・画像・書類）や外部リンク（任意）。",
     }),
   ],
 });

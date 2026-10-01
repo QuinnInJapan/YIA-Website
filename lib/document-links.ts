@@ -24,7 +24,7 @@ export function documentTypeLabel(doc: Document): string {
   const inferred = extensionFromUrl(doc.url) || extensionFromAssetRef(doc);
   if (inferred) return inferred.toUpperCase();
 
-  return type || "PDF";
+  return "FILE";
 }
 
 export function isPdfDocument(doc: Document): boolean {

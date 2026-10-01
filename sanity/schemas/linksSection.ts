@@ -28,7 +28,7 @@ export default defineType({
       title: "項目",
       type: "array",
       of: [{ type: "documentLink" }],
-      description: "リンクの一覧。PDF・YouTube・外部サイトなどを追加できます。",
+      description: "リンクの一覧。資料ファイル（PDF・画像・書類）・YouTube・外部サイトなどを追加できます。",
       validation: (Rule) => Rule.required(),
     }),
   ],

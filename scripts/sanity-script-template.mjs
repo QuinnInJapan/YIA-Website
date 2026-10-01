@@ -14,6 +14,7 @@ import {
 // and call it on the final document shape before patching or publishing. Live
 // production writes additionally require --allow-production.
 // Preserve span marks (including the "red" decorator) when editing rich text.
+// Use format-neutral attachment headings; keep actual file types and update existing drafts too.
 // Public pages use on-demand revalidation only. After live mutations, verify
 // webhook delivery or POST to /api/revalidate with the configured secret, then
 // request the affected pages before reporting the content live.

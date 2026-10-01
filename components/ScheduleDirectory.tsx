@@ -115,8 +115,8 @@ function FileActions({ row, columns }: { row: TableRow; columns: MappedColumn[] 
       return {
         key: fileCell?._key ?? column.col._key,
         label:
-          shortLabelFor(column.col).toUpperCase() === "PDF"
-            ? (fileCell?.fileType || url.split(".").pop() || "PDF").toUpperCase()
+          /^(PDF|Materials|Files)$/i.test(shortLabelFor(column.col))
+            ? (fileCell?.fileType || url.split(".").pop() || "FILE").toUpperCase()
             : shortLabelFor(column.col),
         filename,
         url,
