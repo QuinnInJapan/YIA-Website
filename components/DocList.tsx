@@ -11,6 +11,11 @@ import {
   shouldUseNativePdfViewer,
 } from "@/lib/document-links";
 import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
+import { IMAGE_EXTENSIONS } from "@/lib/attachment-types";
+
+function canPreview(doc: Document): boolean {
+  return isPdfDocument(doc) || IMAGE_EXTENSIONS.includes(documentTypeLabel(doc).toLowerCase());
+}
 
 interface DocListProps {
   docs: Document[];
@@ -29,7 +34,7 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
   const pdfItems = useMemo(() => {
     const items: (PdfViewerItem & { docIndex: number })[] = [];
     docs.forEach((d, i) => {
-      if (isPdfDocument(d)) {
+      if (canPreview(d)) {
         items.push({
           url: stegaClean(d.url) || "",
           title: docTitle(d),
@@ -54,10 +59,12 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
   }, []);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, doc: Document, docIndex: number) {
-    if (!isPdfDocument(doc)) return;
+    if (!canPreview(doc) || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+      return;
 
     // Mobile/tablet fallback — iOS Safari can't reliably render PDFs in iframes.
     if (
+      isPdfDocument(doc) &&
       shouldUseNativePdfViewer({
         viewportWidth: window.innerWidth,
         hasCoarsePointer: window.matchMedia("(pointer: coarse)").matches,

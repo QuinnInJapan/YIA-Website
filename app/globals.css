@@ -4468,6 +4468,14 @@ html:has(:target) {
   border: none;
 }
 
+.pdf-viewer__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--color-gray-light);
+}
+
 .pdf-viewer__nav {
   position: relative;
   z-index: 1;

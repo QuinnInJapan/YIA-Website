@@ -7,6 +7,12 @@ import { AddIcon, DownloadIcon, SearchIcon } from "@sanity/icons";
 import createImageUrlBuilder from "@sanity/image-url";
 import { fs } from "@/sanity/lib/studioTokens";
 import { FileTypeIcon, formatFileSize, getFileType } from "./media-utils";
+import {
+  attachmentAccept,
+  attachmentExtensions,
+  supportedAttachment,
+  IMAGE_EXTENSIONS,
+} from "@/lib/attachment-types";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -36,16 +42,7 @@ const TYPE_FILTERS: { value: TypeFilter; label: string }[] = [
 ];
 
 function typeFilterGroq(filter: TypeFilter): string {
-  switch (filter) {
-    case "images":
-      return `_type == "sanity.imageAsset"`;
-    case "pdf":
-      return `_type == "sanity.fileAsset" && mimeType == "application/pdf"`;
-    case "docs":
-      return `_type == "sanity.fileAsset" && mimeType != "application/pdf"`;
-    case "all":
-      return `_type in ["sanity.imageAsset", "sanity.fileAsset"]`;
-  }
+  return `_type in ["sanity.imageAsset", "sanity.fileAsset"] && lower(extension) in ${JSON.stringify(attachmentExtensions(filter))}`;
 }
 
 const PROJECTION = `{
@@ -84,6 +81,7 @@ export function FilePickerPanel({
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [typeFilter, setTypeFilter] = useState<TypeFilter>(defaultFilter);
@@ -99,7 +97,7 @@ export function FilePickerPanel({
         const terms = sq
           .trim()
           .split(/\s+/)
-          .map((t) => `"${t}*"`)
+          .map((t) => JSON.stringify(`${t}*`))
           .join(", ");
         filter += ` && (originalFilename match [${terms}])`;
       }
@@ -142,19 +140,28 @@ export function FilePickerPanel({
   async function handleUpload() {
     const input = document.createElement("input");
     input.type = "file";
-    if (typeFilter === "images") input.accept = "image/*";
-    else if (typeFilter === "pdf") input.accept = "application/pdf";
+    input.accept = attachmentAccept(typeFilter);
     input.onchange = async () => {
       const file = input.files?.[0];
       if (!file) return;
+      setUploadError("");
+      if (!supportedAttachment(file, typeFilter)) {
+        setUploadError(`対応している形式を選択してください：${attachmentAccept(typeFilter)}`);
+        return;
+      }
       setUploading(true);
       try {
-        const uploadType = file.type.startsWith("image/") ? "image" : "file";
+        const uploadType = IMAGE_EXTENSIONS.includes(
+          file.name.split(".").pop()?.toLowerCase() ?? "",
+        )
+          ? "image"
+          : "file";
         const asset = await client.assets.upload(uploadType as "image" | "file", file);
         const ext = file.name.split(".").pop()?.toUpperCase() ?? "";
         onSelect(asset._id, file.name.replace(/\.[^.]+$/, ""), ext);
       } catch (err) {
         console.error("Upload failed:", err);
+        setUploadError("アップロードに失敗しました。もう一度お試しください。");
       } finally {
         setUploading(false);
       }
@@ -166,7 +173,14 @@ export function FilePickerPanel({
 
   function handleConfirmSelect() {
     const asset = assets.find((a) => a._id === selectedId);
-    if (!asset) return;
+    if (
+      !asset ||
+      !supportedAttachment(
+        { name: `asset.${asset.extension ?? ""}`, type: asset.mimeType ?? "" },
+        typeFilter,
+      )
+    )
+      return;
     const filename = asset.originalFilename?.replace(/\.[^.]+$/, "") ?? "";
     const ext = (asset.extension ?? "").toUpperCase();
     onSelect(asset._id, filename, ext);
@@ -179,6 +193,7 @@ export function FilePickerPanel({
   }
 
   function handleFilterChange(f: TypeFilter) {
+    setUploadError("");
     setTypeFilter(f);
     setPage(0);
     setSelectedId(null);
@@ -213,6 +228,14 @@ export function FilePickerPanel({
           </Flex>
 
           {/* Type filter tabs */}
+          <Text size={0} muted>
+            PDF・画像（JPG、PNG、GIF、WebP、AVIF）は表示、Word・Excel・PowerPoint・CSV・TXTはダウンロードに対応しています。
+          </Text>
+          {uploadError && (
+            <div role="alert">
+              <Text size={0}>{uploadError}</Text>
+            </div>
+          )}
           <Flex gap={1}>
             {TYPE_FILTERS.map((f) => (
               <button
@@ -376,6 +399,12 @@ export function FilePickerPanel({
                 fontSize={1}
                 padding={3}
                 onClick={handleConfirmSelect}
+                disabled={
+                  !supportedAttachment(
+                    { name: `asset.${selected.extension ?? ""}`, type: selected.mimeType ?? "" },
+                    typeFilter,
+                  )
+                }
               />
               <Button
                 text="✕"

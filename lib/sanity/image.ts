@@ -2,6 +2,7 @@ import { createImageUrlBuilder } from "@sanity/image-url";
 import { client } from "./client";
 import { projectId, dataset } from "./client";
 import type { SanityImage, SanityFile, Document } from "@/lib/types";
+import { attachmentAssetUrl } from "../attachment-types";
 
 const builder = createImageUrlBuilder(client);
 
@@ -22,15 +23,9 @@ export function imageLqip(image: SanityImage | undefined | null): string {
   return builder.image(image).width(20).quality(20).auto("format").blur(10).url();
 }
 
-/** Convert a SanityFile to a CDN URL string. Returns "" if no asset.
- *  File _ref format: "file-{id}-{ext}" → https://cdn.sanity.io/files/{projectId}/{dataset}/{id}.{ext} */
+/** Resolve both image and file references used by attachment fields. */
 export function fileUrl(file: SanityFile | undefined | null): string {
-  if (!file?.asset?._ref) return "";
-  const ref = file.asset._ref;
-  // Parse "file-<id>-<ext>" format
-  const match = ref.match(/^file-(.+)-(\w+)$/);
-  if (!match) return "";
-  return `https://cdn.sanity.io/files/${projectId}/${dataset}/${match[1]}.${match[2]}`;
+  return attachmentAssetUrl(file?.asset?._ref, projectId, dataset);
 }
 
 /** Convert a SanityImage hotspot to a CSS object-position string.

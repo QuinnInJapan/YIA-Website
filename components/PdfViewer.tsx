@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { IMAGE_EXTENSIONS } from "@/lib/attachment-types";
 
 export interface PdfViewerItem {
   url: string;
@@ -19,7 +20,12 @@ interface PdfViewerProps {
 function CloseIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path
+        d="M4 4l12 12M16 4L4 16"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -28,26 +34,54 @@ function ArrowIcon({ direction }: { direction: "prev" | "next" }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       {direction === "prev" ? (
-        <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M15 5l-7 7 7 7"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       ) : (
-        <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M9 5l7 7-7 7"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       )}
     </svg>
   );
 }
 
-export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavigate }: PdfViewerProps) {
+export default function PdfViewer({
+  items,
+  currentIndex,
+  isOpen,
+  onClose,
+  onNavigate,
+}: PdfViewerProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   const hasNav = items.length > 1;
   const item = items[currentIndex];
+  const isImage = IMAGE_EXTENSIONS.includes(
+    item?.url.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() ?? "",
+  );
 
   // Reset loading state when the PDF changes
   useEffect(() => {
-    if (isOpen) setLoading(true);
-  }, [isOpen, currentIndex]);
+    if (isOpen) {
+      // Cached images may finish before hydration attaches onLoad.
+      const complete = isImage && imageRef.current?.complete;
+      setLoading(!complete);
+      setFailed(Boolean(complete && !imageRef.current?.naturalWidth));
+    }
+  }, [isOpen, currentIndex, item?.url, isImage]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -55,9 +89,7 @@ export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavi
     previousFocusRef.current = document.activeElement as HTMLElement;
     document.body.style.overflow = "hidden";
 
-    const closeBtn = dialogRef.current?.querySelector<HTMLElement>(
-      ".pdf-viewer__close"
-    );
+    const closeBtn = dialogRef.current?.querySelector<HTMLElement>(".pdf-viewer__close");
     closeBtn?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -68,7 +100,7 @@ export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavi
         onNavigate((currentIndex + 1) % items.length);
       } else if (e.key === "Tab") {
         const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-          'button, [href], [tabindex]:not([tabindex="-1"])'
+          'button, [href], [tabindex]:not([tabindex="-1"])',
         );
         if (!focusable || focusable.length === 0) return;
         const first = focusable[0];
@@ -105,11 +137,7 @@ export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavi
       aria-label={item.title}
       ref={dialogRef}
     >
-      <div
-        className="pdf-viewer__backdrop"
-        onClick={onClose}
-        role="presentation"
-      />
+      <div className="pdf-viewer__backdrop" onClick={onClose} role="presentation" />
 
       {hasNav && (
         <button
@@ -142,12 +170,35 @@ export default function PdfViewer({ items, currentIndex, isOpen, onClose, onNavi
                 <span>読み込み中… Loading…</span>
               </div>
             )}
-            <iframe
-              className="pdf-viewer__iframe"
-              src={item.url}
-              title={item.title}
-              onLoad={() => setLoading(false)}
-            />
+            {failed && (
+              <div className="pdf-viewer__loading" role="alert">
+                <span>画像を読み込めませんでした。</span>
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  元のファイルを開く / Open original
+                </a>
+              </div>
+            )}
+            {isImage ? (
+              <img
+                key={item.url}
+                ref={imageRef}
+                className="pdf-viewer__image"
+                src={item.url}
+                alt={item.title}
+                onLoad={() => setLoading(false)}
+                onError={() => {
+                  setLoading(false);
+                  setFailed(true);
+                }}
+              />
+            ) : (
+              <iframe
+                className="pdf-viewer__iframe"
+                src={item.url}
+                title={item.title}
+                onLoad={() => setLoading(false)}
+              />
+            )}
           </div>
         </div>
 
