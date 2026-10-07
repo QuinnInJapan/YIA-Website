@@ -1,158 +1,135 @@
-# YIA サイトの利用状況 / Website analytics quickstart
+# YIA サイトの利用状況：ご利用ガイド
 
-[ダッシュボードを開く / Open the dashboard](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333)
+[ダッシュボードを開く](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333)
 
-Google Analytics の「YIA Website」で、**レポート → カスタム ダッシュボード →
-YIA サイトの利用状況 / Website overview** を開いてください。このページを
-ブックマークすると、次回から直接開けます。既存の閲覧権限が必要です。
+上の「ダッシュボードを開く」をクリックし、閲覧権限のある Google アカウントでログインしてください。画面左上で「YIA Website」が選ばれていることを確認すると、「YIA サイトの利用状況」で訪問者数や人気のページを確認できます。メニューから開く場合は、左側の「レポート」→「カスタム ダッシュボード」→「YIA サイトの利用状況」を選んでください。右上の日付をクリックすると、確認したい期間を変更できます。端末や地域、言語の傾向は、同じメニューの「YIA 利用者の傾向」で確認できます。ページをブックマークすると、次回から直接開けます。計測は2026年10月7日から開始しており、通常のレポートへの反映には24〜48時間かかることがあります。
 
-In Google Analytics, select **YIA Website → Reports → Custom dashboards →
-YIA サイトの利用状況 / Website overview**. Bookmark the link above. It uses your
-existing Google Analytics access; creating this dashboard did not invite anyone.
+表示されない場合は、ログイン中の Google アカウントを確認し、YIA の管理担当者に閲覧権限を確認してください。今回の設定で新しい利用者の招待は行っていません。左側のメニューが閉じている場合は、左下の矢印をクリックして開けます。
 
-上段は訪問者と訪問回数、中段は流入元と人気ページ、下段は資料と申込リンクです。
-棒の長さと人気ページの表で比較できます。 / Read from top to bottom: visitors and visits,
-traffic sources and popular pages, then document opens and application interest.
-Compare bar lengths for sources and actions; the page table shows page titles,
-full URLs and view counts, with wrapping text. Each card states what it counts.
+## まず見る画面
 
-まずはサイト全体の利用状況を確認し、端末・地域・言語を知りたいときに
-「利用者の傾向」を開きます。 / Start with Website overview for traffic, content
-and actions. Use Audience overview for devices, locations and browser languages.
-Keep these two client dashboards; use detailed reports for follow-up questions.
-A new dashboard is useful when it serves a distinct recurring decision, rather
-than one dashboard per page, device or metric.
+「YIA サイトの利用状況」は、上から順にご覧ください。
 
-## 毎月の確認 / A simple monthly review
+| 位置 | 確認できること                           |
+| ---- | ---------------------------------------- |
+| 上段 | 訪問者数・訪問回数                       |
+| 中段 | 訪問のきっかけ・人気ページと実際の URL   |
+| 下段 | 資料を開いた回数・申込リンクを開いた回数 |
 
-1. 月末から48時間以上待ち、右上で前月の1日〜末日を選びます。 / Wait at least
-   48 hours after month end, then select the previous full calendar month with
-   the date control at the top right. Report dates use Japan time.
-2. 訪問者と訪問回数を確認します。 / Check visitors and visits, then compare with
-   the preceding month using the same report and a comparable date range.
-3. 人気ページ、流入元、申込リンク、資料を確認します。 / Look at popular pages,
-   traffic sources, application links and documents. Note which programs attract
-   interest and which sources bring visitors.
+棒の長さや表の数字で比較できます。端末・地域・言語を調べたいときは、
+「YIA 利用者の傾向」を開いてください。普段の確認にはこの2画面で十分です。
+特定のページや数値ごとにダッシュボードを増やす必要はありません。
 
-月次報告は「何人が来たか」「何に関心があったか」「次に何を改善するか」の3点で
-十分です。 / A useful monthly note answers: how many people visited, what they
-were interested in, and what to improve next.
+## 毎月の確認
 
-初回は2026年10月7日以降を選びます。10月は途中からの計測なので、未計測の9月と
-比較しないでください。最初の全月データは11月です。 / For the launch review,
-select dates starting on 7 October 2026. October is a partial month; September
-was not measured. November is the first full calendar month. Compare periods
-with similar lengths, and note holidays, campaigns and content changes.
+1. 月末から48時間以上待ち、右上の日付で前月の1日〜末日を選びます。
+   日付は日本時間です。
+2. 訪問者数と訪問回数を確認します。比較するときは、同じ長さの期間を使います。
+3. 人気ページ、訪問のきっかけ、資料、申込リンクを確認します。
+   関心の高い事業や、広報からの訪問につながった経路を見ます。
 
-## 数字の読み方 / What the numbers mean
+月次報告は「何人が来たか」「何に関心があったか」「次に何を改善するか」の
+3点にまとめると分かりやすくなります。休日、広報活動、ページの変更も記録すると
+比較しやすくなります。
 
-| ダッシュボード / Card                                       | Meaning                                                                                                                                              |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 訪問者 / Visitors                                           | アクティブ ユーザー。期間中に利用した人の推定数。 / Estimated active users in the selected period.                                                   |
-| 訪問回数 / Visits                                           | セッション。同じ人が別の日に戻ると複数回になります。 / Sessions; one person can make several visits.                                                 |
-| 人気ページとURL（表示回数） / Popular pages & URLs          | タイトル・URLごとの表示回数。繰り返し閲覧も含みます。 / Page views, including repeat views, grouped by page title and full URL.                      |
-| 訪問のきっかけ（訪問回数） / Traffic sources                | 検索・SNS・他サイトなどからの訪問回数。 / Visits from search, social, other sites and other channels. “Direct” means GA could not identify a source. |
-| 申込リンク選択（完了ではありません） / Application interest | Google Forms へのリンクを選んだ回数。申込完了ではありません。 / Clicks on Google Forms links, including repeat clicks; not completed applications.   |
-| 資料を開いた回数 / Document opens                           | 資料リンクやプレビューを開いた回数。読了ではありません。 / Document-link or preview opens, including repeat clicks; not proof of reading.            |
+初回は **2026年10月7日以降を含む期間** を選んでください。初期表示の期間に
+計測開始日が含まれていないと、数字が空欄になることがあります。
+10月は途中からの計測なので、未計測の9月とは比較できません。
+最初の全月データは11月です。
 
-「ページ ロケーション」は実際に閲覧されたページの URL です。コピーして
-別のタブで開けます。表はクリックできるリンクではなくテキスト表示です。
-下の行は表の中をスクロールして確認します。 / **Page location / ページ ロケーション**
-contains the full address of the visited page. Copy the text into a new browser
-tab to open it; GA's table displays text rather than clickable links. Scroll
-inside the table for lower rows.
+## 数字の読み方
 
-キャンペーンなどの `?` 以降が違う URL は別の行になることがあります。
-ページ全体の合計は「レポートのスナップショット」のページタイトル別の表で
-確認できます。 / Different query strings, including campaign tags, can produce
-separate URL rows for the same content. For totals grouped only by title, use
-the page-title table in **Reports snapshot / レポートのスナップショット**.
+| 項目                                             | 意味                                                                                          |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| 訪問者数                                         | 期間中に利用した人の推定数です。Google の「アクティブ ユーザー」を使います。                  |
+| 訪問回数                                         | サイトへの訪問の回数です。同じ人が再び訪れると、複数回になることがあります。                  |
+| 人気ページとURL（表示回数）                      | ページのタイトルと URL ごとの表示回数です。繰り返し閲覧も含みます。                           |
+| 訪問のきっかけ（訪問回数）                       | 検索・SNS・他サイトなど、どの経路から訪問したかを示します。                                   |
+| 資料を開いた回数                                 | 資料リンクやプレビューを開いた回数です。読了した人数ではありません。                          |
+| 申込リンクを開いた回数（申込完了ではありません） | Google Forms へのリンクを開いた回数です。実際の申込数は Google Forms の回答をご確認ください。 |
 
-実際の申込数は Google Forms の回答を別途確認してください。問い合わせフォームは
-送信先の設定が完了するまで、問い合わせ成功数の指標として使えません。
+「ページ ロケーション」は実際に閲覧されたページの URL です。表の文字を
+コピーし、別のタブのアドレス欄に貼り付けるとページを開けます。
+表の URL はクリックできるリンクではありません。下の行は表の中をスクロール
+して確認し、さらに続く行は表の右下の矢印で次のページへ進みます。
 
-Count completed applications in Google Forms separately. The website contact
-form still needs a real submission destination before successful inquiries can
-be used as a meaningful metric.
+キャンペーンなどの `?` 以降が違う URL は、同じページでも別の行になることが
+あります。URL の違いをまとめた表示回数は、左側の「レポートのスナップショット」
+にあるページタイトル別の表で確認できます。タイトルの変更前後も別の集計です。
 
-## 端末・地域・言語 / Devices, locations and languages
+問い合わせフォームは送信先の設定が完了するまで、問い合わせ成功数の指標として
+使えません。申込リンクの選択や資料を開く操作は、関心を示す目安として扱ってください。
 
-[利用者の傾向を開く / Open the audience dashboard](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
+## 端末・地域・言語
 
-**レポート → カスタム ダッシュボード → YIA 利用者の傾向 / Audience overview**
-で確認できます。右上で期間を選び、棒の長さを比較します。すべてのカードは
-アクティブ ユーザー数です。 / Open **Reports → Custom dashboards →
-YIA 利用者の傾向 / Audience overview**. Select the same date range as the website
-overview. All six charts compare estimated active users, rather than clicks.
+[利用者の傾向を開く](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
 
-| Card / カード                       | What it shows / 読み方                                                                                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 端末の種類 / Devices                | `mobile` = スマートフォン、`desktop` = パソコン、`tablet` = タブレット。 / Phone, computer and tablet traffic.                                    |
-| 国・地域 / Countries                | アクセス元の国の目安。国籍ではありません。 / Approximate countries of access, not nationality.                                                    |
-| 都市の目安 / Cities (approx.)       | ネットワーク情報から推定した都市。住所や居住地ではありません。 / Estimated city of access, not an address or verified residence.                  |
-| ブラウザー / Browsers               | Chrome、Safari など。 / Browsers used to visit the site.                                                                                          |
-| OS / Operating systems              | iOS、Android、Windows、Macintosh など。 / Operating systems; Macintosh means Mac.                                                                 |
-| ブラウザーの言語 / Browser language | ブラウザーの言語設定。サイトで選んだ翻訳言語や国籍ではありません。 / Browser language setting; separate from the website's translation selection. |
+左側の「レポート」→「カスタム ダッシュボード」→「YIA 利用者の傾向」で
+開けます。「YIA サイトの利用状況」と同じ期間を選んで比較してください。
+すべてのカードは、利用者の推定数を棒グラフで比較します。
 
-同じ利用者が複数の端末や地域に現れることがあります。カード同士の数や都市の
-各行を足して総人数にしないでください。 / A measured user can appear in multiple
-categories or cities during a period. Do not add charts or category rows together
-to calculate a total audience. Early counts may change during processing.
-
-位置情報は IP アドレスからの推定で、GPS は取得しません。VPN や通信会社の
-経路などにより実際の位置と異なることがあります。`(not set)` は判別できない
-値です。少数のデータが表示されない場合もあります。 / Geography is approximate
-and inferred from IP information; this setup does not request GPS. VPNs and
-network routing can affect it. `(not set)` means the value was unavailable.
-Small groups may be withheld by GA's reporting protections where applicable.
-
-既存の計測データを使う無料のレポートです。新しい Sanity ページも同じ集計に
-含まれます。 / This free dashboard uses the existing measurement, including
-new public Sanity pages after measured visits. It adds no website code, Vercel
-function calls or deployment. Age, gender and advertising interests are outside
-this dashboard; no additional demographic collection was enabled for this change.
+| 項目                         | 読み方                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| 端末の種類（利用者数）       | スマートフォン、パソコン、タブレットの利用状況です。                   |
+| 国・地域（利用者数）         | アクセス元の国の目安です。国籍ではありません。                         |
+| 都市の目安（利用者数）       | 通信情報から推定した都市です。住所や居住地ではありません。             |
+| ブラウザー（利用者数）       | Chrome、Safari など、サイトを開いたソフトの種類です。                  |
+| 端末の基本ソフト（利用者数） | iOS、Android、Windows などです。Macintosh は Mac を表します。          |
+| ブラウザーの言語（利用者数） | ブラウザーの言語設定です。サイトで選んだ翻訳言語や国籍ではありません。 |
 
 端末の比率は表示確認の優先順位、言語の傾向は翻訳の見直し、地域の傾向は広報の
-検討に使えます。少数の開始日データから結論を出さないでください。 / Use device
-trends to prioritize display checks, language trends to review translations,
-and location trends to inform outreach. Avoid decisions based on tiny launch-day
-samples.
+検討に使えます。少数の開始日データから結論を出さないでください。
 
-## 空欄や「データがありません」 / Empty reports
+位置情報は IP アドレスからの推定で、GPS は取得しません。VPN や通信会社の経路
+などにより、実際の場所と異なることがあります。同じ利用者が複数の端末や地域に
+現れることもあります。各カードや都市の行を足して総人数にはしないでください。
+Google の保護措置などにより、少数のデータが表示されない場合もあります。
+
+## 英語で表示される分類の読み方
+
+ダッシュボード名、見出し、説明は日本語です。Google が返す分類値やソフト名、
+サイトに登録された資料名などは、元の表記で表示されます。
+
+| 表示例                                           | 意味                                                            |
+| ------------------------------------------------ | --------------------------------------------------------------- |
+| `mobile` / `desktop` / `tablet`                  | スマートフォン / パソコン / タブレット                          |
+| `Japan` / `Yokosuka` / `Yokohama`                | 日本 / 横須賀 / 横浜                                            |
+| `Japanese` / `English` / `Indonesian` / `Korean` | 日本語 / 英語 / インドネシア語 / 韓国語                         |
+| `Direct`                                         | Google が訪問元を特定できなかった訪問                           |
+| `Unassigned`                                     | Google の標準的な経路分類に当てはまらない訪問                   |
+| `Cross-network`                                  | Google が複数ネットワークにまたがる広告の経路として分類した訪問 |
+| `(not set)`                                      | 情報を判別できなかった項目                                      |
+
+この表は表示された分類の意味を説明するものです。開始日の検証用アクセスも
+含まれるため、分類だけで実際の広告成果があったとは判断しないでください。
+
+## 空欄や「データがありません」
 
 計測開始日は **2026年10月7日** です。それ以前のアクセスは遡って計測できません。
-通常のレポートは反映まで24〜48時間かかることがあります。直近の確認には
-「リアルタイムの概要」を使えます。操作されていないリンクや資料は空欄になります。
+リアルタイムの概要は通常数分で更新されます。通常のレポートは数時間で一部の
+数字が出始めることがありますが、24〜48時間待って確認してください。
+当日の数字は暫定値です。落ち着いた数字を短期間で比較したいときは、終了日を
+2日以上前にします。まだ選ばれていないリンクや資料にはデータが出ません。
 
-Collection went live on **7 October 2026**. It cannot reconstruct earlier visits.
-Realtime usually updates within a few minutes. Standard reports often start
-updating in 2–6 hours; allow 24–48 hours for processing, including newly registered
-custom fields. Today's totals are provisional. For a settled short-term review,
-end the date range at least two days ago. An unused link or document may have no
-rows yet. Empty launch-day cards do not by themselves mean tracking is broken.
-Cookie choices, browser blockers and repeat devices affect counts, so use trends
-and comparisons rather than treating users as a complete attendance register.
+Cookie の選択やブラウザーのブロック機能などにより、すべてのアクセスを数えられる
+わけではありません。利用者数は来場者名簿のような実人数ではなく、傾向や比較の
+目安としてご利用ください。内部・開発者アクセスの除外フィルタはテスト中で、
+開始日の検証用アクセスはまだ集計から除かれていません。
 
-QRリンクなど独自の媒体は「Unassigned」に入ることがあります。詳細レポートの
-参照元・メディア・キャンペーンで確認できます。 / A custom medium such as `qr`
-may appear under “Unassigned.” Check source/medium and campaign reports for the
-specific flyer or campaign. Launch-day totals also include verification visits;
-test filters are still in Testing mode and do not remove those visits.
+QR コードなど独自の広報経路は `Unassigned` に入る場合があります。詳しく調べる
+場合は、トラフィックの詳細レポートで参照元・メディア・キャンペーンを確認します。
 
-## 詳細を調べる / More detail
+## 詳しく調べる場合
 
-The saved [Client action overview](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
-is available to its current owner for actions by page, document names and link
-placement. Standard **Tech details** reports offer further
-device dimensions such as screen resolution; **Demographic details**
-offers Region for prefecture/state-level investigation where available. Campaigns
-remain in the traffic reports. The two client dashboards keep the common
-questions together.
+端末の詳細レポートでは画面の解像度など、ユーザー属性の詳細レポートでは都道府県
+などを確認できます。操作別の詳細分析は、管理担当者が所有する
+[保存済みの探索レポート](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
+で確認できます。この探索レポートは所有者向けで、全閲覧者への共有は行っていません。
 
-For a manual export, use the report/card menu's **Export / エクスポート** option
-where available. Include the report name and date range when sharing results.
-No scheduled export, paid connector or billing account is needed.
+エクスポートが表示されるレポートやカードでは、メニューから手動で書き出せます。
+結果を共有するときは、画面名と確認した期間も記載してください。
 
-New published public pages from Sanity appear automatically after they receive
-measured visits. Give each page a clear title; normal publishing and navigation
-setup are sufficient. Editors do not need to add tracking code.
+この2画面は既存の計測データを使う無料のレポートです。有料機能や自動書き出しの
+契約は不要です。Sanity で公開した新しいページも、計測対象の訪問があれば自動的に
+集計されます。編集者がページごとに計測コードを追加する必要はありません。
+ページには分かりやすいタイトルを付けてください。

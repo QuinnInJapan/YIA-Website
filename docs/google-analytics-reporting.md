@@ -118,12 +118,12 @@ activate a permanent exclusion merely to make a launch report look cleaner.
 ## Client reporting
 
 Start with the published native GA4 dashboard
-[YIA サイトの利用状況 / Website overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333),
-available under Reports → Custom dashboards. It uses bilingual titles,
+[YIA サイトの利用状況](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333),
+available under レポート → カスタム ダッシュボード. It uses Japanese titles and descriptions, with
 two equal-width scorecards (Active users and Sessions) across the top, then an
 aligned row of traffic channels by Sessions and page titles/URLs by Views, followed by
 document labels and application labels by Event count. Sources and actions use
-horizontal bars. **人気ページとURL（表示回数） / Popular pages & URLs** uses a
+horizontal bars. **人気ページとURL（表示回数）** uses a
 three-column table: Page title, Page location and Views, with wrapping titles/URLs
 and shaded count bars. Its search row, totals row and concept selectors are hidden.
 The page table was checked with actual Japanese titles after processed rows
@@ -169,8 +169,8 @@ The Reports snapshot retains its title-only page table for totals across URL
 variants. Renamed titles and slugs remain in historical data; newly published
 public Sanity pages need no URL allowlist or manual report registration.
 
-Keep the two client dashboards organized by their recurring question: **Website
-overview** covers site performance, content and actions; **Audience overview**
+Keep the two client dashboards organized by their recurring question: **YIA サイトの利用状況**
+covers site performance, content and actions; **YIA 利用者の傾向**
 covers device, geographic and language patterns. Use standard detailed reports
 or explorations for investigations. Create another dashboard only when a distinct
 recurring decision or audience needs it, and avoid one dashboard per metric/page.
@@ -180,21 +180,21 @@ dashboard. More dashboard pages do not improve collection or Vercel limits.
 ### Audience dashboard
 
 The published
-[YIA 利用者の傾向 / Audience overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
+[YIA 利用者の傾向](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
 was added on 7 October 2026 to the existing **Custom dashboards** collection
 (`16057176307`). The website overview retains its original six cards. No access
 permissions, collection settings, paid features or website code were changed.
 
 All six audience cards use **Active users** and existing built-in dimensions:
 
-| Card title                                      | Dimension        | Layout       |
-| ----------------------------------------------- | ---------------- | ------------ |
-| 端末の種類（利用者数） / Devices                | Device category  | Top left     |
-| 国・地域（利用者数） / Countries                | Country          | Top right    |
-| 都市の目安（利用者数） / Cities (approx.)       | City             | Middle left  |
-| ブラウザー（利用者数） / Browsers               | Browser          | Middle right |
-| OS（利用者数） / Operating systems              | Operating system | Bottom left  |
-| ブラウザーの言語（利用者数） / Browser language | Language         | Bottom right |
+| Card title                   | Dimension        | Layout       |
+| ---------------------------- | ---------------- | ------------ |
+| 端末の種類（利用者数）       | Device category  | Top left     |
+| 国・地域（利用者数）         | Country          | Top right    |
+| 都市の目安（利用者数）       | City             | Middle left  |
+| ブラウザー（利用者数）       | Browser          | Middle right |
+| 端末の基本ソフト（利用者数） | Operating system | Bottom left  |
+| ブラウザーの言語（利用者数） | Language         | Bottom right |
 
 The cards are equal-width horizontal bars in three aligned rows, with matching
 heights and one metric per card. Their dimensions have no event filter or fixed
@@ -221,6 +221,31 @@ representative audience. The dashboard was saved, reloaded and checked with
 actual device, country, city, browser, OS and language rows in the reader view.
 All six cards fit the normal desktop viewport. Launch-day dates were preserved;
 the client quickstart explains labels and practical uses.
+
+### Japanese client handoff
+
+On 7 October 2026, both published dashboard names, all twelve card headings and
+their report descriptions were saved in Japanese. The report IDs and collection
+remain unchanged. The website scorecards are **訪問者数** and **訪問回数**;
+the application card is **申込リンクを開いた回数（申込完了ではありません）**.
+The Reports snapshot's library name is now **サイトの利用状況**, with a Japanese
+description; its native reader heading remains レポートのスナップショット.
+All six cards on each client dashboard were checked in saved reader views at
+the normal desktop viewport, with their Japanese sidebar entries visible.
+
+Google's dimension values (such as `mobile`, `Japan`, `Japanese` and `Direct`),
+software names and collected public labels retain their source spelling. This
+edit does not remap historical data or promise that all raw values can be
+translated inside a native chart. The Japanese-only client quickstart includes
+a short glossary, account/access guidance, date selection, exact report names
+and a ready-to-share onboarding paragraph. Readers need existing property
+access; a direct link does not grant access. No invitations were sent.
+
+This handoff polish changes account presentation and documentation only. There
+are no new website requests, events, definitions, deployments or Vercel changes.
+Earlier privacy/consent, live-action and processed-campaign acceptance checks,
+Search Console ownership and the real contact-form destination remain separate
+unresolved setup obligations; this visual review does not mark them complete.
 
 ### Action analysis and review periods
 
