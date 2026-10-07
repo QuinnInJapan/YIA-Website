@@ -97,24 +97,59 @@ Advertising profiles, user-provided personal data and ad-platform links are not
 needed for these reports. Staff traffic should first be tested with a filter in
 Testing mode; activating an exclusion permanently drops matching future data.
 
+On 7 October 2026, Property details confirmed **Japan / GMT+09:00** as the
+reporting time zone and Japanese yen as the display currency; neither was changed.
+The existing `Internal Traffic` exclusion remains in **Testing**. The new
+`YIA Developer Testing` developer-traffic exclusion was created in **Testing**
+and its saved state verified. It labels future debug-mode/debug-event traffic
+through the built-in **Test data filter name** dimension; it does not remove
+traffic from reports. Neither filter is Active. No staff IP addresses were added.
+
+For future verification, enable debug mode only on the tester's browser through
+Tag Assistant. In a private exploration, use Test data filter name and Event name
+as rows, Event count as the value, and filter to `YIA Developer Testing`. Allow
+24–36 hours for a new filter to apply and validate ordinary traffic separately.
+Staff-office exclusions additionally need the correct approved public IP rules.
+Keep these filters in Testing until their matches have been reviewed; do not
+activate a permanent exclusion merely to make a launch report look cleaner.
+
 ## Client reporting
 
 Start with the published native GA4 dashboard
 [YIA サイトの利用状況 / Website overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333),
 available under Reports → Custom dashboards. It uses bilingual titles,
-two scorecards (Active users and Sessions), a readable traffic-channel bar chart
-by Sessions, and three tables (popular Page titles by Views, application labels
-by Event count and document labels by Event count). Application and document cards have their own
+two equal-width scorecards (Active users and Sessions) across the top, then an
+aligned row of traffic channels by Sessions and page titles by Views, followed by
+document labels and application labels by Event count. Sources and actions use
+horizontal bars. Popular pages uses a two-column table with wrapping page titles,
+Views and shaded count bars; its search row and metric selectors are hidden.
+The page table was checked with actual Japanese titles after processed rows
+appeared, and its row was enlarged to keep the names readable. Cards share equal
+widths and matching heights within each row.
+The titles state the count's meaning; application interest explicitly says it is
+not completion. Metric selectors on the scorecards are hidden to keep their
+meaning stable for readers. Application and document cards have their own
 event-name filters; they do not filter the traffic totals. The two event filters
 currently use **contains the full event name**, because GA's exact-value selector
 has no processed values yet. Do not introduce other event names containing
 `form_link_click` or `document_open` without reviewing these filters.
 
-The default Reports snapshot is also simplified to visitors, visits, popular
-pages, sources and new/returning users. The
+The default Reports snapshot has Active users, New users, Sessions and Views at
+the top. Its three cards show new/returning users, session channels and page titles
+with Views; the wide five-column page table and truncated engagement-time headline
+were replaced. The
 [client quickstart](client-analytics-quickstart.md) explains date selection, empty
 data, terminology and the difference between interest and completed applications.
 Both reports were saved on 7 October 2026; no access permissions were changed.
+The dashboard was reloaded and all six card titles, aligned placement and
+application/document filters verified in the reader view. The saved snapshot
+was also inspected in its reader view. The launch-day date selection was preserved.
+Processed page rows and a `定款` document label appeared during the visual review;
+these preliminary counts include launch verification and do not establish
+complete action or campaign-attribution acceptance.
+The visual review used the normal desktop viewport; mobile dashboard layout has
+not been verified. Account reporting changes require no website deployment,
+Vercel rebuild or cache refresh.
 
 The saved private exploration
 [YIA — Client action overview](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
@@ -132,8 +167,14 @@ current account; no client invitations or sharing permissions were changed.
 Collection started with the live deployment on 7 October 2026. Earlier visits are
 not backfilled; regular reports and custom fields need processing time.
 
-Use the same full calendar month and compare with the previous month. Keep
-traffic totals separate from action counts. A useful monthly review includes:
+Report dates use Japan time. Wait at least 48 hours after month end, then use the
+same full calendar month and compare with the previous measured month. October
+2026 is partial from the 7th; November is the first full measured calendar month.
+Do not compare October with unmeasured September. Realtime usually updates within
+minutes and standard intraday data typically in 2–6 hours, but processing can take
+24–48 hours and recent data can change. Newly registered custom fields also need
+processing time. For a settled short-term report, omit the latest two days.
+Keep traffic totals separate from action counts. A useful monthly review includes:
 
 1. Active users, sessions, page views and engagement rate.
 2. Leading sources/mediums and campaign names.
@@ -180,6 +221,31 @@ do not tag internal navigation.
 
 Example: `https://yia.jp/events/japan-festival?utm_source=instagram&utm_medium=social&utm_campaign=japan_festival_2026`.
 Use `utm_content` to distinguish placements or versions when needed.
+The custom `qr` medium may fall into the default channel group's **Unassigned**
+bucket. Analyze it by Session source/medium and Session campaign rather than
+assuming the traffic-channel chart will show a separate QR category. Keep QR as
+a consistent, documented medium; do not mislabel printed flyers as paid social.
+
+## Applying Google Analytics best practices
+
+The 7 October 2026 review applies Google's guidance to YIA's actual questions:
+
+| Practice                              | YIA implementation and next check                                                                                                                                                                                                                             |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Start with useful questions           | The six-card client dashboard answers audience size, sources, content interest and actions. Review it monthly and write one concrete improvement; keep detailed language, device, scroll and video analysis in standard reports or explorations.              |
+| Define outcomes accurately            | Application clicks and document opens are interest. Only a confirmed successful inquiry emits `generate_lead`; measure external Google Forms completions separately. A real contact-form destination is still required.                                       |
+| Keep collection consistent            | One production tag and automatic browser-history page views cover public Sanity pages. New pages need clear titles and the normal publishing flow. Routing/template changes require checks for duplicate views, newly published routes and blocked telemetry. |
+| Use stable, limited event fields      | Reuse the eleven defined actions and nine bounded, public custom dimensions when their meaning fits. Avoid a new event per page or personal identifiers. Register report fields and revise dashboard filters together when meanings change.                   |
+| Make campaigns comparable             | Use consistent lowercase UTM source/medium/campaign values on incoming campaign links. Keep internal links untagged, validate delivery, then inspect processed attribution after the reporting delay.                                                         |
+| Separate testing from client outcomes | Preview/local/Studio collection is excluded. Internal and developer filters remain in Testing; verify their matches before any permanent exclusion. Launch-day checks are not client conversions.                                                             |
+| Protect data and respect choices      | URL email/query redaction and safe custom fields are already configured. Review new query keys, titles and labels for personal data; redaction is best-effort. The privacy/consent review remains an explicit prerequisite, not a completed compliance claim. |
+| Compare complete periods              | Use Japan time and measured, comparable date ranges after processing. Note partial launch data, small counts and campaign/content changes; treat browser user counts as estimates.                                                                            |
+| Add only relevant integrations        | Search Console remains a useful free extension after verified ownership is available. Ads profiles, sign-in User-ID collection, cross-domain tagging and paid exports are not needed for the current public-site questions.                                   |
+
+This sweep changed only GA reporting/filter settings and the reporting guides.
+Website runtime, Vercel configuration, Sanity data and cache behavior were unchanged.
+The earlier rollout/privacy, live custom-action and processed-campaign checks
+retain their original task obligations; this account visual review does not close them.
 
 ## Rollout verification
 
@@ -254,11 +320,18 @@ contents or private URLs. Maintain the free-only constraints above.
 ## Official references
 
 - [Google Analytics standard offering](https://marketingplatform.google.com/about/analytics/)
+- [Get more useful data out of Analytics](https://support.google.com/analytics/answer/13126420?hl=en)
+- [Native GA4 dashboards](https://support.google.com/analytics/answer/17217303?hl=en)
+- [Single-page application measurement](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications)
+- [Avoid sending personal information](https://support.google.com/analytics/answer/6366371?hl=en)
+- [Developer traffic filters](https://support.google.com/analytics/answer/13296662?hl=en)
+- [Data freshness](https://support.google.com/analytics/answer/11198161?hl=en)
 - [GA4 configuration limits](https://support.google.com/analytics/answer/12229528?hl=en)
 - [Enhanced Measurement](https://support.google.com/analytics/answer/9216061?hl=en)
 - [Custom dimensions](https://support.google.com/analytics/answer/14239696?hl=en)
 - [Data retention](https://support.google.com/analytics/answer/7667196?hl=en)
 - [Data redaction](https://support.google.com/analytics/answer/13544947?hl=en)
 - [Campaign tagging](https://support.google.com/analytics/answer/10917952?hl=en)
+- [Default channel definitions](https://support.google.com/analytics/answer/9756891?hl=en)
 - [Search Console linking](https://support.google.com/analytics/answer/10737381?hl=en)
 - [Vercel Web Analytics pricing and limits](https://vercel.com/docs/analytics/limits-and-pricing)
