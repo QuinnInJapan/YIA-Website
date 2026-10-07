@@ -13,8 +13,15 @@ existing Google Analytics access; creating this dashboard did not invite anyone.
 上段は訪問者と訪問回数、中段は流入元と人気ページ、下段は資料と申込リンクです。
 棒の長さと人気ページの表で比較できます。 / Read from top to bottom: visitors and visits,
 traffic sources and popular pages, then document opens and application interest.
-Compare bar lengths for sources and actions; the page table keeps long Japanese
-titles readable beside their view counts. Each card states what it counts.
+Compare bar lengths for sources and actions; the page table shows page titles,
+full URLs and view counts, with wrapping text. Each card states what it counts.
+
+まずはサイト全体の利用状況を確認し、端末・地域・言語を知りたいときに
+「利用者の傾向」を開きます。 / Start with Website overview for traffic, content
+and actions. Use Audience overview for devices, locations and browser languages.
+Keep these two client dashboards; use detailed reports for follow-up questions.
+A new dashboard is useful when it serves a distinct recurring decision, rather
+than one dashboard per page, device or metric.
 
 ## 毎月の確認 / A simple monthly review
 
@@ -43,10 +50,23 @@ with similar lengths, and note holidays, campaigns and content changes.
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 訪問者 / Visitors                                           | アクティブ ユーザー。期間中に利用した人の推定数。 / Estimated active users in the selected period.                                                   |
 | 訪問回数 / Visits                                           | セッション。同じ人が別の日に戻ると複数回になります。 / Sessions; one person can make several visits.                                                 |
-| 人気ページ（表示回数） / Popular pages                      | 表示回数。繰り返し閲覧も含みます。 / Page views, including repeat views, grouped by page title.                                                      |
+| 人気ページとURL（表示回数） / Popular pages & URLs          | タイトル・URLごとの表示回数。繰り返し閲覧も含みます。 / Page views, including repeat views, grouped by page title and full URL.                      |
 | 訪問のきっかけ（訪問回数） / Traffic sources                | 検索・SNS・他サイトなどからの訪問回数。 / Visits from search, social, other sites and other channels. “Direct” means GA could not identify a source. |
 | 申込リンク選択（完了ではありません） / Application interest | Google Forms へのリンクを選んだ回数。申込完了ではありません。 / Clicks on Google Forms links, including repeat clicks; not completed applications.   |
 | 資料を開いた回数 / Document opens                           | 資料リンクやプレビューを開いた回数。読了ではありません。 / Document-link or preview opens, including repeat clicks; not proof of reading.            |
+
+「ページ ロケーション」は実際に閲覧されたページの URL です。コピーして
+別のタブで開けます。表はクリックできるリンクではなくテキスト表示です。
+下の行は表の中をスクロールして確認します。 / **Page location / ページ ロケーション**
+contains the full address of the visited page. Copy the text into a new browser
+tab to open it; GA's table displays text rather than clickable links. Scroll
+inside the table for lower rows.
+
+キャンペーンなどの `?` 以降が違う URL は別の行になることがあります。
+ページ全体の合計は「レポートのスナップショット」のページタイトル別の表で
+確認できます。 / Different query strings, including campaign tags, can produce
+separate URL rows for the same content. For totals grouped only by title, use
+the page-title table in **Reports snapshot / レポートのスナップショット**.
 
 実際の申込数は Google Forms の回答を別途確認してください。問い合わせフォームは
 送信先の設定が完了するまで、問い合わせ成功数の指標として使えません。

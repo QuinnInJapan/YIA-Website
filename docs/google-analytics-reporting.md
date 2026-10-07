@@ -121,10 +121,11 @@ Start with the published native GA4 dashboard
 [YIA サイトの利用状況 / Website overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333),
 available under Reports → Custom dashboards. It uses bilingual titles,
 two equal-width scorecards (Active users and Sessions) across the top, then an
-aligned row of traffic channels by Sessions and page titles by Views, followed by
+aligned row of traffic channels by Sessions and page titles/URLs by Views, followed by
 document labels and application labels by Event count. Sources and actions use
-horizontal bars. Popular pages uses a two-column table with wrapping page titles,
-Views and shaded count bars; its search row and metric selectors are hidden.
+horizontal bars. **人気ページとURL（表示回数） / Popular pages & URLs** uses a
+three-column table: Page title, Page location and Views, with wrapping titles/URLs
+and shaded count bars. Its search row, totals row and concept selectors are hidden.
 The page table was checked with actual Japanese titles after processed rows
 appeared, and its row was enlarged to keep the names readable. Cards share equal
 widths and matching heights within each row.
@@ -152,6 +153,29 @@ complete action or campaign-attribution acceptance.
 The visual review used the normal desktop viewport; mobile dashboard layout has
 not been verified. Account reporting changes require no website deployment,
 Vercel rebuild or cache refresh.
+
+On 7 October 2026, Page location was added to the existing popular-pages table,
+then saved and reloaded in the reader view. Actual page titles, full `https://yia.jp/`
+addresses and view counts were checked together at the normal desktop viewport.
+The URL cells are selectable text with no anchor elements; do not promise one-click
+website navigation. Readers can copy a URL into a browser tab. Lower rows remain
+accessible by scrolling inside the table. No new event, definition, dashboard,
+collection setting or website deployment was needed.
+
+Page location includes protocol, hostname, path and collected query string, subject
+to the existing redaction settings. Campaign/debug/query variants can split the
+same content into several rows, so this card reports exact title/URL combinations.
+The Reports snapshot retains its title-only page table for totals across URL
+variants. Renamed titles and slugs remain in historical data; newly published
+public Sanity pages need no URL allowlist or manual report registration.
+
+Keep the two client dashboards organized by their recurring question: **Website
+overview** covers site performance, content and actions; **Audience overview**
+covers device, geographic and language patterns. Use standard detailed reports
+or explorations for investigations. Create another dashboard only when a distinct
+recurring decision or audience needs it, and avoid one dashboard per metric/page.
+Both dashboards have six cards, below the standard property's 15-card limit per
+dashboard. More dashboard pages do not improve collection or Vercel limits.
 
 ### Audience dashboard
 
@@ -371,6 +395,7 @@ contents or private URLs. Maintain the free-only constraints above.
 - [Google Analytics standard offering](https://marketingplatform.google.com/about/analytics/)
 - [Get more useful data out of Analytics](https://support.google.com/analytics/answer/13126420?hl=en)
 - [Native GA4 dashboards](https://support.google.com/analytics/answer/17217303?hl=en)
+- [Built-in page URL/title dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions)
 - [Tech details report](https://support.google.com/analytics/answer/12980150?co=GENIE.Platform%3DDesktop&hl=en)
 - [Demographic details report](https://support.google.com/analytics/answer/12948931?co=GENIE.Platform%3DDesktop&hl=en)
 - [Granular location and device collection controls](https://support.google.com/analytics/answer/12017362?hl=en)
