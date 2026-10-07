@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { trackAnalyticsEvent } from "@/lib/google-analytics";
 
 const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID"; // Replace with real Formspree form ID
 
@@ -23,6 +24,7 @@ export default function ContactForm() {
         headers: { Accept: "application/json" },
       });
       if (res.ok) {
+        trackAnalyticsEvent("generate_lead", { method: "contact_form" });
         setStatus("success");
         form.reset();
       } else {

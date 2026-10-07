@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { trackAnalyticsEvent } from "@/lib/google-analytics";
 
 declare global {
   interface Window {
@@ -153,6 +154,7 @@ export default function GoogleTranslate() {
   }
 
   function selectLanguage(code: string) {
+    trackAnalyticsEvent("language_change", { selected_language: code || "ja" });
     setOpen(false);
 
     if (!code) {

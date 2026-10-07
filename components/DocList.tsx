@@ -12,6 +12,7 @@ import {
 } from "@/lib/document-links";
 import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
 import { IMAGE_EXTENSIONS } from "@/lib/attachment-types";
+import { documentOpenParameters, trackAnalyticsEvent } from "@/lib/google-analytics";
 
 function canPreview(doc: Document): boolean {
   return isPdfDocument(doc) || IMAGE_EXTENSIONS.includes(documentTypeLabel(doc).toLowerCase());
@@ -59,6 +60,10 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
   }, []);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, doc: Document, docIndex: number) {
+    if (e.button === 0) {
+      const parameters = documentOpenParameters(stegaClean(doc.url) || "", window.location.origin);
+      if (parameters) trackAnalyticsEvent("document_open", parameters);
+    }
     if (!canPreview(doc) || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
       return;
 

@@ -290,6 +290,40 @@ Keep unrelated dirty files unstaged unless the user explicitly asks to include t
 
 ## Vercel CLI
 
+### Google Analytics
+
+The public production layout also mounts the browser-only Google tag for GA4
+measurement ID `G-5XYKT7ST20`. This is a public ID, not a secret. The integration
+uses `next/script` after hydration and sends telemetry directly to Google; it
+does not proxy events through Vercel, call Sanity, read server-side cookies, or
+alter ISR/revalidation. No new environment variable or dependency is required.
+Local, preview, Studio and standalone PDF-viewer routes do not mount the tag.
+
+GA4 Enhanced Measurement must remain enabled with **Page changes based on browser
+history events** selected. It owns page-view collection; do not also send manual
+page views. Automatic scroll, outbound-click and file-download events depend on
+the stream's settings. File-download events describe clicks, not completed saves.
+Additional events are `document_open` (attachment-link clicks, including in-page
+previews), `form_link_click` (Google Forms links), `language_change` (translation
+choices) and `generate_lead` (only after a successful contact-form response).
+The contact form's placeholder Formspree destination must be configured separately
+before it can receive real inquiries. A form-link click is not a completed signup.
+Custom events send no form contents, prefilled answers, URL queries or fragments.
+
+Before public rollout, include GA4 in the site's privacy notice and configure
+consent handling as required for its audience. Review Enhanced Measurement's
+automatic URL collection/redaction settings as well as custom events. The existing
+Vercel Analytics and Speed Insights collection remains separate.
+
+Verify the production build still prerenders ordinary public routes. After an
+authorized deployment, check Google requests and GA4 Realtime/DebugView, navigate
+between pages to rule out duplicate views, exercise the custom events, and verify
+pages/actions still work when Google telemetry is blocked. Live GA4 reports need
+account access and are separate from passing local checks. Use GA4's `generate_lead`
+as a key event; use `form_link_click` as interest rather than confirmed registration.
+Register event-scoped custom dimensions for `form_path` and `selected_language`
+in GA4 Admin > Custom definitions when clients need those report breakdowns.
+
 ### Optional public-site analytics
 
 The public `(site)` layout includes `@vercel/analytics/next` and
