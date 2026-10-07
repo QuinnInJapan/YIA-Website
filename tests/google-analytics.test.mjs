@@ -212,12 +212,12 @@ test("the browser component handles nested link clicks, route resets and listene
   stopScrolls();
   assert.equal(frames.size, 0);
   assert.equal(windowListeners.size, 0);
-  browser.location.pathname = "/about/about";
+  browser.location.pathname = "/new-category/new-page-created-in-studio";
   stopScrolls = effects[1]();
   windowListeners.get("scroll")();
   flushFrames();
   assert.equal(events.length, 6);
-  assert.equal(events[5][2].page_path, "/about/about");
+  assert.equal(events[5][2].page_path, "/new-category/new-page-created-in-studio");
   stopScrolls();
   stopClicks();
   assert.equal(documentListeners.size, 0);
@@ -328,4 +328,79 @@ test("the actual public layout mounts GA4 once in production and excludes other 
     assert.equal(types.filter((type) => type === "vercel-analytics").length, expected, environment);
     assert.equal(module.exports.revalidate, false);
   }
+});
+
+test("a newly published Sanity navigation page omitted from the build inherits production tracking", async () => {
+  const require = createRequire(import.meta.url);
+  function loadTsx(relativePath, dependencies = {}) {
+    const source = readFileSync(new URL(relativePath, import.meta.url), "utf8");
+    const compiled = ts.transpileModule(source, {
+      compilerOptions: {
+        module: ts.ModuleKind.CommonJS,
+        jsx: ts.JsxEmit.ReactJSX,
+        esModuleInterop: true,
+      },
+    }).outputText;
+    const module = { exports: {} };
+    vm.runInNewContext(compiled, {
+      module,
+      exports: module.exports,
+      process: { env: { VERCEL_ENV: "production" } },
+      require: (name) =>
+        name === "react/jsx-runtime"
+          ? require(name)
+          : (dependencies[name] ?? { __esModule: true, default: "other" }),
+    });
+    return module.exports;
+  }
+  const category = "new-category";
+  const slug = "new-page-created-in-studio";
+  const page = { slug, title: "New program", description: "Published after deployment" };
+  const route = loadTsx("../app/(site)/[category]/[slug]/page.tsx", {
+    "next/navigation": {
+      notFound: () => {
+        throw new Error("Not found");
+      },
+    },
+    "@/lib/data": {
+      getPage: async (requestedSlug) => (requestedSlug === slug ? page : null),
+      getEnrichedNavigation: async () => ({
+        categories: [{ categoryId: category, items: [{ slug }] }],
+      }),
+    },
+    "@/lib/i18n": { ja: (value) => value },
+    "@/lib/site-metadata": { pageMetadata: (metadata) => metadata },
+    "@/lib/routes": { categorySegment: (value) => value },
+    "@/lib/sanity/navigation-routes": { fetchNavigationPageParamsStatic: async () => [] },
+    "@/components/templates/PageTemplate": { __esModule: true, default: "page-template" },
+  });
+  assert.equal((await route.generateStaticParams()).length, 0);
+  assert.notEqual(route.dynamicParams, false, "post-build Sanity slugs must remain routable");
+  assert.equal(route.revalidate, false, "tracking must preserve on-demand caching");
+  const props = { params: Promise.resolve({ category, slug }) };
+  const content = await route.default(props);
+  assert.equal(content.type, "page-template");
+  assert.equal(content.props.page, page);
+  const metadata = await route.generateMetadata(props);
+  assert.equal(metadata.title, page.title);
+  assert.equal(metadata.pathname, `/${category}/${slug}`);
+  await assert.rejects(
+    route.default({ params: Promise.resolve({ category: "unpublished", slug }) }),
+    /Not found/,
+  );
+
+  const layout = loadTsx("../app/(site)/layout.tsx", {
+    "@/components/GoogleAnalytics": { __esModule: true, default: "ga4" },
+  });
+  const nodes = [];
+  function visit(node) {
+    if (Array.isArray(node)) return node.forEach(visit);
+    if (node && typeof node === "object") {
+      nodes.push(node);
+      visit(node.props?.children);
+    }
+  }
+  visit(await layout.default({ children: content }));
+  assert.equal(nodes.filter((node) => node.type === "ga4").length, 1);
+  assert.equal(nodes.find((node) => node.type === "page-template")?.props.page, page);
 });

@@ -99,6 +99,23 @@ Testing mode; activating an exclusion permanently drops matching future data.
 
 ## Client reporting
 
+Start with the published native GA4 dashboard
+[YIA サイトの利用状況 / Website overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057323333),
+available under Reports → Custom dashboards. It uses bilingual titles,
+two scorecards (Active users and Sessions), a readable traffic-channel bar chart
+by Sessions, and three tables (popular Page titles by Views, application labels
+by Event count and document labels by Event count). Application and document cards have their own
+event-name filters; they do not filter the traffic totals. The two event filters
+currently use **contains the full event name**, because GA's exact-value selector
+has no processed values yet. Do not introduce other event names containing
+`form_link_click` or `document_open` without reviewing these filters.
+
+The default Reports snapshot is also simplified to visitors, visits, popular
+pages, sources and new/returning users. The
+[client quickstart](client-analytics-quickstart.md) explains date selection, empty
+data, terminology and the difference between interest and completed applications.
+Both reports were saved on 7 October 2026; no access permissions were changed.
+
 The saved private exploration
 [YIA — Client action overview](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
 contains three tabs, with Event count and Total users as values:
@@ -112,7 +129,8 @@ contains three tabs, with Event count and Total users as values:
 It defaults to the past 28 days and up to 50 rows. Change the date range for a
 monthly review and export results manually when needed. It is saved in the
 current account; no client invitations or sharing permissions were changed.
-The report is currently empty because the website changes have not been deployed.
+Collection started with the live deployment on 7 October 2026. Earlier visits are
+not backfilled; regular reports and custom fields need processing time.
 
 Use the same full calendar month and compare with the previous month. Keep
 traffic totals separate from action counts. A useful monthly review includes:
@@ -171,7 +189,67 @@ view per navigation, document previews and normal links, translation, and scroll
 milestones resetting between pages. Verify that content and actions still work
 when Google telemetry is blocked. Check a tagged campaign visit. Allow normal
 report processing time; a tag-installation test alone is not the full acceptance
-check. Live collection and real Google Forms completions have not been verified.
+check. Google Forms completions are outside this site's collection boundary.
+
+On 7 October 2026, revision `235775ce3a2c09deebafb4f091e6951ab4689974`
+was pushed and Vercel deployment `dpl_H8JsNqNvd5ucJ8aPhd8WkG8yevNQ` reached
+**Ready**, aliased to `https://yia.jp` and `https://www.yia.jp`. Its build
+prerendered ordinary public pages. Google Tag Assistant confirmed the correct
+destination and direct `https://www.google-analytics.com/g/collect` hits:
+one initial page view and one history-navigation view from home to the Sanity
+conversation-salon page, a footer `document_open` labeled `定款`, per-page scroll
+events, section navigation and an in-page document-preview open. GA4 Realtime
+subsequently showed live visitors, page views, `document_open` and `scroll_depth`.
+Selecting English also produced `language_change` in Realtime. A separately
+tagged public event-page visit delivered a `page_view` with its non-personal
+`utm_source`, `utm_medium` and `utm_campaign` intact; processed campaign attribution
+still needs report processing time.
+These test visits are part of the launch-day data, not real client outcomes.
+
+Chrome DevTools temporarily blocked `www.googletagmanager.com` and
+`*.google-analytics.com`. The tag-loader rule recorded two affected requests;
+the public cooking page loaded, navigation to conversation salon worked and its
+schedule PDF preview opened. The test rules were removed, blocking was disabled
+and normal browsing restored afterward. The missing/failing Google helper and
+production-only layout are also covered by unit tests. Live verification of
+every custom action remains separate; no hosted application form or inquiry was
+submitted during these checks.
+The privacy/consent review and Search Console ownership prerequisite remain open.
+
+The Vercel project Usage view inspected on 7 October showed the preceding
+30-day window (6 September–6 October): 196,800 CDN requests, 50,569 ISR writes,
+10,224 function invocations, 2,475 Web Analytics events and 4,849 Speed Insights
+data points. Each was below the allowance shown for Hobby. This is a dated usage
+snapshot, not a promise that future traffic or unrelated projects cannot reach
+limits. No Vercel plan or quota setting was changed.
+The team-wide Usage view also showed Hobby and usage below its displayed
+allowances for the 6 September 20:00–6 October 20:00 window: about 196,000 CDN
+requests, 48,000 ISR writes, 2,500 Web Analytics events and 4,900 Speed Insights
+points. These rounded team totals use a different time boundary from the project
+snapshot above.
+
+## Keeping analytics aligned with development
+
+Review this contract for changes to public routes, templates or interactions;
+the mandatory workflow is in `AGENTS.md` and the coding-agent runbook.
+
+| Website change                             | Tracking and reporting work                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| New Sanity page, blog post or announcement | Publish through the normal content flow; navigation pages must belong to public navigation. Keep the route in `(site)` and support slugs absent from `generateStaticParams`. No new tag, custom dimension, cache schedule or report allowlist is needed. Verify its title/path and inherited tracking.               |
+| Renamed page or changed slug               | Automatic title/path reports update on future visits. History retains old titles/paths; compare both when assessing a rename. Avoid a fixed URL filter that excludes future pages.                                                                                                                                   |
+| New resource or application link           | Reuse `document_open` or `form_link_click` when the meaning matches. Preserve original file metadata, a public label and placement. Review classifier support when changing form hosts or viewer behavior.                                                                                                           |
+| New button, dialog or template renderer    | A delegated link listener cannot infer every button action. Add an explicit shared-helper event only for a meaningful new action; ensure the same user action is counted once. Test previews, nested targets and route changes.                                                                                      |
+| New form or registration flow              | Record starts/attempts/failures and emit success only after confirmed acceptance. Update key events and client wording. A redirect or external-form click is interest; never label it a registration.                                                                                                                |
+| New parameter or changed event meaning     | Add a bounded public value, register its event-scoped dimension if needed, update this event/field table and the affected dashboard or exploration. Prefer a new event name for a materially different meaning so history stays interpretable. Do not reuse full-name substrings matched by existing report filters. |
+| Routing or telemetry-library change        | Preserve production-only collection, Studio/PDF exclusions, one tag and one page-view owner. Verify new and post-build routes, scroll reset and blocked telemetry. Check build caching and Vercel usage before reporting completion.                                                                                 |
+
+In the change's acceptance note, state **Analytics impact**, **GA account/report
+updates** and **Verification**. “No change needed” is acceptable with a concrete
+reason, such as ordinary content using existing templates. If account access is
+missing, record the exact pending definition/filter update and keep it open.
+Do not silently complete a task whose new measurement cannot appear in reports.
+Do not create dashboards with unbounded per-person dimensions, personal form
+contents or private URLs. Maintain the free-only constraints above.
 
 ## Official references
 

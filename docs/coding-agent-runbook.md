@@ -336,6 +336,40 @@ rollout checks. No paid plan, billing account, trial, server-side tagging, BigQu
 export or paid connector is authorized for this integration. GA custom events
 must stay in `gtag`; do not mirror them into Vercel Analytics custom events.
 
+### Analytics changes during development
+
+Treat analytics as part of public-feature acceptance, including changes made by
+agents. Use [the reporting contract](google-analytics-reporting.md#keeping-analytics-aligned-with-development)
+and [client quickstart](client-analytics-quickstart.md). For every public route,
+template or interaction change:
+
+1. Identify the client question and whether an existing event still means the
+   same thing. Ordinary content changes need no new event or GA configuration.
+2. Keep all public Sanity routes inside `(site)`. New published navigation pages,
+   blog posts and announcements inherit one production Google tag. Drafts and
+   pages absent from public navigation are not necessarily public routes. Static
+   build parameters are an optimization: retain support for newly published
+   slugs and the existing publish webhook; never maintain an analytics slug list.
+3. For a new action, use the shared helper or delegated semantic link metadata.
+   Check in-page previews and button/dialog behavior as well as ordinary links.
+   Keep click interest separate from confirmed successful form submissions.
+4. Update applicable GA4 event-scoped dimensions, key events, report filters and
+   descriptions alongside code. Register new dimensions before collection when
+   possible; they do not backfill. Check changes against the nine existing fields
+   and saved dashboard. Update the reporting contract and client quickstart in
+   the same task, or record why no account/report change is needed.
+5. Run the managed `npm test` checks, including the new-Sanity-page regression.
+   For runtime changes, verify the production build still prerenders public
+   routes, then check live hits after an authorized deployment: one view per
+   navigation, meaningful action labels, scroll reset and working UI with Google
+   blocked. Tests alone do not replace account or browser verification.
+6. Record the exact deployed revision, account/report changes and verification
+   results. Keep unresolved checks explicit. Check Vercel usage without crawling
+   every public page, purging caches or creating production test content.
+
+No analytics change should add Sanity reads, Vercel functions, a telemetry proxy,
+server cookie reads or cache invalidations. Maintain the free-only boundary above.
+
 ### Optional public-site analytics
 
 The public `(site)` layout includes `@vercel/analytics/next` and

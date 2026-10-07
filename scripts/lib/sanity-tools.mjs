@@ -9,6 +9,8 @@ const DEFAULT_API_VERSION = "2024-01-01";
 // Rich-text span marks may include "red"; content patches must preserve decorators.
 // GA4 is browser-only: analytics events never require Sanity reads or cache purges.
 // Keep analytics collection direct to Google; the reporting guide requires a free-only setup.
+// Newly published public pages inherit the site tag; never add per-slug tags.
+// Template/interaction changes must follow the runbook's analytics maintenance checklist.
 // Public routes have no timed cache refresh. After a live content mutation,
 // verify the publish webhook or call the authenticated /api/revalidate endpoint
 // before reporting the change live (see docs/coding-agent-runbook.md).
