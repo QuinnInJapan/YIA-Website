@@ -55,6 +55,49 @@ Count completed applications in Google Forms separately. The website contact
 form still needs a real submission destination before successful inquiries can
 be used as a meaningful metric.
 
+## 端末・地域・言語 / Devices, locations and languages
+
+[利用者の傾向を開く / Open the audience dashboard](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
+
+**レポート → カスタム ダッシュボード → YIA 利用者の傾向 / Audience overview**
+で確認できます。右上で期間を選び、棒の長さを比較します。すべてのカードは
+アクティブ ユーザー数です。 / Open **Reports → Custom dashboards →
+YIA 利用者の傾向 / Audience overview**. Select the same date range as the website
+overview. All six charts compare estimated active users, rather than clicks.
+
+| Card / カード                       | What it shows / 読み方                                                                                                                            |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 端末の種類 / Devices                | `mobile` = スマートフォン、`desktop` = パソコン、`tablet` = タブレット。 / Phone, computer and tablet traffic.                                    |
+| 国・地域 / Countries                | アクセス元の国の目安。国籍ではありません。 / Approximate countries of access, not nationality.                                                    |
+| 都市の目安 / Cities (approx.)       | ネットワーク情報から推定した都市。住所や居住地ではありません。 / Estimated city of access, not an address or verified residence.                  |
+| ブラウザー / Browsers               | Chrome、Safari など。 / Browsers used to visit the site.                                                                                          |
+| OS / Operating systems              | iOS、Android、Windows、Macintosh など。 / Operating systems; Macintosh means Mac.                                                                 |
+| ブラウザーの言語 / Browser language | ブラウザーの言語設定。サイトで選んだ翻訳言語や国籍ではありません。 / Browser language setting; separate from the website's translation selection. |
+
+同じ利用者が複数の端末や地域に現れることがあります。カード同士の数や都市の
+各行を足して総人数にしないでください。 / A measured user can appear in multiple
+categories or cities during a period. Do not add charts or category rows together
+to calculate a total audience. Early counts may change during processing.
+
+位置情報は IP アドレスからの推定で、GPS は取得しません。VPN や通信会社の
+経路などにより実際の位置と異なることがあります。`(not set)` は判別できない
+値です。少数のデータが表示されない場合もあります。 / Geography is approximate
+and inferred from IP information; this setup does not request GPS. VPNs and
+network routing can affect it. `(not set)` means the value was unavailable.
+Small groups may be withheld by GA's reporting protections where applicable.
+
+既存の計測データを使う無料のレポートです。新しい Sanity ページも同じ集計に
+含まれます。 / This free dashboard uses the existing measurement, including
+new public Sanity pages after measured visits. It adds no website code, Vercel
+function calls or deployment. Age, gender and advertising interests are outside
+this dashboard; no additional demographic collection was enabled for this change.
+
+端末の比率は表示確認の優先順位、言語の傾向は翻訳の見直し、地域の傾向は広報の
+検討に使えます。少数の開始日データから結論を出さないでください。 / Use device
+trends to prioritize display checks, language trends to review translations,
+and location trends to inform outreach. Avoid decisions based on tiny launch-day
+samples.
+
 ## 空欄や「データがありません」 / Empty reports
 
 計測開始日は **2026年10月7日** です。それ以前のアクセスは遡って計測できません。
@@ -80,8 +123,11 @@ test filters are still in Testing mode and do not remove those visits.
 
 The saved [Client action overview](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
 is available to its current owner for actions by page, document names and link
-placement. Standard reports also cover devices, approximate countries and
-campaigns. The dashboard keeps the common questions in one place.
+placement. Standard **Tech details** reports offer further
+device dimensions such as screen resolution; **Demographic details**
+offers Region for prefecture/state-level investigation where available. Campaigns
+remain in the traffic reports. The two client dashboards keep the common
+questions together.
 
 For a manual export, use the report/card menu's **Export / エクスポート** option
 where available. Include the report name and date range when sharing results.

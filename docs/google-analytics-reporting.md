@@ -29,19 +29,21 @@ clients need presentation beyond GA4; it is not required to collect or report da
 
 ## What clients can measure
 
-| Question                              | Measurement                                                                        | Interpretation                                                                            |
-| ------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| How many people visit?                | Active/new/returning users, sessions, views                                        | Browser-based estimates; cookies, consent and blockers affect counts.                     |
-| Where do visitors come from?          | Session source/medium, channel and campaign                                        | Search, referrals, social, direct and consistently tagged campaigns.                      |
-| Which content attracts interest?      | Page title/path, landing pages, engagement                                         | GA engagement measures foreground activity, not every minute a tab is open.               |
-| Which resources are opened?           | `document_open`, file metadata and Document label                                  | A click or viewer navigation; not proof of a completed download or reading.               |
-| Which application links are selected? | `form_link_click`, Application link label/path and Link placement                  | Intent to open Google Forms, not a confirmed application.                                 |
-| How do visitors contact YIA?          | `contact_click` and Contact method                                                 | Email/phone link clicks; neither the recipient nor phone number is sent in custom events. |
-| Which translations are used?          | `language_change` and Selected language                                            | The language selected in the site's translation menu.                                     |
-| How far do people browse?             | `scroll_depth` and Scroll depth                                                    | 25/50/75/90% of page height reached, at most once per pathname visit, after scrolling.    |
-| Which sections are selected?          | `section_navigation` and Section label                                             | Table-of-contents link selection, not proof that a section was read.                      |
-| Which embedded videos are opened?     | `video_open` and Video label                                                       | Playback requested from the facade button; not watch duration or completion.              |
-| Do contact forms succeed?             | `contact_form_start`, `contact_form_submit`, `contact_form_error`, `generate_lead` | Start, attempt, fixed failure type, and confirmed successful response respectively.       |
+| Question                                         | Measurement                                                                        | Interpretation                                                                                                    |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| How many people visit?                           | Active/new/returning users, sessions, views                                        | Browser-based estimates; cookies, consent and blockers affect counts.                                             |
+| Where do visitors come from?                     | Session source/medium, channel and campaign                                        | Search, referrals, social, direct and consistently tagged campaigns.                                              |
+| Which content attracts interest?                 | Page title/path, landing pages, engagement                                         | GA engagement measures foreground activity, not every minute a tab is open.                                       |
+| Which resources are opened?                      | `document_open`, file metadata and Document label                                  | A click or viewer navigation; not proof of a completed download or reading.                                       |
+| Which application links are selected?            | `form_link_click`, Application link label/path and Link placement                  | Intent to open Google Forms, not a confirmed application.                                                         |
+| How do visitors contact YIA?                     | `contact_click` and Contact method                                                 | Email/phone link clicks; neither the recipient nor phone number is sent in custom events.                         |
+| Which translations are used?                     | `language_change` and Selected language                                            | The language selected in the site's translation menu.                                                             |
+| Which devices and browsers are used?             | Device category, Browser and Operating system by Active users                      | Automatically collected technology categories; useful for prioritizing website testing.                           |
+| Where and in what language is the site accessed? | Country, City and Language by Active users                                         | Approximate access location and browser language; not nationality, residence or the site's translation selection. |
+| How far do people browse?                        | `scroll_depth` and Scroll depth                                                    | 25/50/75/90% of page height reached, at most once per pathname visit, after scrolling.                            |
+| Which sections are selected?                     | `section_navigation` and Section label                                             | Table-of-contents link selection, not proof that a section was read.                                              |
+| Which embedded videos are opened?                | `video_open` and Video label                                                       | Playback requested from the facade button; not watch duration or completion.                                      |
+| Do contact forms succeed?                        | `contact_form_start`, `contact_form_submit`, `contact_form_error`, `generate_lead` | Start, attempt, fixed failure type, and confirmed successful response respectively.                               |
 
 The existing contact-form component still points to `YOUR_FORM_ID` and needs a
 real submission destination before it can receive inquiries. Analytics does not
@@ -151,6 +153,53 @@ The visual review used the normal desktop viewport; mobile dashboard layout has
 not been verified. Account reporting changes require no website deployment,
 Vercel rebuild or cache refresh.
 
+### Audience dashboard
+
+The published
+[YIA 利用者の傾向 / Audience overview](https://analytics.google.com/analytics/web/#/a411111889p557873278/reports/builder/16057494145)
+was added on 7 October 2026 to the existing **Custom dashboards** collection
+(`16057176307`). The website overview retains its original six cards. No access
+permissions, collection settings, paid features or website code were changed.
+
+All six audience cards use **Active users** and existing built-in dimensions:
+
+| Card title                                      | Dimension        | Layout       |
+| ----------------------------------------------- | ---------------- | ------------ |
+| 端末の種類（利用者数） / Devices                | Device category  | Top left     |
+| 国・地域（利用者数） / Countries                | Country          | Top right    |
+| 都市の目安（利用者数） / Cities (approx.)       | City             | Middle left  |
+| ブラウザー（利用者数） / Browsers               | Browser          | Middle right |
+| OS（利用者数） / Operating systems              | Operating system | Bottom left  |
+| ブラウザーの言語（利用者数） / Browser language | Language         | Bottom right |
+
+The cards are equal-width horizontal bars in three aligned rows, with matching
+heights and one metric per card. Their dimensions have no event filter or fixed
+page/slug list. Every measured public page, including new Sanity pages, contributes
+automatically. No new event-scoped custom definition is necessary. Keep the
+built-in Language dimension distinct from the site's custom Selected language.
+
+Country and City describe approximate access location derived from IP information.
+They do not identify a person's address, residency or nationality; this setup
+does not request GPS. VPNs and network routing can affect inferred geography.
+One measured user can appear in several categories or cities within a period, so
+category rows and cards should not be summed into an overall unique-user total.
+`(not set)` denotes unavailable values; regional collection controls and applicable
+data thresholds can also limit detail. Do not weaken privacy settings to fill a
+card. Age, gender and interests require additional advertising-demographic
+collection for websites and are outside this dashboard; Google signals was not
+enabled as part of this change.
+
+For deeper investigation, use the standard Tech details report's screen-resolution
+and device dimensions, or Demographic details with Region for prefecture/state
+breakdowns where data is available. Use the same Japan-time dates as the overview,
+allow normal processing, and avoid interpreting small launch-day samples as a
+representative audience. The dashboard was saved, reloaded and checked with
+actual device, country, city, browser, OS and language rows in the reader view.
+All six cards fit the normal desktop viewport. Launch-day dates were preserved;
+the client quickstart explains labels and practical uses.
+
+### Action analysis and review periods
+
 The saved private exploration
 [YIA — Client action overview](https://analytics.google.com/analytics/web/#/analysis/a411111889p557873278/edit/9ucEP1KASwuF7pHh3955og)
 contains three tabs, with Event count and Total users as values:
@@ -230,17 +279,17 @@ a consistent, documented medium; do not mislabel printed flyers as paid social.
 
 The 7 October 2026 review applies Google's guidance to YIA's actual questions:
 
-| Practice                              | YIA implementation and next check                                                                                                                                                                                                                             |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Start with useful questions           | The six-card client dashboard answers audience size, sources, content interest and actions. Review it monthly and write one concrete improvement; keep detailed language, device, scroll and video analysis in standard reports or explorations.              |
-| Define outcomes accurately            | Application clicks and document opens are interest. Only a confirmed successful inquiry emits `generate_lead`; measure external Google Forms completions separately. A real contact-form destination is still required.                                       |
-| Keep collection consistent            | One production tag and automatic browser-history page views cover public Sanity pages. New pages need clear titles and the normal publishing flow. Routing/template changes require checks for duplicate views, newly published routes and blocked telemetry. |
-| Use stable, limited event fields      | Reuse the eleven defined actions and nine bounded, public custom dimensions when their meaning fits. Avoid a new event per page or personal identifiers. Register report fields and revise dashboard filters together when meanings change.                   |
-| Make campaigns comparable             | Use consistent lowercase UTM source/medium/campaign values on incoming campaign links. Keep internal links untagged, validate delivery, then inspect processed attribution after the reporting delay.                                                         |
-| Separate testing from client outcomes | Preview/local/Studio collection is excluded. Internal and developer filters remain in Testing; verify their matches before any permanent exclusion. Launch-day checks are not client conversions.                                                             |
-| Protect data and respect choices      | URL email/query redaction and safe custom fields are already configured. Review new query keys, titles and labels for personal data; redaction is best-effort. The privacy/consent review remains an explicit prerequisite, not a completed compliance claim. |
-| Compare complete periods              | Use Japan time and measured, comparable date ranges after processing. Note partial launch data, small counts and campaign/content changes; treat browser user counts as estimates.                                                                            |
-| Add only relevant integrations        | Search Console remains a useful free extension after verified ownership is available. Ads profiles, sign-in User-ID collection, cross-domain tagging and paid exports are not needed for the current public-site questions.                                   |
+| Practice                              | YIA implementation and next check                                                                                                                                                                                                                                                   |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Start with useful questions           | The six-card website overview answers audience size, sources, content interest and actions. The separate audience dashboard covers devices, approximate location and browser language. Review comparable monthly periods; use standard reports or explorations for deeper analysis. |
+| Define outcomes accurately            | Application clicks and document opens are interest. Only a confirmed successful inquiry emits `generate_lead`; measure external Google Forms completions separately. A real contact-form destination is still required.                                                             |
+| Keep collection consistent            | One production tag and automatic browser-history page views cover public Sanity pages. New pages need clear titles and the normal publishing flow. Routing/template changes require checks for duplicate views, newly published routes and blocked telemetry.                       |
+| Use stable, limited event fields      | Reuse the eleven defined actions and nine bounded, public custom dimensions when their meaning fits. Avoid a new event per page or personal identifiers. Register report fields and revise dashboard filters together when meanings change.                                         |
+| Make campaigns comparable             | Use consistent lowercase UTM source/medium/campaign values on incoming campaign links. Keep internal links untagged, validate delivery, then inspect processed attribution after the reporting delay.                                                                               |
+| Separate testing from client outcomes | Preview/local/Studio collection is excluded. Internal and developer filters remain in Testing; verify their matches before any permanent exclusion. Launch-day checks are not client conversions.                                                                                   |
+| Protect data and respect choices      | URL email/query redaction and safe custom fields are already configured. Review new query keys, titles and labels for personal data; redaction is best-effort. The privacy/consent review remains an explicit prerequisite, not a completed compliance claim.                       |
+| Compare complete periods              | Use Japan time and measured, comparable date ranges after processing. Note partial launch data, small counts and campaign/content changes; treat browser user counts as estimates.                                                                                                  |
+| Add only relevant integrations        | Search Console remains a useful free extension after verified ownership is available. Ads profiles, sign-in User-ID collection, cross-domain tagging and paid exports are not needed for the current public-site questions.                                                         |
 
 This sweep changed only GA reporting/filter settings and the reporting guides.
 Website runtime, Vercel configuration, Sanity data and cache behavior were unchanged.
@@ -322,6 +371,9 @@ contents or private URLs. Maintain the free-only constraints above.
 - [Google Analytics standard offering](https://marketingplatform.google.com/about/analytics/)
 - [Get more useful data out of Analytics](https://support.google.com/analytics/answer/13126420?hl=en)
 - [Native GA4 dashboards](https://support.google.com/analytics/answer/17217303?hl=en)
+- [Tech details report](https://support.google.com/analytics/answer/12980150?co=GENIE.Platform%3DDesktop&hl=en)
+- [Demographic details report](https://support.google.com/analytics/answer/12948931?co=GENIE.Platform%3DDesktop&hl=en)
+- [Granular location and device collection controls](https://support.google.com/analytics/answer/12017362?hl=en)
 - [Single-page application measurement](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications)
 - [Avoid sending personal information](https://support.google.com/analytics/answer/6366371?hl=en)
 - [Developer traffic filters](https://support.google.com/analytics/answer/13296662?hl=en)
