@@ -303,9 +303,14 @@ GA4 Enhanced Measurement must remain enabled with **Page changes based on browse
 history events** selected. It owns page-view collection; do not also send manual
 page views. Automatic scroll, outbound-click and file-download events depend on
 the stream's settings. File-download events describe clicks, not completed saves.
-Additional events are `document_open` (attachment-link clicks, including in-page
-previews), `form_link_click` (Google Forms links), `language_change` (translation
-choices) and `generate_lead` (only after a successful contact-form response).
+Additional events cover labeled document opens (including in-page previews and
+viewer navigation), Google Forms links, email/phone contact clicks, translation
+choices, table-of-contents navigation, video-open requests and scroll milestones.
+`scroll_depth` records 25/50/75/90% once per pathname visit, throttled with an
+animation frame; listeners and pending frames are cleaned up on navigation.
+GA4's automatic 90% `scroll` event remains a separate event. The contact-form
+component records starts, submit attempts, fixed error categories and
+`generate_lead` only after a successful response.
 The contact form's placeholder Formspree destination must be configured separately
 before it can receive real inquiries. A form-link click is not a completed signup.
 Custom events send no form contents, prefilled answers, URL queries or fragments.
@@ -321,8 +326,15 @@ between pages to rule out duplicate views, exercise the custom events, and verif
 pages/actions still work when Google telemetry is blocked. Live GA4 reports need
 account access and are separate from passing local checks. Use GA4's `generate_lead`
 as a key event; use `form_link_click` as interest rather than confirmed registration.
-Register event-scoped custom dimensions for `form_path` and `selected_language`
-in GA4 Admin > Custom definitions when clients need those report breakdowns.
+The free property uses 14-month event retention and nine event-scoped custom
+dimensions. Email redaction is enabled, alongside 18 named URL-query redaction
+rules. These are best-effort controls: review new query keys, especially prefilled
+Google Forms links, before publishing them. Do not treat redaction as consent.
+See [the analytics reporting guide](google-analytics-reporting.md) for field
+definitions, client reports, campaign naming, free-only constraints and remaining
+rollout checks. No paid plan, billing account, trial, server-side tagging, BigQuery
+export or paid connector is authorized for this integration. GA custom events
+must stay in `gtag`; do not mirror them into Vercel Analytics custom events.
 
 ### Optional public-site analytics
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { trackAnalyticsEvent } from "@/lib/google-analytics";
 
 const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID"; // Replace with real Formspree form ID
@@ -9,10 +9,12 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const started = useRef(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
+    trackAnalyticsEvent("contact_form_submit", { method: "contact_form" });
 
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -28,9 +30,11 @@ export default function ContactForm() {
         setStatus("success");
         form.reset();
       } else {
+        trackAnalyticsEvent("contact_form_error", { method: "contact_form", error_type: "server" });
         setStatus("error");
       }
     } catch {
+      trackAnalyticsEvent("contact_form_error", { method: "contact_form", error_type: "network" });
       setStatus("error");
     }
   }
@@ -40,7 +44,9 @@ export default function ContactForm() {
       <section className="contact-form">
         <div className="contact-form__success">
           <p>お問い合わせありがとうございます。</p>
-          <p lang="en" translate="no">Thank you for your inquiry. We will get back to you soon.</p>
+          <p lang="en" translate="no">
+            Thank you for your inquiry. We will get back to you soon.
+          </p>
         </div>
       </section>
     );
@@ -48,27 +54,50 @@ export default function ContactForm() {
 
   return (
     <section className="contact-form">
-      <form onSubmit={handleSubmit} noValidate={false}>
+      <form
+        onSubmit={handleSubmit}
+        noValidate={false}
+        onFocusCapture={() => {
+          if (started.current) return;
+          started.current = true;
+          trackAnalyticsEvent("contact_form_start", { method: "contact_form" });
+        }}
+      >
         {/* Honeypot */}
-        <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
+        <input
+          type="text"
+          name="_gotcha"
+          style={{ display: "none" }}
+          tabIndex={-1}
+          autoComplete="off"
+        />
 
         <div className="contact-form__field">
           <label htmlFor="contact-name">
-            お名前 <span lang="en" translate="no">Name</span>
+            お名前{" "}
+            <span lang="en" translate="no">
+              Name
+            </span>
           </label>
           <input id="contact-name" name="name" type="text" required />
         </div>
 
         <div className="contact-form__field">
           <label htmlFor="contact-email">
-            メールアドレス <span lang="en" translate="no">Email</span>
+            メールアドレス{" "}
+            <span lang="en" translate="no">
+              Email
+            </span>
           </label>
           <input id="contact-email" name="email" type="email" required />
         </div>
 
         <div className="contact-form__field">
           <label htmlFor="contact-message">
-            お問い合わせ内容 <span lang="en" translate="no">Message</span>
+            お問い合わせ内容{" "}
+            <span lang="en" translate="no">
+              Message
+            </span>
           </label>
           <textarea id="contact-message" name="message" required />
         </div>
@@ -76,7 +105,9 @@ export default function ContactForm() {
         {status === "error" && (
           <div className="contact-form__error">
             <p>送信に失敗しました。もう一度お試しください。</p>
-            <p lang="en" translate="no">Submission failed. Please try again.</p>
+            <p lang="en" translate="no">
+              Submission failed. Please try again.
+            </p>
           </div>
         )}
 

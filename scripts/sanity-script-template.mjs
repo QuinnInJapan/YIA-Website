@@ -15,6 +15,7 @@ import {
 // production writes additionally require --allow-production.
 // Preserve span marks (including the "red" decorator) when editing rich text.
 // GA4 collection is browser-only; do not revalidate content for analytics events.
+// Free analytics reporting needs no Sanity script, telemetry proxy or billing account.
 // Use format-neutral attachment headings; keep actual file types and update existing drafts too.
 // Public pages use on-demand revalidation only. After live mutations, verify
 // webhook delivery or POST to /api/revalidate with the configured secret, then

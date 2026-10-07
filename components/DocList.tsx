@@ -12,7 +12,11 @@ import {
 } from "@/lib/document-links";
 import PdfViewer, { type PdfViewerItem } from "./PdfViewer";
 import { IMAGE_EXTENSIONS } from "@/lib/attachment-types";
-import { documentOpenParameters, trackAnalyticsEvent } from "@/lib/google-analytics";
+import {
+  analyticsLabel,
+  documentOpenParameters,
+  trackAnalyticsEvent,
+} from "@/lib/google-analytics";
 
 function canPreview(doc: Document): boolean {
   return isPdfDocument(doc) || IMAGE_EXTENSIONS.includes(documentTypeLabel(doc).toLowerCase());
@@ -55,15 +59,24 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
     return map;
   }, [pdfItems]);
 
-  const handleNavigate = useCallback((index: number) => {
-    setViewerIndex(index);
-  }, []);
+  const handleNavigate = useCallback(
+    (index: number) => {
+      const item = pdfItems[index];
+      if (item) {
+        const parameters = documentOpenParameters(item.url, window.location.origin);
+        if (parameters)
+          trackAnalyticsEvent("document_open", {
+            ...parameters,
+            document_label: analyticsLabel(item.title),
+            link_placement: "viewer",
+          });
+      }
+      setViewerIndex(index);
+    },
+    [pdfItems],
+  );
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, doc: Document, docIndex: number) {
-    if (e.button === 0) {
-      const parameters = documentOpenParameters(stegaClean(doc.url) || "", window.location.origin);
-      if (parameters) trackAnalyticsEvent("document_open", parameters);
-    }
     if (!canPreview(doc) || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
       return;
 
@@ -103,6 +116,9 @@ export default function DocList({ docs, sidebar, openFilesInNewTab = false }: Do
                 target={openFilesInNewTab ? "_blank" : undefined}
                 rel={openFilesInNewTab ? "noopener noreferrer" : undefined}
                 onClick={(e) => handleClick(e, d, i)}
+                data-analytics-document-url={url}
+                data-analytics-label={stegaClean(title)}
+                data-analytics-placement={sidebar ? "sidebar" : "content"}
               >
                 <span className="doc-list__label">
                   {ja(d.label)}

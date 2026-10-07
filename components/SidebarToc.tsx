@@ -158,6 +158,8 @@ function TocLink({
       href={`#${entry.id}`}
       className={`ann-toc__link ann-toc__link--${level}${isActive ? " ann-toc__link--active" : ""}`}
       onClick={() => onClick(entry.id)}
+      data-analytics-section-id={entry.id}
+      data-analytics-label={[entry.text, entry.subtext].filter(Boolean).join(" / ")}
     >
       {entry.text}
       {entry.subtext && (

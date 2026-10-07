@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { analyticsLabel, trackAnalyticsEvent } from "@/lib/google-analytics";
 
 function extractVideoId(url: string): string | null {
   try {
     const parsed = new URL(url);
     if (parsed.hostname === "youtu.be") return parsed.pathname.slice(1);
-    if (
-      parsed.hostname === "www.youtube.com" ||
-      parsed.hostname === "youtube.com"
-    ) {
+    if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
       return parsed.searchParams.get("v");
     }
   } catch {
@@ -43,7 +41,13 @@ export default function YouTubeEmbed({ url, caption }: YouTubeEmbedProps) {
           <button
             type="button"
             className="pt-youtube__facade"
-            onClick={() => setPlaying(true)}
+            onClick={() => {
+              trackAnalyticsEvent("video_open", {
+                video_id: analyticsLabel(videoId),
+                video_label: analyticsLabel(caption || "YouTube video"),
+              });
+              setPlaying(true);
+            }}
             aria-label={`Play ${caption || "video"}`}
           >
             <img
