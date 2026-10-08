@@ -79,13 +79,17 @@ Use `scripts/lib/sanity-tools.mjs`. New scripts should use `runSanityScript`.
 and bilingual array definitions from checked-in Studio schemas/configuration.
 Both are read-only, include drafts, emit paths/codes rather than content, and exit
 nonzero when issues exist. The full audit also runs Sanity's own validation rules
-and checks reference existence. Neither repairs or deletes content.
+and checks reference existence, global page slug/ID-alias collisions, per-type
+blog/announcement routes, logical singleton duplicates and unsupported bilingual
+language keys. Draft/published pairs count as one identity. Language and singleton
+policy is shared with Studio in `lib/content-policy.ts`. Neither repairs nor deletes content.
 
 `patchWithRevision` validates the complete resulting document before preview and
 mutation. Fetch complete documents, retain `_type` and `_rev`, and use plain
 top-level set fields. For creates and custom transactions, import
 `assertCurrentDocument` from `scripts/lib/current-schema.mjs` and validate every
-resulting document before committing. This does not protect writes outside these
+resulting document with `{client}` before committing, so read-only route/singleton
+inventory checks run too. This does not protect writes outside these
 helpers. Historical direct-client migrations remain retired and must not be reused.
 A new schema dependency or schema-bearing plugin must update the headless loader;
 unsupported imports fail closed. Headless validation uses Sanity's CLI environment

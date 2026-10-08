@@ -286,6 +286,8 @@ export async function patchWithRevision(
 
   // Studio validation is not enforced by the Content Lake mutation API.
   const { assertCurrentDocument } = await import("./current-schema.mjs");
+  // A full resulting document and a read-only inventory check protect schema,
+  // route aliases and singleton identity before the revision-guarded write.
   await assertCurrentDocument({ ...doc, ...set }, { client });
 
   if (dryRun) {

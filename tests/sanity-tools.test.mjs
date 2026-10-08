@@ -185,6 +185,7 @@ test("announcement mutation validation rejects full URLs and missing page refere
 test("patchWithRevision prevents writes in dry-run mode", async () => {
   let called = false;
   const client = {
+    async fetch() { return []; },
     patch() {
       called = true;
       throw new Error("should not write");
@@ -205,6 +206,7 @@ test("patchWithRevision prevents writes in dry-run mode", async () => {
 test("patchWithRevision uses revision guards in live mode", async () => {
   const calls = [];
   const client = {
+    async fetch() { return []; },
     patch(id) {
       calls.push(["patch", id]);
       return {

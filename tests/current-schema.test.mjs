@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { currentSchema, structuralIssues, validateCurrentDocument, assertCurrentDocument } from "../scripts/lib/current-schema.mjs";
+import { currentSchema, structuralIssues, datasetIssues, validateCurrentDocument, assertCurrentDocument } from "../scripts/lib/current-schema.mjs";
 import { patchWithRevision, i18n } from "../scripts/lib/sanity-tools.mjs";
 
 const page = () => ({ _type: "page", _id: "page-fixture", _rev: "r1", slug: "fixture", title: i18n("日本語", "English"), sections: [] });
@@ -44,4 +44,26 @@ test("rejects invalid resulting API patches before any mutation and keeps errors
   await assert.rejects(patchWithRevision(client, page(), { title: "private-text-sentinel" }, { dryRun: false }), (error) => !error.message.includes("private-text-sentinel") && error.message.includes("Current schema"));
   assert.equal(writes, 0);
   await assert.rejects(assertCurrentDocument({ ...page(), removedField: "private-text-sentinel" }), (error) => !error.message.includes("private-text-sentinel"));
+});
+
+test("checks logical route/singleton identities while pairing drafts with published records", async () => {
+  const first = page();
+  const draft = { ...first, _id: `drafts.${first._id}` };
+  assert.deepEqual(datasetIssues([first, draft]), []);
+  assert.equal(datasetIssues([first, { ...first, _id: "page-other" }]).filter(({ code }) => code === "duplicate-route").length, 2);
+  assert.equal(datasetIssues([{ _id: "navigation", _type: "navigation" }, { _id: "drafts.navigation", _type: "navigation" }]).length, 0);
+  assert.equal(datasetIssues([{ _id: "navigation", _type: "navigation" }, { _id: "navigation-other", _type: "navigation" }]).filter(({ code }) => code === "duplicate-singleton").length, 2);
+  assert.ok(datasetIssues([{ ...first, slug: "invalid/path" }]).some(({ code }) => code === "invalid-route-segment"));
+  assert.ok(datasetIssues([{ ...first, slug: "different" }, { ...first, _id: "page-other" }]).some(({ code }) => code === "duplicate-route"));
+  await assert.rejects(assertCurrentDocument(first, { documents: [{ ...first, _id: "another-page" }], documentIds: new Set() }), /duplicate-route/);
+});
+
+test("rejects unsupported language keys without requiring optional translations", () => {
+  const first = page();
+  first.title = [{ _key: "fr", value: "private-text-sentinel" }];
+  assert.ok(structuralIssues(first).some(({ code }) => code === "unsupported-language-key"));
+  first.title = [{ _key: "ja", value: "日本語" }];
+  assert.deepEqual(structuralIssues(first), []);
+  first._system = { base: { id: "page-fixture" } };
+  assert.deepEqual(structuralIssues(first), []);
 });

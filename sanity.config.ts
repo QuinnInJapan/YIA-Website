@@ -12,6 +12,7 @@ import { cleanDeleteAction } from "./sanity/actions/cleanDeleteAction";
 import { yiaStudioTheme } from "./sanity/lib/studioTheme";
 import { YiaStudioNavbar } from "./sanity/components/YiaStudioNavbar";
 import { RedText, RedTextIcon } from "./lib/portable-text-decorators";
+import { studioLanguages, singletonDocumentTypes } from "./lib/content-policy";
 
 const sanityDataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 const studioTitle =
@@ -40,10 +41,7 @@ export default defineConfig({
     draftsPlugin(),
     jaJPLocale(),
     internationalizedArray({
-      languages: [
-        { id: "ja", title: "日本語" },
-        { id: "en", title: "英語" },
-      ],
+      languages: studioLanguages,
       fieldTypes: [
         defineField({ name: "string", type: "string", title: " " }),
         defineField({ name: "text", type: "text", title: " " }),
@@ -175,12 +173,7 @@ export default defineConfig({
       prev.filter(
         (item) =>
           ![
-            "siteSettings",
-            "homepage",
-            "navigation",
-            "homepageFeatured",
-            "homepageAbout",
-            "sidebar",
+            ...singletonDocumentTypes,
             "category",
             "page",
           ].includes(item.templateId),
