@@ -11,6 +11,11 @@ import {
 } from "./lib/sanity-tools.mjs";
 
 // Announcement mutation scripts must also import validateAnnouncementForMutation
+// patchWithRevision validates the full resulting document against current Studio
+// schemas. Fetch complete documents; projections are insufficient. For creates
+// or custom transactions, call assertCurrentDocument from lib/current-schema.mjs
+// on every resulting document before committing. Historical migrations bypassing
+// the maintained helper must not be reused.
 // and call it on the final document shape before patching or publishing. Live
 // production writes additionally require --allow-production.
 // Preserve span marks (including the "red" decorator) when editing rich text.

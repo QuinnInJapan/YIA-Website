@@ -193,8 +193,8 @@ test("patchWithRevision prevents writes in dry-run mode", async () => {
 
   const result = await patchWithRevision(
     client,
-    { _id: "page-test", _rev: "rev-1" },
-    { title: "new" },
+    { _id: "page-test", _rev: "rev-1", _type: "page", slug: "test", title: i18n("old", "old"), sections: [] },
+    { title: i18n("new", "new") },
     { dryRun: true },
   );
 
@@ -226,8 +226,8 @@ test("patchWithRevision uses revision guards in live mode", async () => {
 
   await patchWithRevision(
     client,
-    { _id: "page-test", _rev: "rev-1" },
-    { title: "new" },
+    { _id: "page-test", _rev: "rev-1", _type: "page", slug: "test", title: i18n("old", "old"), sections: [] },
+    { title: i18n("new", "new") },
     {
       dryRun: false,
     },
@@ -236,7 +236,7 @@ test("patchWithRevision uses revision guards in live mode", async () => {
   assert.deepEqual(calls, [
     ["patch", "page-test"],
     ["ifRevisionId", "rev-1"],
-    ["set", { title: "new" }],
+    ["set", { title: i18n("new", "new") }],
     ["commit"],
   ]);
 });

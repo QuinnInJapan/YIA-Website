@@ -284,6 +284,10 @@ export async function patchWithRevision(
     });
   }
 
+  // Studio validation is not enforced by the Content Lake mutation API.
+  const { assertCurrentDocument } = await import("./current-schema.mjs");
+  await assertCurrentDocument({ ...doc, ...set }, { client });
+
   if (dryRun) {
     console.log(`[dry-run] Would patch ${doc._id}`);
     return { dryRun: true, docId: doc._id, set };
