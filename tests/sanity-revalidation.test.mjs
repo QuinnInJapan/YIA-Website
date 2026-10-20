@@ -94,7 +94,13 @@ test("announcements refresh homepage/list entries and their own detail only", ()
     t.social,
     t.blogCount,
   );
-  has(plan(event(doc, null)), t.announcementCount);
+  has(
+    plan(event(doc, null)),
+    t.announcementCount,
+    t.announcements,
+    key("announcement", "notice"),
+    key("announcement", "notice-1"),
+  );
 });
 
 test("social image only expires when its actual inputs change", () => {

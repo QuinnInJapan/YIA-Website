@@ -45,6 +45,7 @@ import {
 } from "../../../lib/announcement-fields";
 import { recommendedSlugDefault } from "../../../lib/studio-slug";
 import { announcementPublicationState } from "./publication-state";
+import { deleteAnnouncement } from "./delete-announcement";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -158,6 +159,8 @@ export function AnnouncementEditor({
 
   const [edits, setEdits] = useState<Partial<AnnouncementDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const deletingRef = useRef(false);
+  const pendingSavesRef = useRef(new Set<Promise<boolean>>());
 
   useEffect(
     () => () => {
@@ -237,37 +240,48 @@ export function AnnouncementEditor({
   // ── Auto-save ──────────────────────────────────────────
 
   const saveToSanity = useCallback(
-    async (updates: Partial<AnnouncementDoc>) => {
-      const baseDoc = draftDoc ?? publishedDoc;
-      if (!baseDoc) return false;
-      setSaving(true);
-      setSaveStatus("saving");
-      try {
-        const { draftId } = documentPairIds(documentId);
-        const { targetPageData: _targetPageData, ...baseForDraft } = baseDoc;
-        await client.createIfNotExists(draftDocumentForBase(baseForDraft, draftId, "announcement"));
-        await client.patch(draftId).set(updates).commit();
-        const updated = await client.fetch<AnnouncementDoc | null>(
-          `*[_id == $id][0] ${DOC_PROJECTION}`,
-          { id: draftId },
-        );
-        if (updated) setDraftDoc(updated);
-        setSaveStatus("saved");
-        setErrorMessage(null);
-        return true;
-      } catch (err) {
-        console.error("Save failed:", err);
-        setSaveStatus("error");
-        setErrorMessage("変更を保存できませんでした。通信状況を確認して、もう一度お試しください。");
-        return false;
-      } finally {
-        setSaving(false);
-      }
+    (updates: Partial<AnnouncementDoc>) => {
+      if (deletingRef.current) return Promise.resolve(false);
+      const save = (async () => {
+        const baseDoc = draftDoc ?? publishedDoc;
+        if (!baseDoc) return false;
+        setSaving(true);
+        setSaveStatus("saving");
+        try {
+          const { draftId } = documentPairIds(documentId);
+          const { targetPageData: _targetPageData, ...baseForDraft } = baseDoc;
+          await client.createIfNotExists(
+            draftDocumentForBase(baseForDraft, draftId, "announcement"),
+          );
+          await client.patch(draftId).set(updates).commit();
+          const updated = await client.fetch<AnnouncementDoc | null>(
+            `*[_id == $id][0] ${DOC_PROJECTION}`,
+            { id: draftId },
+          );
+          if (updated) setDraftDoc(updated);
+          setSaveStatus("saved");
+          setErrorMessage(null);
+          return true;
+        } catch (err) {
+          console.error("Save failed:", err);
+          setSaveStatus("error");
+          setErrorMessage(
+            "変更を保存できませんでした。通信状況を確認して、もう一度お試しください。",
+          );
+          return false;
+        } finally {
+          if (!deletingRef.current) setSaving(false);
+        }
+      })();
+      pendingSavesRef.current.add(save);
+      void save.finally(() => pendingSavesRef.current.delete(save));
+      return save;
     },
     [client, documentId, draftDoc, publishedDoc],
   );
 
   function updateFields(updates: Partial<AnnouncementDoc>) {
+    if (deletingRef.current) return;
     setEdits((prev) => ({ ...prev, ...updates }));
     setSaveStatus("dirty");
 
@@ -457,14 +471,30 @@ export function AnnouncementEditor({
   // ── Delete ─────────────────────────────────────────────
 
   async function handleDelete() {
-    const { publishedId: pubId, draftId } = documentPairIds(documentId);
+    if (deletingRef.current) return;
+    deletingRef.current = true;
+    setSaving(true);
+    setErrorMessage(null);
+    if (saveTimerRef.current) {
+      clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = null;
+    }
     try {
-      await client.delete(draftId).catch(() => {});
-      await client.delete(pubId).catch(() => {});
+      // An already-started autosave must finish before its draft is deleted.
+      await Promise.all(pendingSavesRef.current);
+      await deleteAnnouncement(client, documentPairIds(documentId));
       setConfirmAction(null);
       onDelete();
     } catch (err) {
-      console.error("Delete failed:", err);
+      console.error("Delete failed:", err instanceof Error ? err.message : "Unknown error");
+      deletingRef.current = false;
+      setConfirmAction(null);
+      setSaveStatus("error");
+      setErrorMessage(
+        "お知らせを削除できませんでした。他のコンテンツからの参照や編集権限、通信状況を確認して、もう一度お試しください。",
+      );
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -1243,7 +1273,11 @@ export function AnnouncementEditor({
       {confirmAction === "delete" ? (
         <ActionConfirmation
           title="このお知らせを削除しますか？"
-          description="公開版と下書きを完全に削除します。この操作は元に戻せません。"
+          description={
+            isInternalPageAnnouncement
+              ? "お知らせの公開版・下書きとホームページへの掲載を削除します。リンク先のページは削除されません。この操作は元に戻せません。"
+              : "お知らせの公開版・下書き・詳細ページとホームページへの掲載を完全に削除します。この操作は元に戻せません。"
+          }
           confirmLabel="お知らせを削除"
           busy={saving}
           onConfirm={handleDelete}
