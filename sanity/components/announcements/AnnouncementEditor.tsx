@@ -45,7 +45,7 @@ import {
 } from "../../../lib/announcement-fields";
 import { recommendedSlugDefault } from "../../../lib/studio-slug";
 import { announcementPublicationState } from "./publication-state";
-import { deleteAnnouncement } from "./delete-announcement";
+import { setAnnouncementTrashed, publishActiveAnnouncement } from "./announcement-trash";
 
 // ── Types ────────────────────────────────────────────────
 
@@ -53,6 +53,7 @@ export interface AnnouncementDoc {
   _id: string;
   _rev?: string;
   _updatedAt?: string;
+  trashedAt?: string | null;
   title: { _key: string; value: string }[] | null;
   slug: { current: string } | null;
   date: string | null;
@@ -75,7 +76,7 @@ export interface AnnouncementDoc {
 // ── Constants ────────────────────────────────────────────
 
 export const DOC_PROJECTION = `{
-  _id, _rev, _updatedAt, title, slug, date, pinned, destinationType, targetPage, targetAnchor,
+  _id, _rev, _updatedAt, trashedAt, title, slug, date, pinned, destinationType, targetPage, targetAnchor,
   "targetPageData": targetPage->{
     _id, title, description, images, slug,
     "categoryId": categoryRef->_id, "categoryTitle": categoryRef->label,
@@ -135,7 +136,7 @@ export function AnnouncementEditor({
   >("saved");
   const [publishOpen, setPublishOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [confirmAction, setConfirmAction] = useState<"discard" | "delete" | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"discard" | "delete" | "restore" | null>(null);
   const [internalPages, setInternalPages] = useState<InternalPageOption[]>([]);
   const [internalPagesLoading, setInternalPagesLoading] = useState(true);
   const [internalPagesError, setInternalPagesError] = useState(false);
@@ -156,6 +157,7 @@ export function AnnouncementEditor({
 
   const doc = draftDoc ?? publishedDoc;
   const hasDraft = draftDoc !== null;
+  const isTrashed = Boolean(publishedDoc?.trashedAt || draftDoc?.trashedAt);
 
   const [edits, setEdits] = useState<Partial<AnnouncementDoc>>({});
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -193,8 +195,8 @@ export function AnnouncementEditor({
 
   // Notify parent of merged doc changes for preview
   useEffect(() => {
-    onMergedChange?.(merged);
-  }, [merged, onMergedChange]);
+    onMergedChange?.(isTrashed ? null : merged);
+  }, [merged, onMergedChange, isTrashed]);
 
   // ── Load document ──────────────────────────────────────
 
@@ -241,7 +243,7 @@ export function AnnouncementEditor({
 
   const saveToSanity = useCallback(
     (updates: Partial<AnnouncementDoc>) => {
-      if (deletingRef.current) return Promise.resolve(false);
+      if (isTrashed) return Promise.resolve(false);
       const save = (async () => {
         const baseDoc = draftDoc ?? publishedDoc;
         if (!baseDoc) return false;
@@ -277,11 +279,11 @@ export function AnnouncementEditor({
       void save.finally(() => pendingSavesRef.current.delete(save));
       return save;
     },
-    [client, documentId, draftDoc, publishedDoc],
+    [client, documentId, draftDoc, publishedDoc, isTrashed],
   );
 
   function updateFields(updates: Partial<AnnouncementDoc>) {
-    if (deletingRef.current) return;
+    if (deletingRef.current || isTrashed) return;
     setEdits((prev) => ({ ...prev, ...updates }));
     setSaveStatus("dirty");
 
@@ -416,9 +418,11 @@ export function AnnouncementEditor({
         if (!saved) return;
       }
 
-      await client.createOrReplace(publishedDocumentForDraft(source, pubId, "announcement"));
-
-      await client.delete(draftId).catch(() => {});
+      await publishActiveAnnouncement(
+        client,
+        { publishedId: pubId, draftId },
+        publishedDocumentForDraft(source, pubId, "announcement"),
+      );
 
       const newPub = await client.fetch<AnnouncementDoc | null>(
         `*[_id == $id][0] ${DOC_PROJECTION}`,
@@ -480,9 +484,12 @@ export function AnnouncementEditor({
       saveTimerRef.current = null;
     }
     try {
-      // An already-started autosave must finish before its draft is deleted.
+      // Finish saves before marking both versions, so restoration keeps the latest edits.
       await Promise.all(pendingSavesRef.current);
-      await deleteAnnouncement(client, documentPairIds(documentId));
+      if (Object.keys(edits).length > 0 && !(await saveToSanity(edits))) {
+        throw new Error("移動前に変更を保存できませんでした。");
+      }
+      await setAnnouncementTrashed(client, documentPairIds(documentId), true);
       setConfirmAction(null);
       onDelete();
     } catch (err) {
@@ -491,7 +498,27 @@ export function AnnouncementEditor({
       setConfirmAction(null);
       setSaveStatus("error");
       setErrorMessage(
-        "お知らせを削除できませんでした。他のコンテンツからの参照や編集権限、通信状況を確認して、もう一度お試しください。",
+        "ゴミ箱に移動できませんでした。変更の保存・編集権限・通信状況を確認して、もう一度お試しください。",
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleRestore() {
+    if (deletingRef.current) return;
+    deletingRef.current = true;
+    setSaving(true);
+    setErrorMessage(null);
+    try {
+      await setAnnouncementTrashed(client, documentPairIds(documentId), false);
+      setConfirmAction(null);
+      onDelete();
+    } catch {
+      deletingRef.current = false;
+      setConfirmAction(null);
+      setErrorMessage(
+        "復元できませんでした。編集権限や通信状況を確認して、もう一度お試しください。",
       );
     } finally {
       setSaving(false);
@@ -588,6 +615,41 @@ export function AnnouncementEditor({
   const selectedInternalPagePath = selectedPageForPath
     ? `${internalPagePath(selectedPageForPath)}${merged?.targetAnchor ? `#${merged.targetAnchor}` : ""}`
     : "";
+
+  if (isTrashed)
+    return (
+      <Box padding={4}>
+        <Text as="h1" size={2} weight="semibold">
+          {i18nGet(doc?.title, "ja") || "（タイトルなし）"}
+        </Text>
+        <Text as="p" size={1} style={{ marginTop: 16, lineHeight: 1.7 }}>
+          ゴミ箱に入っています。公開サイトには表示されません。内容と下書きは保存されています。
+        </Text>
+        {errorMessage && <StudioErrorBanner message={errorMessage} />}
+        <Button
+          text="復元"
+          icon={RevertIcon}
+          tone="primary"
+          disabled={saving}
+          onClick={() => setConfirmAction("restore")}
+        />
+        {confirmAction === "restore" && (
+          <ActionConfirmation
+            title="このお知らせを復元しますか？"
+            description={
+              publishedDoc
+                ? "以前の公開内容がサイトに再表示されます。未公開の変更は下書きのまま戻ります。"
+                : "未公開のお知らせとして戻ります。サイトに表示するには公開してください。"
+            }
+            confirmLabel="復元"
+            tone="primary"
+            busy={saving}
+            onConfirm={handleRestore}
+            onClose={() => setConfirmAction(null)}
+          />
+        )}
+      </Box>
+    );
 
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -687,7 +749,7 @@ export function AnnouncementEditor({
               )}
               <Button
                 icon={TrashIcon}
-                text="削除"
+                text="ゴミ箱へ"
                 mode="ghost"
                 tone="critical"
                 fontSize={0}
@@ -1272,13 +1334,13 @@ export function AnnouncementEditor({
       ) : null}
       {confirmAction === "delete" ? (
         <ActionConfirmation
-          title="このお知らせを削除しますか？"
+          title="このお知らせをゴミ箱に移動しますか？"
           description={
             isInternalPageAnnouncement
-              ? "お知らせの公開版・下書きとホームページへの掲載を削除します。リンク先のページは削除されません。この操作は元に戻せません。"
-              : "お知らせの公開版・下書き・詳細ページとホームページへの掲載を完全に削除します。この操作は元に戻せません。"
+              ? "お知らせを公開サイトから取り下げます。リンク先のページは残ります。ゴミ箱からいつでも復元できます。"
+              : "お知らせと詳細ページを公開サイトから取り下げます。内容と下書きは保存され、ゴミ箱からいつでも復元できます。"
           }
-          confirmLabel="お知らせを削除"
+          confirmLabel="ゴミ箱へ移動"
           busy={saving}
           onConfirm={handleDelete}
           onClose={() => setConfirmAction(null)}

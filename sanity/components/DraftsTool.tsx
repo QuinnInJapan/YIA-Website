@@ -36,7 +36,9 @@ const EDITABLE_DRAFT_TYPES = [
 
 const DRAFTS_QUERY = `*[
   _id in path("drafts.**") &&
-  _type in $editableTypes
+  _type in $editableTypes &&
+  !defined(trashedAt) &&
+  !defined(*[_id == string::split(^._id, "drafts.")[1]][0].trashedAt)
 ] | order(_updatedAt desc) {
   _id, _type, _updatedAt, label,
   ${ANNOUNCEMENT_PUBLICATION_FIELD_LIST}

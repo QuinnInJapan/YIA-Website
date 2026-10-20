@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 import { createClient } from "@sanity/client";
 
 const DEFAULT_API_VERSION = "2024-01-01";
+// Announcement trash uses trashedAt on both versions. Preserve it during edits;
+// restoration unsets it, and normal publishing must never bypass it (see runbook).
+// Task UI verification uses the checkout endpoint from projectctl endpoints.
 // Attachment headings are format-neutral (資料 / Materials); retain actual file extensions.
 // Rich-text span marks may include "red"; content patches must preserve decorators.
 // GA4 is browser-only: analytics events never require Sanity reads or cache purges.

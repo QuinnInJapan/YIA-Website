@@ -211,7 +211,7 @@ export function HomepageEditor({
         }`,
       ),
       client.fetch<AnnouncementPreviewData[]>(
-        `*[_type == "announcement" && !(_id in path("drafts.**"))] | order(pinned desc, date desc) [0...5] {
+        `*[_type == "announcement" && !defined(trashedAt) && !(_id in path("drafts.**"))] | order(pinned desc, date desc) [0...5] {
           _id, title, date, pinned, "slug": slug.current
         }`,
       ),

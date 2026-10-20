@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       sanityFetchOptions(sanityTags.blogRoutes),
     ),
     client.fetch<{ _id: string; slug?: string; updatedAt: string }[]>(
-      `*[_type == "announcement" && ${published} && coalesce(destinationType, "detail") != "internalPage"]{
+      `*[_type == "announcement" && !defined(trashedAt) && ${published} && coalesce(destinationType, "detail") != "internalPage"]{
         _id, "slug": slug.current, "updatedAt": _updatedAt
       }`,
       {},

@@ -35,6 +35,7 @@ interface AnnouncementItem {
   pinned: boolean | null;
   slug: string | null;
   destinationType: "detail" | "internalPage" | null;
+  trashedAt: string | null;
   publicationState: AnnouncementPublicationState;
 }
 
@@ -44,7 +45,7 @@ type AnnouncementListResult = Omit<AnnouncementItem, "publicationState">;
 
 const PAGE_SIZE = 20;
 
-type FilterMode = "all" | "pinned" | "upcoming" | "past";
+type FilterMode = "all" | "pinned" | "upcoming" | "past" | "trash";
 
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10);
@@ -64,15 +65,16 @@ const LIST_PROJECTION = `{
   pinned,
   "slug": slug.current,
   destinationType,
+  trashedAt,
 }`;
 
 function buildFilter(search: string, filterMode: FilterMode): string {
-  let filter = `_type == "announcement" && ${DEDUP_FILTER}`;
+  let filter = `_type == "announcement" && ${DEDUP_FILTER} && ${filterMode === "trash" ? "defined(trashedAt)" : "!defined(trashedAt)"}`;
   if (search.trim()) {
     const terms = search
       .trim()
       .split(/\s+/)
-      .map((t) => `"${t}*"`)
+      .map((t) => JSON.stringify(`${t}*`))
       .join(", ");
     filter += ` && (title[_key == "ja"][0].value match [${terms}] || title[_key == "en"][0].value match [${terms}])`;
   }
@@ -144,16 +146,20 @@ function SidebarRow({
             gap: 4,
           }}
         >
-          {item.publicationState !== "published" && (
-            <span
-              style={{
-                color: "#9a5700",
-                fontWeight: 600,
-                flexShrink: 0,
-              }}
-            >
-              {item.publicationState === "unpublished" ? "未公開" : "変更あり"}
-            </span>
+          {item.trashedAt ? (
+            <span>ゴミ箱</span>
+          ) : (
+            item.publicationState !== "published" && (
+              <span
+                style={{
+                  color: "#9a5700",
+                  fontWeight: 600,
+                  flexShrink: 0,
+                }}
+              >
+                {item.publicationState === "unpublished" ? "未公開" : "変更あり"}
+              </span>
+            )
           )}
           {formatStudioDateOnly(item.date)}
         </div>
@@ -352,6 +358,10 @@ export function AnnouncementsTool() {
         pinned: false,
         destinationType: "detail",
       });
+      setFilterMode("all");
+      setPage(0);
+      setSearchInput("");
+      setSearchQuery("");
       setEditingId(id);
     } catch (err) {
       console.error("Create failed:", err);
@@ -368,6 +378,7 @@ export function AnnouncementsTool() {
     { mode: "pinned", label: "固定" },
     { mode: "upcoming", label: "掲載日：今日以降" },
     { mode: "past", label: "掲載日：過去" },
+    { mode: "trash", label: "ゴミ箱" },
   ];
 
   return (
@@ -403,6 +414,7 @@ export function AnnouncementsTool() {
                 <Button
                   key={f.mode}
                   text={f.label}
+                  aria-pressed={filterMode === f.mode}
                   mode={filterMode === f.mode ? "default" : "ghost"}
                   tone={filterMode === f.mode ? "primary" : "default"}
                   fontSize={0}
@@ -471,7 +483,11 @@ export function AnnouncementsTool() {
           >
             {!loading && items.length === 0 ? (
               <Box padding={3}>
-                {searchQuery || filterMode !== "all" ? (
+                {filterMode === "trash" ? (
+                  <Text size={0} muted>
+                    {searchQuery ? "検索結果がありません" : "ゴミ箱は空です"}
+                  </Text>
+                ) : searchQuery || filterMode !== "all" ? (
                   <Text size={0} muted>
                     検索結果がありません
                   </Text>
@@ -635,7 +651,7 @@ export function AnnouncementsTool() {
             />
           ) : null}
         </RightPanel>
-      ) : mergedDoc ? (
+      ) : mergedDoc && !mergedDoc.trashedAt ? (
         <RightPanel>
           <PreviewPanel>
             <AnnouncementPreview doc={mergedDoc} />

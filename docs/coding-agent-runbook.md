@@ -26,8 +26,9 @@ Update this file, `scripts/lib/sanity-tools.mjs`, and `scripts/sanity-script-tem
 npm test
 ```
 
-For UI/page changes, use the registered Project Control service. It owns the stable development
-endpoint at `http://127.0.0.1:4306` and launches Next.js with the webpack fallback because the
+For UI/page changes, use the registered Project Control service. The default checkout uses
+`http://127.0.0.1:4306`; task checkouts receive their own port from `projectctl endpoints`.
+Select the endpoint whose instance key contains the current checkout ID. The service launches Next.js with the webpack fallback because the
 default Next/SWC development server can accept TCP connections without returning HTTP responses in
 this project.
 
@@ -153,7 +154,19 @@ legacy migration scripts that hardcode `production` are historical and must not 
 new script from the maintained template instead.
 
 Announcement mutation scripts must preserve the destination contract and call
-`validateAnnouncementForMutation` before writing:
+`validateAnnouncementForMutation` before writing.
+
+Announcements use a hidden `trashedAt` datetime for restorable ゴミ箱. Move both
+published and existing draft versions together with revision guards; retain their
+content, assets, IDs, slugs and references. Restore by unsetting the marker on both
+versions, returning them to their previous publication state. Do not hard-delete,
+automatically expire trash, or publish a trashed announcement. The public homepage,
+lists, counts, detail lookups, static params and sitemap exclude trashed records.
+Slugs remain reserved while in trash. The announcement count query shares the
+announcement-list tag so existing publish-update webhooks refresh trash/restore
+without a projection change or timed refresh.
+
+Destination requirements:
 
 - `destinationType: "detail"` requires `slug.current` to contain only the URL suffix in lowercase
   letters, numbers, and hyphens; never store a full URL.

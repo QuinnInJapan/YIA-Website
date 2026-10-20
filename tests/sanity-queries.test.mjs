@@ -29,7 +29,7 @@ function queries(dataset) {
             client: {
               async fetch(query, params, options) {
                 calls.push({ query, params, tags: options.next.tags });
-                return (await evaluate(parse(query), { dataset, params })).get();
+                return (await evaluate(parse(query, { params }), { dataset, params })).get();
               },
             },
           };
@@ -110,6 +110,47 @@ test("deleted related blog references are omitted and cards never fetch other bo
   assert.equal(result.relatedPosts.length, 1);
   assert.equal(result.relatedPosts[0].slug, "b");
   assert.ok(!Object.hasOwn(result.relatedPosts[0], "body"));
+});
+
+test("trash is excluded from every public announcement query and restored with its original URL", async () => {
+  const active = { _id: "active", _type: "announcement", slug: { current: "active-slug" } };
+  const trashed = {
+    _id: "trash",
+    _type: "announcement",
+    slug: { current: "trash-slug" },
+    trashedAt: "2026-10-20T00:00:00Z",
+  };
+  const { api, calls } = queries([active, trashed]);
+  assert.equal(await api.fetchAnnouncementCount(), 1);
+  for (const list of [
+    await api.fetchHomepageAnnouncements(),
+    await api.fetchAnnouncements(),
+    await api.fetchAllAnnouncementIdsStatic(),
+  ]) {
+    assert.deepEqual(
+      list.map((doc) => doc._id),
+      ["active"],
+    );
+  }
+  assert.equal(await api.fetchAnnouncementById("trash"), null);
+  assert.equal(await api.fetchAnnouncementBySlug("trash-slug"), null);
+  const { trashedAt, ...restored } = trashed;
+  assert.equal((await queries([restored]).api.fetchAnnouncementBySlug("trash-slug"))._id, "trash");
+  // The deployed webhook omits trashedAt, so count must share the normal update tag.
+  const snapshot = { _id: "trash", _type: "announcement", slug: trashed.slug };
+  const plan = revalidation.resolveSanityRevalidationPlan({
+    schemaVersion: 1,
+    before: snapshot,
+    after: snapshot,
+  });
+  for (const call of calls.filter(
+    (call) =>
+      call.query.includes("count(") ||
+      call.params.id === "trash" ||
+      call.params.slug === "trash-slug",
+  )) {
+    assert.ok(call.tags.some((tag) => plan.tags.includes(tag)));
+  }
 });
 
 test("a body publish intersects only its own detail fetch among actual route dependencies", async () => {

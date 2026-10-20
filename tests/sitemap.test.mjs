@@ -47,6 +47,7 @@ test("sitemap includes canonical published details, dates, and ID fallback witho
     { ...detail, _id: "drafts.notice-id" },
     { ...detail, _id: "versions.release.notice-id", slug: { current: "future-notice" } },
     { ...detail, _id: "old-notice", slug: null },
+    { ...detail, _id: "trashed-notice", slug: { current: "trashed-notice" }, trashedAt: updatedAt },
     { ...detail, _id: "internal", slug: { current: "internal" }, destinationType: "internalPage" },
     { _type: "page", _id: "page-salon", slug: "salon", _updatedAt: updatedAt },
     { _type: "page", _id: "drafts.page-salon", slug: "salon", _updatedAt: "2099-01-01T00:00:00Z" },
@@ -61,7 +62,7 @@ test("sitemap includes canonical published details, dates, and ID fallback witho
   assert.equal(byUrl.get("https://yia.jp/blog/post").lastModified, updatedAt);
   assert.ok(byUrl.has("https://yia.jp/announcements/old-notice"));
   assert.ok(byUrl.has("https://yia.jp/blog"));
-  for (const suffix of ["notice-id", "internal", "future-notice"]) {
+  for (const suffix of ["notice-id", "internal", "future-notice", "trashed-notice"]) {
     assert.ok(!byUrl.has(`https://yia.jp/announcements/${suffix}`));
   }
   assert.ok(!byUrl.has("https://yia.jp/blog/draft"));

@@ -41,6 +41,13 @@ export default defineType({
   },
   fields: [
     defineField({
+      name: "trashedAt",
+      title: "ゴミ箱に移動した日時",
+      type: "datetime",
+      hidden: true,
+      readOnly: true,
+    }),
+    defineField({
       name: "title",
       title: "タイトル",
       type: "internationalizedArrayString",

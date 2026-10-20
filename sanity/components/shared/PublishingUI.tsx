@@ -232,7 +232,7 @@ export function ActionConfirmation({
   description: string;
   confirmLabel: string;
   busy: boolean;
-  tone?: "critical" | "caution";
+  tone?: "critical" | "caution" | "primary";
   onConfirm: () => void;
   onClose: () => void;
 }) {

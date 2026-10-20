@@ -11,6 +11,9 @@ import {
 } from "./lib/sanity-tools.mjs";
 
 // Announcement mutation scripts must also import validateAnnouncementForMutation
+// Preserve announcement trashedAt during edits; trash/restore must update both
+// versions atomically. Never publish a trashed announcement or expire trash.
+// Use the checkout endpoint from projectctl endpoints for local UI verification.
 // patchWithRevision validates the full resulting document against current Studio
 // schemas. Fetch complete documents; projections are insufficient. For creates
 // or custom transactions, call assertCurrentDocument from lib/current-schema.mjs

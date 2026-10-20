@@ -73,7 +73,7 @@ export const fetchSocialImageData = () =>
 // does not render their bodies or use the retired announcementRefs selection.
 export const fetchHomepageAnnouncements = () =>
   client.fetch<Announcement[]>(
-    `*[_type == "announcement"] | order(coalesce(pinned, false) desc, date desc) [0...5] {
+    `*[_type == "announcement" && !defined(trashedAt)] | order(coalesce(pinned, false) desc, date desc) [0...5] {
     _id, _type, title, date, pinned, destinationType, targetAnchor,
     "slug": slug.current,
     "targetPageData": targetPage->{_id, slug, "categoryId": categoryRef->_id}
@@ -195,7 +195,7 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
     const start = (page - 1) * pageSize;
     const end = start + pageSize;
     return client.fetch(
-      `*[_type == "announcement"] | order(pinned desc, date desc) [$start...$end] {
+      `*[_type == "announcement" && !defined(trashedAt)] | order(pinned desc, date desc) [$start...$end] {
         ...,
         "slug": slug.current,
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
@@ -209,9 +209,10 @@ export async function fetchAnnouncements(page = 1, pageSize = 10) {
 export async function fetchAnnouncementCount() {
   return timed("announcementCount", async () => {
     return client.fetch(
-      `count(*[_type == "announcement"])`,
+      `count(*[_type == "announcement" && !defined(trashedAt)])`,
       {},
-      sanityFetchOptions(tags.announcementCount),
+      // Trash/restore are updates; the existing webhook already expires announcements.
+      sanityFetchOptions(tags.announcementCount, tags.announcements),
     );
   });
 }
@@ -219,7 +220,7 @@ export async function fetchAnnouncementCount() {
 export async function fetchAnnouncementById(id: string) {
   return timed(`announcement[${id}]`, async () => {
     return client.fetch(
-      `*[_type == "announcement" && _id == $id][0] {
+      `*[_type == "announcement" && !defined(trashedAt) && _id == $id][0] {
         ...,
         "slug": slug.current,
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
@@ -237,7 +238,7 @@ export async function fetchAnnouncementById(id: string) {
 export async function fetchAnnouncementBySlug(slug: string) {
   return timed(`announcement[slug:${slug}]`, async () => {
     return client.fetch(
-      `*[_type == "announcement" && slug.current == $slug][0] {
+      `*[_type == "announcement" && !defined(trashedAt) && slug.current == $slug][0] {
         ...,
         "slug": slug.current,
         "targetPageData": targetPage->{ _id, slug, "categoryId": categoryRef->_id }
@@ -254,7 +255,7 @@ export async function fetchAnnouncementBySlug(slug: string) {
 
 export function fetchAllAnnouncementIdsStatic() {
   return client.fetch<{ _id: string; slug?: string }[]>(
-    `*[_type == "announcement" && coalesce(destinationType, "detail") != "internalPage"]{
+    `*[_type == "announcement" && !defined(trashedAt) && coalesce(destinationType, "detail") != "internalPage"]{
       _id,
       "slug": slug.current
     }`,
